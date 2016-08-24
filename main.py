@@ -1,23 +1,19 @@
-#
-# Main thread seperation file of the opserv backend
-#
-# 24.08.2016
-#
-#
+from gathering.gather_main import GatherThread
+import server.main
 
-import threading
-from gather_main import GatherThread
-from web_main import WebThread
 
-def startThreads():
-    print("Starting up Web and Gathering Thread")
-    webThread = WebThread()
-    webThread.daemon = True
-    webThread.start()
+def start_gather_thread():
+    print("Starting up the gathering thread.")
 
-    gatherThread = GatherThread()
-    gatherThread.daemon = True
-    gatherThread.start()
+    gather_thread = GatherThread()
+    gather_thread.daemon = True
+    gather_thread.start()
+
+
+def start_server():
+    server.main.start()
+
 
 if __name__ == '__main__':
-    startThreads()
+    start_gather_thread()
+    start_server()
