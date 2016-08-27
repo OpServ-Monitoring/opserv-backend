@@ -1,5 +1,5 @@
 from gathering.gather_main import GatherThread
-import server.main
+import server.__management as server
 
 
 def start_gather_thread():
@@ -11,7 +11,7 @@ def start_gather_thread():
 
 
 def start_server():
-    server.main.start()
+    server.start()
 
 
 if __name__ == '__main__':
