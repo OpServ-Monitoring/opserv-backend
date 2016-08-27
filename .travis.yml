@@ -10,9 +10,6 @@ python:
   - "3.5"
   - "3.5-dev" # 3.5 development branch
 # dependencies installation
-install: "pip install psutil"
-install: "pip install cython"
-install: "pip install vedis"
-install: "pip install flask"
+install: "pip install -r requirements.txt"
 # command to run tests
 script: nosetests
