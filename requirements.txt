@@ -1,0 +1,5 @@
+cython==0.24.1
+vedis==0.4.1
+flask==0.11.1
+flask_restful==0.3.5
+psutil==4.3.0
