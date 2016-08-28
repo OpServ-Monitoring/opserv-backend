@@ -92,7 +92,7 @@ class GatherThread(threading.Thread):
             if measureType == "partitions":
                 return str(psutil.disk_partitions())
         elif hardware == "process":
-            if measureType == "getAll":
+            if measureType == "getall":
                 return str(psutil.pids())
         print("Tried to get unimplemented hardware/measurementType")
         return "0"
@@ -169,4 +169,5 @@ def insertTestDataIntoQueue():
     queueManager.setGatheringRateQueue.put({"hardware" : "memory", "measureType" : "used", "delayms" : 1000})
     queueManager.setGatheringRateQueue.put({"hardware" : "cpu", "measureType" : "cores", "delayms" : 5000})
     queueManager.requestDataQueue.put({"hardware" : "disk", "measureType" : "partitions"})
+    queueManager.requestDataQueue.put({"hardware" : "process", "measureType" : "getall"})
     queueManager.setGatheringRateQueue.put({"hardware" : "cpu", "measureType" : "cores", "delayms" : 0})
