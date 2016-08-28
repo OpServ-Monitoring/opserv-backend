@@ -11,6 +11,9 @@ def start_gather_thread():
 
 
 def start_server():
+    """
+        Sets up and schedules the start of the web server
+    """
     server.start()
 
 

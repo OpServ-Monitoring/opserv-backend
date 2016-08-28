@@ -1,10 +1,15 @@
 from flask_restful import Api
 
-import server.restful_api.statistics.__management as statistics_api_management
+import server.restful_api.data.__management as data_api_management
+import server.restful_api.preferences.__management as preferences_api_management
 
 
 def init_rest_api(app):
+    """
+        Initializes the restful-api including both the endpoints to the statistical data as well as the user preferences
+    """
     api = Api(app)
+    base_api_path = "/api"
 
-    statistics_api_management.init_statistics_api(api)
-    # TODO init_userdata_api(api)
+    data_api_management.init_data_api(api, base_api_path + "/data")
+    preferences_api_management.init_preferences_api(api, base_api_path + "/preferences")
