@@ -1,5 +1,6 @@
 from gathering.gather_main import GatherThread
 import server.__management as server
+import database.dbtest as tst
 
 
 def start_gather_thread():
@@ -11,9 +12,14 @@ def start_gather_thread():
 
 
 def start_server():
+    """
+        Sets up and schedules the start of the web server
+    """
     server.start()
 
 
 if __name__ == '__main__':
     start_gather_thread()
     start_server()
+
+    tst.run_me()
