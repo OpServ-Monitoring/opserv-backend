@@ -1,13 +1,31 @@
 from flask_restful import Resource
+import queueManager
 
 
 class SampleData(Resource):
-    def get(self, sample_id, sample_id2):
-        print(sample_id, sample_id2)
-        pass
+    def get(self, cpu, cpu_core):
+        data = queueManager.realTimeDataQueue.get()
 
-    def put(self, sample_id):
-        pass
+        return {
+            'cpu': cpu,
+            'cpu-core': cpu_core,
+            'usage': data
+        }
 
-    def delete(self, sample_id):
-        pass
+
+"""
+    /v1/cpu/<id:int>
+    /v1/cpu/all
+    /v1/cpu/combined
+        HEADER:
+        start: default 0
+        end: default maxint
+        limit: default 20
+
+        /realtime
+        - keine Header
+
+
+    hallo.de/api/data/v1/cpu/3?start=215124&end=266235623&limit=50
+    hallo.de/api/data/v1/cpu/realtime
+"""

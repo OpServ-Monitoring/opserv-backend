@@ -1,5 +1,6 @@
 from gathering.gather_main import GatherThread
 import server.__management as server
+import database.dbtest as tst
 
 
 def start_gather_thread():
@@ -20,3 +21,5 @@ def start_server():
 if __name__ == '__main__':
     start_gather_thread()
     start_server()
+
+    tst.run_me()
