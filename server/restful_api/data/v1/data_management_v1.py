@@ -11,6 +11,21 @@ class DataManagementV1(VersionManagement):
 
     def add_version_to_api(self):
         # TODO add more paths
-        # self._add_endpoint_to_api('/sample/<int:sample_id>/id/<int:sample_id2>', SampleData)
+        # self._add_endpoint_to_api('/components', SampleData)
 
-        self._add_endpoint_to_api('/components/cpu/<int:cpu>/cpu-cores/<int:cpu_core>/usage', SampleData)
+        # self._add_endpoint_to_api('/components/cpu', SampleData)
+        # self._add_endpoint_to_api('/components/cpu/<int:cpu>', SampleData)
+        # self._add_endpoint_to_api('/components/cpu/<int:cpu>/cpu-cores/', SampleData)
+        # self._add_endpoint_to_api('/components/cpu/<int:cpu>/cpu-cores/<int:cpu_core>', SampleData)
+        # self._add_endpoint_to_api('/components/cpu/<int:cpu>/cpu-cores/<int:cpu_core>/usage', SampleData)
+        self._add_endpoint_to_api('/components/cpu/<int:cpu>/cpu-cores/<int:cpu_core>/usage/real-time', SampleData)
+
+        # self._add_endpoint_to_api('/components/cpu-cores', SampleData)
+        # self._add_endpoint_to_api('/components/cpu-cores/<int:cpu_core>', SampleData)
+        # self._add_endpoint_to_api('/components/cpu-cores/<int:cpu_core>/usage', SampleData)
+        # self._add_endpoint_to_api('/components/cpu-cores/<int:cpu_core>/usage/real-time', SampleData)
+
+        # self._add_endpoint_to_api('/components/gpu', SampleData)
+        # self._add_endpoint_to_api('/components/ram', SampleData)
+        # self._add_endpoint_to_api('/components/processes', SampleData)
+        # self._add_endpoint_to_api('/components/filesystem', SampleData)
