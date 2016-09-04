@@ -17,15 +17,13 @@ class DataManagementV1(VersionManagement):
         # self._add_endpoint_to_api('/components/cpu/<int:cpu>', SampleData)
         # self._add_endpoint_to_api('/components/cpu/<int:cpu>/cpu-cores/', SampleData)
         # self._add_endpoint_to_api('/components/cpu/<int:cpu>/cpu-cores/<int:cpu_core>', SampleData)
-        # self._add_endpoint_to_api('/components/cpu/<int:cpu>/cpu-cores/<int:cpu_core>/usage', SampleData)
-        self._add_endpoint_to_api('/components/cpu/<int:cpu>/cpu-cores/<int:cpu_core>/usage/real-time', SampleData)
+        self._add_endpoint_to_api('/components/cpu/<int:cpu>/cpu-cores/<int:cpu_core>/usage', SampleData)
 
         # self._add_endpoint_to_api('/components/cpu-cores', SampleData)
         # self._add_endpoint_to_api('/components/cpu-cores/<int:cpu_core>', SampleData)
         # self._add_endpoint_to_api('/components/cpu-cores/<int:cpu_core>/usage', SampleData)
-        # self._add_endpoint_to_api('/components/cpu-cores/<int:cpu_core>/usage/real-time', SampleData)
 
         # self._add_endpoint_to_api('/components/gpu', SampleData)
-        # self._add_endpoint_to_api('/components/ram', SampleData)
+        # self._add_endpoint_to_api('/components/memory', SampleData)
         # self._add_endpoint_to_api('/components/processes', SampleData)
         # self._add_endpoint_to_api('/components/filesystem', SampleData)

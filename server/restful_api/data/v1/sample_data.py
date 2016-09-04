@@ -1,16 +1,25 @@
 from flask_restful import Resource
+from flask import request
 import queueManager
 
 
 class SampleData(Resource):
     def get(self, cpu, cpu_core):
-        data = queueManager.realTimeDataQueue.get()
 
-        return {
-            'cpu': cpu,
-            'cpu-core': cpu_core,
-            'usage': data
-        }
+        # TODO improve! :D
+        args = request.args
+        print(args)
+
+        if args['realtime'] == 'true':
+            data = queueManager.realTimeDataQueue.get()
+
+            return {
+                'cpu': cpu,
+                'cpu-core': cpu_core,
+                'usage': data
+            }
+        else:
+            return {'message': 'Error! Not yet implemented.'}
 
 
 """
