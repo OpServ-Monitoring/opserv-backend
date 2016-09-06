@@ -11,12 +11,15 @@ class SampleData(Resource):
         print(args)
 
         if args['realtime'] == 'true':
-            data = queueManager.realTimeDataQueue.get()
-
+            data = {}
+            data["hardware"] = ""
+            while(data["hardware"] != "cpu"):
+                data = queueManager.realTimeDataQueue.get()
+            
             return {
                 'cpu': cpu,
                 'cpu-core': cpu_core,
-                'usage': data
+                'usage': data["value"]
             }
         else:
             return {'message': 'Error! Not yet implemented.'}
