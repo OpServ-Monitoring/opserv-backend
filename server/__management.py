@@ -1,8 +1,7 @@
+from flask import Flask
+
 import server.restful_api.__management as rest_api
 import server.static_hosting.__management as static_hosting
-
-
-from flask import Flask
 
 
 def start():
@@ -16,7 +15,7 @@ def start():
     rest_api.init_rest_api(app)
     static_hosting.init_static_hosting(app)
 
-    app.run(host='127.0.0.1', port=31337, debug=False, threaded=True)
+    app.run(host='127.0.0.1', port=31337, debug=False, threaded=False)
     # TODO Make the port configurable
     # TODO add SSL Context for HTTPS usage   ssl_context=context
 

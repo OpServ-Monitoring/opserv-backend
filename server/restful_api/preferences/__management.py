@@ -1,4 +1,3 @@
-
 def init_preferences_api(api, base_api_path):
     """
         Initializes all versions of the preferences api

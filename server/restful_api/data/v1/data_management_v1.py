@@ -1,5 +1,6 @@
-from server.restful_api.data.v1.sample_data import SampleData
-from server.restful_api.version_management import VersionManagement
+from server.restful_api.data.v1.endpoints.components_cpucore_usage import CpucoreUsageEndpoint
+from server.restful_api.data.v1.endpoints.compontents import ComponentsEndpoint
+from server.restful_api.general.version_management import VersionManagement
 
 
 class DataManagementV1(VersionManagement):
@@ -10,20 +11,5 @@ class DataManagementV1(VersionManagement):
         return "/v1"
 
     def add_version_to_api(self):
-        # TODO add more paths
-        # self._add_endpoint_to_api('/components', SampleData)
-
-        # self._add_endpoint_to_api('/components/cpu', SampleData)
-        # self._add_endpoint_to_api('/components/cpu/<int:cpu>', SampleData)
-        # self._add_endpoint_to_api('/components/cpu/<int:cpu>/cpu-cores/', SampleData)
-        # self._add_endpoint_to_api('/components/cpu/<int:cpu>/cpu-cores/<int:cpu_core>', SampleData)
-        self._add_endpoint_to_api('/components/cpu/<int:cpu>/cpu-cores/<int:cpu_core>/usage', SampleData)
-
-        # self._add_endpoint_to_api('/components/cpu-cores', SampleData)
-        # self._add_endpoint_to_api('/components/cpu-cores/<int:cpu_core>', SampleData)
-        # self._add_endpoint_to_api('/components/cpu-cores/<int:cpu_core>/usage', SampleData)
-
-        # self._add_endpoint_to_api('/components/gpu', SampleData)
-        # self._add_endpoint_to_api('/components/memory', SampleData)
-        # self._add_endpoint_to_api('/components/processes', SampleData)
-        # self._add_endpoint_to_api('/components/filesystem', SampleData)
+        self._add_endpoint_to_api(CpucoreUsageEndpoint(), endpoint_name="testmebitch")
+        self._add_endpoint_to_api(ComponentsEndpoint(), endpoint_name="somename")
