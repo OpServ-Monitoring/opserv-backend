@@ -15,6 +15,15 @@ def start():
     rest_api.init_rest_api(app)
     static_hosting.init_static_hosting(app)
 
+    # Support for CORS-request even for static hosting
+    # TODO full CORS-support should be removed in a future version
+    @app.after_request
+    def after_request(response):
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+        response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
+        return response
+
     app.run(host='127.0.0.1', port=31337, debug=False, threaded=False)
     # TODO Make the port configurable
     # TODO add SSL Context for HTTPS usage   ssl_context=context
