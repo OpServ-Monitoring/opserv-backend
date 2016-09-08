@@ -1,6 +1,6 @@
 from flask import Flask
 
-import server.restful_api.__management as rest_api
+import server.restful_api.flask_restful_wrapper as rest_api
 import server.static_hosting.__management as static_hosting
 
 

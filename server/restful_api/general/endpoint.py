@@ -6,36 +6,18 @@ from server.restful_api.general.responseholder import ResponseHolder
 
 class Endpoint:
     _request_holder = None
-    _response = None
+    _response_holder = None
 
     def __init__(self):
-        self._response = ResponseHolder()
+        self._response_holder = ResponseHolder()
 
-    @abc.abstractmethod
-    def _pre_process(self):
-        """
-        This method is called before any of the processing functions _get(), _post(), _put() or _delete() is executed.
-        Override this method in any subclass of Endpoint to manipulate the Request or Response object beforehand.
-        :return: None - the output of this function is ignored
-        """
-        pass
-
-    @abc.abstractmethod
-    def _post_process(self):
-        """
-        This method is called after one of the processing functions _get(), _post(), _put() or _delete() is executed.
-        Override this method in any subclass of Endpoint to manipulate the Response object afterwards.
-        :return: None - the output of this function is ignored
-        """
-        pass
-
-    def handle_request(self, request):
+    def handle_request(self, request_holder):
         """
         Handles the processing of a incoming http request by executing the _pre_process() function,
         any of the processing functions _get(), _post(), _put() or _delete() and finally the _pre_process() function
         :return: The final Response object to answer the request with
         """
-        self._request_holder = request
+        self._request_holder = request_holder
 
         self._pre_process()
 
@@ -49,11 +31,20 @@ class Endpoint:
         elif method == RequestHolder.METHOD_DELETE():
             self._delete()
         else:
-            return self._return_bad_request_response(self._response)
+            return self._return_bad_request_response(self._response_holder)
 
         self._post_process()
 
-        return self._response
+        return self._response_holder
+
+    @abc.abstractmethod
+    def _pre_process(self):
+        """
+        This method is called before any of the processing functions _get(), _post(), _put() or _delete() is executed.
+        Override this method in any subclass of Endpoint to manipulate the Request or Response object beforehand.
+        :return: None - the output of this function is ignored
+        """
+        pass
 
     @abc.abstractmethod
     def _get(self):
@@ -87,6 +78,15 @@ class Endpoint:
         """
         Override this method in any subclass of Endpoint to manipulate the Response object
         in case the request is a DELETE request
+        :return: None - the output of this function is ignored
+        """
+        pass
+
+    @abc.abstractmethod
+    def _post_process(self):
+        """
+        This method is called after one of the processing functions _get(), _post(), _put() or _delete() is executed.
+        Override this method in any subclass of Endpoint to manipulate the Response object afterwards.
         :return: None - the output of this function is ignored
         """
         pass

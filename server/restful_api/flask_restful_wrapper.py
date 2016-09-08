@@ -1,30 +1,37 @@
-import abc
-
 from flask import request
-from flask_restful import Resource
+from flask_restful import Api, Resource
 
 from server.restful_api.general.requestholder import RequestHolder
+from server.restful_api.rest_api_management import RestApiManagement
 
 
-class VersionManagement:
+def init_rest_api(app):
+    FlaskRestfulWrapper(app).init_rest_api()
+
+
+class FlaskRestfulWrapper:
     __api = None
-    __base_api_path = None
-    __is_current = False
-    __version = None
 
-    def __init__(self, api, base_api_path, is_current=False):
-        self.__api = api
-        self.__base_api_path = base_api_path
-        self.__is_current = is_current
+    def __init__(self, app):
+        self.__api = Api(app)
 
-        self.__version = self._get_version_path()
+    def init_rest_api(self):
+        endpoint_managements = RestApiManagement.get_endpoint_managements()
 
-    @abc.abstractmethod
-    def add_version_to_api(self):
-        # abstract method that every subclass should implement to add endpoints using __add_endpoint_to_api()
-        return
+        for endpoint_management_tuple in endpoint_managements:
+            self.__init_endpoints(*endpoint_management_tuple)
 
-    def _add_endpoint_to_api(self, endpoint, endpoint_name):
+    def __init_endpoints(self, endpoints_prefix, endpoint_management, is_current=False):
+        if endpoint_management is not None:
+            version = endpoint_management.get_prefix()
+            if version is None:
+                version = ""
+
+            endpoints = endpoint_management.get_endpoints()
+            for endpoint in endpoints:
+                self.__init_endpoint(endpoints_prefix, endpoint, version, is_current)
+
+    def __init_endpoint(self, endpoints_prefix, endpoint_class, version, is_current):
         class CustomResource(Resource):
             def get(self, **params):
                 return self.__handle_request(**params)
@@ -40,6 +47,8 @@ class VersionManagement:
 
             def __handle_request(self, **params):
                 request_holder = self.__get_request_holder(**params)
+
+                endpoint = endpoint_class()
                 response_holder = endpoint.handle_request(request_holder)
 
                 return response_holder.get_body(), response_holder.get_status(), response_holder.get_response_headers()
@@ -80,22 +89,21 @@ class VersionManagement:
 
         resource = CustomResource()
 
-        paths = self.__get_api_paths(endpoint.get_paths())
+        endpoint_name = endpoints_prefix + version + endpoint_class.__name__
+
+        paths = self.__get_api_paths(endpoints_prefix, endpoint_class.get_paths(), version, is_current)
+
         self.__api.add_resource(resource, *paths, endpoint=endpoint_name)
 
-    def __get_api_paths(self, sub_paths):
+    @staticmethod
+    def __get_api_paths(base_api_path, sub_paths, version, is_current):
         paths = []
 
         for sub_path in sub_paths:
-            paths.append(self.__base_api_path + self.__version + sub_path)
+            paths.append(base_api_path + version + sub_path)
 
-        if self.__is_current:
+        if is_current:
             for sub_path in sub_paths:
-                paths.append(self.__base_api_path + "/current" + sub_path)
+                paths.append(base_api_path + "/current" + sub_path)
 
         return tuple(paths)
-
-    @abc.abstractmethod
-    def _get_version_path(self):
-        # abstract method that every subclass should implement to return its version path
-        pass

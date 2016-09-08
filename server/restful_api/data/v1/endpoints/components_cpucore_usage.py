@@ -6,7 +6,7 @@ class CpucoreUsageEndpoint(GeneralEndpointDataV1):
     def _get(self):
         if not ("cpu_core" in self._request_holder.get_params()):
             # TODO Improve error message
-            self._response = self._return_bad_request_response(self._response,
+            self._response_holder = self._return_bad_request_response(self._response_holder,
                                                                "The cpu_core value is invalid or missing.")
             return
 
@@ -17,7 +17,7 @@ class CpucoreUsageEndpoint(GeneralEndpointDataV1):
             self.__historical_data_action_with_limit()
         else:
             # TODO Improve error message
-            self._response = self._return_bad_request_response(self._response,
+            self._response_holder = self._return_bad_request_response(self._response_holder,
                                                                "The request is missing some headers. Ensure that you "
                                                                "either set the header realtime=true or valid values "
                                                                "for the headers start and end")
@@ -55,7 +55,7 @@ class CpucoreUsageEndpoint(GeneralEndpointDataV1):
 
         print("data", data)
 
-        self._response.set_body({
+        self._response_holder.set_body({
             'usage': data["value"]
         })
 
@@ -63,7 +63,7 @@ class CpucoreUsageEndpoint(GeneralEndpointDataV1):
         # TODO implement
         print("historical", start, end, limit)
 
-        self._response.set_body({
+        self._response_holder.set_body({
             "hello2": "world2",
             "hello3": "world3"
         })
