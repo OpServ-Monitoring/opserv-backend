@@ -24,7 +24,7 @@ def start():
         response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
         return response
 
-    app.run(host='127.0.0.1', port=31337, debug=False, threaded=False)
+    app.run(host='127.0.0.1', port=31337, debug=False, threaded=True)
     # TODO Make the port configurable
     # TODO add SSL Context for HTTPS usage   ssl_context=context
 

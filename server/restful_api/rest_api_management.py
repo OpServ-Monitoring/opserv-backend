@@ -6,6 +6,12 @@ class RestApiManagement:
 
     @staticmethod
     def get_endpoint_managements():
+        """
+        This method returns an array of each implemented endpoint managements represented as tupels. Each tupel consists
+        of a path prefix, the management class and an optional boolean indicating whether the managed endpoints are
+        the newest version. For each path prefix there should only be one tupel set as newest version.
+        :return: an array of tupels containing the endpoint management classes and some additional data.
+        """
         base_api_path = "/api"
         data_api_path = base_api_path + "/data"
         preferences_api_path = base_api_path + "/preferences"

@@ -3,9 +3,8 @@ from server.restful_api.data.v1.endpoints.__general_data_v1 import GeneralEndpoi
 
 class CpucoresEndpoint(GeneralEndpointDataV1):
     def _get(self):
-        self._response_holder.set_body({
-            "message": "Not yet implemented."
-        })
+        # TODO Implement endpoint
+        pass
 
     @staticmethod
     def get_paths():
