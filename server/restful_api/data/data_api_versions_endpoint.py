@@ -2,9 +2,6 @@ from server.restful_api.general.endpoint import Endpoint
 
 
 class DataApiVersionsEndpoint(Endpoint):
-    def _pre_process(self):
-        pass
-
     def _post_process(self):
         pass
 

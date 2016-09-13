@@ -10,5 +10,5 @@ class CpusEndpoint(GeneralEndpointDataV1):
     @staticmethod
     def get_paths():
         return [
-            "/components/cpu"
+            "/components/cpus"
         ]

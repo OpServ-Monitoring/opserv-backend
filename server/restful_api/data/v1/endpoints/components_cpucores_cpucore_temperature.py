@@ -11,5 +11,5 @@ class CpucoresCpucoreTemperatureEndpoint(GeneralEndpointDataV1):
     def get_paths():
         return [
             "/components/cpu-cores/<string:cpu_core>/temperature",
-            "/components/cpu/<string:cpu>/cpu-cores/<string:cpu_core>/temperature"
+            "/components/cpus/<string:cpu>/cpu-cores/<string:cpu_core>/temperature"
         ]

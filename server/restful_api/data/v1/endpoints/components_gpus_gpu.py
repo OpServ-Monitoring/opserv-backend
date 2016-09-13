@@ -1,7 +1,8 @@
+import queueManager
 from server.restful_api.data.v1.endpoints.__general_data_v1 import GeneralEndpointDataV1
 
 
-class CpucoresEndpoint(GeneralEndpointDataV1):
+class GpusGpuEndpoint(GeneralEndpointDataV1):
     def _get(self):
         # TODO Implement endpoint
         pass
@@ -9,6 +10,5 @@ class CpucoresEndpoint(GeneralEndpointDataV1):
     @staticmethod
     def get_paths():
         return [
-            "/components/cpus/<string:cpu>/cpu-cores",
-            "/components/cpu-cores"
+            "/components/gpus/<string:gpu>"
         ]

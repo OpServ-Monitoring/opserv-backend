@@ -54,6 +54,9 @@ class FlaskRestfulWrapper:
                 return response_holder.get_body(), response_holder.get_status(), response_holder.get_response_headers()
 
             def __get_request_holder(self, **params):
+                # the uri called to obtain this endpoint
+                uri = request.url
+
                 # http request method mapped accordingly to the RequestHolder definition
                 http_method = self.__get_method_code(request.method)
 
@@ -69,7 +72,7 @@ class FlaskRestfulWrapper:
                 # TODO Parse request-body into RequestHolder
                 body = None
 
-                return RequestHolder(http_method, headers, params, body)
+                return RequestHolder(uri, http_method, headers, params, body)
 
             @staticmethod
             def __get_method_code(method_string):
@@ -92,6 +95,9 @@ class FlaskRestfulWrapper:
         endpoint_name = endpoints_prefix + version + endpoint_class.__name__
 
         paths = self.__get_api_paths(endpoints_prefix, endpoint_class.get_paths(), version, is_current)
+
+        # TODO Remove - test only
+        print(paths)
 
         self.__api.add_resource(resource, *paths, endpoint=endpoint_name)
 

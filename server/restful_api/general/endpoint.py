@@ -37,14 +37,18 @@ class Endpoint:
 
         return self._response_holder
 
-    @abc.abstractmethod
     def _pre_process(self):
         """
         This method is called before any of the processing functions _get(), _post(), _put() or _delete() is executed.
         Override this method in any subclass of Endpoint to manipulate the Request or Response object beforehand.
         :return: None - the output of this function is ignored
         """
-        pass
+        body = {
+            'data': {},
+            'links': self.__generate_links(self._request_holder)
+        }
+
+        self._response_holder.set_body(body)
 
     @abc.abstractmethod
     def _get(self):
@@ -99,6 +103,24 @@ class Endpoint:
         :return: A tupel of paths this endpoint should operate on
         """
         return []
+
+    @staticmethod
+    def __generate_links(request_holder):
+        uri = request_holder.get_uri()
+
+        links = {
+            'self': {'href': uri, 'name': 'niy'}
+        }
+
+        # TODO Get link for parent and validate
+        if True:
+            links['parent'] = {'href': None, 'name': 'niy'}
+
+        # TODO Get links for children
+        if True:
+            links['children'] = []
+
+        return links
 
     @staticmethod
     def _return_bad_request_response(response, error_message=None):

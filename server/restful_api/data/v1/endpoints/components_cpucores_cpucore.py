@@ -9,6 +9,6 @@ class CpucoresCpucoreEndpoint(GeneralEndpointDataV1):
     @staticmethod
     def get_paths():
         return [
-            "/components/cpu/<int:cpu>/cpu-cores/<string:cpu_core>",
+            "/components/cpus/<string:cpu>/cpu-cores/<string:cpu_core>",
             "/components/cpu-cores/<string:cpu_core>"
         ]

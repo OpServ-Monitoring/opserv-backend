@@ -10,5 +10,5 @@ class CpusCpuUsageEndpoint(GeneralEndpointDataV1):
     @staticmethod
     def get_paths():
         return [
-            "/components/cpu/<string:cpu>/usage"
+            "/components/cpus/<string:cpu>/usage"
         ]

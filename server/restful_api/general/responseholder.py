@@ -31,3 +31,6 @@ class ResponseHolder:
 
     def set_response_headers(self, headers):
         self.__response_headers = headers
+
+    def add_response_headers(self, headers):
+        self.__response_headers.update(headers)

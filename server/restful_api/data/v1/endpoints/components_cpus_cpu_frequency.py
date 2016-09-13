@@ -10,5 +10,5 @@ class CpusCpuFrequencyEndpoint(GeneralEndpointDataV1):
     @staticmethod
     def get_paths():
         return [
-            "/components/cpu/<string:cpu>/frequency"
+            "/components/cpus/<string:cpu>/frequency"
         ]

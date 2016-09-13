@@ -4,9 +4,6 @@ from server.restful_api.general.endpoint import Endpoint
 
 
 class GeneralEndpointDataV1(Endpoint):
-    def _pre_process(self):
-        pass
-
     def _post_process(self):
         response_headers = self._response_holder.get_response_headers()
 

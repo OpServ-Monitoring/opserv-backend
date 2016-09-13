@@ -1,10 +1,12 @@
 class RequestHolder:
+    __uri = None
     __http_method = None
     __request_headers = None
     __params = None
     __body = None
 
-    def __init__(self, http_method=None, headers=None, params=None, body=None):
+    def __init__(self, uri=None, http_method=None, headers=None, params=None, body=None):
+        self.__uri = uri
         self.__http_method = http_method
         self.__request_headers = headers
         self.__params = params
@@ -26,6 +28,9 @@ class RequestHolder:
     def METHOD_DELETE():
         return 3
 
+    def get_uri(self):
+        return self.__uri
+
     def get_http_method(self):
         return self.__http_method
 
@@ -37,6 +42,9 @@ class RequestHolder:
 
     def get_body(self):
         return self.__body
+
+    def set_uri(self, uri):
+        self.__uri = uri
 
     def set_http_method(self, http_method):
         self.__http_method = http_method
