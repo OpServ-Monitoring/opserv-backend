@@ -69,8 +69,7 @@ class FlaskRestfulWrapper:
                 else:
                     headers = None
 
-                # TODO Parse request-body into RequestHolder
-                body = None
+                body = request.get_json()
 
                 return RequestHolder(uri, http_method, headers, params, body)
 
@@ -91,13 +90,8 @@ class FlaskRestfulWrapper:
                 return None
 
         resource = CustomResource()
-
-        endpoint_name = endpoints_prefix + version + endpoint_class.__name__
-
         paths = self.__get_api_paths(endpoints_prefix, endpoint_class.get_paths(), version, is_current)
-
-        # TODO Remove - test only
-        print(paths)
+        endpoint_name = endpoints_prefix + version + endpoint_class.__name__
 
         self.__api.add_resource(resource, *paths, endpoint=endpoint_name)
 

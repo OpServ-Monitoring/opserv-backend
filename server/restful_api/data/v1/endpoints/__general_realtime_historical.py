@@ -13,6 +13,8 @@ class GeneralEndpointRealtimeHistorical(GeneralEndpointDataV1):
     _limit = 50
 
     def _pre_process(self):
+        super(GeneralEndpointRealtimeHistorical, self)._pre_process()
+
         headers = self._request_holder.get_request_headers()
 
         self._is_realtime = "realtime" in headers and headers["realtime"] == "true"

@@ -1,5 +1,3 @@
-import queueManager
-from server.restful_api.data.v1.endpoints.__general_data_v1 import GeneralEndpointDataV1
 from server.restful_api.data.v1.endpoints.__general_realtime_historical import GeneralEndpointRealtimeHistorical
 
 
@@ -15,6 +13,19 @@ class CpusCpuTemperatureEndpoint(GeneralEndpointRealtimeHistorical):
         return [
             "/components/cpus/<string:cpu>/temperature"
         ]
+
+    @staticmethod
+    def get_name():
+        # TODO change name
+        return "CHANGE ME"
+
+    @staticmethod
+    def _get_parent_name():
+        from server.restful_api.data.v1.endpoints.components_cpus_cpu import CpusCpuEndpoint
+        return CpusCpuEndpoint.get_name()
+
+    def _get_children(self):
+        return []
 
     def __on_realtime_action(self):
         print('is realtime')

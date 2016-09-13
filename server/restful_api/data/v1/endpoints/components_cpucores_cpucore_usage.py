@@ -6,7 +6,7 @@ class CpucoresCpucoreUsageEndpoint(GeneralEndpointDataV1):
     def _get(self):
         if not ("cpu_core" in self._request_holder.get_params()):
             # TODO Improve error message
-            self._response_holder = self._return_bad_request_response(self._response_holder,
+            self._response_holder = self._get_bad_request_response(self._response_holder,
                                                                "The cpu_core value is invalid or missing.")
             return
 
@@ -17,10 +17,32 @@ class CpucoresCpucoreUsageEndpoint(GeneralEndpointDataV1):
             self.__historical_data_action_with_limit()
         else:
             # TODO Improve error message
-            self._response_holder = self._return_bad_request_response(self._response_holder,
+            self._response_holder = self._get_bad_request_response(self._response_holder,
                                                                "The request is missing some headers. Ensure that you "
                                                                "either set the header realtime=true or valid values "
                                                                "for the headers start and end")
+
+    @staticmethod
+    def get_paths():
+        return [
+            "/components/cpus/<string:cpu>/cpu-cores/<string:cpu_core>/usage",
+            "/components/cpu-cores/<string:cpu_core>/usage"
+        ]
+
+    @staticmethod
+    def get_name():
+        # TODO change name
+        return "CHANGE ME"
+
+    @staticmethod
+    def _get_parent_name():
+        from server.restful_api.data.v1.endpoints.components_cpucores_cpucore import CpucoresCpucoreEndpoint
+
+        return CpucoresCpucoreEndpoint.get_name()
+
+    def _get_children(self):
+        return []
+
 
     def __historical_data_action_with_limit(self):
         request_headers = self._request_holder.get_request_headers()
@@ -63,14 +85,11 @@ class CpucoresCpucoreUsageEndpoint(GeneralEndpointDataV1):
         # TODO implement
         print("historical", start, end, limit)
 
-        self._response_holder.set_body({
+        body = self._response_holder.get_body()
+
+        body['data'] = {
             "hello2": "world2",
             "hello3": "world3"
-        })
+        }
 
-    @staticmethod
-    def get_paths():
-        return [
-            "/components/cpus/<string:cpu>/cpu-cores/<string:cpu_core>/usage",
-            "/components/cpu-cores/<string:cpu_core>/usage"
-        ]
+        self._response_holder.set_body(body)

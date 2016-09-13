@@ -27,21 +27,30 @@ class GeneralEndpointDataV1(Endpoint):
         The PUT-method is not supported by this api version, thus an response indicating a bad request is returned
         :return: A ResponseHolder holding a response with the bad request code
         """
-        return self._return_bad_request_response(self._response_holder)
+        return self._get_bad_request_response(
+            self._response_holder,
+            'HTTP method PUT is not supported by this resource'
+        )
 
     def _post(self):
         """
         The POST-method is not supported by this api version, thus an response indicating a bad request is returned
         :return: A ResponseHolder holding a response with the bad request code
         """
-        return self._return_bad_request_response(self._response_holder)
+        return self._get_bad_request_response(
+            self._response_holder,
+            'HTTP method POST is not supported by this resource'
+        )
 
     def _delete(self):
         """
         The DELETE-method is not supported by this api version, thus an response indicating a bad request is returned
         :return: A ResponseHolder holding a response with the bad request code
         """
-        return self._return_bad_request_response(self._response_holder)
+        return self._get_bad_request_response(
+            self._response_holder,
+            'HTTP method DELETE is not supported by this resource'
+        )
 
     @staticmethod
     @abc.abstractmethod

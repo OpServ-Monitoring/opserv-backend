@@ -6,18 +6,25 @@ class DataApiVersionsEndpoint(Endpoint):
         pass
 
     def _get(self):
-        # TODO implement
         pass
 
     def _put(self):
-        return self._return_bad_request_response(self._response_holder)
+        return self._get_bad_request_response(self._response_holder)
 
     def _post(self):
-        return self._return_bad_request_response(self._response_holder)
+        return self._get_bad_request_response(self._response_holder)
 
     def _delete(self):
-        return self._return_bad_request_response(self._response_holder)
+        return self._get_bad_request_response(self._response_holder)
 
     @staticmethod
     def get_paths():
         return [""]
+
+    def _get_children(self):
+        from server.restful_api.data.v1.data_api_v1_endpoint import DataApiV1Endpoint
+
+        return [
+            ("/current", DataApiV1Endpoint),
+            ("/v1", DataApiV1Endpoint)
+        ]
