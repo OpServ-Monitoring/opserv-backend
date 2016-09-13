@@ -20,7 +20,7 @@ class CpucoresCpucoreEndpoint(GeneralEndpointDataV1):
     @staticmethod
     def _get_parent_name():
         from server.restful_api.data.v1.endpoints.components_cpucores import CpucoresEndpoint
-        
+
         return CpucoresEndpoint.get_name()
 
     def _get_children(self):

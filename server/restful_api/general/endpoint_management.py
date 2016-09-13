@@ -2,7 +2,6 @@ import abc
 
 
 class EndpointManagement:
-
     @staticmethod
     @abc.abstractmethod
     def get_endpoints():

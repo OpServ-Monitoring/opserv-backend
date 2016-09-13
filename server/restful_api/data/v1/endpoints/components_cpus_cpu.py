@@ -1,4 +1,3 @@
-import queueManager
 from server.restful_api.data.v1.endpoints.__general_data_v1 import GeneralEndpointDataV1
 
 
@@ -28,10 +27,12 @@ class CpusCpuEndpoint(GeneralEndpointDataV1):
         from server.restful_api.data.v1.endpoints.components_cpus_cpu_info import CpusCpuInfoEndpoint
         from server.restful_api.data.v1.endpoints.components_cpus_cpu_temperature import CpusCpuTemperatureEndpoint
         from server.restful_api.data.v1.endpoints.components_cpus_cpu_usage import CpusCpuUsageEndpoint
+        from server.restful_api.data.v1.endpoints.components_cpucores import CpucoresEndpoint
 
         return [
             ("/frequency", CpusCpuFrequencyEndpoint),
             ("/info", CpusCpuInfoEndpoint),
             ("/temperature", CpusCpuTemperatureEndpoint),
-            ("/usage", CpusCpuUsageEndpoint)
+            ("/usage", CpusCpuUsageEndpoint),
+            ("/cpu-cores", CpucoresEndpoint)
         ]

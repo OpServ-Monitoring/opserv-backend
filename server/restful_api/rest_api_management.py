@@ -3,7 +3,6 @@ from server.restful_api.data.v1.endpoint_management_data_v1 import EndpointManag
 
 
 class RestApiManagement:
-
     @staticmethod
     def get_endpoint_managements():
         """

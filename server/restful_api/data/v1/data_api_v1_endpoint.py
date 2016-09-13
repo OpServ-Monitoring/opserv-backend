@@ -1,10 +1,7 @@
-import re
-
 from server.restful_api.data.v1.endpoints.__general_data_v1 import GeneralEndpointDataV1
 
 
 class DataApiV1Endpoint(GeneralEndpointDataV1):
-
     def _get(self):
         pass
 

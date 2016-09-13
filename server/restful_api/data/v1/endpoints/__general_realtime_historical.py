@@ -1,12 +1,10 @@
 import abc
-
 import time
 
 from server.restful_api.data.v1.endpoints.__general_data_v1 import GeneralEndpointDataV1
 
 
 class GeneralEndpointRealtimeHistorical(GeneralEndpointDataV1):
-
     _is_realtime = False
     _start = 0
     _end = int(time.time() * 1000)
@@ -44,7 +42,6 @@ class GeneralEndpointRealtimeHistorical(GeneralEndpointDataV1):
     @abc.abstractmethod
     def _get(self):
         pass
-
 
     @staticmethod
     @abc.abstractmethod
