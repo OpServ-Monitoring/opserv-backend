@@ -3,6 +3,7 @@ from server.restful_api.data.v1.endpoints.__general_data_v1 import GeneralEndpoi
 
 class CpucoresEndpoint(GeneralEndpointDataV1):
     def _get(self):
+        # TODO general info
         pass
 
     @staticmethod

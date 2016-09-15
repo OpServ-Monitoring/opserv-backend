@@ -27,8 +27,8 @@ def start():
     context = ('server/ssl.cert', 'server/ssl.key')
 
     app.run(host='127.0.0.1', port=31337, ssl_context=context, debug=False, threaded=True)
-    # TODO Make the port configurable
-    # TODO add SSL Context for HTTPS usage   ssl_context=context
+    # to do: Make the port configurable
+    # to do: Generate certificate
 
     # This point shouldn't be reached
     print("An error occurred. Web server shutting down!")

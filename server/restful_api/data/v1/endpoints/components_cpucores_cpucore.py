@@ -26,14 +26,12 @@ class CpucoresCpucoreEndpoint(GeneralEndpointDataV1):
     def _get_children(self):
         from server.restful_api.data.v1.endpoints.components_cpucores_cpucore_frequency import \
             CpucoresCpucoreFrequencyEndpoint
-        from server.restful_api.data.v1.endpoints.components_cpucores_cpucore_info import CpucoresCpucoreInfoEndpoint
         from server.restful_api.data.v1.endpoints.components_cpucores_cpucore_temperature import \
             CpucoresCpucoreTemperatureEndpoint
         from server.restful_api.data.v1.endpoints.components_cpucores_cpucore_usage import CpucoresCpucoreUsageEndpoint
 
         return [
             ("/frequency", CpucoresCpucoreFrequencyEndpoint),
-            ("/info", CpucoresCpucoreInfoEndpoint),
             ("/temperature", CpucoresCpucoreTemperatureEndpoint),
             ("/usage", CpucoresCpucoreUsageEndpoint)
         ]

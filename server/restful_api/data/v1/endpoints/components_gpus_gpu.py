@@ -3,6 +3,7 @@ from server.restful_api.data.v1.endpoints.__general_data_v1 import GeneralEndpoi
 
 class GpusGpuEndpoint(GeneralEndpointDataV1):
     def _get(self):
+        # TODO general info
         pass
 
     @staticmethod
@@ -23,8 +24,5 @@ class GpusGpuEndpoint(GeneralEndpointDataV1):
         return GpusEndpoint.get_name()
 
     def _get_children(self):
-        from server.restful_api.data.v1.endpoints.components_gpus_gpu_info import GpusGpuInfoEndpoint
-
         return [
-            ("/info", GpusGpuInfoEndpoint)
         ]
