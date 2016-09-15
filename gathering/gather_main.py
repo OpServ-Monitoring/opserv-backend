@@ -6,16 +6,10 @@
 #
 
 import threading
+import psutil
 import time
 import queueManager
 import sched
-from common.helper import importIfExists
-
-# Optional depency importing
-psutil = importIfExists("psutil")
-pynvml = importIfExists("pynvml")
-pyspectator = importIfExists("pyspectator")
-
 
 
 class GatherThread(threading.Thread):
@@ -110,13 +104,7 @@ class GatherThread(threading.Thread):
             Returns nothing, but sends data to the realtime queue
         """
         newData = self.getMeasurement(gatherData["hardware"], gatherData["measureType"])
-
-        newQueueItem = {}
-        newQueueItem["hardware"] = gatherData["hardware"]
-        newQueueItem["measureType"] = gatherData["measureType"]
-        newQueueItem["value"] = newData
- 
-        queueManager.realTimeDataQueue.put(newQueueItem)
+        queueManager.realTimeDataQueue.put(gatherData["hardware"], gatherData["measureType"], newData)
         print("Gathered {0} from {1},{2}".format(newData, gatherData["hardware"], gatherData["measureType"]))
         self.createGatherer(gatherData)
 
