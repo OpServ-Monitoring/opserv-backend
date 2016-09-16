@@ -1,7 +1,7 @@
 from server.restful_api.data.v1.endpoints.__general_data_v1 import GeneralEndpointDataV1
 
 
-class CpusCpuUsageEndpoint(GeneralEndpointDataV1):
+class CpusCpuFrequencyEndpoint(GeneralEndpointDataV1):
     def _get(self):
         # TODO Implement endpoint
         pass
@@ -9,7 +9,7 @@ class CpusCpuUsageEndpoint(GeneralEndpointDataV1):
     @staticmethod
     def get_paths():
         return [
-            "/components/cpus/<string:cpu>/usage"
+            "/cpus/<string:cpu>/frequency"
         ]
 
     @staticmethod
@@ -19,8 +19,7 @@ class CpusCpuUsageEndpoint(GeneralEndpointDataV1):
 
     @staticmethod
     def _get_parent_name():
-        from server.restful_api.data.v1.endpoints.components_cpus_cpu import CpusCpuEndpoint
-
+        from server.restful_api.data.v1.endpoints.cpus_cpu import CpusCpuEndpoint
         return CpusCpuEndpoint.get_name()
 
     def _get_children(self):

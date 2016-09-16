@@ -9,8 +9,8 @@ class CpucoresEndpoint(GeneralEndpointDataV1):
     @staticmethod
     def get_paths():
         return [
-            "/components/cpus/<string:cpu>/cpu-cores",
-            "/components/cpu-cores"
+            "/cpus/<string:cpu>/cpu-cores",
+            "/cpu-cores"
         ]
 
     @staticmethod
@@ -20,9 +20,9 @@ class CpucoresEndpoint(GeneralEndpointDataV1):
 
     @staticmethod
     def _get_parent_name():
-        from server.restful_api.data.v1.endpoints.components import ComponentsEndpoint
+        from server.restful_api.data.v1.data_api_v1_endpoint import DataApiV1Endpoint
 
-        return ComponentsEndpoint.get_name()
+        return DataApiV1Endpoint.get_name()
 
     def _get_children(self):
         # TODO Implement dynamic children

@@ -1,15 +1,15 @@
 from server.restful_api.data.v1.endpoints.__general_data_v1 import GeneralEndpointDataV1
 
 
-class CpusCpuFrequencyEndpoint(GeneralEndpointDataV1):
+class GpusGpuEndpoint(GeneralEndpointDataV1):
     def _get(self):
-        # TODO Implement endpoint
+        # TODO general info
         pass
 
     @staticmethod
     def get_paths():
         return [
-            "/components/cpus/<string:cpu>/frequency"
+            "/gpus/<string:gpu>"
         ]
 
     @staticmethod
@@ -19,8 +19,10 @@ class CpusCpuFrequencyEndpoint(GeneralEndpointDataV1):
 
     @staticmethod
     def _get_parent_name():
-        from server.restful_api.data.v1.endpoints.components_cpus_cpu import CpusCpuEndpoint
-        return CpusCpuEndpoint.get_name()
+        from server.restful_api.data.v1.endpoints.gpus import GpusEndpoint
+
+        return GpusEndpoint.get_name()
 
     def _get_children(self):
-        return []
+        return [
+        ]
