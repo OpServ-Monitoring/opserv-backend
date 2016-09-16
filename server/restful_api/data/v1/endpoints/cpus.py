@@ -8,7 +8,7 @@ class CpusEndpoint(GeneralEndpointDataV1):
     @staticmethod
     def get_paths():
         return [
-            "/components/cpus"
+            "/cpus"
         ]
 
     @staticmethod
@@ -18,12 +18,12 @@ class CpusEndpoint(GeneralEndpointDataV1):
 
     @staticmethod
     def _get_parent_name():
-        from server.restful_api.data.v1.endpoints.components import ComponentsEndpoint
+        from server.restful_api.data.v1.data_api_v1_endpoint import DataApiV1Endpoint
 
-        return ComponentsEndpoint.get_name()
+        return DataApiV1Endpoint.get_name()
 
     def _get_children(self):
-        from server.restful_api.data.v1.endpoints.components_cpus_cpu import CpusCpuEndpoint
+        from server.restful_api.data.v1.endpoints.cpus_cpu import CpusCpuEndpoint
 
         children = []
 

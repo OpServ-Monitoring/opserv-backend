@@ -11,7 +11,7 @@ class CpusCpuTemperatureEndpoint(GeneralEndpointRealtimeHistorical):
     @staticmethod
     def get_paths():
         return [
-            "/components/cpus/<string:cpu>/temperature"
+            "/cpus/<string:cpu>/temperature"
         ]
 
     @staticmethod
@@ -21,7 +21,7 @@ class CpusCpuTemperatureEndpoint(GeneralEndpointRealtimeHistorical):
 
     @staticmethod
     def _get_parent_name():
-        from server.restful_api.data.v1.endpoints.components_cpus_cpu import CpusCpuEndpoint
+        from server.restful_api.data.v1.endpoints.cpus_cpu import CpusCpuEndpoint
         return CpusCpuEndpoint.get_name()
 
     def _get_children(self):

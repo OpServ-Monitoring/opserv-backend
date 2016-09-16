@@ -1,6 +1,18 @@
+import logging
 from gathering.gather_main import GatherThread
 import server.__management as server
 import database.dbtest as tst
+
+from misc.logging_helper import setup_logger
+
+
+LOGGINGLEVEL = logging.DEBUG
+
+LOG_TO_FILE = True
+LOG_TO_CONSOLE = True
+
+LOG_GATHERING = True
+LOG_SERVER = True
 
 
 def start_gather_thread():
@@ -19,6 +31,8 @@ def start_server():
 
 
 if __name__ == '__main__':
+    setup_logger(LOG_TO_CONSOLE, LOG_TO_FILE, LOGGINGLEVEL, LOG_SERVER, LOG_GATHERING)
+
     start_gather_thread()
     start_server()
 

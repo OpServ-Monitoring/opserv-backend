@@ -90,3 +90,6 @@ ENV/
 
 # Visual Studio Code Configs
 .vscode/*
+
+# Opserv Log file
+opserv.log
