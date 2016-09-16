@@ -18,10 +18,10 @@ class CpusEndpoint(GeneralEndpointDataV1):
         return "CHANGE ME"
 
     @staticmethod
-    def _get_parent_name():
+    def _get_parent():
         from server.restful_api.data.v1.data_api_v1_endpoint import DataApiV1Endpoint
 
-        return DataApiV1Endpoint.get_name()
+        return DataApiV1Endpoint
 
     def _get_children(self):
         from server.restful_api.data.v1.endpoints.cpus_cpu import CpusCpuEndpoint
@@ -36,4 +36,22 @@ class CpusEndpoint(GeneralEndpointDataV1):
 
     def __get_children_ids(self):
         # TODO Implement dynamic children
-        return []
+        import queue_manager
+        import time
+
+        queue_manager.requestDataQueue.put({"hardware": "system", "valueType": "cpus"})
+        queue = queue_manager.getQueue("system", "cpus")
+
+        amount = None
+        while amount is None:
+            amount = queue.get()
+            time.sleep(0.25)
+
+        print(amount)
+
+        children_ids = []
+        if amount is not None:
+            for i in range(0, amount):
+                children_ids.append(str(i))
+
+        return children_ids

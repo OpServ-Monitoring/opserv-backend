@@ -17,7 +17,6 @@ class CpucoresCpucoreUsageEndpoint(GeneralEndpointRealtimeHistorical):
     @staticmethod
     def get_paths():
         return [
-            # "/cpus/<string:cpu>/cpu-cores/<string:cpu_core>/usage",
             "/cpu-cores/<string:cpu_core>/usage"
         ]
 
@@ -27,13 +26,10 @@ class CpucoresCpucoreUsageEndpoint(GeneralEndpointRealtimeHistorical):
         return "CHANGE ME"
 
     @staticmethod
-    def _get_parent_name():
+    def _get_parent():
         from server.restful_api.data.v1.endpoints.cpucores_cpucore import CpucoresCpucoreEndpoint
 
-        return CpucoresCpucoreEndpoint.get_name()
-
-    def _get_children(self):
-        return []
+        return CpucoresCpucoreEndpoint
 
     def __on_realtime_action(self):
         print('is realtime')

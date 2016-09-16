@@ -17,10 +17,10 @@ class GpusEndpoint(GeneralEndpointDataV1):
         return "CHANGE ME"
 
     @staticmethod
-    def _get_parent_name():
+    def _get_parent():
         from server.restful_api.data.v1.data_api_v1_endpoint import DataApiV1Endpoint
 
-        return DataApiV1Endpoint.get_name()
+        return DataApiV1Endpoint
 
     def _get_children(self):
         # TODO Implement dynamic children

@@ -5,10 +5,6 @@ from server.restful_api.general.requestholder import RequestHolder
 from server.restful_api.rest_api_management import RestApiManagement
 
 
-def init_rest_api(app):
-    FlaskRestfulWrapper(app).init_rest_api()
-
-
 class FlaskRestfulWrapper:
     __api = None
 
@@ -107,3 +103,7 @@ class FlaskRestfulWrapper:
                 paths.append(base_api_path + "/current" + sub_path)
 
         return tuple(paths)
+
+
+def init_rest_api(app):
+    FlaskRestfulWrapper(app).init_rest_api()

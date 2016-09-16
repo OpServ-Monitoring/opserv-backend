@@ -1,9 +1,8 @@
-import abc
-
+from abc import ABCMeta
 from server.restful_api.general.endpoint import Endpoint
 
 
-class GeneralEndpointDataV1(Endpoint):
+class GeneralEndpointDataV1(Endpoint, metaclass=ABCMeta):
     def _post_process(self):
         response_headers = self._response_holder.get_response_headers()
 
@@ -12,15 +11,6 @@ class GeneralEndpointDataV1(Endpoint):
         response_headers['Access-Control-Allow-Methods'] = 'GET'
 
         self._response_holder.set_response_headers(response_headers)
-
-    @abc.abstractmethod
-    def _get(self):
-        """
-        Override this method in any subclass of Endpoint to manipulate the Response object
-        in case the request is a GET request
-        :return: None - the output of this function is ignored
-        """
-        pass
 
     def _put(self):
         """
@@ -51,8 +41,3 @@ class GeneralEndpointDataV1(Endpoint):
             self._response_holder,
             'HTTP method DELETE is not supported by this resource'
         )
-
-    @staticmethod
-    @abc.abstractmethod
-    def get_paths():
-        return []

@@ -8,7 +8,6 @@ class CpucoresCpucoreEndpoint(GeneralEndpointDataV1):
     @staticmethod
     def get_paths():
         return [
-            "/cpus/<string:cpu>/cpu-cores/<string:cpu_core>",
             "/cpu-cores/<string:cpu_core>"
         ]
 
@@ -18,10 +17,10 @@ class CpucoresCpucoreEndpoint(GeneralEndpointDataV1):
         return "CHANGE ME"
 
     @staticmethod
-    def _get_parent_name():
+    def _get_parent():
         from server.restful_api.data.v1.endpoints.cpucores import CpucoresEndpoint
 
-        return CpucoresEndpoint.get_name()
+        return CpucoresEndpoint
 
     def _get_children(self):
         from server.restful_api.data.v1.endpoints.cpucores_cpucore_frequency import \

@@ -1,10 +1,10 @@
-import abc
 import time
+from abc import ABCMeta
 
 from server.restful_api.data.v1.endpoints.__general_data_v1 import GeneralEndpointDataV1
 
 
-class GeneralEndpointRealtimeHistorical(GeneralEndpointDataV1):
+class GeneralEndpointRealtimeHistorical(GeneralEndpointDataV1, metaclass=ABCMeta):
     _is_realtime = False
     _start = 0
     _end = int(time.time() * 1000)
@@ -39,11 +39,5 @@ class GeneralEndpointRealtimeHistorical(GeneralEndpointDataV1):
                     else:
                         self._limit = 5000
 
-    @abc.abstractmethod
-    def _get(self):
-        pass
-
-    @staticmethod
-    @abc.abstractmethod
-    def get_paths():
+    def _get_children(self):
         return []

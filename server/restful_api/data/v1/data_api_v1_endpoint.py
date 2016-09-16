@@ -15,9 +15,10 @@ class DataApiV1Endpoint(GeneralEndpointDataV1):
         return "api version entry"
 
     @staticmethod
-    def _get_parent_name():
+    def _get_parent():
         from server.restful_api.data.data_api_versions_endpoint import DataApiVersionsEndpoint
-        return DataApiVersionsEndpoint.get_name()
+
+        return DataApiVersionsEndpoint
 
     def _get_children(self):
         from server.restful_api.data.v1.endpoints.cpus import CpusEndpoint

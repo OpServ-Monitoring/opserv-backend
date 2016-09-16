@@ -1,7 +1,7 @@
-from server.restful_api.data.v1.endpoints.__general_data_v1 import GeneralEndpointDataV1
+from server.restful_api.data.v1.endpoints.__general_realtime_historical import GeneralEndpointRealtimeHistorical
 
 
-class CpucoresCpucoreTemperatureEndpoint(GeneralEndpointDataV1):
+class CpucoresCpucoreTemperatureEndpoint(GeneralEndpointRealtimeHistorical):
     def _get(self):
         # TODO Implement endpoint
         pass
@@ -10,7 +10,6 @@ class CpucoresCpucoreTemperatureEndpoint(GeneralEndpointDataV1):
     def get_paths():
         return [
             "/cpu-cores/<string:cpu_core>/temperature",
-            # "/cpus/<string:cpu>/cpu-cores/<string:cpu_core>/temperature"
         ]
 
     @staticmethod
@@ -19,10 +18,7 @@ class CpucoresCpucoreTemperatureEndpoint(GeneralEndpointDataV1):
         return "CHANGE ME"
 
     @staticmethod
-    def _get_parent_name():
+    def _get_parent():
         from server.restful_api.data.v1.endpoints.cpucores_cpucore import CpucoresCpucoreEndpoint
 
-        return CpucoresCpucoreEndpoint.get_name()
-
-    def _get_children(self):
-        return []
+        return CpucoresCpucoreEndpoint

@@ -20,9 +20,9 @@ class CpusCpuTemperatureEndpoint(GeneralEndpointRealtimeHistorical):
         return "CHANGE ME"
 
     @staticmethod
-    def _get_parent_name():
+    def _get_parent():
         from server.restful_api.data.v1.endpoints.cpus_cpu import CpusCpuEndpoint
-        return CpusCpuEndpoint.get_name()
+        return CpusCpuEndpoint
 
     def _get_children(self):
         return []

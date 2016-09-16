@@ -18,10 +18,10 @@ class CpusCpuEndpoint(GeneralEndpointDataV1):
         return "CHANGE ME"
 
     @staticmethod
-    def _get_parent_name():
+    def _get_parent():
         from server.restful_api.data.v1.endpoints.cpus import CpusEndpoint
 
-        return CpusEndpoint.get_name()
+        return CpusEndpoint
 
     def _get_children(self):
         from server.restful_api.data.v1.endpoints.cpus_cpu_frequency import CpusCpuFrequencyEndpoint

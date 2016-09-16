@@ -2,6 +2,7 @@ from server.restful_api.general.endpoint import Endpoint
 
 
 class DataApiVersionsEndpoint(Endpoint):
+
     def _post_process(self):
         pass
 
@@ -28,3 +29,13 @@ class DataApiVersionsEndpoint(Endpoint):
             ("/current", DataApiV1Endpoint),
             ("/v1", DataApiV1Endpoint)
         ]
+
+    @staticmethod
+    def get_name():
+        pass
+
+    @staticmethod
+    def _get_parent():
+        from server.restful_api.api_root.endpoint_api_root import ApiRootEndpoint
+
+        return ApiRootEndpoint

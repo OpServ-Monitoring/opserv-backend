@@ -9,7 +9,6 @@ class CpucoresEndpoint(GeneralEndpointDataV1):
     @staticmethod
     def get_paths():
         return [
-            "/cpus/<string:cpu>/cpu-cores",
             "/cpu-cores"
         ]
 
@@ -19,11 +18,40 @@ class CpucoresEndpoint(GeneralEndpointDataV1):
         return "CHANGE ME"
 
     @staticmethod
-    def _get_parent_name():
+    def _get_parent():
         from server.restful_api.data.v1.data_api_v1_endpoint import DataApiV1Endpoint
 
-        return DataApiV1Endpoint.get_name()
+        return DataApiV1Endpoint
 
     def _get_children(self):
+        from server.restful_api.data.v1.endpoints.cpucores_cpucore import CpucoresCpucoreEndpoint
+
+        children = []
+
+        ids = self.__get_children_ids()
+        for cpucore_id in ids:
+            children.append(("/" + cpucore_id, CpucoresCpucoreEndpoint))
+
+        return children
+
+    def __get_children_ids(self):
         # TODO Implement dynamic children
-        return []
+        import queue_manager
+        import time
+
+        queue_manager.requestDataQueue.put({"hardware": "system", "valueType": "cores"})
+        queue = queue_manager.getQueue("system", "cores")
+
+        amount = None
+        while amount is None:
+            amount = queue.get()
+            time.sleep(0.05)
+
+        print(amount)
+
+        children_ids = []
+        if amount is not None:
+            for i in range(0, amount):
+                children_ids.append(str(i))
+
+        return children_ids

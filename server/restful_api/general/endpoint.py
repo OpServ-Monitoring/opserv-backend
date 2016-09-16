@@ -1,11 +1,11 @@
-import abc
+from abc import ABCMeta, abstractmethod
 import re
 
 from server.restful_api.general.requestholder import RequestHolder
 from server.restful_api.general.responseholder import ResponseHolder
 
 
-class Endpoint:
+class Endpoint(metaclass=ABCMeta):
     _request_holder = None
     _response_holder = None
 
@@ -51,7 +51,7 @@ class Endpoint:
 
         self._response_holder.set_body(body)
 
-    @abc.abstractmethod
+    @abstractmethod
     def _get(self):
         """
         Override this method in any subclass of Endpoint to manipulate the Response object
@@ -60,7 +60,7 @@ class Endpoint:
         """
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def _post(self):
         """
         Override this method in any subclass of Endpoint to manipulate the Response object
@@ -69,7 +69,7 @@ class Endpoint:
         """
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def _put(self):
         """
         Override this method in any subclass of Endpoint to manipulate the Response object
@@ -78,7 +78,7 @@ class Endpoint:
         """
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def _delete(self):
         """
         Override this method in any subclass of Endpoint to manipulate the Response object
@@ -87,7 +87,7 @@ class Endpoint:
         """
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def _post_process(self):
         """
         This method is called after one of the processing functions _get(), _post(), _put() or _delete() is executed.
@@ -97,13 +97,13 @@ class Endpoint:
         pass
 
     @staticmethod
-    @abc.abstractmethod
+    @abstractmethod
     def get_paths():
         """
         Override this method in any subclass of Endpoint to set the paths this endpoint should operate on
         :return: A tupel of paths this endpoint should operate on
         """
-        return []
+        pass
 
     def __generate_links(self):
         links = {}
@@ -113,10 +113,10 @@ class Endpoint:
         if name is not None:
             links['self'] = self._get_link_element(uri, name)
 
-        parent = self.__get_parent()
-        parent_name = self._get_parent_name()
-        if parent is not None and parent_name is not None:
-            links['parent'] = self._get_link_element(parent, parent_name)
+        parent_uri = self.__get_parent_uri()
+        parent_name = self.__get_parent_name()
+        if parent_uri is not None and parent_name is not None:
+            links['parent'] = self._get_link_element(parent_uri, parent_name)
 
         children = self.__get_children()
         if children is not None and isinstance(children, list) and len(children) > 0:
@@ -125,11 +125,24 @@ class Endpoint:
         return links
 
     @staticmethod
-    @abc.abstractmethod
+    @abstractmethod
     def get_name():
-        return "no name specified"
+        """
 
-    def __get_parent(self):
+        :return: A string indicating the type of resource this endpoint represents
+        """
+        pass
+
+    @staticmethod
+    @abstractmethod
+    def _get_parent():
+        """
+
+        :return: A (subclass of) endpoint that is the direct api-parent of this endpoint or None
+        """
+        pass
+
+    def __get_parent_uri(self):
         regex = "(.+\/api.*)\/.+(\?.*){0,1}"
         uri = self._request_holder.get_uri()
 
@@ -140,12 +153,20 @@ class Endpoint:
         else:
             return None
 
-    @staticmethod
-    @abc.abstractmethod
-    def _get_parent_name():
-        return "no name specified"
+    def __get_parent_name(self):
+        parent = self._get_parent()
+
+        parent_name = None
+        if parent is not None:
+            parent_name = parent.get_name()
+
+        return parent_name
 
     def __get_children(self):
+        """
+
+        :return: An array holding reference objects to append as children to the response
+        """
         children = []
 
         regex = "(.+\/api.*\/*.*)(\?.*){0,1}"
@@ -165,9 +186,9 @@ class Endpoint:
 
         return children
 
-    @abc.abstractmethod
+    @abstractmethod
     def _get_children(self):
-        return []
+        pass
 
     @staticmethod
     def _get_bad_request_response(response, error_message=None):
@@ -191,4 +212,10 @@ class Endpoint:
 
     @staticmethod
     def _get_link_element(uri, name):
+        """
+        Static helper that returns a reference dictionary object to use in the links section of the response
+        :param uri: The uri of the referenced endpoint
+        :param name: The name of the references endpoint
+        :return:
+        """
         return {'href': uri, 'name': name}
