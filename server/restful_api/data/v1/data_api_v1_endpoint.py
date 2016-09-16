@@ -20,8 +20,12 @@ class DataApiV1Endpoint(GeneralEndpointDataV1):
         return DataApiVersionsEndpoint.get_name()
 
     def _get_children(self):
-        from server.restful_api.data.v1.endpoints.components import ComponentsEndpoint
+        from server.restful_api.data.v1.endpoints.cpus import CpusEndpoint
+        from server.restful_api.data.v1.endpoints.cpucores import CpucoresEndpoint
+        from server.restful_api.data.v1.endpoints.gpus import GpusEndpoint
 
         return [
-            ("/components", ComponentsEndpoint)
+            ("/cpus", CpusEndpoint),
+            ("/cpu-cores", CpucoresEndpoint),
+            ("/gpus", GpusEndpoint)
         ]

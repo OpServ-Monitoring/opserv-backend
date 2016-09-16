@@ -1,15 +1,14 @@
 from server.restful_api.data.v1.endpoints.__general_data_v1 import GeneralEndpointDataV1
 
 
-class GpusGpuEndpoint(GeneralEndpointDataV1):
+class GpusEndpoint(GeneralEndpointDataV1):
     def _get(self):
-        # TODO general info
         pass
 
     @staticmethod
     def get_paths():
         return [
-            "/components/gpus/<string:gpu>"
+            "/gpus"
         ]
 
     @staticmethod
@@ -19,10 +18,10 @@ class GpusGpuEndpoint(GeneralEndpointDataV1):
 
     @staticmethod
     def _get_parent_name():
-        from server.restful_api.data.v1.endpoints.components_gpus import GpusEndpoint
+        from server.restful_api.data.v1.data_api_v1_endpoint import DataApiV1Endpoint
 
-        return GpusEndpoint.get_name()
+        return DataApiV1Endpoint.get_name()
 
     def _get_children(self):
-        return [
-        ]
+        # TODO Implement dynamic children
+        return []

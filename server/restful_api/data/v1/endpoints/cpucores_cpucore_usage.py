@@ -17,8 +17,8 @@ class CpucoresCpucoreUsageEndpoint(GeneralEndpointRealtimeHistorical):
     @staticmethod
     def get_paths():
         return [
-            # "/components/cpus/<string:cpu>/cpu-cores/<string:cpu_core>/usage",
-            "/components/cpu-cores/<string:cpu_core>/usage"
+            # "/cpus/<string:cpu>/cpu-cores/<string:cpu_core>/usage",
+            "/cpu-cores/<string:cpu_core>/usage"
         ]
 
     @staticmethod
@@ -28,7 +28,7 @@ class CpucoresCpucoreUsageEndpoint(GeneralEndpointRealtimeHistorical):
 
     @staticmethod
     def _get_parent_name():
-        from server.restful_api.data.v1.endpoints.components_cpucores_cpucore import CpucoresCpucoreEndpoint
+        from server.restful_api.data.v1.endpoints.cpucores_cpucore import CpucoresCpucoreEndpoint
 
         return CpucoresCpucoreEndpoint.get_name()
 
