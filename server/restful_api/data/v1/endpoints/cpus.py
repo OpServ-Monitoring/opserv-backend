@@ -1,3 +1,4 @@
+import queue_manager
 from server.restful_api.data.v1.endpoints.__general_data_v1 import GeneralEndpointDataV1
 
 
@@ -27,9 +28,12 @@ class CpusEndpoint(GeneralEndpointDataV1):
 
         children = []
 
-        # TODO Implement dynamic children
-        ids = []
+        ids = self.__get_children_ids()
         for cpu_id in ids:
             children.append(("/" + cpu_id, CpusCpuEndpoint))
 
         return children
+
+    def __get_children_ids(self):
+        # TODO Implement dynamic children
+        return []
