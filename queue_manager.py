@@ -21,7 +21,8 @@ realtimeQueues = {
     "memory" : {},
     "disk" : {},
     "fs" : {},
-    "process" : {}
+    "process" : {},
+    "system" : {}
 }
 
 # This described the default values aswell as whether specific hardware requires additional argument information
@@ -32,7 +33,8 @@ REALTIME_DEFAULTS = {
     "memory" : (False, None),
     "disk" : (True, None),
     "fs" : (True, None),
-    "process" :  (True, "all")
+    "process" :  (True, "all"),
+    "system" : (False, None)
 }
 
 

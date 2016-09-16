@@ -105,6 +105,16 @@ class GatherThread(threading.Thread):
         elif hardware == "process":
             if valueType == "getall":
                 return str(psutil.pids())
+        elif hardware == "system":
+            if valueType == "cpus":
+                return 1
+            if valueType == "cores":
+                return psutil.cpu_count()
+            if valueType == "gpus":
+                return 1
+            if valueType == "disks":
+                return str(psutil.disk_partitions())
+        
         log.debug("Tried to get unimplemented hardware/measurementType")
         return "0"
 

@@ -8,7 +8,7 @@ from misc.logging_helper import setup_logger
 
 LOGGINGLEVEL = logging.DEBUG
 
-LOG_TO_FILE = True
+LOG_TO_FILE = False
 LOG_TO_CONSOLE = True
 
 LOG_GATHERING = True

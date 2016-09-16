@@ -1,4 +1,5 @@
 import logging
+import sys
 
 
 def setup_logger(log_to_console, log_to_file, logging_level, log_server, log_gathering):
@@ -15,7 +16,7 @@ def setup_logger(log_to_console, log_to_file, logging_level, log_server, log_gat
 
     # Create Console logging handler, if activated
     if log_to_console:
-        ch = logging.StreamHandler()
+        ch = logging.StreamHandler(sys.stdout)
         ch.setLevel(logging_level)
         # create formatter and add it to the handlers
         ch.setFormatter(formatter)

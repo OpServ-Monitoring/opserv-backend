@@ -8,10 +8,10 @@ import logging
 
 LOGGINGLEVEL = logging.DEBUG
 
-LOG_TO_FILE = True
+LOG_TO_FILE = False
 LOG_TO_CONSOLE = True
 
-LOG_GATHERING = False
+LOG_GATHERING = True
 LOG_SERVER = True
 
 
@@ -44,6 +44,19 @@ def insertTestDataIntoQueue():
     queue_manager.requestDataQueue.put({"hardware" : "process", "valueType" : "getall"})
     queue_manager.setGatheringRateQueue.put({"hardware" : "cpu", "valueType" : "cores", "delayms" : 0})
 
+def testInsertSystemGathering():
+    # One Time Test
+    queue_manager.requestDataQueue.put({"hardware" : "system", "valueType" : "cpus"})
+    queue_manager.requestDataQueue.put({"hardware" : "system", "valueType" : "gpus"})
+    queue_manager.requestDataQueue.put({"hardware" : "system", "valueType" : "disks"})
+    queue_manager.requestDataQueue.put({"hardware" : "system", "valueType" : "cores"})
+
+    # Gathering Rate Test
+    queue_manager.setGatheringRateQueue.put({"hardware" : "system", "valueType" : "cpus", "delayms": 1000})
+    queue_manager.setGatheringRateQueue.put({"hardware" : "system", "valueType" : "gpus", "delayms": 1000})
+    queue_manager.setGatheringRateQueue.put({"hardware" : "system", "valueType" : "disks", "delayms": 1000})
+    queue_manager.setGatheringRateQueue.put({"hardware" : "system", "valueType" : "cores", "delayms": 1000})
+
 
 class TestThread(threading.Thread):
     def __init__(self):
@@ -56,6 +69,7 @@ class TestThread(threading.Thread):
 
     def run(self):
         insertTestDataIntoQueue()
+        testInsertSystemGathering()
         while True:
             while not queue_manager.getQueue("cpu", 0, "load").empty():
                 log.debug(queue_manager.getQueue("cpu",0, "load").get(False))
