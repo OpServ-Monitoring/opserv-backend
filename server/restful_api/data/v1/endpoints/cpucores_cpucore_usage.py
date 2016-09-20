@@ -10,9 +10,9 @@ class CpucoresCpucoreUsageEndpoint(GeneralEndpointRealtimeHistorical):
             return
 
         if self._is_realtime:
-            self.__on_realtime_action()
+            self._get_realtime_data()
         else:
-            self.__on_historical_action()
+            self._get_historical_data()
 
     @staticmethod
     def get_paths():
@@ -31,8 +31,25 @@ class CpucoresCpucoreUsageEndpoint(GeneralEndpointRealtimeHistorical):
 
         return CpucoresCpucoreEndpoint
 
-    def __on_realtime_action(self):
-        print('is realtime')
+    def _get_realtime_data(self):
+        # TODO improve
+        data = {
+            'values': [],
+            'unit': 'percent'
+        }
 
-    def __on_historical_action(self):
+        from random import randint
+        import time
+
+        for i in range(0, 5000):
+            raw_string = {
+                'value': randint(0, 100),
+                'timestamp': int(time.time() * 1000)
+            }
+
+            data['values'].append(raw_string)
+
+        self._response_holder.set_body_data(data)
+
+    def _get_historical_data(self):
         print('historical', self._start, self._end, self._limit)

@@ -17,6 +17,9 @@ class ResponseHolder:
     def get_body(self):
         return self.__body
 
+    def get_body_data(self):
+        return self.__body['data']
+
     def get_status(self):
         return self.__status
 
@@ -25,6 +28,9 @@ class ResponseHolder:
 
     def set_body(self, body):
         self.__body = body
+
+    def set_body_data(self, data):
+        self.__body['data'] = data
 
     def set_status(self, status):
         self.__status = status

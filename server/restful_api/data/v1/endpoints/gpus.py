@@ -23,5 +23,32 @@ class GpusEndpoint(GeneralEndpointDataV1):
         return DataApiV1Endpoint
 
     def _get_children(self):
+        from server.restful_api.data.v1.endpoints.gpus_gpu import GpusGpuEndpoint
+
+        children = []
+
+        ids = self.__get_children_ids()
+        for child_id in ids:
+            children.append(("/" + child_id, GpusGpuEndpoint))
+
+        return children
+
+    def __get_children_ids(self):
         # TODO Implement dynamic children
-        return []
+        import queue_manager
+        import time
+
+        queue_manager.requestDataQueue.put({"hardware": "system", "valueType": "gpus"})
+        queue = queue_manager.getQueue("system", "gpus")
+
+        amount = None
+        while amount is None:
+            amount = queue.get()
+            time.sleep(0.02)
+
+        children_ids = []
+        if amount is not None:
+            for i in range(0, amount):
+                children_ids.append(str(i))
+
+        return children_ids

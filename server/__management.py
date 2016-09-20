@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_compress import Compress
 
 import server.restful_api.flask_restful_wrapper as rest_api
 import server.static_hosting.__management as static_hosting
@@ -23,6 +24,8 @@ def start():
         response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
         response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
         return response
+
+    Compress(app)
 
     context = ('server/ssl.cert', 'server/ssl.key')
 

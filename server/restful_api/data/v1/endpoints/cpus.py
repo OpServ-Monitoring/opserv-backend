@@ -1,4 +1,3 @@
-import queue_manager
 from server.restful_api.data.v1.endpoints.__general_data_v1 import GeneralEndpointDataV1
 
 
@@ -29,8 +28,8 @@ class CpusEndpoint(GeneralEndpointDataV1):
         children = []
 
         ids = self.__get_children_ids()
-        for cpu_id in ids:
-            children.append(("/" + cpu_id, CpusCpuEndpoint))
+        for child_id in ids:
+            children.append(("/" + child_id, CpusCpuEndpoint))
 
         return children
 
@@ -45,9 +44,7 @@ class CpusEndpoint(GeneralEndpointDataV1):
         amount = None
         while amount is None:
             amount = queue.get()
-            time.sleep(0.25)
-
-        print(amount)
+            time.sleep(0.02)
 
         children_ids = []
         if amount is not None:

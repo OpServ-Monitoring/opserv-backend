@@ -29,8 +29,8 @@ class CpucoresEndpoint(GeneralEndpointDataV1):
         children = []
 
         ids = self.__get_children_ids()
-        for cpucore_id in ids:
-            children.append(("/" + cpucore_id, CpucoresCpucoreEndpoint))
+        for child_id in ids:
+            children.append(("/" + child_id, CpucoresCpucoreEndpoint))
 
         return children
 
@@ -45,9 +45,7 @@ class CpucoresEndpoint(GeneralEndpointDataV1):
         amount = None
         while amount is None:
             amount = queue.get()
-            time.sleep(0.05)
-
-        print(amount)
+            time.sleep(0.02)
 
         children_ids = []
         if amount is not None:
