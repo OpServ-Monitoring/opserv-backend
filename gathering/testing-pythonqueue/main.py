@@ -9,6 +9,7 @@ def writeQueue():
     counter += 1
     queuetest.newQueue.put("omg i cant believe this works" + str(counter))
 
+
 def main():
     writeQueue()
     secondary.readQueue()
@@ -18,5 +19,6 @@ def main():
 
     writeQueue()
     secondary.readQueue()
+
 
 main()

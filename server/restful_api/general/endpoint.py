@@ -1,5 +1,5 @@
-from abc import ABCMeta, abstractmethod
 import re
+from abc import ABCMeta, abstractmethod
 
 from server.restful_api.general.requestholder import RequestHolder
 from server.restful_api.general.responseholder import ResponseHolder

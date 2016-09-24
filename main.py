@@ -1,10 +1,9 @@
 import logging
-from gathering.gather_main import GatherThread
-import server.__management as server
+
 import database.dbtest as tst
-
+import server.__management as server
+from gathering.gather_main import GatherThread
 from misc.logging_helper import setup_logger
-
 
 LOGGINGLEVEL = logging.DEBUG
 

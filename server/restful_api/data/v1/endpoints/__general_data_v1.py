@@ -1,4 +1,5 @@
 from abc import ABCMeta
+
 from server.restful_api.general.endpoint import Endpoint
 
 

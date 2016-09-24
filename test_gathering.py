@@ -1,10 +1,10 @@
-import time
-import threading
-
-from gathering.gather_main import GatherThread
-import queue_manager
-from misc.logging_helper import setup_logger
 import logging
+import threading
+import time
+
+import queue_manager
+from gathering.gather_main import GatherThread
+from misc.logging_helper import setup_logger
 
 LOGGINGLEVEL = logging.DEBUG
 
@@ -14,9 +14,9 @@ LOG_TO_CONSOLE = True
 LOG_GATHERING = True
 LOG_SERVER = True
 
-
 log = logging.getLogger("opserv.gatheringTest")
 log.setLevel(logging.DEBUG)
+
 
 def start_gather_thread():
     log.debug("Starting up the gathering thread.")
@@ -37,25 +37,26 @@ def insertTestDataIntoQueue():
     """
         Inserts testing data into the gatheringrate and request queues
     """
-    queue_manager.setGatheringRateQueue.put({"hardware" : "cpu", "valueType" : "load", "delayms" : 1000})
-    queue_manager.setGatheringRateQueue.put({"hardware" : "memory", "valueType" : "used", "delayms" : 1000})
-    queue_manager.setGatheringRateQueue.put({"hardware" : "cpu", "valueType" : "cores", "delayms" : 5000})
-    queue_manager.requestDataQueue.put({"hardware" : "disk", "valueType" : "partitions", "args" : "all"})
-    queue_manager.requestDataQueue.put({"hardware" : "process", "valueType" : "getall"})
-    queue_manager.setGatheringRateQueue.put({"hardware" : "cpu", "valueType" : "cores", "delayms" : 0})
+    queue_manager.setGatheringRateQueue.put({"hardware": "cpu", "valueType": "load", "delayms": 1000})
+    queue_manager.setGatheringRateQueue.put({"hardware": "memory", "valueType": "used", "delayms": 1000})
+    queue_manager.setGatheringRateQueue.put({"hardware": "cpu", "valueType": "cores", "delayms": 5000})
+    queue_manager.requestDataQueue.put({"hardware": "disk", "valueType": "partitions", "args": "all"})
+    queue_manager.requestDataQueue.put({"hardware": "process", "valueType": "getall"})
+    queue_manager.setGatheringRateQueue.put({"hardware": "cpu", "valueType": "cores", "delayms": 0})
+
 
 def testInsertSystemGathering():
     # One Time Test
-    queue_manager.requestDataQueue.put({"hardware" : "system", "valueType" : "cpus"})
-    queue_manager.requestDataQueue.put({"hardware" : "system", "valueType" : "gpus"})
-    queue_manager.requestDataQueue.put({"hardware" : "system", "valueType" : "disks"})
-    queue_manager.requestDataQueue.put({"hardware" : "system", "valueType" : "cores"})
+    queue_manager.requestDataQueue.put({"hardware": "system", "valueType": "cpus"})
+    queue_manager.requestDataQueue.put({"hardware": "system", "valueType": "gpus"})
+    queue_manager.requestDataQueue.put({"hardware": "system", "valueType": "disks"})
+    queue_manager.requestDataQueue.put({"hardware": "system", "valueType": "cores"})
 
     # Gathering Rate Test
-    queue_manager.setGatheringRateQueue.put({"hardware" : "system", "valueType" : "cpus", "delayms": 1000})
-    queue_manager.setGatheringRateQueue.put({"hardware" : "system", "valueType" : "gpus", "delayms": 1000})
-    queue_manager.setGatheringRateQueue.put({"hardware" : "system", "valueType" : "disks", "delayms": 1000})
-    queue_manager.setGatheringRateQueue.put({"hardware" : "system", "valueType" : "cores", "delayms": 1000})
+    queue_manager.setGatheringRateQueue.put({"hardware": "system", "valueType": "cpus", "delayms": 1000})
+    queue_manager.setGatheringRateQueue.put({"hardware": "system", "valueType": "gpus", "delayms": 1000})
+    queue_manager.setGatheringRateQueue.put({"hardware": "system", "valueType": "disks", "delayms": 1000})
+    queue_manager.setGatheringRateQueue.put({"hardware": "system", "valueType": "cores", "delayms": 1000})
 
 
 class TestThread(threading.Thread):
@@ -72,13 +73,13 @@ class TestThread(threading.Thread):
         testInsertSystemGathering()
         while True:
             while not queue_manager.getQueue("cpu", 0, "load").empty():
-                log.debug(queue_manager.getQueue("cpu",0, "load").get(False))
+                log.debug(queue_manager.getQueue("cpu", 0, "load").get(False))
 
             while not queue_manager.getQueue("cpu", "load", 0).empty():
-                log.debug(queue_manager.getQueue("cpu","load", 0).get(False))
+                log.debug(queue_manager.getQueue("cpu", "load", 0).get(False))
             while not queue_manager.getQueue("memory", "used").empty():
-                log.debug(queue_manager.getQueue("memory","used").get(False))
-                
+                log.debug(queue_manager.getQueue("memory", "used").get(False))
+
             time.sleep(0.5)
 
 

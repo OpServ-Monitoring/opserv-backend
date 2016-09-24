@@ -17,7 +17,6 @@ def start():
     static_hosting.init_static_hosting(app)
 
     # Support for CORS-request even for static hosting
-    # TODO full CORS-support should be removed in a future version
     @app.after_request
     def after_request(response):
         response.headers.add('Access-Control-Allow-Origin', '*')

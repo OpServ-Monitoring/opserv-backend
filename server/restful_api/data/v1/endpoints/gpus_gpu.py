@@ -1,9 +1,7 @@
-from server.restful_api.data.v1.endpoints.__general_data_v1 import GeneralEndpointDataV1
 from server.restful_api.data.v1.endpoints.__general_parameterized import GeneralEndpointParameterized
 
 
 class GpusGpuEndpoint(GeneralEndpointParameterized):
-
     def _get(self):
         # TODO general info
         pass

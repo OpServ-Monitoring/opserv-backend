@@ -1,5 +1,4 @@
 from vedis import Vedis
-import time
 
 db = Vedis('testdb.db')
 
@@ -10,7 +9,7 @@ counter = 0
 db.close()
 while 1:
     db.open()
-    if(s.peek() != counter):
+    if (s.peek() != counter):
         print(s.peek())
         counter = s.peek()
     db.close()

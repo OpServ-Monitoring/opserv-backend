@@ -4,7 +4,6 @@ from server.restful_api.data.v1.endpoints.__general_data_v1 import GeneralEndpoi
 
 
 class GeneralEndpointDynamicChildren(GeneralEndpointDataV1, metaclass=ABCMeta):
-
     def _get(self):
         pass
 

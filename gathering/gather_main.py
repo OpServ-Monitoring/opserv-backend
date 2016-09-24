@@ -5,11 +5,12 @@
 #
 #
 
+import logging
+import sched
 import threading
 import time
-import sched
+
 import queue_manager
-import logging
 from common.helper import importIfExists
 
 # Optional depency importing
@@ -19,6 +20,7 @@ pyspectator = importIfExists("pyspectator")
 
 log = logging.getLogger("opserv.gathering")
 log.setLevel(logging.DEBUG)
+
 
 class GatherThread(threading.Thread):
     def __init__(self):
@@ -41,18 +43,17 @@ class GatherThread(threading.Thread):
         # Gathering Loop will be indefinite
         while 1:
             self.s.run()
-            time.sleep(0.05) # To keep CPU usage low, the loop has to sleep atleast a bit
-        
+            time.sleep(0.05)  # To keep CPU usage low, the loop has to sleep atleast a bit
+
         # This point shouldn't be reached
         log.debug("Gathering Thread shutting down")
         return
-
 
     def queueListener(self):
         """
             Task that is called by the event scheduler and checks for new messages within the queues
         """
-        
+
         # Check the setGatheringRateQueue for any new messages
         while not queue_manager.setGatheringRateQueue.empty():
             newRate = queue_manager.setGatheringRateQueue.get(False)
@@ -66,18 +67,19 @@ class GatherThread(threading.Thread):
         while not queue_manager.requestDataQueue.empty():
             newRequest = queue_manager.requestDataQueue.get(False)
             if requestValid(newRequest):
-                newMeasurement = self.getMeasurement(newRequest["hardware"], newRequest["valueType"], newRequest["args"])
+                newMeasurement = self.getMeasurement(newRequest["hardware"], newRequest["valueType"],
+                                                     newRequest["args"])
 
                 queue = queue_manager.getQueue(newRequest["hardware"], newRequest["valueType"], newRequest["args"])
 
                 queue.put(newMeasurement)
 
-                log.debug("Gathered {0} from {1},{2},{3}".format(newMeasurement, newRequest["hardware"], newRequest["valueType"], newRequest["args"]))
+                log.debug("Gathered {0} from {1},{2},{3}".format(newMeasurement, newRequest["hardware"],
+                                                                 newRequest["valueType"], newRequest["args"]))
             self.s.enter(1, 1, self.queueListener)
 
         # Reenter itself into the event queue to listen to new commands
         self.s.enter(1, 1, self.queueListener)
-
 
     def getMeasurement(self, hardware, valueType, args):
         """
@@ -114,10 +116,9 @@ class GatherThread(threading.Thread):
                 return 1
             if valueType == "disks":
                 return str(psutil.disk_partitions())
-        
+
         log.debug("Tried to get unimplemented hardware/measurementType")
         return "0"
-
 
     def gatherTask(self, gatherData):
         """
@@ -137,16 +138,17 @@ class GatherThread(threading.Thread):
         """
         # Remove old scheduled event
         self.s.cancel(self.gatherers[(newRate["hardware"], newRate["valueType"])])
-        if newRate["delayms"] > 0: 
+        if newRate["delayms"] > 0:
             self.createGatherer(newRate)
-
 
     def createGatherer(self, newRate):
         """
             Creates a new gathering task by entering it as a event for the scheduler
         """
         if newRate["delayms"] > 0:
-            self.gatherers[(newRate["hardware"], newRate["valueType"])] = self.s.enter(newRate["delayms"] / 1000, 1, self.gatherTask, kwargs={"gatherData" : newRate})
+            self.gatherers[(newRate["hardware"], newRate["valueType"])] = self.s.enter(newRate["delayms"] / 1000, 1,
+                                                                                       self.gatherTask,
+                                                                                       kwargs={"gatherData": newRate})
         else:
             log.debug("ERROR: Tried to create gatherer with a delay of 0")
 
@@ -158,7 +160,6 @@ class GatherThread(threading.Thread):
         if (rateToCheck["hardware"], rateToCheck["valueType"]) in self.gatherers:
             return True
         return False
-
 
 
 def requestValid(request):

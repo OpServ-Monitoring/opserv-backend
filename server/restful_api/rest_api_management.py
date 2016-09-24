@@ -28,5 +28,3 @@ class RestApiManagement:
             (preferences_api_path, None),  # TODO preferences version overview
             (preferences_api_path, None, True)  # TODO preferences v1
         ]
-
-

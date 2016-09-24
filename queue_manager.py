@@ -16,34 +16,35 @@ requestDataQueue = Queue()
 setGatheringRateQueue = Queue()
 
 realtimeQueues = {
-    "cpu" : {},
-    "gpu" : {},
-    "memory" : {},
-    "disk" : {},
-    "fs" : {},
-    "process" : {},
-    "system" : {}
+    "cpu": {},
+    "gpu": {},
+    "memory": {},
+    "disk": {},
+    "fs": {},
+    "process": {},
+    "system": {}
 }
 
 # This described the default values aswell as whether specific hardware requires additional argument information
 # The tuple has this structure: (ARGUMENTNECESSARY, DEFAULTVALUE)
 REALTIME_DEFAULTS = {
-    "cpu" : (True, 0),
-    "gpu" : (True, 0),
-    "memory" : (False, None),
-    "disk" : (True, None),
-    "fs" : (True, None),
-    "process" :  (True, "all"),
-    "system" : (False, None)
+    "cpu": (True, 0),
+    "gpu": (True, 0),
+    "memory": (False, None),
+    "disk": (True, None),
+    "fs": (True, None),
+    "process": (True, "all"),
+    "system": (False, None)
 }
 
-
 """ Returns either the requested queue or creates a new one """
+
+
 def getQueue(hardware, valueType, args=None):
     # Check if the hardware exists
     assertHardwareExists(hardware)
     # TODO MORE ASSERTS ON ARGS & VALUETYPE
-    
+
     # If no argument is given
     if not args:
         if argumentIsOptional(hardware):
@@ -76,13 +77,11 @@ def argumentIsOptional(hardware):
     return not REALTIME_DEFAULTS[hardware][0]
 
 
-
 def argumentHasDefault(hardware):
     """ Checks whether the given hardware has a default argument """
     if REALTIME_DEFAULTS[hardware][1] != None:
         return True
     return False
-
 
 
 def createSubDictIfNecessary(hardware, args):
@@ -93,7 +92,6 @@ def createSubDictIfNecessary(hardware, args):
         realtimeQueues[hardware][args] = {}
 
 
-
 def createQueueIfNotExists(hardware, valueType, args):
     """ Creates a new Queue if the specified one doesn't already exists """
     if not queueExists(hardware, valueType, args):
@@ -101,11 +99,10 @@ def createQueueIfNotExists(hardware, valueType, args):
             realtimeQueues[hardware][args][valueType] = Queue()
         else:
             realtimeQueues[hardware][valueType] = Queue()
-        
 
-    
+
 def queueExists(hardware, valueType, args):
-    """ Checks whehter the specified queue already exists """    
+    """ Checks whehter the specified queue already exists """
     if hardware in realtimeQueues:
         if args != None:
             if args in realtimeQueues[hardware]:
@@ -115,7 +112,6 @@ def queueExists(hardware, valueType, args):
             if valueType in realtimeQueues[hardware]:
                 return True
     return False
-
 
 
 def assertHardwareExists(hardware):
