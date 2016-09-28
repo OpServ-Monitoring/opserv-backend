@@ -2,9 +2,9 @@ from server.restful_api.data.v1.endpoints.__general_data_v1 import GeneralEndpoi
 
 
 class CpusCpuEndpoint(GeneralEndpointDataV1):
-    def _get(self):
-        # TODO general info
-        pass
+    def _get(self) -> bool:
+        # TODO implement endpoint
+        return True
 
     @staticmethod
     def get_paths():
@@ -33,6 +33,5 @@ class CpusCpuEndpoint(GeneralEndpointDataV1):
         return [
             ("/frequency", CpusCpuFrequencyEndpoint),
             ("/temperature", CpusCpuTemperatureEndpoint),
-            ("/usage", CpusCpuUsageEndpoint),
-            ("/cpu-cores", CpucoresEndpoint)
+            ("/usage", CpusCpuUsageEndpoint)
         ]

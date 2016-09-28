@@ -2,11 +2,15 @@ from server.restful_api.data.v1.endpoints.__general_realtime_historical import G
 
 
 class CpusCpuUsageEndpoint(GeneralEndpointRealtimeHistorical):
-    def _get(self):
+    def _get(self) -> bool:
+        print("called with", self._is_realtime)
+
         if self._is_realtime:
             self._get_realtime_data()
         else:
             pass  # self._get_historical_data()
+
+        return True
 
     @staticmethod
     def get_paths():
@@ -33,8 +37,8 @@ class CpusCpuUsageEndpoint(GeneralEndpointRealtimeHistorical):
         import queue_manager
         import time
 
-        queue_manager.requestDataQueue.put({"hardware": "cpu", "valueType": "load"})
-        queue = queue_manager.getQueue("cpu", "load")
+        queue_manager.requestDataQueue.put({"hardware": "cpu", "valueType": "usage"})
+        queue = queue_manager.getQueue("cpu", "usage")
 
         amount = None
         while amount is None:

@@ -1,10 +1,10 @@
-from server.restful_api.data.v1.endpoints.__general_data_v1 import GeneralEndpointDataV1
+from server.restful_api.data.v1.endpoints.cpucores_cpucore__general_child import CpucoresCpucoreGeneralChildEndpoint
 
 
-class CpucoresCpucoreFrequencyEndpoint(GeneralEndpointDataV1):
-    def _get(self):
+class CpucoresCpucoreFrequencyEndpoint(CpucoresCpucoreGeneralChildEndpoint):
+    def _get(self) -> bool:
         # TODO Implement endpoint
-        pass
+        return True
 
     @staticmethod
     def get_paths():
@@ -16,12 +16,6 @@ class CpucoresCpucoreFrequencyEndpoint(GeneralEndpointDataV1):
     def get_name():
         # TODO change name
         return "CHANGE ME"
-
-    @staticmethod
-    def _get_parent():
-        from server.restful_api.data.v1.endpoints.cpucores_cpucore import CpucoresCpucoreEndpoint
-
-        return CpucoresCpucoreEndpoint
 
     @staticmethod
     def _get_children():

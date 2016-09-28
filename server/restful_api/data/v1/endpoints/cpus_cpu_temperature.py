@@ -2,11 +2,13 @@ from server.restful_api.data.v1.endpoints.__general_realtime_historical import G
 
 
 class CpusCpuTemperatureEndpoint(GeneralEndpointRealtimeHistorical):
-    def _get(self):
+    def _get(self) -> bool:
         if self._is_realtime:
             self.__on_realtime_action()
         else:
             self.__on_historical_action()
+
+        return True
 
     @staticmethod
     def get_paths():

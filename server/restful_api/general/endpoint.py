@@ -1,6 +1,5 @@
 import re
 from abc import ABCMeta, abstractmethod
-
 from collections import Iterable
 
 from server.restful_api.general.requestholder import RequestHolder
@@ -22,29 +21,34 @@ class Endpoint(metaclass=ABCMeta):
         """
         self._request_holder = request_holder
 
-        self._pre_process()
+        keep_processing = self._pre_process()
 
-        method = self._request_holder.get_http_method()
-        if method == RequestHolder.METHOD_GET():
-            self._get()
-        elif method == RequestHolder.METHOD_POST():
-            self._post()
-        elif method == RequestHolder.METHOD_PUT():
-            self._put()
-        elif method == RequestHolder.METHOD_DELETE():
-            self._delete()
-        else:
-            return self._get_bad_request_response(self._response_holder)
+        if keep_processing:
+            method = self._request_holder.get_http_method()
 
-        self._post_process()
+            if method == RequestHolder.METHOD_GET():
+                keep_processing = keep_processing and self._get()
+            elif method == RequestHolder.METHOD_POST():
+                keep_processing = keep_processing and self._post()
+            elif method == RequestHolder.METHOD_PUT():
+                keep_processing = keep_processing and self._put()
+            elif method == RequestHolder.METHOD_DELETE():
+                keep_processing = keep_processing and self._delete()
+            else:
+                self._set_bad_request_response(self._response_holder)
+
+                keep_processing = False
+
+            if keep_processing:
+                self._post_process()
 
         return self._response_holder
 
-    def _pre_process(self):
+    def _pre_process(self) -> bool:
         """
         This method is called before any of the processing functions _get(), _post(), _put() or _delete() is executed.
         Override this method in any subclass of Endpoint to manipulate the Request or Response object beforehand.
-        :return: None - the output of this function is ignored
+        :return: A boolean indicating whether to carry on processing the request or not
         """
         body = {
             'data': {},
@@ -53,48 +57,50 @@ class Endpoint(metaclass=ABCMeta):
 
         self._response_holder.set_body(body)
 
+        return True
+
     @abstractmethod
-    def _get(self):
+    def _get(self) -> bool:
         """
         Override this method in any subclass of Endpoint to manipulate the Response object
         in case the request is a GET request
-        :return: None - the output of this function is ignored
+        :return: A boolean indicating whether to carry on processing the request or not
         """
         pass
 
     @abstractmethod
-    def _post(self):
+    def _post(self) -> bool:
         """
         Override this method in any subclass of Endpoint to manipulate the Response object
         in case the request is a POST request
-        :return: None - the output of this function is ignored
+        :return: A boolean indicating whether to carry on processing the request or not
         """
         pass
 
     @abstractmethod
-    def _put(self):
+    def _put(self) -> bool:
         """
         Override this method in any subclass of Endpoint to manipulate the Response object
         in case the request is a PUT request
-        :return: None - the output of this function is ignored
+        :return: A boolean indicating whether to carry on processing the request or not
         """
         pass
 
     @abstractmethod
-    def _delete(self):
+    def _delete(self) -> bool:
         """
         Override this method in any subclass of Endpoint to manipulate the Response object
         in case the request is a DELETE request
-        :return: None - the output of this function is ignored
+        :return: A boolean indicating whether to carry on processing the request or not
         """
         pass
 
     @abstractmethod
-    def _post_process(self):
+    def _post_process(self) -> bool:
         """
         This method is called after one of the processing functions _get(), _post(), _put() or _delete() is executed.
         Override this method in any subclass of Endpoint to manipulate the Response object afterwards.
-        :return: None - the output of this function is ignored
+        :return: A boolean indicating whether to carry on processing the request or not
         """
         pass
 
@@ -129,8 +135,8 @@ class Endpoint(metaclass=ABCMeta):
     @staticmethod
     @abstractmethod
     def get_name():
+        # TODO document method
         """
-
         :return: A string indicating the type of resource this endpoint represents
         """
         pass
@@ -138,8 +144,8 @@ class Endpoint(metaclass=ABCMeta):
     @staticmethod
     @abstractmethod
     def _get_parent():
+        # TODO document method
         """
-
         :return: A (subclass of) endpoint that is the direct api-parent of this endpoint or None
         """
         pass
@@ -162,8 +168,8 @@ class Endpoint(metaclass=ABCMeta):
         return parent_name
 
     def __get_children(self):
+        # TODO document method
         """
-
         :return: An array holding reference objects to append as children to the response
         """
         children = []
@@ -212,22 +218,20 @@ class Endpoint(metaclass=ABCMeta):
         """
         return {'href': uri, 'name': name}
 
-    @staticmethod
-    def _get_bad_request_response(response, error_message=None):
-        """
-        Static helper that returns a ResponseHolder-object to indicate a bad request
-        :param response: The current ResponseHolder-object
-        :param error_message: An optional error message to exchange the standard message
-        :return: A ResponseHolder-object indicating a bad request
-        """
-        if error_message is None:
-            error_message = "Bad Request"
-
-        response.set_body(
+    # TODO document methods
+    def __set_fault_response(self, status_code, error_message):
+        self._response_holder.set_body(
             {
                 "error_message": error_message
             }
         )
-        response.set_status(400)
+        self._response_holder.set_status(status_code)
 
-        return response
+    def _set_bad_request_response(self, error_message=None):
+        if error_message is None:
+            error_message = "Bad Request"
+
+        self.__set_fault_response(400, error_message)
+
+    def _set_internal_server_error_response(self):
+        self.__set_fault_response(500, "Internal server error")

@@ -2,8 +2,8 @@ from server.restful_api.data.v1.endpoints.__general_data_v1 import GeneralEndpoi
 
 
 class DataApiV1Endpoint(GeneralEndpointDataV1):
-    def _get(self):
-        pass
+    def _get(self) -> bool:
+        return True
 
     @staticmethod
     def get_paths():

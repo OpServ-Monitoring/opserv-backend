@@ -2,9 +2,9 @@ from server.restful_api.data.v1.endpoints.__general_data_v1 import GeneralEndpoi
 
 
 class CpucoresEndpoint(GeneralEndpointDataV1):
-    def _get(self):
-        # TODO general info
-        pass
+    def _get(self) -> bool:
+        # no data section available
+        return True
 
     @staticmethod
     def get_paths():
@@ -44,13 +44,13 @@ class CpucoresEndpoint(GeneralEndpointDataV1):
 
         return children_ids
 
+    @staticmethod
+    def _get_children():
+        from server.restful_api.data.v1.endpoints.cpucores_cpucore import CpucoresCpucoreEndpoint
+        children = []
 
-def _get_children():
-    from server.restful_api.data.v1.endpoints.cpucores_cpucore import CpucoresCpucoreEndpoint
-    children = []
+        ids = CpucoresEndpoint.__get_children_ids()
+        for child_id in ids:
+            children.append(("/" + child_id, CpucoresCpucoreEndpoint))
 
-    ids = CpucoresEndpoint.__get_children_ids()
-    for child_id in ids:
-        children.append(("/" + child_id, CpucoresCpucoreEndpoint))
-
-    return children
+        return children

@@ -2,20 +2,32 @@ from server.restful_api.general.endpoint import Endpoint
 
 
 class DataApiVersionsEndpoint(Endpoint):
-    def _post_process(self):
-        pass
+    def _get(self) -> bool:
+        return True
 
-    def _get(self):
-        pass
+    def _put(self) -> bool:
+        self._set_bad_request_response(
+            'HTTP method PUT is not supported by this resource'
+        )
 
-    def _put(self):
-        return self._get_bad_request_response(self._response_holder)
+        return False
 
-    def _post(self):
-        return self._get_bad_request_response(self._response_holder)
+    def _post(self) -> bool:
+        self._set_bad_request_response(
+            'HTTP method POST is not supported by this resource'
+        )
 
-    def _delete(self):
-        return self._get_bad_request_response(self._response_holder)
+        return False
+
+    def _delete(self) -> bool:
+        self._set_bad_request_response(
+            'HTTP method DELETE is not supported by this resource'
+        )
+
+        return False
+
+    def _post_process(self) -> bool:
+        return True
 
     @staticmethod
     def get_paths():

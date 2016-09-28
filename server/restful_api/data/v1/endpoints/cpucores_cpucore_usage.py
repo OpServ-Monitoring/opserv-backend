@@ -1,18 +1,10 @@
-from server.restful_api.data.v1.endpoints.__general_realtime_historical import GeneralEndpointRealtimeHistorical
+from server.restful_api.data.v1.endpoints.cpucores_cpucore__general_child import CpucoresCpucoreGeneralChildEndpoint
 
 
-class CpucoresCpucoreUsageEndpoint(GeneralEndpointRealtimeHistorical):
-    def _get(self):
-        if not ("cpu_core" in self._request_holder.get_params()):
-            # TODO Improve error message
-            self._response_holder = self._get_bad_request_response(self._response_holder,
-                                                                   "The cpu_core value is invalid or missing.")
-            return
-
-        if self._is_realtime:
-            self._get_realtime_data()
-        else:
-            self._get_historical_data()
+class CpucoresCpucoreUsageEndpoint(CpucoresCpucoreGeneralChildEndpoint):
+    def _get(self) -> bool:
+        # TODO Implement endpoint
+        return True
 
     @staticmethod
     def get_paths():
@@ -24,12 +16,6 @@ class CpucoresCpucoreUsageEndpoint(GeneralEndpointRealtimeHistorical):
     def get_name():
         # TODO change name
         return "CHANGE ME"
-
-    @staticmethod
-    def _get_parent():
-        from server.restful_api.data.v1.endpoints.cpucores_cpucore import CpucoresCpucoreEndpoint
-
-        return CpucoresCpucoreEndpoint
 
     def _get_realtime_data(self):
         import queue_manager

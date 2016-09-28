@@ -1,10 +1,10 @@
-from server.restful_api.data.v1.endpoints.__general_parameterized import GeneralEndpointParameterized
+from server.restful_api.data.v1.endpoints.__general_data_v1 import GeneralEndpointDataV1
 
 
-class GpusGpuEndpoint(GeneralEndpointParameterized):
-    def _get(self):
-        # TODO general info
-        pass
+class GpusGpuEndpoint(GeneralEndpointDataV1):
+    def _get(self) -> bool:
+        # TODO implement endpoint
+        return True
 
     @staticmethod
     def get_paths():
@@ -30,5 +30,5 @@ class GpusGpuEndpoint(GeneralEndpointParameterized):
     @staticmethod
     def _get_mandatory_parameters():
         return [
-            GeneralEndpointParameterized._build_parameter("gpu", lambda x: int(x) > 4)
+            ("gpu", lambda x: int(x) > 4)
         ]
