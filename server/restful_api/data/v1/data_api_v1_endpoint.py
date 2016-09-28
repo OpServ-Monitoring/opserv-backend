@@ -3,7 +3,8 @@ from server.restful_api.data.v1.endpoints.root__general_child import RootGeneral
 
 class DataApiV1Endpoint(RootGeneralChildEndpoint):
     def _get(self) -> bool:
-        return True
+        # no data section available
+        return self.KEEP_PROCESSING()
 
     @staticmethod
     def get_paths():

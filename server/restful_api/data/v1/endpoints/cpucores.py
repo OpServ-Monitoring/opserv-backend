@@ -4,7 +4,7 @@ from server.restful_api.data.v1.endpoints.__general_data_v1 import GeneralEndpoi
 class CpucoresEndpoint(GeneralEndpointDataV1):
     def _get(self) -> bool:
         # no data section available
-        return True
+        return self.KEEP_PROCESSING()
 
     @staticmethod
     def get_paths():

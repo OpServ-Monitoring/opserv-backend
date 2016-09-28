@@ -2,10 +2,9 @@ from server.restful_api.general.endpoint import Endpoint
 
 
 class ApiRootEndpoint(Endpoint):
-
     def _get(self) -> bool:
         # no data section available
-        return True
+        return self.KEEP_PROCESSING()
 
     def _put(self) -> bool:
         self._set_bad_request_response(
@@ -29,7 +28,8 @@ class ApiRootEndpoint(Endpoint):
         return False
 
     def _post_process(self) -> bool:
-        return True
+        # no post processing needed
+        return self.KEEP_PROCESSING()
 
     @staticmethod
     def get_paths():

@@ -259,3 +259,11 @@ class Endpoint(metaclass=ABCMeta):
         :return: None
         """
         self.__set_fault_response(500, "Internal server error")
+
+    @staticmethod
+    def KEEP_PROCESSING():
+        return True
+
+    @staticmethod
+    def STOP_PROCESSING():
+        return False

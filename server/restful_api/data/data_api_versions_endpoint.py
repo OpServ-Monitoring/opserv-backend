@@ -3,7 +3,8 @@ from server.restful_api.general.endpoint import Endpoint
 
 class DataApiVersionsEndpoint(Endpoint):
     def _get(self) -> bool:
-        return True
+        # no data section available
+        return self.KEEP_PROCESSING()
 
     def _put(self) -> bool:
         self._set_bad_request_response(
@@ -27,7 +28,8 @@ class DataApiVersionsEndpoint(Endpoint):
         return False
 
     def _post_process(self) -> bool:
-        return True
+        # no post processing needed
+        return self.KEEP_PROCESSING()
 
     @staticmethod
     def get_paths():

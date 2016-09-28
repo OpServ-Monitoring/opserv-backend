@@ -4,7 +4,7 @@ from server.restful_api.data.v1.endpoints.root__general_child import RootGeneral
 class GpusEndpoint(RootGeneralChildEndpoint):
     def _get(self) -> bool:
         # no data section available
-        return True
+        return self.KEEP_PROCESSING()
 
     @staticmethod
     def get_paths():

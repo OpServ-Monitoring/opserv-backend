@@ -1,5 +1,5 @@
 import time
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
 
 from server.restful_api.data.v1.endpoints.__general_data_v1 import GeneralEndpointDataV1
 
