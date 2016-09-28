@@ -1,7 +1,7 @@
-from server.restful_api.data.v1.endpoints.__general_data_v1 import GeneralEndpointDataV1
+from server.restful_api.data.v1.endpoints.cpus_cpu__general_child import CpusCpuGeneralChildEndpoint
 
 
-class CpusCpuFrequencyEndpoint(GeneralEndpointDataV1):
+class CpusCpuFrequencyEndpoint(CpusCpuGeneralChildEndpoint):
     def _get(self) -> bool:
         # TODO Implement endpoint
         return True
@@ -14,13 +14,7 @@ class CpusCpuFrequencyEndpoint(GeneralEndpointDataV1):
 
     @staticmethod
     def get_name():
-        # TODO change name
-        return "CHANGE ME"
-
-    @staticmethod
-    def _get_parent():
-        from server.restful_api.data.v1.endpoints.cpus_cpu import CpusCpuEndpoint
-        return CpusCpuEndpoint
+        return "cpu frequency measurement"
 
     @staticmethod
     def _get_children():

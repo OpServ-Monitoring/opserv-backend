@@ -1,7 +1,7 @@
-from server.restful_api.data.v1.endpoints.__general_realtime_historical import GeneralEndpointRealtimeHistorical
+from server.restful_api.data.v1.endpoints.cpus_cpu__general_child import CpusCpuGeneralChildEndpoint
 
 
-class CpusCpuUsageEndpoint(GeneralEndpointRealtimeHistorical):
+class CpusCpuUsageEndpoint(CpusCpuGeneralChildEndpoint):
     def _get(self) -> bool:
         print("called with", self._is_realtime)
 
@@ -20,14 +20,7 @@ class CpusCpuUsageEndpoint(GeneralEndpointRealtimeHistorical):
 
     @staticmethod
     def get_name():
-        # TODO change name
-        return "CHANGE ME"
-
-    @staticmethod
-    def _get_parent():
-        from server.restful_api.data.v1.endpoints.cpus_cpu import CpusCpuEndpoint
-
-        return CpusCpuEndpoint
+        return "cpu usage measurement"
 
     @staticmethod
     def _get_children():
@@ -37,13 +30,14 @@ class CpusCpuUsageEndpoint(GeneralEndpointRealtimeHistorical):
         import queue_manager
         import time
 
-        queue_manager.requestDataQueue.put({"hardware": "cpu", "valueType": "usage"})
+        # queue_manager.requestDataQueue.put({"hardware": "cpu", "valueType": "usage"})
         queue = queue_manager.getQueue("cpu", "usage")
 
         amount = None
-        while amount is None:
-            amount = queue.get()
-            time.sleep(0.001)
+
+        timestamp = time.time()
+        amount = queue.get()
+        print(time.time() - timestamp)
 
         data = {
             'value': amount,

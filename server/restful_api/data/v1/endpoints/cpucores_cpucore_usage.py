@@ -14,8 +14,8 @@ class CpucoresCpucoreUsageEndpoint(CpucoresCpucoreGeneralChildEndpoint):
 
     @staticmethod
     def get_name():
-        # TODO change name
-        return "CHANGE ME"
+        return "cpu core usage measurement"
+
 
     def _get_realtime_data(self):
         import queue_manager

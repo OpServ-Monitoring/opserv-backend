@@ -1,7 +1,7 @@
-from server.restful_api.data.v1.endpoints.__general_realtime_historical import GeneralEndpointRealtimeHistorical
+from server.restful_api.data.v1.endpoints.cpus_cpu__general_child import CpusCpuGeneralChildEndpoint
 
 
-class CpusCpuTemperatureEndpoint(GeneralEndpointRealtimeHistorical):
+class CpusCpuTemperatureEndpoint(CpusCpuGeneralChildEndpoint):
     def _get(self) -> bool:
         if self._is_realtime:
             self.__on_realtime_action()
@@ -18,13 +18,7 @@ class CpusCpuTemperatureEndpoint(GeneralEndpointRealtimeHistorical):
 
     @staticmethod
     def get_name():
-        # TODO change name
-        return "CHANGE ME"
-
-    @staticmethod
-    def _get_parent():
-        from server.restful_api.data.v1.endpoints.cpus_cpu import CpusCpuEndpoint
-        return CpusCpuEndpoint
+        return "cpu temperature measurement"
 
     @staticmethod
     def _get_children():

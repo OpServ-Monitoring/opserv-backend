@@ -1,7 +1,7 @@
-from server.restful_api.data.v1.endpoints.__general_data_v1 import GeneralEndpointDataV1
+from server.restful_api.data.v1.endpoints.root__general_child import RootGeneralChildEndpoint
 
 
-class CpusEndpoint(GeneralEndpointDataV1):
+class CpusEndpoint(RootGeneralChildEndpoint):
     def _get(self) -> bool:
         # no data section available
         return True
@@ -14,14 +14,7 @@ class CpusEndpoint(GeneralEndpointDataV1):
 
     @staticmethod
     def get_name():
-        # TODO change name
-        return "CHANGE ME"
-
-    @staticmethod
-    def _get_parent():
-        from server.restful_api.data.v1.data_api_v1_endpoint import DataApiV1Endpoint
-
-        return DataApiV1Endpoint
+        return "cpu entities"
 
     @staticmethod
     def _get_children():

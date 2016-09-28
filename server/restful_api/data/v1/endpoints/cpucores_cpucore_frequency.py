@@ -14,8 +14,7 @@ class CpucoresCpucoreFrequencyEndpoint(CpucoresCpucoreGeneralChildEndpoint):
 
     @staticmethod
     def get_name():
-        # TODO change name
-        return "CHANGE ME"
+        return "cpu core frequency measurement"
 
     @staticmethod
     def _get_children():

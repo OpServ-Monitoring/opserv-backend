@@ -2,6 +2,7 @@ from server.restful_api.general.endpoint import Endpoint
 
 
 class ApiRootEndpoint(Endpoint):
+
     def _get(self) -> bool:
         # no data section available
         return True

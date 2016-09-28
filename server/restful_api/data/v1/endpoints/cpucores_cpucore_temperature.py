@@ -14,5 +14,5 @@ class CpucoresCpucoreTemperatureEndpoint(CpucoresCpucoreGeneralChildEndpoint):
 
     @staticmethod
     def get_name():
-        # TODO change name
-        return "CHANGE ME"
+        return "cpu core temperature measurement"
+

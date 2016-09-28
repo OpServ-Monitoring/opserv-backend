@@ -119,27 +119,34 @@ class Endpoint(metaclass=ABCMeta):
     def __generate_links(self):
         links = {}
 
+        self.__generate_self_reference(links)
+        self.__generate_parent_reference(links)
+        self.__generate_children_references(links)
+
+        return links
+
+    def __generate_self_reference(self, links):
         uri = self._request_holder.get_uri()
         name = self.get_name()
         if name is not None:
             links['self'] = self._get_link_element(uri, name)
 
+    def __generate_parent_reference(self, links):
         parent_uri = self.__get_parent_uri()
         parent_name = self.__get_parent_name()
         if parent_uri is not None and parent_name is not None:
             links['parent'] = self._get_link_element(parent_uri, parent_name)
 
+    def __generate_children_references(self, links):
         children = self.__get_children()
         if children is not None and isinstance(children, list) and len(children) > 0:
             links['children'] = children
 
-        return links
-
     @staticmethod
     @abstractmethod
     def get_name():
-        # TODO document method
         """
+        Each type of endpoint should have a name which is displayed in the api as part of the links section
         :return: A string indicating the type of resource this endpoint represents
         """
         pass
@@ -147,8 +154,8 @@ class Endpoint(metaclass=ABCMeta):
     @staticmethod
     @abstractmethod
     def _get_parent():
-        # TODO document method
         """
+        To support HATEOAS each type of endpoint should define a parent endpoint.
         :return: A (subclass of) endpoint that is the direct api-parent of this endpoint or None
         """
         pass
@@ -171,8 +178,8 @@ class Endpoint(metaclass=ABCMeta):
         return parent_name
 
     def __get_children(self):
-        # TODO document method
         """
+        Returns an array holding reference objects to append as children to the link section of the response
         :return: An array holding reference objects to append as children to the response
         """
         children = []
@@ -217,12 +224,17 @@ class Endpoint(metaclass=ABCMeta):
         Static helper that returns a reference dictionary object to use in the links section of the response
         :param uri: The uri of the referenced endpoint
         :param name: The name of the references endpoint
-        :return:
+        :return: a dictionary including the passed uri and name
         """
         return {'href': uri, 'name': name}
 
-    # TODO document methods
     def __set_fault_response(self, status_code, error_message):
+        """
+        helper method to set an error response
+        :param status_code: The http status code the response should have
+        :param error_message: The error message to display as part of the response
+        :return: None
+        """
         self._response_holder.set_body(
             {
                 "error_message": error_message
@@ -231,10 +243,19 @@ class Endpoint(metaclass=ABCMeta):
         self._response_holder.set_status(status_code)
 
     def _set_bad_request_response(self, error_message=None):
+        """
+        helper method to set a bad request response
+        :param error_message: The error_message to display
+        :return: None
+        """
         if error_message is None:
             error_message = "Bad Request"
 
         self.__set_fault_response(400, error_message)
 
     def _set_internal_server_error_response(self):
+        """
+        helper method to set a internal server error response
+        :return: None
+        """
         self.__set_fault_response(500, "Internal server error")

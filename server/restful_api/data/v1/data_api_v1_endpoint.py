@@ -1,7 +1,7 @@
-from server.restful_api.data.v1.endpoints.__general_data_v1 import GeneralEndpointDataV1
+from server.restful_api.data.v1.endpoints.root__general_child import RootGeneralChildEndpoint
 
 
-class DataApiV1Endpoint(GeneralEndpointDataV1):
+class DataApiV1Endpoint(RootGeneralChildEndpoint):
     def _get(self) -> bool:
         return True
 
@@ -11,14 +11,7 @@ class DataApiV1Endpoint(GeneralEndpointDataV1):
 
     @staticmethod
     def get_name():
-        # TODO useful name
-        return "api version entry"
-
-    @staticmethod
-    def _get_parent():
-        from server.restful_api.data.data_api_versions_endpoint import DataApiVersionsEndpoint
-
-        return DataApiVersionsEndpoint
+        return "data API v1 entry"
 
     @staticmethod
     def _get_children():

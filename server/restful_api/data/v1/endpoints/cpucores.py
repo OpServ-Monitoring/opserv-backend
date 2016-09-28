@@ -14,8 +14,7 @@ class CpucoresEndpoint(GeneralEndpointDataV1):
 
     @staticmethod
     def get_name():
-        # TODO change name
-        return "CHANGE ME"
+        return "cpu core entities"
 
     @staticmethod
     def _get_parent():
