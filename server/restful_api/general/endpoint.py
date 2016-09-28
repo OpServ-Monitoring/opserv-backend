@@ -24,20 +24,7 @@ class Endpoint(metaclass=ABCMeta):
         keep_processing = self._pre_process()
 
         if keep_processing:
-            method = self._request_holder.get_http_method()
-
-            if method == RequestHolder.METHOD_GET():
-                keep_processing = keep_processing and self._get()
-            elif method == RequestHolder.METHOD_POST():
-                keep_processing = keep_processing and self._post()
-            elif method == RequestHolder.METHOD_PUT():
-                keep_processing = keep_processing and self._put()
-            elif method == RequestHolder.METHOD_DELETE():
-                keep_processing = keep_processing and self._delete()
-            else:
-                self._set_bad_request_response(self._response_holder)
-
-                keep_processing = False
+            keep_processing = keep_processing and self.__main_process()
 
             if keep_processing:
                 self._post_process()
@@ -58,6 +45,22 @@ class Endpoint(metaclass=ABCMeta):
         self._response_holder.set_body(body)
 
         return True
+
+    def __main_process(self):
+        method = self._request_holder.get_http_method()
+
+        if method == RequestHolder.METHOD_GET():
+            return self._get()
+        elif method == RequestHolder.METHOD_POST():
+            return self._post()
+        elif method == RequestHolder.METHOD_PUT():
+            return self._put()
+        elif method == RequestHolder.METHOD_DELETE():
+            return self._delete()
+        else:
+            self._set_bad_request_response(self._response_holder)
+
+            return False
 
     @abstractmethod
     def _get(self) -> bool:
