@@ -10,9 +10,10 @@ from server.restful_api.data.v1.endpoints.cpus_cpu import CpusCpuEndpoint
 from server.restful_api.data.v1.endpoints.cpus_cpu_frequency import CpusCpuFrequencyEndpoint
 from server.restful_api.data.v1.endpoints.cpus_cpu_temperature import CpusCpuTemperatureEndpoint
 from server.restful_api.data.v1.endpoints.cpus_cpu_usage import CpusCpuUsageEndpoint
-from server.restful_api.data.v1.endpoints.gpus import GpusEndpoint
 from server.restful_api.data.v1.endpoints.gpus_gpu import GpusGpuEndpoint
 from server.restful_api.general.endpoint_management import EndpointManagement
+
+from app.server.restful_api.data.v1.endpoints.gpus import GpusEndpoint
 
 
 class EndpointManagementDataV1(EndpointManagement):

@@ -18,7 +18,7 @@ class DataApiV1Endpoint(RootGeneralChildEndpoint):
     def _get_children():
         from server.restful_api.data.v1.endpoints.cpus import CpusEndpoint
         from server.restful_api.data.v1.endpoints.cpucores import CpucoresEndpoint
-        from server.restful_api.data.v1.endpoints.gpus import GpusEndpoint
+        from app.server.restful_api.data.v1.endpoints.gpus import GpusEndpoint
 
         return [
             ("/cpus", CpusEndpoint),
