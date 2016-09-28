@@ -2,10 +2,6 @@ from server.restful_api.data.v1.endpoints.cpus_cpu__general_child import CpusCpu
 
 
 class CpusCpuFrequencyEndpoint(CpusCpuGeneralChildEndpoint):
-    def _get(self) -> bool:
-        # TODO Implement endpoint
-        return True
-
     @staticmethod
     def get_paths():
         return [
@@ -15,7 +11,3 @@ class CpusCpuFrequencyEndpoint(CpusCpuGeneralChildEndpoint):
     @staticmethod
     def get_name():
         return "cpu frequency measurement"
-
-    @staticmethod
-    def _get_children():
-        return []

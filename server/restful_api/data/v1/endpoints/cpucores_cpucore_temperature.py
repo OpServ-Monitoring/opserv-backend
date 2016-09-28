@@ -2,10 +2,6 @@ from server.restful_api.data.v1.endpoints.cpucores_cpucore__general_child import
 
 
 class CpucoresCpucoreTemperatureEndpoint(CpucoresCpucoreGeneralChildEndpoint):
-    def _get(self) -> bool:
-        # TODO Implement endpoint
-        return True
-
     @staticmethod
     def get_paths():
         return [
@@ -15,4 +11,3 @@ class CpucoresCpucoreTemperatureEndpoint(CpucoresCpucoreGeneralChildEndpoint):
     @staticmethod
     def get_name():
         return "cpu core temperature measurement"
-

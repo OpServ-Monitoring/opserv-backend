@@ -17,3 +17,7 @@ class CpucoresCpucoreGeneralChildEndpoint(GeneralEndpointRealtimeHistorical, met
         return [
             CpucoresCpucoreEndpoint.get_cpucore_id_validator()
         ]
+
+    @staticmethod
+    def _get_children():
+        return []

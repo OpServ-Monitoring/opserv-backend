@@ -1,5 +1,5 @@
 import time
-from abc import ABCMeta
+from abc import ABCMeta, abstractmethod
 
 from server.restful_api.data.v1.endpoints.__general_data_v1 import GeneralEndpointDataV1
 
@@ -20,6 +20,20 @@ class GeneralEndpointRealtimeHistorical(GeneralEndpointDataV1, metaclass=ABCMeta
             self.__read_headers()
 
         return keep_processing
+
+    def _get(self):
+        if self._is_realtime:
+            return self._get_realtime_data()
+        else:
+            return self._get_historical_data()
+
+    # TODO Make this a @abstractmethod or generalize it
+    def _get_realtime_data(self):
+        return True
+
+    # TODO Make this a @abstractmethod or generalize it
+    def _get_historical_data(self):
+        return True
 
     def __read_headers(self):
         headers = self._request_holder.get_request_headers()
