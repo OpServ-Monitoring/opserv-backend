@@ -9,3 +9,11 @@ class CpusCpuGeneralChildEndpoint(GeneralEndpointRealtimeHistorical, metaclass=A
         from server.restful_api.data.v1.endpoints.cpus_cpu import CpusCpuEndpoint
 
         return CpusCpuEndpoint
+
+    @staticmethod
+    def _get_mandatory_parameters():
+        from server.restful_api.data.v1.endpoints.cpus_cpu import CpusCpuEndpoint
+
+        return [
+            CpusCpuEndpoint.get_cpu_id_validator()
+        ]

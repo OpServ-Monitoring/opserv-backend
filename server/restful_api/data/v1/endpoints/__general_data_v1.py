@@ -31,17 +31,6 @@ class GeneralEndpointDataV1(Endpoint, metaclass=ABCMeta):
 
         return True
 
-    def _post_process(self):
-        response_headers = self._response_holder.get_response_headers()
-
-        response_headers['Access-Control-Allow-Origin'] = '*'
-        response_headers['Access-Control-Allow-Headers'] = 'Content-Type,Authorization'
-        response_headers['Access-Control-Allow-Methods'] = 'GET'
-
-        self._response_holder.set_response_headers(response_headers)
-
-        return True
-
     def _put(self) -> bool:
         """
         The PUT-method is not supported by this api version, thus an response indicating a bad request is returned
@@ -74,6 +63,17 @@ class GeneralEndpointDataV1(Endpoint, metaclass=ABCMeta):
         )
 
         return False
+
+    def _post_process(self):
+        response_headers = self._response_holder.get_response_headers()
+
+        response_headers['Access-Control-Allow-Origin'] = '*'
+        response_headers['Access-Control-Allow-Headers'] = 'Content-Type,Authorization'
+        response_headers['Access-Control-Allow-Methods'] = 'GET'
+
+        self._response_holder.set_response_headers(response_headers)
+
+        return True
 
     @staticmethod
     def _get_mandatory_parameters():

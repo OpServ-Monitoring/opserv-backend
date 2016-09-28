@@ -27,10 +27,20 @@ class CpusCpuEndpoint(GeneralEndpointDataV1):
         from server.restful_api.data.v1.endpoints.cpus_cpu_frequency import CpusCpuFrequencyEndpoint
         from server.restful_api.data.v1.endpoints.cpus_cpu_temperature import CpusCpuTemperatureEndpoint
         from server.restful_api.data.v1.endpoints.cpus_cpu_usage import CpusCpuUsageEndpoint
-        from server.restful_api.data.v1.endpoints.cpucores import CpucoresEndpoint
 
         return [
             ("/frequency", CpusCpuFrequencyEndpoint),
             ("/temperature", CpusCpuTemperatureEndpoint),
             ("/usage", CpusCpuUsageEndpoint)
         ]
+
+    @staticmethod
+    def _get_mandatory_parameters():
+        return [
+            CpusCpuEndpoint.get_cpu_id_validator()
+        ]
+
+    @staticmethod
+    def get_cpu_id_validator():
+        # TODO Validate cpu id
+        return "cpu", lambda x: int(x) > 4

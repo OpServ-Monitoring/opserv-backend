@@ -35,3 +35,14 @@ class CpucoresCpucoreEndpoint(GeneralEndpointDataV1):
             ("/temperature", CpucoresCpucoreTemperatureEndpoint),
             ("/usage", CpucoresCpucoreUsageEndpoint)
         ]
+
+    @staticmethod
+    def _get_mandatory_parameters():
+        return [
+            CpucoresCpucoreEndpoint.get_cpucore_id_validator()
+        ]
+
+    @staticmethod
+    def get_cpucore_id_validator():
+        # TODO Validate cpucore id
+        return "cpu_core", lambda x: int(x) > 4
