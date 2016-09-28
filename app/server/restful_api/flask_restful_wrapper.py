@@ -1,7 +1,7 @@
 from flask import request
 from flask_restful import Api, Resource
 
-from server.restful_api.general.requestholder import RequestHolder
+from app.server.restful_api.general.requestholder import RequestHolder
 from app.server.restful_api.rest_api_management import RestApiManagement
 
 

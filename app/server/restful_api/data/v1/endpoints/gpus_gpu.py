@@ -1,4 +1,4 @@
-from server.restful_api.data.v1.endpoints.__general_data_v1 import GeneralEndpointDataV1
+from app.server.restful_api.data.v1.endpoints.__general_data_v1 import GeneralEndpointDataV1
 
 
 class GpusGpuEndpoint(GeneralEndpointDataV1):

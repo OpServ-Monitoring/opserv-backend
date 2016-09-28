@@ -1,4 +1,4 @@
-from server.restful_api.data.v1.endpoints.__general_data_v1 import GeneralEndpointDataV1
+from app.server.restful_api.data.v1.endpoints.__general_data_v1 import GeneralEndpointDataV1
 
 
 class CpucoresEndpoint(GeneralEndpointDataV1):
@@ -18,7 +18,7 @@ class CpucoresEndpoint(GeneralEndpointDataV1):
 
     @staticmethod
     def _get_parent():
-        from server.restful_api.data.v1.data_api_v1_endpoint import DataApiV1Endpoint
+        from app.server.restful_api.data.v1.data_api_v1_endpoint import DataApiV1Endpoint
 
         return DataApiV1Endpoint
 
@@ -45,7 +45,7 @@ class CpucoresEndpoint(GeneralEndpointDataV1):
 
     @staticmethod
     def _get_children():
-        from server.restful_api.data.v1.endpoints.cpucores_cpucore import CpucoresCpucoreEndpoint
+        from app.server.restful_api.data.v1.endpoints.cpucores_cpucore import CpucoresCpucoreEndpoint
         children = []
 
         ids = CpucoresEndpoint.__get_children_ids()

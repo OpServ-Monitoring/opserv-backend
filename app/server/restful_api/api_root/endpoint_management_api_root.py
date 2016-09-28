@@ -1,5 +1,5 @@
-from server.restful_api.api_root.endpoint_api_root import ApiRootEndpoint
-from server.restful_api.general.endpoint_management import EndpointManagement
+from app.server.restful_api.api_root.endpoint_api_root import ApiRootEndpoint
+from app.server.restful_api.general.endpoint_management import EndpointManagement
 
 
 class EndpointManagementRoot(EndpointManagement):

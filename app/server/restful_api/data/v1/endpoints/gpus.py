@@ -1,4 +1,4 @@
-from server.restful_api.data.v1.endpoints.root__general_child import RootGeneralChildEndpoint
+from app.server.restful_api.data.v1.endpoints.root__general_child import RootGeneralChildEndpoint
 
 
 class GpusEndpoint(RootGeneralChildEndpoint):
@@ -18,7 +18,7 @@ class GpusEndpoint(RootGeneralChildEndpoint):
 
     @staticmethod
     def _get_children():
-        from server.restful_api.data.v1.endpoints.gpus_gpu import GpusGpuEndpoint
+        from app.server.restful_api.data.v1.endpoints.gpus_gpu import GpusGpuEndpoint
 
         children = []
 

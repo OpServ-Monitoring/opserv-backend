@@ -6,7 +6,7 @@
 #
 
 
-from misc.helper import importIfExists
+from app.misc.helper import importIfExists
 
 # Optional depency importing
 psutil = importIfExists("psutil")

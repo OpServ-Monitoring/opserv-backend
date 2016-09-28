@@ -2,8 +2,8 @@ import re
 from abc import ABCMeta, abstractmethod
 from collections import Iterable
 
-from server.restful_api.general.requestholder import RequestHolder
-from server.restful_api.general.responseholder import ResponseHolder
+from app.server.restful_api.general.requestholder import RequestHolder
+from app.server.restful_api.general.responseholder import ResponseHolder
 
 
 class Endpoint(metaclass=ABCMeta):

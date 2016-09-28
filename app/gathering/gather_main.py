@@ -10,8 +10,8 @@ import sched
 import threading
 import time
 
-import queue_manager
-from gathering.measuring.measure_main import measure_core, measure_cpu, measure_disk, \
+from app import queue_manager
+from app.gathering.measuring.measure_main import measure_core, measure_cpu, measure_disk, \
     measure_gpu, measure_memory, measure_network, measure_partition, measure_process, get_system_data
 
 log = logging.getLogger("opserv.gathering")
