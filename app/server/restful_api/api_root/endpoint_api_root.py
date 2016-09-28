@@ -1,4 +1,4 @@
-from app.server.restful_api.general.endpoint import Endpoint
+from server.restful_api.general.endpoint import Endpoint
 
 
 class ApiRootEndpoint(Endpoint):
@@ -45,7 +45,7 @@ class ApiRootEndpoint(Endpoint):
 
     @staticmethod
     def _get_children():
-        from app.server.restful_api.data.data_api_versions_endpoint import DataApiVersionsEndpoint
+        from server.restful_api.data.data_api_versions_endpoint import DataApiVersionsEndpoint
 
         return [
             ("/data", DataApiVersionsEndpoint)

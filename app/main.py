@@ -12,7 +12,7 @@ import logging
 from gathering.gather_main import GatherThread
 from misc.logging_helper import setup_logger
 
-import app.server.__management as server
+import server.__management as server
 
 LOGGINGLEVEL = logging.DEBUG
 

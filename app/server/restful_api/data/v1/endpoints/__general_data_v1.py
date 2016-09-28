@@ -1,6 +1,6 @@
 from abc import ABCMeta
 
-from app.server.restful_api.general.endpoint import Endpoint
+from server.restful_api.general.endpoint import Endpoint
 
 
 class GeneralEndpointDataV1(Endpoint, metaclass=ABCMeta):

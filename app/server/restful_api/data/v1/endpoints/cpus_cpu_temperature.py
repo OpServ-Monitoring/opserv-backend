@@ -1,4 +1,4 @@
-from app.server.restful_api.data.v1.endpoints.cpus_cpu__general_child import CpusCpuGeneralChildEndpoint
+from server.restful_api.data.v1.endpoints.cpus_cpu__general_child import CpusCpuGeneralChildEndpoint
 
 
 class CpusCpuTemperatureEndpoint(CpusCpuGeneralChildEndpoint):

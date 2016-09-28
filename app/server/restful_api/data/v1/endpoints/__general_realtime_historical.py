@@ -1,7 +1,7 @@
 import time
 from abc import ABCMeta
 
-from app.server.restful_api.data.v1.endpoints.__general_data_v1 import GeneralEndpointDataV1
+from server.restful_api.data.v1.endpoints.__general_data_v1 import GeneralEndpointDataV1
 
 
 class GeneralEndpointRealtimeHistorical(GeneralEndpointDataV1, metaclass=ABCMeta):

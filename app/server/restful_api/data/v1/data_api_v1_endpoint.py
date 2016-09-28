@@ -1,4 +1,4 @@
-from app.server.restful_api.data.v1.endpoints.root__general_child import RootGeneralChildEndpoint
+from server.restful_api.data.v1.endpoints.root__general_child import RootGeneralChildEndpoint
 
 
 class DataApiV1Endpoint(RootGeneralChildEndpoint):
@@ -16,9 +16,9 @@ class DataApiV1Endpoint(RootGeneralChildEndpoint):
 
     @staticmethod
     def _get_children():
-        from app.server.restful_api.data.v1.endpoints.cpus import CpusEndpoint
-        from app.server.restful_api.data.v1.endpoints.cpucores import CpucoresEndpoint
-        from app.server.restful_api.data.v1.endpoints.gpus import GpusEndpoint
+        from server.restful_api.data.v1.endpoints.cpus import CpusEndpoint
+        from server.restful_api.data.v1.endpoints.cpucores import CpucoresEndpoint
+        from server.restful_api.data.v1.endpoints.gpus import GpusEndpoint
 
         return [
             ("/cpus", CpusEndpoint),
