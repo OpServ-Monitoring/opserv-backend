@@ -25,6 +25,9 @@ LOG_TO_CONSOLE = True
 LOG_GATHERING = True
 LOG_SERVER = True
 
+DATA_TEST_TIMEOUT = 2.5
+MAX_TEST_ITERATIONS = 10
+
 log = logging.getLogger("opserv.gatheringTest")
 log.setLevel(logging.DEBUG)
 
@@ -91,8 +94,10 @@ def testAllHardware():
         for vT in implemented_hardware[hw]:
             if HARDWARE_DEFAULTS[hw][0] and HARDWARE_DEFAULTS[hw][1] != None:
                 queue_manager.requestDataQueue.put({"hardware": hw, "valueType": vT, "args" : HARDWARE_DEFAULTS[hw][1]})
+                queue_manager.getQueue(hw,vT,HARDWARE_DEFAULTS[hw][1]).get(timeout=DATA_TEST_TIMEOUT)
             elif not HARDWARE_DEFAULTS[hw][0]:
                 queue_manager.requestDataQueue.put({"hardware": hw, "valueType": vT})
+                queue_manager.getQueue(hw,vT).get(timeout=DATA_TEST_TIMEOUT)
 
 class TestThread(threading.Thread):
     def __init__(self):
@@ -104,10 +109,13 @@ class TestThread(threading.Thread):
         return
 
     def run(self):
+        startTimeTest = time.time()
         insertTestDataIntoQueue()
         testInsertSystemGathering()
         testAllHardware()
-        while True:
+        currentIterations = 0
+        startTimeIterations = time.time()
+        while currentIterations < MAX_TEST_ITERATIONS:
             while not queue_manager.getQueue("cpu", 0, "load").empty():
                 log.debug(queue_manager.getQueue("cpu", 0, "load").get(False))
 
@@ -115,10 +123,13 @@ class TestThread(threading.Thread):
                 log.debug(queue_manager.getQueue("cpu", "load", 0).get(False))
             while not queue_manager.getQueue("memory", "used").empty():
                 log.debug(queue_manager.getQueue("memory", "used").get(False))
+            currentIterations += 1
             time.sleep(0.5)
+            log.debug(currentIterations)
             log.debug("Tick")
-
-
+        endTime = time.time()
+        log.info("Completed Test with {0} iterations over {1} seconds".format(currentIterations, endTime - startTimeIterations ))
+        log.info("Whole test finished in {} seconds".format(endTime - startTimeTest))
 if __name__ == '__main__':
     setup_logger(LOG_TO_CONSOLE, LOG_TO_FILE, LOGGINGLEVEL, LOG_SERVER, LOG_GATHERING)
     start_gather_thread()
