@@ -11,12 +11,8 @@ import threading
 import time
 
 import queue_manager
-from common.helper import importIfExists
-
-# Optional depency importing
-psutil = importIfExists("psutil")
-pynvml = importIfExists("pynvml")
-pyspectator = importIfExists("pyspectator")
+from gathering.measuring.measure_main import measure_core, measure_cpu, measure_disk, \
+    measure_gpu, measure_memory, measure_network, measure_partition, measure_process, get_system_data
 
 log = logging.getLogger("opserv.gathering")
 log.setLevel(logging.DEBUG)
@@ -42,7 +38,7 @@ class GatherThread(threading.Thread):
         self.s.enter(1, 1, self.queueListener)
         # Gathering Loop will be indefinite
         while 1:
-            self.s.run()
+            self.s.run(blocking=False)
             time.sleep(0.05)  # To keep CPU usage low, the loop has to sleep atleast a bit
 
         # This point shouldn't be reached
@@ -90,34 +86,27 @@ class GatherThread(threading.Thread):
         hardware = hardware.lower()
         valueType = valueType.lower()
         if hardware == "cpu":
-            if valueType == "load":
-                return psutil.cpu_percent()
-            elif valueType == "cores":
-                return psutil.cpu_count()
+            return measure_cpu(valueType, args)
         elif hardware == "memory":
-            if valueType == "total":
-                return psutil.virtual_memory().total
-            elif valueType == "free":
-                return psutil.virtual_memory().available
-            elif valueType == "used":
-                return psutil.virtual_memory().used
+            return measure_memory(valueType, args)
         elif hardware == "disk":
-            if valueType == "partitions":
-                return str(psutil.disk_partitions())
+            return measure_disk(valueType, args)
+        elif hardware == "partition":
+            return measure_partition(valueType, args)
         elif hardware == "process":
-            if valueType == "getall":
-                return str(psutil.pids())
-        elif hardware == "system":
-            if valueType == "cpus":
-                return 1
-            if valueType == "cores":
-                return psutil.cpu_count()
-            if valueType == "gpus":
-                return 1
-            if valueType == "disks":
-                return str(psutil.disk_partitions())
+            return measure_process(valueType, args)
+        elif hardware == "core":
+            return measure_core(valueType, args)
+        elif hardware == "gpu":
+            return measure_gpu(valueType, args)
+        elif hardware == "network":
+            return measure_network(valueType, args)
 
-        log.debug("Tried to get unimplemented hardware/measurementType")
+        # Server Thread wants this to get basic system information
+        elif hardware == "system":
+            return get_system_data(valueType)
+
+        log.debug("Tried to get unimplemented hardware")
         return "0"
 
     def gatherTask(self, gatherData):
@@ -138,6 +127,7 @@ class GatherThread(threading.Thread):
         """
         # Remove old scheduled event
         self.s.cancel(self.gatherers[(newRate["hardware"], newRate["valueType"])])
+        self.gatherers.pop((newRate["hardware"], newRate["valueType"]))
         if newRate["delayms"] > 0:
             self.createGatherer(newRate)
 

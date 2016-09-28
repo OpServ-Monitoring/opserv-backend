@@ -1,3 +1,12 @@
+#
+# Main system launch file, creates the gathering thread and starts flask
+#
+# 27.09.2016
+#
+# Usage: Simply launch this file
+#
+
+
 import logging
 
 import database.dbtest as tst

@@ -12,6 +12,8 @@
 
 from queue import Queue
 
+from misc.constants import HARDWARE_DEFAULTS
+
 requestDataQueue = Queue()
 setGatheringRateQueue = Queue()
 
@@ -20,27 +22,15 @@ realtimeQueues = {
     "gpu": {},
     "memory": {},
     "disk": {},
-    "fs": {},
+    "partition": {},
     "process": {},
+    "network": {},
     "system": {}
 }
 
-# This described the default values aswell as whether specific hardware requires additional argument information
-# The tuple has this structure: (ARGUMENTNECESSARY, DEFAULTVALUE)
-REALTIME_DEFAULTS = {
-    "cpu": (True, 0),
-    "gpu": (True, 0),
-    "memory": (False, None),
-    "disk": (True, None),
-    "fs": (True, None),
-    "process": (True, "all"),
-    "system": (False, None)
-}
-
-""" Returns either the requested queue or creates a new one """
-
 
 def getQueue(hardware, valueType, args=None):
+    """ Returns either the requested queue or creates a new one """
     # Check if the hardware exists
     assertHardwareExists(hardware)
     # TODO MORE ASSERTS ON ARGS & VALUETYPE
@@ -50,7 +40,7 @@ def getQueue(hardware, valueType, args=None):
         if argumentIsOptional(hardware):
             args = None
         elif argumentHasDefault(hardware):
-            args = REALTIME_DEFAULTS[hardware][1]
+            args = HARDWARE_DEFAULTS[hardware][1]
         else:
             raise Exception("Trying to access queue without specifying the argument. Hardware: {}".format(hardware))
 
@@ -74,12 +64,12 @@ def removeQueue(hardware, valueType, args):
 
 def argumentIsOptional(hardware):
     """ Checks whether for the given hardware an argument is optional """
-    return not REALTIME_DEFAULTS[hardware][0]
+    return not HARDWARE_DEFAULTS[hardware][0]
 
 
 def argumentHasDefault(hardware):
     """ Checks whether the given hardware has a default argument """
-    if REALTIME_DEFAULTS[hardware][1] != None:
+    if HARDWARE_DEFAULTS[hardware][1] != None:
         return True
     return False
 
@@ -116,5 +106,5 @@ def queueExists(hardware, valueType, args):
 
 def assertHardwareExists(hardware):
     """ Simple assert to check if the given hardware exists in the constants and realtime dict """
-    if not hardware in realtimeQueues or not hardware in REALTIME_DEFAULTS:
+    if not hardware in realtimeQueues or not hardware in HARDWARE_DEFAULTS:
         raise NotImplementedError(hardware)
