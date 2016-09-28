@@ -5,29 +5,32 @@ from server.restful_api.general.endpoint import Endpoint
 
 class GeneralEndpointDataV1(Endpoint, metaclass=ABCMeta):
     def _pre_process(self):
-        return super(GeneralEndpointDataV1, self)._pre_process() and self.__includes_mandatory_parameters()
+        keep_processing = super(GeneralEndpointDataV1, self)._pre_process()
 
-    def __includes_mandatory_parameters(self):
         mandatory_parameters = self._get_mandatory_parameters()
+        if keep_processing and mandatory_parameters is not None:
+            keep_processing = self.__meets_mandatory_parameters(mandatory_parameters)
 
-        if mandatory_parameters is not None:
-            for mandatory_parameter in mandatory_parameters:
-                parameter_name = mandatory_parameter[0]
-                verification_function = mandatory_parameter[1]
+        return keep_processing
 
-                actual_value = self._request_holder.get_params()[parameter_name]
-                if actual_value is None:
-                    self._set_bad_request_response("parameter " + parameter_name + " missing.")
+    def __meets_mandatory_parameters(self, mandatory_parameters):
+        for mandatory_parameter in mandatory_parameters:
+            parameter_name = mandatory_parameter[0]
+            verification_function = mandatory_parameter[1]
 
-                    return False
-                elif verification_function is None or not callable(verification_function):
-                    self._set_internal_server_error_response()
+            actual_value = self._request_holder.get_params()[parameter_name]
+            if actual_value is None:
+                self._set_bad_request_response("parameter " + parameter_name + " missing.")
 
-                    return False
-                elif not verification_function(actual_value):
-                    self._set_bad_request_response("parameter " + parameter_name + " is not properly formatted.")
+                return False
+            elif verification_function is None or not callable(verification_function):
+                self._set_internal_server_error_response()
 
-                    return False
+                return False
+            elif not verification_function(actual_value):
+                self._set_bad_request_response("parameter " + parameter_name + " is not properly formatted.")
+
+                return False
 
         return True
 

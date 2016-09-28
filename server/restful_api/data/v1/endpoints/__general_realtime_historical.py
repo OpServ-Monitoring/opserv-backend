@@ -17,31 +17,7 @@ class GeneralEndpointRealtimeHistorical(GeneralEndpointDataV1, metaclass=ABCMeta
         keep_processing = super(GeneralEndpointRealtimeHistorical, self)._pre_process()
 
         if keep_processing:
-            headers = self._request_holder.get_request_headers()
-
-            self._is_realtime = "realtime" in headers and headers["realtime"] == "true"
-
-            if not self._is_realtime:
-                if "start" in headers and headers["start"].isdigit():
-                    start = int(headers["start"])
-
-                    if start > 0:
-                        self._start = start
-
-                if "end" in headers and headers["end"].isdigit():
-                    end = int(headers["end"])
-
-                    if end > self._start:
-                        self._end = end
-
-                if "limit" in headers and headers["limit"].isdigit():
-                    limit = int(headers["limit"])
-
-                    if limit > 0:
-                        if limit < 5000:
-                            self._limit = limit
-                        else:
-                            self._limit = 5000
+            self.__read_headers()
 
         return keep_processing
 
@@ -72,11 +48,10 @@ class GeneralEndpointRealtimeHistorical(GeneralEndpointDataV1, metaclass=ABCMeta
         if "limit" in headers and headers["limit"].isdigit():
             limit = int(headers["limit"])
 
-            if limit > 0:
-                if limit < 5000:
-                    self._limit = limit
-                else:
-                    self._limit = 5000
+            if 0 > limit >= 5000:
+                self._limit = limit
+            elif limit > 5000:
+                self._limit = 5000
 
     @staticmethod
     def _get_children():
