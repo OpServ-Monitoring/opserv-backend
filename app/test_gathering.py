@@ -27,6 +27,7 @@ LOG_SERVER = True
 
 DATA_TEST_TIMEOUT = 2.5
 MAX_TEST_ITERATIONS = 10
+ITERATION_TEST_SPEED = 500
 
 log = logging.getLogger("opserv.gatheringTest")
 log.setLevel(logging.DEBUG)
@@ -38,6 +39,7 @@ def start_gather_thread():
     gather_thread = GatherThread()
     gather_thread.daemon = True
     gather_thread.start()
+    return gather_thread
 
 
 def start_test_thread():
@@ -45,7 +47,7 @@ def start_test_thread():
     test_thread = TestThread()
     test_thread.daemon = True
     test_thread.start()
-
+    return test_thread
 
 def insertTestDataIntoQueue():
     """
@@ -99,6 +101,22 @@ def testAllHardware():
                 queue_manager.requestDataQueue.put({"hardware": hw, "valueType": vT})
                 queue_manager.getQueue(hw,vT).get(timeout=DATA_TEST_TIMEOUT)
 
+def testRateSpeed(iterations, speed):
+    # Start rate update with specifc speed
+    queue_manager.setGatheringRateQueue.put({"hardware": "cpu", "valueType" : "usage", "delayms" : speed})
+
+
+    currentIterations = 0
+    # Wait while data arrives
+    while currentIterations < iterations:
+        # Calc mS to seconds and add half a second timeout buffer
+        if not queue_manager.getQueue("cpu", "usage").empty():
+            queue_manager.getQueue("cpu", "usage").get(timeout=(speed / 1000) + 0.5)        
+            currentIterations += 1
+        time.sleep(speed / 10000)
+    return
+
+
 class TestThread(threading.Thread):
     def __init__(self):
         """
@@ -113,26 +131,25 @@ class TestThread(threading.Thread):
         insertTestDataIntoQueue()
         testInsertSystemGathering()
         testAllHardware()
-        currentIterations = 0
-        startTimeIterations = time.time()
-        while currentIterations < MAX_TEST_ITERATIONS:
-            while not queue_manager.getQueue("cpu", 0, "load").empty():
-                log.debug(queue_manager.getQueue("cpu", 0, "load").get(False))
 
-            while not queue_manager.getQueue("cpu", "load", 0).empty():
-                log.debug(queue_manager.getQueue("cpu", "load", 0).get(False))
-            while not queue_manager.getQueue("memory", "used").empty():
-                log.debug(queue_manager.getQueue("memory", "used").get(False))
-            currentIterations += 1
-            time.sleep(0.5)
-            log.debug(currentIterations)
-            log.debug("Tick")
+
+        startTimeIterations = time.time()
+        testRateSpeed(MAX_TEST_ITERATIONS, ITERATION_TEST_SPEED)
         endTime = time.time()
-        log.info("Completed Test with {0} iterations over {1} seconds".format(currentIterations, endTime - startTimeIterations ))
+
+
+        estimatedTime = MAX_TEST_ITERATIONS * (ITERATION_TEST_SPEED / 1000)
+        diffTime = estimatedTime - (endTime - startTimeIterations)
+        log.info("Completed Test with {0} iterations over {1} seconds".format(MAX_TEST_ITERATIONS, endTime - startTimeIterations ))
+        log.info("Estimated Time was {0} seconds, which is only {1} seconds off the actual results".format(estimatedTime, diffTime))
         log.info("Whole test finished in {} seconds".format(endTime - startTimeTest))
+
+
 if __name__ == '__main__':
     setup_logger(LOG_TO_CONSOLE, LOG_TO_FILE, LOGGINGLEVEL, LOG_SERVER, LOG_GATHERING)
-    start_gather_thread()
-    start_test_thread()
-    while True:
-        time.sleep(5)
+    gatherThread = start_gather_thread()
+    testThread = start_test_thread()
+    while testThread.isAlive():
+        time.sleep(1) # Main Thread cannot die apparently
+
+    log.info("Testing has concluded, goodbye!")
