@@ -1,6 +1,8 @@
 import re
 from abc import ABCMeta, abstractmethod
 
+from collections import Iterable
+
 from server.restful_api.general.requestholder import RequestHolder
 from server.restful_api.general.responseholder import ResponseHolder
 
@@ -143,10 +145,7 @@ class Endpoint(metaclass=ABCMeta):
         pass
 
     def __get_parent_uri(self):
-        regex = "(.+\/api.*)\/.+(\?.*){0,1}"
-        uri = self._request_holder.get_uri()
-
-        found_match = re.match(regex, uri)
+        found_match = self.__match_for_parent_path()
 
         if found_match:
             return found_match.group(1)
@@ -169,10 +168,7 @@ class Endpoint(metaclass=ABCMeta):
         """
         children = []
 
-        regex = "(.+\/api.*\/*.*)(\?.*){0,1}"
-        uri = self._request_holder.get_uri()
-
-        found_match = re.match(regex, uri)
+        found_match = self.__match_for_children_base_path()
         if found_match:
             base_path = found_match.group(1)
 
@@ -186,10 +182,35 @@ class Endpoint(metaclass=ABCMeta):
 
         return children
 
-    @abstractmethod
     @staticmethod
-    def _get_children():
+    @abstractmethod
+    def _get_children() -> Iterable:
         pass
+
+    def __match_uri_with_regex(self, regex):
+        uri = self._request_holder.get_uri()
+
+        return re.match(regex, uri)
+
+    def __match_for_children_base_path(self):
+        regex = "(.+\/api.*\/*.*)(\?.*){0,1}"
+
+        return self.__match_uri_with_regex(regex)
+
+    def __match_for_parent_path(self):
+        regex = "(.+\/api.*)\/.+(\?.*){0,1}"
+
+        return self.__match_uri_with_regex(regex)
+
+    @staticmethod
+    def _get_link_element(uri, name):
+        """
+        Static helper that returns a reference dictionary object to use in the links section of the response
+        :param uri: The uri of the referenced endpoint
+        :param name: The name of the references endpoint
+        :return:
+        """
+        return {'href': uri, 'name': name}
 
     @staticmethod
     def _get_bad_request_response(response, error_message=None):
@@ -210,13 +231,3 @@ class Endpoint(metaclass=ABCMeta):
         response.set_status(400)
 
         return response
-
-    @staticmethod
-    def _get_link_element(uri, name):
-        """
-        Static helper that returns a reference dictionary object to use in the links section of the response
-        :param uri: The uri of the referenced endpoint
-        :param name: The name of the references endpoint
-        :return:
-        """
-        return {'href': uri, 'name': name}
