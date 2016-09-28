@@ -52,38 +52,3 @@ def summarize_data(data_list, limit):
         })
 
     return limited_list
-
-
-import time
-
-time1 = time.time()
-get_split_indices(1000000, 20)
-print(time.time() - time1)
-
-time1 = time.time()
-get_split_indices(1000000, 50)
-print(time.time() - time1)
-
-time1 = time.time()
-get_split_indices(1000000, 100)
-print(time.time() - time1)
-
-time1 = time.time()
-get_split_indices(1000000, 250)
-print(time.time() - time1)
-
-time1 = time.time()
-get_split_indices(1000000, 500)
-print(time.time() - time1)
-
-time1 = time.time()
-get_split_indices(1000000, 1000)
-print(time.time() - time1)
-
-time1 = time.time()
-get_split_indices(1000000, 2500)
-print(time.time() - time1)
-
-time1 = time.time()
-get_split_indices(1000000, 999999)
-print(time.time() - time1)

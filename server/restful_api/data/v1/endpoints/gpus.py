@@ -22,18 +22,20 @@ class GpusEndpoint(GeneralEndpointDataV1):
 
         return DataApiV1Endpoint
 
-    def _get_children(self):
+    @staticmethod
+    def _get_children():
         from server.restful_api.data.v1.endpoints.gpus_gpu import GpusGpuEndpoint
 
         children = []
 
-        ids = self.__get_children_ids()
+        ids = GpusEndpoint.__get_children_ids()
         for child_id in ids:
             children.append(("/" + child_id, GpusGpuEndpoint))
 
         return children
 
-    def __get_children_ids(self):
+    @staticmethod
+    def __get_children_ids():
         # TODO Implement dynamic children
         import queue_manager
         import time

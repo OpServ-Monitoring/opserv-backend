@@ -23,7 +23,8 @@ class GpusGpuEndpoint(GeneralEndpointParameterized):
 
         return GpusEndpoint
 
-    def _get_children(self):
+    @staticmethod
+    def _get_children():
         return []
 
     @staticmethod

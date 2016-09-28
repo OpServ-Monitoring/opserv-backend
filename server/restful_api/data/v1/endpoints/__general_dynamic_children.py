@@ -7,7 +7,8 @@ class GeneralEndpointDynamicChildren(GeneralEndpointDataV1, metaclass=ABCMeta):
     def _get(self):
         pass
 
-    def _get_children(self):
+    @staticmethod
+    def _get_children():
         from server.restful_api.data.v1.endpoints.cpus_cpu import CpusCpuEndpoint
 
         children = []

@@ -187,7 +187,8 @@ class Endpoint(metaclass=ABCMeta):
         return children
 
     @abstractmethod
-    def _get_children(self):
+    @staticmethod
+    def _get_children():
         pass
 
     @staticmethod

@@ -9,7 +9,6 @@
 
 import logging
 
-import database.dbtest as tst
 import server.__management as server
 from gathering.gather_main import GatherThread
 from misc.logging_helper import setup_logger
@@ -43,5 +42,3 @@ if __name__ == '__main__':
 
     start_gather_thread()
     start_server()
-
-    tst.run_me()

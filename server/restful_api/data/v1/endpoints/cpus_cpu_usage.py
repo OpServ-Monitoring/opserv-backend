@@ -1,10 +1,12 @@
-from server.restful_api.data.v1.endpoints.__general_data_v1 import GeneralEndpointDataV1
+from server.restful_api.data.v1.endpoints.__general_realtime_historical import GeneralEndpointRealtimeHistorical
 
 
-class CpusCpuUsageEndpoint(GeneralEndpointDataV1):
+class CpusCpuUsageEndpoint(GeneralEndpointRealtimeHistorical):
     def _get(self):
-        # TODO Implement endpoint
-        pass
+        if self._is_realtime:
+            self._get_realtime_data()
+        else:
+            pass  # self._get_historical_data()
 
     @staticmethod
     def get_paths():
@@ -23,5 +25,25 @@ class CpusCpuUsageEndpoint(GeneralEndpointDataV1):
 
         return CpusCpuEndpoint
 
-    def _get_children(self):
+    @staticmethod
+    def _get_children():
         return []
+
+    def _get_realtime_data(self):
+        import queue_manager
+        import time
+
+        queue_manager.requestDataQueue.put({"hardware": "cpu", "valueType": "load"})
+        queue = queue_manager.getQueue("cpu", "load")
+
+        amount = None
+        while amount is None:
+            amount = queue.get()
+            time.sleep(0.001)
+
+        data = {
+            'value': amount,
+            'unit': 'percent'
+        }
+
+        self._response_holder.set_body_data(data)

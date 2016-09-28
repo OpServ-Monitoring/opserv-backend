@@ -32,22 +32,21 @@ class CpucoresCpucoreUsageEndpoint(GeneralEndpointRealtimeHistorical):
         return CpucoresCpucoreEndpoint
 
     def _get_realtime_data(self):
-        # TODO improve
-        data = {
-            'values': [],
-            'unit': 'percent'
-        }
-
-        from random import randint
+        import queue_manager
         import time
 
-        for i in range(0, 5000):
-            raw_string = {
-                'value': randint(0, 100),
-                'timestamp': int(time.time() * 1000)
-            }
+        queue_manager.requestDataQueue.put({"hardware": "cores", "valueType": "usage"})
+        queue = queue_manager.getQueue("cores", "usage")
 
-            data['values'].append(raw_string)
+        amount = None
+        while amount is None:
+            amount = queue.get()
+            time.sleep(0.02)
+
+        data = {
+            'value': amount,
+            'unit': 'percent'
+        }
 
         self._response_holder.set_body_data(data)
 

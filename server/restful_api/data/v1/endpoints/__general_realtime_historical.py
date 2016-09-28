@@ -39,5 +39,6 @@ class GeneralEndpointRealtimeHistorical(GeneralEndpointDataV1, metaclass=ABCMeta
                     else:
                         self._limit = 5000
 
-    def _get_children(self):
+    @staticmethod
+    def _get_children():
         return []

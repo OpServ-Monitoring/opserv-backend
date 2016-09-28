@@ -38,7 +38,8 @@ class ApiRootEndpoint(Endpoint):
     def _get_parent():
         return None
 
-    def _get_children(self):
+    @staticmethod
+    def _get_children():
         from server.restful_api.data.data_api_versions_endpoint import DataApiVersionsEndpoint
 
         return [

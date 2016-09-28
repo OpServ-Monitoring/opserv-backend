@@ -23,7 +23,8 @@ class CpusCpuEndpoint(GeneralEndpointDataV1):
 
         return CpusEndpoint
 
-    def _get_children(self):
+    @staticmethod
+    def _get_children():
         from server.restful_api.data.v1.endpoints.cpus_cpu_frequency import CpusCpuFrequencyEndpoint
         from server.restful_api.data.v1.endpoints.cpus_cpu_temperature import CpusCpuTemperatureEndpoint
         from server.restful_api.data.v1.endpoints.cpus_cpu_usage import CpusCpuUsageEndpoint

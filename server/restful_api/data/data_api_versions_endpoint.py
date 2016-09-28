@@ -21,7 +21,8 @@ class DataApiVersionsEndpoint(Endpoint):
     def get_paths():
         return [""]
 
-    def _get_children(self):
+    @staticmethod
+    def _get_children():
         from server.restful_api.data.v1.data_api_v1_endpoint import DataApiV1Endpoint
 
         return [

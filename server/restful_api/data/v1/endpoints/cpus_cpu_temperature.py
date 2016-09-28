@@ -24,7 +24,8 @@ class CpusCpuTemperatureEndpoint(GeneralEndpointRealtimeHistorical):
         from server.restful_api.data.v1.endpoints.cpus_cpu import CpusCpuEndpoint
         return CpusCpuEndpoint
 
-    def _get_children(self):
+    @staticmethod
+    def _get_children():
         return []
 
     def __on_realtime_action(self):

@@ -23,5 +23,6 @@ class CpucoresCpucoreFrequencyEndpoint(GeneralEndpointDataV1):
 
         return CpucoresCpucoreEndpoint
 
-    def _get_children(self):
+    @staticmethod
+    def _get_children():
         return []
