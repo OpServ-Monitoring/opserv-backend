@@ -9,14 +9,14 @@ def get_split_indices(element_count, limit):
     if element_count <= limit:
         # No need to summarize data if element_count does not exceed the limit
         log.error("Method: get_split_indices; Error: The element_count does not exceed the limit. Actual values were: "
-                  "element_count=" + element_count + ", limit=" + limit)
+                  "element_count=" + str(element_count) + ", limit=" + str(limit))
         raise ValueError("The element_count does not exceed the limit. Actual values were: element_count="
-                         + element_count + ", limit=" + limit)
+                         + str(element_count) + ", limit=" + str(limit))
     if limit <= 0:
         # Impossible to summarize data into 0 data points
         log.error("Method: get_split_indices; Error: The limit has to be an positive integer greater than 0. "
-                  "Actual value was: " + limit)
-        raise ValueError("The limit has to be an positive integer greater than 0. Actual value was: " + limit)
+                  "Actual value was: " + str(limit))
+        raise ValueError("The limit has to be an positive integer greater than 0. Actual value was: " + str(limit))
 
     step = element_count / limit
 
