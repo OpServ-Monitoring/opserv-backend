@@ -9,30 +9,32 @@ class GeneralEndpointDataV1(Endpoint, metaclass=ABCMeta):
 
         mandatory_parameters = self._get_mandatory_parameters()
         if keep_processing and mandatory_parameters is not None:
-            keep_processing = self.__meets_mandatory_parameters(mandatory_parameters)
+            keep_processing = self.__are_mandatory_parameters_valid(mandatory_parameters)
 
         return keep_processing
 
-    def __meets_mandatory_parameters(self, mandatory_parameters):
+    def __are_mandatory_parameters_valid(self, mandatory_parameters):
         for mandatory_parameter in mandatory_parameters:
-            parameter_name = mandatory_parameter[0]
-            verification_function = mandatory_parameter[1]
-
-            actual_value = self._request_holder.get_params()[parameter_name]
-            if actual_value is None:
-                self._set_bad_request_response("parameter " + parameter_name + " missing.")
-
-                return False
-            elif verification_function is None or not callable(verification_function):
-                self._set_internal_server_error_response()
-
-                return False
-            elif not verification_function(actual_value):
-                self._set_bad_request_response("parameter " + parameter_name + " is not properly formatted.")
-
+            if not self.__is_mandatory_parameter_valid(mandatory_parameter):
                 return False
 
         return True
+
+    def __is_mandatory_parameter_valid(self, mandatory_parameter):
+        parameter_name = mandatory_parameter[0]
+        verification_function = mandatory_parameter[1]
+
+        actual_value = self._request_holder.get_params()[parameter_name]
+        if actual_value is None:
+            self._set_bad_request_response("parameter " + parameter_name + " missing.")
+        elif verification_function is None or not callable(verification_function):
+            self._set_internal_server_error_response()
+        elif not verification_function(actual_value):
+            self._set_bad_request_response("parameter " + parameter_name + " is not properly formatted.")
+        else:
+            return True
+
+        return False
 
     def _put(self) -> bool:
         """
