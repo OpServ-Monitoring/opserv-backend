@@ -63,7 +63,7 @@ class GatherThread(threading.Thread):
         while not queue_manager.requestDataQueue.empty():
             newRequest = queue_manager.requestDataQueue.get(False)
             if requestValid(newRequest):
-                newMeasurement = self.getMeasurement(newRequest["hardware"], newRequest["valueType"],
+                newMeasurement = getMeasurement(newRequest["hardware"], newRequest["valueType"],
                                                      newRequest["args"])
 
                 queue = queue_manager.getQueue(newRequest["hardware"], newRequest["valueType"], newRequest["args"])
@@ -77,49 +77,19 @@ class GatherThread(threading.Thread):
         # Reenter itself into the event queue to listen to new commands
         self.s.enter(1, 1, self.queueListener)
 
-    def getMeasurement(self, hardware, valueType, args):
-        """
-            Given the hardware and valueType this function uses the libraries to make a measurement
-            Returns: The value of the measurement
-        """
-        # Lowercase to avoid any case errors
-        hardware = hardware.lower()
-        valueType = valueType.lower()
-        if hardware == "cpu":
-            return measure_cpu(valueType, args)
-        elif hardware == "memory":
-            return measure_memory(valueType, args)
-        elif hardware == "disk":
-            return measure_disk(valueType, args)
-        elif hardware == "partition":
-            return measure_partition(valueType, args)
-        elif hardware == "process":
-            return measure_process(valueType, args)
-        elif hardware == "core":
-            return measure_core(valueType, args)
-        elif hardware == "gpu":
-            return measure_gpu(valueType, args)
-        elif hardware == "network":
-            return measure_network(valueType, args)
-
-        # Server Thread wants this to get basic system information
-        elif hardware == "system":
-            return get_system_data(valueType)
-
-        log.debug("Tried to get unimplemented hardware")
-        return "0"
 
     def gatherTask(self, gatherData):
         """
             Tasks for the gathering of measurements at a specific rateUpdateValid
             Returns nothing, but sends data to the realtime queue
         """
-        newData = self.getMeasurement(gatherData["hardware"], gatherData["valueType"], gatherData["args"])
+        newData = getMeasurement(gatherData["hardware"], gatherData["valueType"], gatherData["args"])
 
         queue = queue_manager.getQueue(gatherData["hardware"], gatherData["valueType"], gatherData["args"])
         queue.put(newData)
         log.debug("Gathered {0} from {1},{2}".format(newData, gatherData["hardware"], gatherData["valueType"]))
         self.createGatherer(gatherData)
+
 
     def updateGatherer(self, newRate):
         """
@@ -183,3 +153,37 @@ def rateUpdateValid(rateUpdate):
             return True
     log.debug("Rate Update was invalid")
     return False
+
+
+
+def getMeasurement(hardware, valueType, args):
+    """
+        Given the hardware and valueType this function uses the libraries to make a measurement
+        Returns: The value of the measurement
+    """
+    # Lowercase to avoid any case errors
+    hardware = hardware.lower()
+    valueType = valueType.lower()
+    if hardware == "cpu":
+        return measure_cpu(valueType, args)
+    elif hardware == "memory":
+        return measure_memory(valueType, args)
+    elif hardware == "disk":
+        return measure_disk(valueType, args)
+    elif hardware == "partition":
+        return measure_partition(valueType, args)
+    elif hardware == "process":
+        return measure_process(valueType, args)
+    elif hardware == "core":
+        return measure_core(valueType, args)
+    elif hardware == "gpu":
+        return measure_gpu(valueType, args)
+    elif hardware == "network":
+        return measure_network(valueType, args)
+
+    # Server Thread wants this to get basic system information
+    elif hardware == "system":
+        return get_system_data(valueType)
+
+    log.debug("Tried to get unimplemented hardware")
+    return "0"
