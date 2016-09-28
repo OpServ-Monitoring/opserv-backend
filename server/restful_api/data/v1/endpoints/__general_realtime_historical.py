@@ -33,18 +33,25 @@ class GeneralEndpointRealtimeHistorical(GeneralEndpointDataV1, metaclass=ABCMeta
         self._is_realtime = "realtime" in headers and headers["realtime"] == "true"
 
     def __read_history_headers(self, headers):
+        self.__read_start_header(headers)
+        self.__read_end_header(headers)
+        self.__read_limit_header(headers)
+
+    def __read_start_header(self, headers):
         if "start" in headers and headers["start"].isdigit():
             start = int(headers["start"])
 
             if start > 0:
                 self._start = start
 
+    def __read_end_header(self, headers):
         if "end" in headers and headers["end"].isdigit():
             end = int(headers["end"])
 
             if end > self._start:
                 self._end = end
 
+    def __read_limit_header(self, headers):
         if "limit" in headers and headers["limit"].isdigit():
             limit = int(headers["limit"])
 
