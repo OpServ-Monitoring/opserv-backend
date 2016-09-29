@@ -1,5 +1,5 @@
-from server.restful_api.data.data_api_versions_endpoint import DataApiVersionsEndpoint
-from server.restful_api.general.endpoint_management import EndpointManagement
+from .data_api_versions_endpoint import DataApiVersionsEndpoint
+from ..general.endpoint_management import EndpointManagement
 
 
 class EndpointManagementData(EndpointManagement):

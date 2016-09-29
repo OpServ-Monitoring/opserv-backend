@@ -1,8 +1,8 @@
 from flask import request
 from flask_restful import Api, Resource
 
-from server.restful_api.general.requestholder import RequestHolder
-from server.restful_api.rest_api_management import RestApiManagement
+from .general.requestholder import RequestHolder
+from .rest_api_management import RestApiManagement
 
 
 class FlaskRestfulWrapper:

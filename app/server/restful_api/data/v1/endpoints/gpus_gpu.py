@@ -1,4 +1,4 @@
-from server.restful_api.data.v1.endpoints.__general_data_v1 import GeneralEndpointDataV1
+from .__general_data_v1 import GeneralEndpointDataV1
 
 
 class GpusGpuEndpoint(GeneralEndpointDataV1):
@@ -18,7 +18,7 @@ class GpusGpuEndpoint(GeneralEndpointDataV1):
 
     @staticmethod
     def _get_parent():
-        from server.restful_api.data.v1.endpoints.gpus import GpusEndpoint
+        from .gpus import GpusEndpoint
 
         return GpusEndpoint
 

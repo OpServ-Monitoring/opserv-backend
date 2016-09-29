@@ -1,4 +1,4 @@
-from server.restful_api.data.v1.endpoints.cpucores_cpucore__general_child import CpucoresCpucoreGeneralChildEndpoint
+from .cpucores_cpucore__general_child import CpucoresCpucoreGeneralChildEndpoint
 
 
 class CpucoresCpucoreUsageEndpoint(CpucoresCpucoreGeneralChildEndpoint):

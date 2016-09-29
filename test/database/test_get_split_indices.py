@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from database import historical_data_retrieve_dumb as method_holder
+from app.database import historical_data_retrieve_dumb as method_holder
 
 
 class TestGet_split_indices(TestCase):

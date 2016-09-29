@@ -1,6 +1,6 @@
-from server.restful_api.api_root.endpoint_management_api_root import EndpointManagementRoot
-from server.restful_api.data.endpoint_management_data import EndpointManagementData
-from server.restful_api.data.v1.endpoint_management_data_v1 import EndpointManagementDataV1
+from .api_root.endpoint_management_api_root import EndpointManagementRoot
+from .data.endpoint_management_data import EndpointManagementData
+from .data.v1.endpoint_management_data_v1 import EndpointManagementDataV1
 
 
 class RestApiManagement:

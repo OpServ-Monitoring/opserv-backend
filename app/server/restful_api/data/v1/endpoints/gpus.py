@@ -1,11 +1,7 @@
-from server.restful_api.data.v1.endpoints.root__general_child import RootGeneralChildEndpoint
+from .root__general_child import RootGeneralChildEndpoint
 
 
 class GpusEndpoint(RootGeneralChildEndpoint):
-    def _get(self) -> bool:
-        # no data section available
-        return self.KEEP_PROCESSING()
-
     @staticmethod
     def get_paths():
         return [
@@ -18,7 +14,7 @@ class GpusEndpoint(RootGeneralChildEndpoint):
 
     @staticmethod
     def _get_children():
-        from server.restful_api.data.v1.endpoints.gpus_gpu import GpusGpuEndpoint
+        from .gpus_gpu import GpusGpuEndpoint
 
         children = []
 

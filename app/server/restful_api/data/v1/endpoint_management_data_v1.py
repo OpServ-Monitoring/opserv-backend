@@ -1,19 +1,17 @@
-from server.restful_api.data.v1.data_api_v1_endpoint import DataApiV1Endpoint
-from server.restful_api.data.v1.endpoints.cpucores import CpucoresEndpoint
-from server.restful_api.data.v1.endpoints.cpucores_cpucore import CpucoresCpucoreEndpoint
-from server.restful_api.data.v1.endpoints.cpucores_cpucore_frequency import CpucoresCpucoreFrequencyEndpoint
-from server.restful_api.data.v1.endpoints.cpucores_cpucore_temperature import \
-    CpucoresCpucoreTemperatureEndpoint
-from server.restful_api.data.v1.endpoints.cpucores_cpucore_usage import CpucoresCpucoreUsageEndpoint
-from server.restful_api.data.v1.endpoints.cpus import CpusEndpoint
-from server.restful_api.data.v1.endpoints.cpus_cpu import CpusCpuEndpoint
-from server.restful_api.data.v1.endpoints.cpus_cpu_frequency import CpusCpuFrequencyEndpoint
-from server.restful_api.data.v1.endpoints.cpus_cpu_temperature import CpusCpuTemperatureEndpoint
-from server.restful_api.data.v1.endpoints.cpus_cpu_usage import CpusCpuUsageEndpoint
-from server.restful_api.data.v1.endpoints.gpus_gpu import GpusGpuEndpoint
-from server.restful_api.general.endpoint_management import EndpointManagement
-
-from server.restful_api.data.v1.endpoints.gpus import GpusEndpoint
+from .data_api_v1_endpoint import DataApiV1Endpoint
+from .endpoints.cpucores import CpucoresEndpoint
+from .endpoints.cpucores_cpucore import CpucoresCpucoreEndpoint
+from .endpoints.cpucores_cpucore_frequency import CpucoresCpucoreFrequencyEndpoint
+from .endpoints.cpucores_cpucore_temperature import CpucoresCpucoreTemperatureEndpoint
+from .endpoints.cpucores_cpucore_usage import CpucoresCpucoreUsageEndpoint
+from .endpoints.cpus import CpusEndpoint
+from .endpoints.cpus_cpu import CpusCpuEndpoint
+from .endpoints.cpus_cpu_frequency import CpusCpuFrequencyEndpoint
+from .endpoints.cpus_cpu_temperature import CpusCpuTemperatureEndpoint
+from .endpoints.cpus_cpu_usage import CpusCpuUsageEndpoint
+from .endpoints.gpus import GpusEndpoint
+from .endpoints.gpus_gpu import GpusGpuEndpoint
+from ...general.endpoint_management import EndpointManagement
 
 
 class EndpointManagementDataV1(EndpointManagement):

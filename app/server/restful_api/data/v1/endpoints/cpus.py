@@ -1,11 +1,7 @@
-from server.restful_api.data.v1.endpoints.root__general_child import RootGeneralChildEndpoint
+from .root__general_child import RootGeneralChildEndpoint
 
 
 class CpusEndpoint(RootGeneralChildEndpoint):
-    def _get(self) -> bool:
-        # no data section available
-        return self.KEEP_PROCESSING()
-
     @staticmethod
     def get_paths():
         return [
@@ -18,7 +14,7 @@ class CpusEndpoint(RootGeneralChildEndpoint):
 
     @staticmethod
     def _get_children():
-        from server.restful_api.data.v1.endpoints.cpus_cpu import CpusCpuEndpoint
+        from .cpus_cpu import CpusCpuEndpoint
 
         children = []
 
