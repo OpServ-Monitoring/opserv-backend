@@ -24,10 +24,8 @@ class CpucoresCpucoreEndpoint(GeneralEndpointDataV1):
 
     @staticmethod
     def _get_children():
-        from .cpucores_cpucore_frequency import \
-            CpucoresCpucoreFrequencyEndpoint
-        from .cpucores_cpucore_temperature import \
-            CpucoresCpucoreTemperatureEndpoint
+        from .cpucores_cpucore_frequency import CpucoresCpucoreFrequencyEndpoint
+        from .cpucores_cpucore_temperature import CpucoresCpucoreTemperatureEndpoint
         from .cpucores_cpucore_usage import CpucoresCpucoreUsageEndpoint
 
         return [

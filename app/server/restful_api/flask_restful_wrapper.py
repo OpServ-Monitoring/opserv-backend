@@ -59,8 +59,7 @@ class FlaskRestfulWrapper:
                 # data passed as http headers
                 if http_method == RequestHolder.METHOD_GET():
                     headers = request.args
-                elif http_method == RequestHolder.METHOD_POST() \
-                        or http_method == RequestHolder.METHOD_PUT():
+                elif http_method == RequestHolder.METHOD_POST() or http_method == RequestHolder.METHOD_PUT():
                     headers = request.form
                 else:
                     headers = None
