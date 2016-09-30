@@ -10,7 +10,8 @@ import sched
 import threading
 import time
 
-import queue_manager
+import misc.queue_manager as queue_manager
+import misc.data_manager as data_manager
 from gathering.measuring.measure_main import measure_core, measure_cpu, measure_disk, \
     measure_gpu, measure_memory, measure_network, measure_partition, measure_process, get_system_data
 
@@ -63,15 +64,11 @@ class GatherThread(threading.Thread):
         while not queue_manager.requestDataQueue.empty():
             newRequest = queue_manager.requestDataQueue.get(False)
             if requestValid(newRequest):
-                newMeasurement = getMeasurement(newRequest["hardware"], newRequest["valueType"],
+
+                getMeasurementAndSend(newRequest["hardware"], newRequest["valueType"],
                                                      newRequest["args"])
-
-                queue = queue_manager.getQueue(newRequest["hardware"], newRequest["valueType"], newRequest["args"])
-
-                queue.put(newMeasurement)
-
-                log.debug("Gathered {0} from {1},{2},{3}".format(newMeasurement, newRequest["hardware"],
-                                                                 newRequest["valueType"], newRequest["args"]))
+  
+                
             self.s.enter(1, 1, self.queueListener)
 
         # Reenter itself into the event queue to listen to new commands
@@ -83,11 +80,7 @@ class GatherThread(threading.Thread):
             Tasks for the gathering of measurements at a specific rateUpdateValid
             Returns nothing, but sends data to the realtime queue
         """
-        newData = getMeasurement(gatherData["hardware"], gatherData["valueType"], gatherData["args"])
-
-        queue = queue_manager.getQueue(gatherData["hardware"], gatherData["valueType"], gatherData["args"])
-        queue.put(newData)
-        log.debug("Gathered {0} from {1},{2}".format(newData, gatherData["hardware"], gatherData["valueType"]))
+        getMeasurementAndSend(gatherData["hardware"], gatherData["valueType"], gatherData["args"])
         self.createGatherer(gatherData)
 
 
@@ -120,6 +113,19 @@ class GatherThread(threading.Thread):
         if (rateToCheck["hardware"], rateToCheck["valueType"]) in self.gatherers:
             return True
         return False
+
+def getMeasurementAndSend(component, metric, args):
+    """ Gets the specified metric from the component and sends it into the queue and data dictionary """
+    # Get the data
+    newData = getMeasurement(component, metric, args)
+
+    # Put that data into the queue
+    queue_manager.putMeasurementIntoQueue(component, metric, args, newData)
+
+    # Update the data in the realtime dictionary
+    data_manager.setMeasurement(component, metric, newData, args)
+
+    log.debug("Gathered {0} from {1},{2},{3}".format(newData, component, metric, args))
 
 
 def requestValid(request):
@@ -164,26 +170,36 @@ def getMeasurement(hardware, valueType, args):
     # Lowercase to avoid any case errors
     hardware = hardware.lower()
     valueType = valueType.lower()
+
+    measuredValue = None
+
     if hardware == "cpu":
-        return measure_cpu(valueType, args)
+        measuredValue = measure_cpu(valueType, args)
     elif hardware == "memory":
-        return measure_memory(valueType, args)
+        measuredValue = measure_memory(valueType, args)
     elif hardware == "disk":
-        return measure_disk(valueType, args)
+        measuredValue = measure_disk(valueType, args)
     elif hardware == "partition":
-        return measure_partition(valueType, args)
+        measuredValue = measure_partition(valueType, args)
     elif hardware == "process":
-        return measure_process(valueType, args)
+        measuredValue = measure_process(valueType, args)
     elif hardware == "core":
-        return measure_core(valueType, args)
+        measuredValue = measure_core(valueType, args)
     elif hardware == "gpu":
-        return measure_gpu(valueType, args)
+        measuredValue = measure_gpu(valueType, args)
     elif hardware == "network":
-        return measure_network(valueType, args)
+        measuredValue = measure_network(valueType, args)
 
     # Server Thread wants this to get basic system information
     elif hardware == "system":
-        return get_system_data(valueType)
+        measuredValue = get_system_data(valueType)
+    
+    if measuredValue != None:
+        return {
+            "timestamp" : time.time() * 1000,
+            "value" : measuredValue
+        }
+
 
     log.debug("Tried to get unimplemented hardware")
     return "0"

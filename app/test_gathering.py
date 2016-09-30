@@ -11,7 +11,8 @@ import logging
 import threading
 import time
 
-import queue_manager
+import misc.queue_manager as queue_manager
+import misc.data_manager as data_manager
 from gathering.gather_main import GatherThread
 from misc.logging_helper import setup_logger
 from misc.constants import implemented_hardware, HARDWARE_DEFAULTS
@@ -28,6 +29,9 @@ LOG_SERVER = True
 DATA_TEST_TIMEOUT = 2.5
 MAX_TEST_ITERATIONS = 10
 ITERATION_TEST_SPEED = 500
+DATA_MANAGER_TIMEOUT = 5
+DATA_MANAGER_TEST_COMPONENT = "cpu"
+DATA_MANAGER_TEST_METRIC = "usage"
 
 log = logging.getLogger("opserv.gatheringTest")
 log.setLevel(logging.DEBUG)
@@ -53,40 +57,38 @@ def insertTestDataIntoQueue():
     """
         Inserts testing data into the gatheringrate and request queues
     """
-    queue_manager.setGatheringRateQueue.put({"hardware": "cpu", "valueType": "load", "delayms": 1000})
-    queue_manager.setGatheringRateQueue.put({"hardware": "memory", "valueType": "used", "delayms": 1000})
-    queue_manager.setGatheringRateQueue.put({"hardware": "cpu", "valueType": "cores", "delayms": 5000})
-    queue_manager.setGatheringRateQueue.put({"hardware": "cpu", "valueType": "cores", "delayms": 0})
+    queue_manager.setGatheringRate("cpu", "usage", 1000)
+    queue_manager.setGatheringRate("memory", "used", 1000)
 
 
 def testInsertSystemGathering():
     # One Time Test
-    log.info("One Shot System Gathering")
-    queue_manager.requestDataQueue.put({"hardware": "system", "valueType": "cpus"})
-    queue_manager.requestDataQueue.put({"hardware": "system", "valueType": "gpus"})
-    queue_manager.requestDataQueue.put({"hardware": "system", "valueType": "disks"})
-    queue_manager.requestDataQueue.put({"hardware": "system", "valueType": "cores"})
-    queue_manager.requestDataQueue.put({"hardware": "system", "valueType": "processes"})
-    queue_manager.requestDataQueue.put({"hardware": "system", "valueType": "networks"})
+    log.info("One Shot System Gathering") 
+    queue_manager.requestData("system", "cpus")
+    queue_manager.requestData("system", "gpus")
+    queue_manager.requestData("system", "disks")
+    queue_manager.requestData("system", "cores")
+    queue_manager.requestData("system", "processes")
+    queue_manager.requestData("system", "networks")
 
 
     # Gathering Rate Test
     log.info("Adding System Gathering")
-    queue_manager.setGatheringRateQueue.put({"hardware": "system", "valueType": "cpus", "delayms": 1000})
-    queue_manager.setGatheringRateQueue.put({"hardware": "system", "valueType": "gpus", "delayms": 1000})
-    queue_manager.setGatheringRateQueue.put({"hardware": "system", "valueType": "disks", "delayms": 1000})
-    queue_manager.setGatheringRateQueue.put({"hardware": "system", "valueType": "cores", "delayms": 1000})
-    queue_manager.setGatheringRateQueue.put({"hardware": "system", "valueType": "processes", "delayms": 1000})
-    queue_manager.setGatheringRateQueue.put({"hardware": "system", "valueType": "networks", "delayms": 1000})
+    queue_manager.setGatheringRate("system","cpus", 1000)
+    queue_manager.setGatheringRate("system","gpus", 1000)
+    queue_manager.setGatheringRate("system","disks", 1000)
+    queue_manager.setGatheringRate("system","cores", 1000)
+    queue_manager.setGatheringRate("system","processes", 1000)
+    queue_manager.setGatheringRate("system","networks", 1000)
 
     time.sleep(2)
     log.info("Removing System Gathering")
-    queue_manager.setGatheringRateQueue.put({"hardware": "system", "valueType": "cpus", "delayms": 0})
-    queue_manager.setGatheringRateQueue.put({"hardware": "system", "valueType": "gpus", "delayms": 0})
-    queue_manager.setGatheringRateQueue.put({"hardware": "system", "valueType": "disks", "delayms": 0})
-    queue_manager.setGatheringRateQueue.put({"hardware": "system", "valueType": "cores", "delayms": 0})
-    queue_manager.setGatheringRateQueue.put({"hardware": "system", "valueType": "processes", "delayms": 0})
-    queue_manager.setGatheringRateQueue.put({"hardware": "system", "valueType": "networks", "delayms": 0})
+    queue_manager.setGatheringRate("system","cpus", 0)
+    queue_manager.setGatheringRate("system","gpus", 0)
+    queue_manager.setGatheringRate("system","disks", 0)
+    queue_manager.setGatheringRate("system","cores", 0)
+    queue_manager.setGatheringRate("system","processes", 0)
+    queue_manager.setGatheringRate("system","networks", 0)
 
 def testAllHardware():
     # For each hardware in the hardware list
@@ -103,8 +105,7 @@ def testAllHardware():
 
 def testRateSpeed(iterations, speed):
     # Start rate update with specifc speed
-    queue_manager.setGatheringRateQueue.put({"hardware": "cpu", "valueType" : "usage", "delayms" : speed})
-
+    queue_manager.setGatheringRate("cpu", "usage", speed)
 
     currentIterations = 0
     # Wait while data arrives
@@ -116,6 +117,34 @@ def testRateSpeed(iterations, speed):
         time.sleep(speed / 10000)
     return
 
+def testDataManager():
+    log.info("Starting Data Manager Test")
+
+    # Disable any gathering rates for the tested component to avoid any wrong results
+    queue_manager.setGatheringRate(DATA_MANAGER_TEST_COMPONENT, DATA_MANAGER_TEST_METRIC, 0)
+
+    # Save the current value in the realtime data dictionary
+    startData = data_manager.getMeasurement(DATA_MANAGER_TEST_COMPONENT, DATA_MANAGER_TEST_METRIC)
+
+    # Ask for a data update
+    queue_manager.requestData(DATA_MANAGER_TEST_COMPONENT, DATA_MANAGER_TEST_METRIC)
+    startTime = time.time()
+    dataIsTheSame = True
+
+    # Wait till the new one arrives or timeout expires
+    while time.time() - startTime < DATA_MANAGER_TIMEOUT and dataIsTheSame:
+        newData = data_manager.getMeasurement(DATA_MANAGER_TEST_COMPONENT, DATA_MANAGER_TEST_METRIC)
+        if newData != startData:
+            dataIsTheSame = False
+            endTime = time.time()
+        time.sleep(0.1) # Small sleep to not kill the cpu
+    
+    # Raise exception when the data hasn't changed
+    if dataIsTheSame:
+        raise Exception("Data Manager Test failed after the timeout")
+    
+    log.info("Data Manager Test has passed")
+    log.info("Updating took % seconds", endTime - startTime)
 
 class TestThread(threading.Thread):
     def __init__(self):
@@ -131,6 +160,7 @@ class TestThread(threading.Thread):
         insertTestDataIntoQueue()
         testInsertSystemGathering()
         testAllHardware()
+        testDataManager()
 
 
         startTimeIterations = time.time()
@@ -149,7 +179,7 @@ if __name__ == '__main__':
     setup_logger(LOG_TO_CONSOLE, LOG_TO_FILE, LOGGINGLEVEL, LOG_SERVER, LOG_GATHERING)
     gatherThread = start_gather_thread()
     testThread = start_test_thread()
-    while testThread.isAlive():
+    while testThread.isAlive() and gatherThread.isAlive():
         time.sleep(1) # Main Thread cannot die apparently
 
     log.info("Testing has concluded, goodbye!")
