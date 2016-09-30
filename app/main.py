@@ -6,13 +6,13 @@
 # Usage: Simply launch this file
 #
 
-
 import logging
 
+import server.__management as server
 from gathering.gather_main import GatherThread
 from misc.logging_helper import setup_logger
 
-import server.__management as server
+from .database.database_open_helper import DatabaseOpenHelper
 
 LOGGINGLEVEL = logging.DEBUG
 
@@ -21,6 +21,10 @@ LOG_TO_CONSOLE = True
 
 LOG_GATHERING = True
 LOG_SERVER = True
+
+
+def init_database():
+    DatabaseOpenHelper().on_create()
 
 
 def start_gather_thread():
@@ -41,5 +45,6 @@ def start_server():
 if __name__ == '__main__':
     setup_logger(LOG_TO_CONSOLE, LOG_TO_FILE, LOGGINGLEVEL, LOG_SERVER, LOG_GATHERING)
 
+    init_database()
     start_gather_thread()
     start_server()
