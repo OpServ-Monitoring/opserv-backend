@@ -12,7 +12,7 @@ import server.__management as server
 from gathering.gather_main import GatherThread
 from misc.logging_helper import setup_logger
 
-from .database.database_open_helper import DatabaseOpenHelper
+from app.database.database_open_helper import DatabaseOpenHelper
 
 LOGGINGLEVEL = logging.DEBUG
 
