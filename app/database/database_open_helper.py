@@ -114,15 +114,21 @@ class DatabaseOpenHelper:
     def on_create(self):
         connection = sqlite3.connect(location)
 
+        connection.execute("PRAGMA JOURNAL_MODE=WAL")
+        connection.execute("PRAGMA FOREIGN_KEYS=ON")
+
         connection.execute(self.__create_table_metric)
         connection.execute(self.__create_table_component_types)
         connection.execute(self.__create_table_components)
         connection.execute(self.__create_table_measurements)
 
-        connection.execute("PRAGMA JOURNAL_MODE=WAL")
-        connection.execute("PRAGMA FOREIGN_KEYS=ON")
+        connection.execute("CREATE TRIGGER IF NOT EXISTS add_component BEFORE INSERT ON measurements_table "
+                           "BEGIN "
+                           "INSERT OR IGNORE INTO components_table (component_arg, component_type_fk) "
+                           "VALUES (new.measurement_component_arg_fk, new.measurement_component_type_fk); "
+                           "END;")
 
         connection.commit()
 
+        # TODO Add component metrics - Which components has which metric? -> Change trigger
         # TODO Add supported metrics and component types on startup
-        # TODO Add triggers to create a component in case it does not exist (foreign key constraint of measurements)

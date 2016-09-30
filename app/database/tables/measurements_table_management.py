@@ -58,7 +58,6 @@ class MeasurementsTableManagement:
         def commit_transaction(self):
             connection = sqlite3.connect("opserv.db")
 
-            # TODO Either check for foreign keys manually or add triggers to the database
             connection.executemany(
                 "INSERT INTO measurements_table ("
                 "measurement_component_type_fk, "
