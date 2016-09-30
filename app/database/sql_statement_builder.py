@@ -3,9 +3,7 @@ class SqlStatementBuilder:
     def __parse_columns(cls, columns):
         assert len(columns) > 0
 
-        columns_statement = cls.__to_string_list(columns, cls.__parse_column)
-
-        return columns_statement
+        return cls.__to_string_list(columns, cls.__parse_column)
 
     @classmethod
     def __parse_column(cls, column):
@@ -13,12 +11,10 @@ class SqlStatementBuilder:
 
     @classmethod
     def __parse_foreign_keys(cls, foreign_keys):
-        foreign_keys_statement = None
-
         if len(foreign_keys) > 0:
-            foreign_keys_statement = cls.__to_string_list(foreign_keys, cls.__parse_foreign_key)
+            return cls.__to_string_list(foreign_keys, cls.__parse_foreign_key)
 
-        return foreign_keys_statement
+        return None
 
     @classmethod
     def __parse_foreign_key(cls, foreign_key):
@@ -39,14 +35,10 @@ class SqlStatementBuilder:
 
     @classmethod
     def __parse_primary_key(cls, primary_key):
-        primary_key_statement = None
-
         if len(primary_key) > 0:
-            primary_key_statement = "PRIMARY KEY ("
-            primary_key_statement += cls.__to_string_list(primary_key)
-            primary_key_statement += ")"
+            return "PRIMARY KEY (" + cls.__to_string_list(primary_key) + ")"
 
-        return primary_key_statement
+        return None
 
     @classmethod
     def build_create_table_statement(cls, table_name, columns, foreign_keys, primary_key):
@@ -84,5 +76,5 @@ class SqlStatementBuilder:
         return string_list
 
     @classmethod
-    def __append_to_string_list(cls, base, appendix):
-        return base + ", " + appendix
+    def __append_to_string_list(cls, string_list, appendix):
+        return string_list + ", " + appendix
