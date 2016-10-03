@@ -1,8 +1,8 @@
 import sqlite3
 
-from .sql_statement_builder import SqlStatementBuilder
+from app.database.tables.component_type_metrics_table_management import ComponentTypeMetricsTableManagement
+from .tables.component_metrics_table_management import ComponentMetricsTableManagement
 from .tables.component_types_table_management import ComponentTypesTableManagement
-from .tables.components_table_management import ComponentsTableManagement
 from .tables.measurements_table_management import MeasurementsTableManagement
 from .tables.metrics_table_management import MetricsTableManagement
 
@@ -11,124 +11,66 @@ location = 'opserv.db'
 
 
 class DatabaseOpenHelper:
-    __create_table_metric = SqlStatementBuilder.build_create_table_statement(
-        # TABLE NAME
-        MetricsTableManagement.TABLE_NAME(),
-        # COLUMNS
-        [
-            (MetricsTableManagement.KEY_NAME(), "TEXT NOT NULL")
-        ],
-        # FOREIGN KEYS
-        [],
-        # PRIMARY KEY
-        [
-            MetricsTableManagement.KEY_NAME()
-        ]
-    )
+    # TODO Remove, this should be delivered by the gathering module
+    __supported_component_metrics = {
+        'cpu': ['info', 'usage', 'frequency', 'temperature'],
+        'core': ['info', 'usage', 'frequency', 'temperature'],
+        'gpu': ['info', 'gpuclock', 'memclock', 'vramusage', 'temperature', 'usage']
+    }
 
-    __create_table_component_types = SqlStatementBuilder.build_create_table_statement(
-        # TABLE NAME
-        ComponentTypesTableManagement.TABLE_NAME(),
-        # COLUMNS
-        [
-            (ComponentTypesTableManagement.KEY_NAME(), "TEXT NOT NULL")
-        ],
-        # FOREIGN KEYS
-        [],
-        # PRIMARY KEY
-        [
-            ComponentTypesTableManagement.KEY_NAME()
-        ]
-    )
-
-    __create_table_components = SqlStatementBuilder.build_create_table_statement(
-        # TABLE NAME
-        ComponentsTableManagement.TABLE_NAME(),
-        # COLUMNS
-        [
-            (ComponentsTableManagement.KEY_COMPONENT_ARG(), "TEXT NOT NULL"),
-            (ComponentsTableManagement.KEY_COMPONENT_TYPE_FK(), "TEXT NOT NULL")
-        ],
-        # FOREIGN KEYS
-        [
-            (
-                [
-                    ComponentsTableManagement.KEY_COMPONENT_TYPE_FK()
-                ],
-                ComponentTypesTableManagement.TABLE_NAME(),
-                [
-                    ComponentTypesTableManagement.KEY_NAME()
-                ]
-            )
-        ],
-        # PRIMARY KEY
-        [
-            ComponentsTableManagement.KEY_COMPONENT_ARG(),
-            ComponentsTableManagement.KEY_COMPONENT_TYPE_FK()
-        ]
-    )
-
-    __create_table_measurements = SqlStatementBuilder.build_create_table_statement(
-        # TABLE NAME
-        MeasurementsTableManagement.TABLE_NAME(),
-        # COLUMNS
-        [
-            (MeasurementsTableManagement.KEY_COMPONENT_ARG_FK(), "TEXT NOT NULL"),
-            (MeasurementsTableManagement.KEY_COMPONENT_TYPE_FK(), "TEXT NOT NULL"),
-            (MeasurementsTableManagement.KEY_METRIC_FK(), "TEXT NOT NULL"),
-            (MeasurementsTableManagement.KEY_TIMESTAMP(), "INTEGER NOT NULL"),
-            (MeasurementsTableManagement.KEY_VALUE(), "TEXT NOT NULL")
-        ],
-        # FOREIGN KEYS
-        [
-            (
-                [
-                    MeasurementsTableManagement.KEY_METRIC_FK()
-                ],
-                MetricsTableManagement.TABLE_NAME(),
-                [
-                    MetricsTableManagement.KEY_NAME()
-                ]
-            ),
-            (
-                [
-                    MeasurementsTableManagement.KEY_COMPONENT_ARG_FK(),
-                    MeasurementsTableManagement.KEY_COMPONENT_TYPE_FK()
-                ],
-                ComponentsTableManagement.TABLE_NAME(),
-                [
-                    ComponentsTableManagement.KEY_COMPONENT_ARG(),
-                    ComponentsTableManagement.KEY_COMPONENT_TYPE_FK()
-                ]
-            )
-        ],
-        # PRIMARY KEY
-        [
-            MeasurementsTableManagement.KEY_COMPONENT_TYPE_FK(),
-            MeasurementsTableManagement.KEY_COMPONENT_ARG_FK(),
-            MeasurementsTableManagement.KEY_METRIC_FK(),
-            MeasurementsTableManagement.KEY_TIMESTAMP()
-        ]
-    )
-
-    def on_create(self):
+    @staticmethod
+    def on_create():
         connection = sqlite3.connect(location)
 
-        connection.execute("PRAGMA JOURNAL_MODE=WAL")
-        connection.execute("PRAGMA FOREIGN_KEYS=ON")
-
-        connection.execute(self.__create_table_metric)
-        connection.execute(self.__create_table_component_types)
-        connection.execute(self.__create_table_components)
-        connection.execute(self.__create_table_measurements)
-
-        connection.execute("CREATE TRIGGER IF NOT EXISTS add_component BEFORE INSERT ON measurements_table "
-                           "BEGIN "
-                           "INSERT OR IGNORE INTO components_table (component_arg, component_type_fk) "
-                           "VALUES (new.measurement_component_arg_fk, new.measurement_component_type_fk); "
-                           "END;")
+        DatabaseOpenHelper.__perform_settings(connection)
+        DatabaseOpenHelper.__create_tables(connection)
+        DatabaseOpenHelper.__create_triggers(connection)
+        DatabaseOpenHelper.__insert_supported_component_metrics(connection)
 
         connection.commit()
 
-        # TODO Add component metrics - Which components has which metric? -> Change trigger
-        # TODO Add supported metrics and component types on startup
+    @staticmethod
+    def __perform_settings(connection: sqlite3.Connection):
+        connection.execute("PRAGMA JOURNAL_MODE=WAL")
+        connection.execute("PRAGMA FOREIGN_KEYS=ON")
+
+    @staticmethod
+    def __create_tables(connection: sqlite3.Connection):
+        table_managements = [
+            ComponentTypesTableManagement,
+            MetricsTableManagement,
+            ComponentTypeMetricsTableManagement,
+            ComponentMetricsTableManagement,
+            MeasurementsTableManagement
+        ]
+
+        for table_management in table_managements:
+            connection.execute(table_management.CREATE_TABLE_STATEMENT())
+
+    @staticmethod
+    def __create_triggers(connection: sqlite3.Connection):
+        connection.execute("CREATE TRIGGER IF NOT EXISTS add_component BEFORE INSERT ON measurements_table "
+                           "BEGIN "
+                           "INSERT OR IGNORE INTO component_metrics_table "
+                           "(component_type_fk, "
+                           "component_arg, "
+                           "component_metric_fk) "
+                           "VALUES "
+                           "(new.measurement_component_type_fk, "
+                           "new.measurement_component_arg_fk, "
+                           "new.measurement_metric_fk); "
+                           "END;")
+
+    @staticmethod
+    def __insert_supported_component_metrics(connection: sqlite3.Connection):
+        # TODO Exchange local list with gathering interface - method body could need a change aswell
+        for component_type in DatabaseOpenHelper.__supported_component_metrics:
+            print(component_type)
+
+            connection.execute("INSERT OR IGNORE INTO component_types_table (component_type_name) VALUES (?)",
+                               (component_type,))
+
+            for metric in DatabaseOpenHelper.__supported_component_metrics[component_type]:
+                connection.execute("INSERT OR IGNORE INTO metrics_table (metric_name) VALUES (?)", (metric,))
+                connection.execute("INSERT OR IGNORE INTO component_type_metrics_table(component_type_fk, metric_fk) "
+                                   "VALUES (?,?)", (component_type, metric))
