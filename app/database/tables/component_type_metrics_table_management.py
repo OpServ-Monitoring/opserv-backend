@@ -1,6 +1,6 @@
-from app.database.tables.component_types_table_management import ComponentTypesTableManagement
-from app.database.tables.general_table_management import GeneralTableManagement
-from app.database.tables.metrics_table_management import MetricsTableManagement
+from .component_types_table_management import ComponentTypesTableManagement
+from .general_table_management import GeneralTableManagement
+from .metrics_table_management import MetricsTableManagement
 
 
 class ComponentTypeMetricsTableManagement(GeneralTableManagement):

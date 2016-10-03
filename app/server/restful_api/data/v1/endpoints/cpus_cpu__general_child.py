@@ -21,3 +21,9 @@ class CpusCpuGeneralChildEndpoint(GeneralEndpointRealtimeHistorical, metaclass=A
     @staticmethod
     def _get_children():
         return []
+
+    def _get_component_type(self) -> str:
+        return "cpu"
+
+    def _get_component_arg(self) -> str:
+        return self._request_holder.get_params()["cpu"]

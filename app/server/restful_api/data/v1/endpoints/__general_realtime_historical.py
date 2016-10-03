@@ -1,6 +1,7 @@
 import time
-from abc import ABCMeta
+from abc import ABCMeta, abstractmethod
 
+from database.tables.measurements_table_management import MeasurementsTableManagement
 from .__general_data_v1 import GeneralEndpointDataV1
 
 
@@ -14,6 +15,7 @@ class GeneralEndpointRealtimeHistorical(GeneralEndpointDataV1, metaclass=ABCMeta
         self._limit = 50
 
     def _pre_process(self):
+        # Check for mandatory parameters
         keep_processing = super(GeneralEndpointRealtimeHistorical, self)._pre_process()
 
         if keep_processing:
@@ -27,13 +29,52 @@ class GeneralEndpointRealtimeHistorical(GeneralEndpointDataV1, metaclass=ABCMeta
         else:
             return self._get_historical_data()
 
-    # TODO Make this a @abstractmethod or generalize it
     def _get_realtime_data(self):
+        # TODO Intersect with the gathering interface
+        # self._get_component_type()
+        # self._get_component_arg()
+        # self._get_component_metric()
+
         return True
 
     # TODO Make this a @abstractmethod or generalize it
     def _get_historical_data(self):
+        raw_historical_results = MeasurementsTableManagement.get_min_avg_max(
+            self._get_component_type(),
+            self._get_component_arg(),
+            self._get_component_metric(),
+            self._start,
+            self._end,
+            float(self._limit)
+        )
+
+        parsed_historical_results = self.__parse_history_results(raw_historical_results)
+
+        self._response_holder.set_body_data(
+            parsed_historical_results
+        )
+
         return True
+
+    def __parse_history_results(self, query_result: list) -> dict:
+        parsed_response = {
+            'values': [],
+            'unit': None
+        }
+
+        for row in query_result:
+            print(row)  # TODO remove
+
+            parsed_response["values"].append(
+                {
+                    'timestamp': row[3],
+                    'min': row[4],
+                    'avg': row[5],
+                    'max': row[6]
+                }
+            )
+
+        return parsed_response
 
     def __read_headers(self):
         headers = self._request_holder.get_request_headers()
@@ -69,7 +110,7 @@ class GeneralEndpointRealtimeHistorical(GeneralEndpointDataV1, metaclass=ABCMeta
         if "limit" in headers and headers["limit"].isdigit():
             limit = int(headers["limit"])
 
-            if 0 > limit >= 5000:
+            if 0 < limit <= 5000:
                 self._limit = limit
             elif limit > 5000:
                 self._limit = 5000
@@ -77,3 +118,15 @@ class GeneralEndpointRealtimeHistorical(GeneralEndpointDataV1, metaclass=ABCMeta
     @staticmethod
     def _get_children():
         return []
+
+    @abstractmethod
+    def _get_component_type(self) -> str:
+        pass
+
+    @abstractmethod
+    def _get_component_arg(self) -> str:
+        return "default"
+
+    @abstractmethod
+    def _get_component_metric(self) -> str:
+        pass

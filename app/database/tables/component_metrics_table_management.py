@@ -1,5 +1,5 @@
-from app.database.tables.component_type_metrics_table_management import ComponentTypeMetricsTableManagement
-from app.database.tables.general_table_management import GeneralTableManagement
+from .component_type_metrics_table_management import ComponentTypeMetricsTableManagement
+from .general_table_management import GeneralTableManagement
 
 
 class ComponentMetricsTableManagement(GeneralTableManagement):

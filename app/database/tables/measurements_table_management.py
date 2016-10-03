@@ -1,7 +1,7 @@
 import sqlite3
 
-from app.database.tables.component_metrics_table_management import ComponentMetricsTableManagement
-from app.database.tables.general_table_management import GeneralTableManagement
+from .component_metrics_table_management import ComponentMetricsTableManagement
+from .general_table_management import GeneralTableManagement
 
 
 class MeasurementsTableManagement(GeneralTableManagement):
@@ -114,7 +114,8 @@ class MeasurementsTableManagement(GeneralTableManagement):
             self.__reset_variables()
 
     @staticmethod
-    def get_min_avg_max(component_type, component_arg, metric_name, start_time, end_time, limit):
+    def get_min_avg_max(component_type: str, component_arg: str, metric_name: str, start_time: int, end_time: int,
+                        limit: float):
         def triple_tuple(*base_tuple):
             return 3 * base_tuple
 
@@ -123,9 +124,9 @@ class MeasurementsTableManagement(GeneralTableManagement):
                       measurement_component_arg_fk,
                       measurement_metric_fk,
                       avg(measurement_timestamp) AS measurement_timestamp,
-                      min(measurement_value) AS minimum,
+                      CAST(min(measurement_value) AS FLOAT) AS minimum,
                       avg(measurement_value) AS average,
-                      max(measurement_value) AS maximum
+                      CAST(max(measurement_value) AS FLOAT) AS maximum
                     FROM (
                          SELECT
                             (SELECT COUNT(*)
@@ -162,6 +163,8 @@ class MeasurementsTableManagement(GeneralTableManagement):
         )
 
         connection = sqlite3.connect("opserv.db")
-        res = connection.execute(query, params)
+        cursor = connection.execute(query, params)
 
-        return res.fetchall()
+        result = cursor.fetchall()
+        print(result)
+        return result

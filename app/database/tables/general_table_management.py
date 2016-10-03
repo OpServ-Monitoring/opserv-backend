@@ -1,6 +1,6 @@
 from abc import ABCMeta, abstractmethod
 
-from app.database.sql_statement_builder import SqlStatementBuilder
+from ..sql_statement_builder import SqlStatementBuilder
 
 
 class GeneralTableManagement(metaclass=ABCMeta):

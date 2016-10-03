@@ -2,6 +2,10 @@ from .cpus_cpu__general_child import CpusCpuGeneralChildEndpoint
 
 
 class CpusCpuUsageEndpoint(CpusCpuGeneralChildEndpoint):
+
+    def _get_component_metric(self) -> str:
+        return "usage"
+
     @staticmethod
     def get_paths():
         return [

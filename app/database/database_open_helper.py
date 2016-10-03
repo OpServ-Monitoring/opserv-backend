@@ -1,6 +1,6 @@
 import sqlite3
 
-from app.database.tables.component_type_metrics_table_management import ComponentTypeMetricsTableManagement
+from .tables.component_type_metrics_table_management import ComponentTypeMetricsTableManagement
 from .tables.component_metrics_table_management import ComponentMetricsTableManagement
 from .tables.component_types_table_management import ComponentTypesTableManagement
 from .tables.measurements_table_management import MeasurementsTableManagement

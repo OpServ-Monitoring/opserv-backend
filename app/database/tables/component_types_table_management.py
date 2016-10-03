@@ -1,4 +1,4 @@
-from app.database.tables.general_table_management import GeneralTableManagement
+from .general_table_management import GeneralTableManagement
 
 
 class ComponentTypesTableManagement(GeneralTableManagement):
