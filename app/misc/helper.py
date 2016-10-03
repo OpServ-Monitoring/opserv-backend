@@ -14,8 +14,6 @@ def importIfExists(module):
         return newModule
 
 
-
-
 def argumentIsOptional(hardware):
     """ Checks whether for the given hardware an argument is optional """
     return not HARDWARE_DEFAULTS[hardware][0]

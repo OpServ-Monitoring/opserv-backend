@@ -16,6 +16,7 @@ import misc.data_manager as data_manager
 from gathering.gather_main import GatherThread
 from misc.logging_helper import setup_logger
 from misc.constants import implemented_hardware, HARDWARE_DEFAULTS
+from database.database_open_helper import DatabaseOpenHelper
 
 
 LOGGINGLEVEL = logging.DEBUG
@@ -177,6 +178,9 @@ class TestThread(threading.Thread):
 
 if __name__ == '__main__':
     setup_logger(LOG_TO_CONSOLE, LOG_TO_FILE, LOGGINGLEVEL, LOG_SERVER, LOG_GATHERING)
+    DatabaseOpenHelper().on_create()
+
+
     gatherThread = start_gather_thread()
     testThread = start_test_thread()
     while testThread.isAlive() and gatherThread.isAlive():

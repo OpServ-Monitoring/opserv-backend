@@ -14,9 +14,12 @@ import misc.queue_manager as queue_manager
 import misc.data_manager as data_manager
 from gathering.measuring.measure_main import measure_core, measure_cpu, measure_disk, \
     measure_gpu, measure_memory, measure_network, measure_partition, measure_process, get_system_data
+from database.tables.measurements_table_management import MeasurementsTableManagement
 
 log = logging.getLogger("opserv.gathering")
 log.setLevel(logging.DEBUG)
+
+transaction = MeasurementsTableManagement.get_inserter()
 
 
 class GatherThread(threading.Thread):
@@ -125,6 +128,10 @@ def getMeasurementAndSend(component, metric, args):
     # Update the data in the realtime dictionary
     data_manager.setMeasurement(component, metric, newData, args)
 
+    # Save data to the Database
+    #transaction.insert_measurement(component, args, metric, newData["timestamp"], newData["value"])
+    #transaction.commit_transaction()
+
     log.debug("Gathered {0} from {1},{2},{3}".format(newData, component, metric, args))
 
 
@@ -172,7 +179,6 @@ def getMeasurement(hardware, valueType, args):
     valueType = valueType.lower()
 
     measuredValue = None
-
     if hardware == "cpu":
         measuredValue = measure_cpu(valueType, args)
     elif hardware == "memory":
@@ -193,7 +199,7 @@ def getMeasurement(hardware, valueType, args):
     # Server Thread wants this to get basic system information
     elif hardware == "system":
         measuredValue = get_system_data(valueType)
-    
+
     if measuredValue != None:
         return {
             "timestamp" : time.time() * 1000,

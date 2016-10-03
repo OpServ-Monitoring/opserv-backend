@@ -91,6 +91,7 @@ implemented_hardware = {
 HARDWARE_DEFAULTS = {
     "cpu": (True, 0),
     "gpu": (True, 0),
+    "core": (True, 0),
     "memory": (False, None),
     "disk": (True, None),
     "partition": (True, None),

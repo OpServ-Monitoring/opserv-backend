@@ -5,13 +5,19 @@
 #
 #
 
+import logging
 
 from misc.helper import importIfExists
+
+log = logging.getLogger("opserv.gatheringmeasure")
+log.setLevel(logging.DEBUG)
+
 
 # Optional depency importing
 psutil = importIfExists("psutil")
 pynvml = importIfExists("pynvml")
 pyspectator = importIfExists("pyspectator")
+cpuinfo = importIfExists("cpuinfo")
 
 NOTIMPLEMENTED_NUMERICAL = 0
 NOTIMPLEMENTED_TEXT = ""
@@ -19,22 +25,40 @@ NOTIMPLEMENTED_TEXT = ""
 
 def measure_cpu(valueType, args):
     if valueType == "usage":
-        return psutil.cpu_percent()
+        if psutil:
+            return psutil.cpu_percent()
+        return NOTIMPLEMENTED_NUMERICAL
     elif valueType == "frequency":
+        if cpuinfo:
+            return cpuinfo.get_cpu_info()["hz_actual_raw"][0]
         return NOTIMPLEMENTED_NUMERICAL
+
     elif valueType == "info":
-        return NOTIMPLEMENTED_NUMERICAL
+        if cpuinfo:
+            return cpuinfo.get_cpu_info()["brand"]
+        return NOTIMPLEMENTED_TEXT
+
     elif valueType == "temperature":
+        if pyspectator:
+            try:
+                c = pyspectator.processor.Cpu(monitoring_latency=0.5)
+                return c.temperature
+            except Exception as e:
+                log.error(e)
+
         return NOTIMPLEMENTED_NUMERICAL
 
 def measure_core(valueType, args):
     
     if valueType == "info":
-        return NOTIMPLEMENTED_TEXT
+        if cpuinfo:
+            return cpuinfo.brand
     elif valueType == "frequency":
-        return NOTIMPLEMENTED_NUMERICAL
+        if cpuinfo:
+            return cpuinfo.get_cpu_info()["hz_actual_raw"][0]
     elif valueType == "usage":
-        return NOTIMPLEMENTED_NUMERICAL
+        if psutil:
+            psutil.cpu_percent(percpu=True)[args]
     elif valueType == "temperature":
         return NOTIMPLEMENTED_NUMERICAL
 def measure_gpu(valueType, args):
@@ -104,4 +128,15 @@ def get_system_data(valueType):
     if valueType == "processes":
         return str(psutil.pids())
     if valueType == "networks":
-        return str([])
+        return str(getNetworkInterfaces())
+
+
+def getNetworkInterfaces():
+    ''' Gets the names of all currently available network interfaces and returns them in an array '''
+    if not psutil:
+        return []
+    detailed_interfaces = psutil.net_if_stats()
+    simple_interfaces = []
+    for interface in detailed_interfaces:
+        simple_interfaces.append(interface)
+    return simple_interfaces
