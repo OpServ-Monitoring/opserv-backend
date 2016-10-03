@@ -110,6 +110,9 @@ class MeasurementsTableManagement(GeneralTableManagement):
 
             self.__reset_variables()
 
+        def rollback(self):
+            self.__reset_variables()
+
     @staticmethod
     def get_min_avg_max(component_type, component_arg, metric_name, start_time, end_time, limit):
         def triple_tuple(*base_tuple):
