@@ -1,7 +1,7 @@
 import sqlite3
 
-from .tables.component_type_metrics_table_management import ComponentTypeMetricsTableManagement
 from .tables.component_metrics_table_management import ComponentMetricsTableManagement
+from .tables.component_type_metrics_table_management import ComponentTypeMetricsTableManagement
 from .tables.component_types_table_management import ComponentTypesTableManagement
 from .tables.measurements_table_management import MeasurementsTableManagement
 from .tables.metrics_table_management import MetricsTableManagement
@@ -11,13 +11,6 @@ location = 'opserv.db'
 
 
 class DatabaseOpenHelper:
-    # TODO Remove, this should be delivered by the gathering module
-    __supported_component_metrics = {
-        'cpu': ['info', 'usage', 'frequency', 'temperature'],
-        'core': ['info', 'usage', 'frequency', 'temperature'],
-        'gpu': ['info', 'gpuclock', 'memclock', 'vramusage', 'temperature', 'usage']
-    }
-
     @staticmethod
     def on_create():
         connection = sqlite3.connect(location)
@@ -63,12 +56,14 @@ class DatabaseOpenHelper:
 
     @staticmethod
     def __insert_supported_component_metrics(connection: sqlite3.Connection):
-        # TODO Exchange local list with gathering interface - method body could need a change aswell
-        for component_type in DatabaseOpenHelper.__supported_component_metrics:
+        # TODO Improve insertions
+        from misc import constants
+
+        for component_type in constants.implemented_hardware:
             connection.execute("INSERT OR IGNORE INTO component_types_table (component_type_name) VALUES (?)",
                                (component_type,))
 
-            for metric in DatabaseOpenHelper.__supported_component_metrics[component_type]:
+            for metric in constants.implemented_hardware[component_type]:
                 connection.execute("INSERT OR IGNORE INTO metrics_table (metric_name) VALUES (?)", (metric,))
                 connection.execute("INSERT OR IGNORE INTO component_type_metrics_table(component_type_fk, metric_fk) "
                                    "VALUES (?,?)", (component_type, metric))
