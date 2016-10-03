@@ -65,8 +65,6 @@ class DatabaseOpenHelper:
     def __insert_supported_component_metrics(connection: sqlite3.Connection):
         # TODO Exchange local list with gathering interface - method body could need a change aswell
         for component_type in DatabaseOpenHelper.__supported_component_metrics:
-            print(component_type)
-
             connection.execute("INSERT OR IGNORE INTO component_types_table (component_type_name) VALUES (?)",
                                (component_type,))
 
