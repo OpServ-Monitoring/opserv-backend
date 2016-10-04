@@ -7,13 +7,17 @@ w = wmi.WMI(namespace="root\wmi")
 
 #print(temperature_info.CurrentTemperature)
 
+#Win32_processor
 
 
 c = wmi.WMI()
-wql = "SELECT * FROM MSAcpi_ThermalZoneTemperature"
+
+
+wql = "select * from Win32_VideoController"
 for item in c.query(wql):
     print(item)
 
 
-wmic path win32_processor get CurrentClockSpeed, MaxClockSpeed, Name, NumberOfCores, NumberOfLogicalProcessors
-
+wql = "SELECT * FROM MSAcpi_ThermalZoneTemperature"
+for item in c.query(wql):
+    print(item)

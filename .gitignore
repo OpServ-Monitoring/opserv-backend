@@ -93,3 +93,6 @@ ENV/
 
 # Opserv Log file
 opserv.log
+
+# Database file of the app
+app/*.db

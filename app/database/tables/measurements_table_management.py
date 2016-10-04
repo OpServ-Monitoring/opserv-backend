@@ -91,6 +91,8 @@ class MeasurementsTableManagement(GeneralTableManagement):
             self.__insertions = []
 
         def insert_measurement(self, metric_name, timestamp, value, component_type, component_arg="default"):
+            if component_arg == None:
+                component_arg = "default"
             self.__insertions.append((component_type, component_arg, metric_name, timestamp, value))
 
         def commit_transaction(self):
