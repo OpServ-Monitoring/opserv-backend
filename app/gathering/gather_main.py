@@ -130,7 +130,7 @@ def getMeasurementAndSend(component, metric, args):
     data_manager.setMeasurement(component, metric, newData, args)
 
     # Save data to the Database
-    transaction.insert_measurement(metric, newData["timestamp"], newData["value"], component, args)
+    transaction.insert_measurement(metric, newData["timestamp"], str(newData["value"]), component, args)
     transaction.commit_transaction()
 
     log.debug("Gathered {0} from {1},{2},{3}".format(newData, component, metric, args))

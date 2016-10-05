@@ -120,19 +120,19 @@ def measure_network(valueType, args):
 
 def get_system_data(valueType):
     if valueType == "cpus":
-        return str([1])
+        return list(range(1))
     if valueType == "cores":
-        return str(psutil.cpu_count())
+        return list(range(psutil.cpu_count()))
     if valueType == "gpus":
-        return str([1])
+        return list(range(1))
     if valueType == "disks":
-        return NOTIMPLEMENTED_TEXT
+        return list(range(0))
     if valueType == "partitions":
-        return str(psutil.disk_partitions())
+        return psutil.disk_partitions()
     if valueType == "processes":
-        return str(psutil.pids())
+        return psutil.pids()
     if valueType == "networks":
-        return str(getNetworkInterfaces())
+        return getNetworkInterfaces()
 
 
 def getNetworkInterfaces():
