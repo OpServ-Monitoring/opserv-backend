@@ -1,7 +1,12 @@
-from .endpoints.root__general_child import RootGeneralChildEndpoint
+from .endpoints.__general_data_v1 import GeneralEndpointDataV1
+from ..data_api_versions_endpoint import DataApiVersionsEndpoint
 
 
-class DataApiV1Endpoint(RootGeneralChildEndpoint):
+class DataApiV1Endpoint(GeneralEndpointDataV1):
+    @staticmethod
+    def _get_parent():
+        return DataApiVersionsEndpoint
+
     def _get(self) -> bool:
         # no data section available
         return self.KEEP_PROCESSING()
@@ -14,8 +19,8 @@ class DataApiV1Endpoint(RootGeneralChildEndpoint):
     def get_name():
         return "data API v1 entry"
 
-    @staticmethod
-    def _get_children():
+    @classmethod
+    def _get_children(cls):
         from .endpoints.cpus import CpusEndpoint
         from .endpoints.cpucores import CpucoresEndpoint
         from .endpoints.gpus import GpusEndpoint

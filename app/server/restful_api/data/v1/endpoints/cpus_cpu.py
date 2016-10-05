@@ -4,6 +4,8 @@ from .__general_data_v1 import GeneralEndpointDataV1
 class CpusCpuEndpoint(GeneralEndpointDataV1):
     def _get(self) -> bool:
         # TODO implement endpoint
+        self._response_holder.set_body_data("I dont think I'm ready for production. :(")
+
         return True
 
     @staticmethod
@@ -22,8 +24,8 @@ class CpusCpuEndpoint(GeneralEndpointDataV1):
 
         return CpusEndpoint
 
-    @staticmethod
-    def _get_children():
+    @classmethod
+    def _get_children(cls):
         from .cpus_cpu_frequency import CpusCpuFrequencyEndpoint
         from .cpus_cpu_temperature import CpusCpuTemperatureEndpoint
         from .cpus_cpu_usage import CpusCpuUsageEndpoint
@@ -43,4 +45,4 @@ class CpusCpuEndpoint(GeneralEndpointDataV1):
     @staticmethod
     def get_cpu_id_validator():
         # TODO Validate cpu id
-        return "cpu", lambda x: int(x) > 4
+        return "cpu", lambda x: True

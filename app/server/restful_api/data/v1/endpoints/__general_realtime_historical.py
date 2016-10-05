@@ -1,7 +1,7 @@
 import time
 from abc import ABCMeta, abstractmethod
 
-from database.tables.measurements_table_management import MeasurementsTableManagement
+from app.database.unified_database_interface import UnifiedDatabaseInterface
 from .__general_data_v1 import GeneralEndpointDataV1
 
 
@@ -39,7 +39,7 @@ class GeneralEndpointRealtimeHistorical(GeneralEndpointDataV1, metaclass=ABCMeta
 
     # TODO Make this a @abstractmethod or generalize it
     def _get_historical_data(self):
-        raw_historical_results = MeasurementsTableManagement.get_min_avg_max(
+        raw_historical_results = UnifiedDatabaseInterface.get_min_avg_max(
             self._get_component_type(),
             self._get_component_arg(),
             self._get_component_metric(),
@@ -63,8 +63,6 @@ class GeneralEndpointRealtimeHistorical(GeneralEndpointDataV1, metaclass=ABCMeta
         }
 
         for row in query_result:
-            print(row)  # TODO remove
-
             parsed_response["values"].append(
                 {
                     'timestamp': row[3],
@@ -115,8 +113,8 @@ class GeneralEndpointRealtimeHistorical(GeneralEndpointDataV1, metaclass=ABCMeta
             elif limit > 5000:
                 self._limit = 5000
 
-    @staticmethod
-    def _get_children():
+    @classmethod
+    def _get_children(cls):
         return []
 
     @abstractmethod

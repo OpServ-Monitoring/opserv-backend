@@ -35,8 +35,8 @@ class DataApiVersionsEndpoint(Endpoint):
     def get_paths():
         return [""]
 
-    @staticmethod
-    def _get_children():
+    @classmethod
+    def _get_children(cls):
         from .v1.data_api_v1_endpoint import DataApiV1Endpoint
 
         return [
@@ -46,7 +46,7 @@ class DataApiVersionsEndpoint(Endpoint):
 
     @staticmethod
     def get_name():
-        pass
+        return "data API versions entry"
 
     @staticmethod
     def _get_parent():

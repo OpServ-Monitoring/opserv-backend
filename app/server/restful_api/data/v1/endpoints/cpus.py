@@ -1,3 +1,4 @@
+from ....general.endpoint import Endpoint
 from .root__general_child import RootGeneralChildEndpoint
 
 
@@ -13,34 +14,15 @@ class CpusEndpoint(RootGeneralChildEndpoint):
         return "cpu entities"
 
     @staticmethod
-    def _get_children():
-        from .cpus_cpu import CpusCpuEndpoint
-
-        children = []
-
-        ids = CpusEndpoint.__get_children_ids()
-        for child_id in ids:
-            children.append(("/" + child_id, CpusCpuEndpoint))
-
-        return children
+    def _get_hardware_value_type() -> str:
+        return "cpus"
 
     @staticmethod
-    def __get_children_ids():
-        # TODO Implement dynamic children
-        import queue_manager
-        import time
+    def _get_component_type() -> str:
+        return "cpu"
 
-        queue_manager.requestDataQueue.put({"hardware": "system", "valueType": "cpus"})
-        queue = queue_manager.getQueue("system", "cpus")
+    @staticmethod
+    def _get_children_endpoint_type() -> Endpoint:
+        from .cpus_cpu import CpusCpuEndpoint
 
-        amount = None
-        while amount is None:
-            amount = queue.get()
-            time.sleep(0.02)
-
-        children_ids = []
-        if amount is not None:
-            for i in range(0, amount):
-                children_ids.append(str(i))
-
-        return children_ids
+        return CpusCpuEndpoint

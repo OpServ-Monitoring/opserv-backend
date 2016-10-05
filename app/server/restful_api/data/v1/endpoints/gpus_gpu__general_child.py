@@ -3,19 +3,19 @@ from abc import ABCMeta
 from .__general_realtime_historical import GeneralEndpointRealtimeHistorical
 
 
-class CpusCpuGeneralChildEndpoint(GeneralEndpointRealtimeHistorical, metaclass=ABCMeta):
+class GpusGpuGeneralChildEndpoint(GeneralEndpointRealtimeHistorical, metaclass=ABCMeta):
     @staticmethod
     def _get_parent():
-        from .cpus_cpu import CpusCpuEndpoint
+        from .gpus_gpu import GpusGpuEndpoint
 
-        return CpusCpuEndpoint
+        return GpusGpuEndpoint
 
     @staticmethod
     def _get_mandatory_parameters():
-        from .cpus_cpu import CpusCpuEndpoint
+        from .gpus_gpu import GpusGpuEndpoint
 
         return [
-            CpusCpuEndpoint.get_cpu_id_validator()
+            GpusGpuEndpoint.get_gpu_id_validator()
         ]
 
     @classmethod
@@ -23,7 +23,7 @@ class CpusCpuGeneralChildEndpoint(GeneralEndpointRealtimeHistorical, metaclass=A
         return []
 
     def _get_component_type(self) -> str:
-        return "cpu"
+        return "gpu"
 
     def _get_component_arg(self) -> str:
-        return self._request_holder.get_params()["cpu"]
+        return self._request_holder.get_params()["gpu"]

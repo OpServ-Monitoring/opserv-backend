@@ -1,3 +1,4 @@
+from app.server.restful_api.general.endpoint import Endpoint
 from .root__general_child import RootGeneralChildEndpoint
 
 
@@ -13,33 +14,15 @@ class CpucoresEndpoint(RootGeneralChildEndpoint):
         return "cpu core entities"
 
     @staticmethod
-    def __get_children_ids():
-        # TODO Implement dynamic children
-        import queue_manager
-        import time
+    def _get_children_endpoint_type() -> Endpoint:
+        from .cpucores_cpucore import CpucoresCpucoreEndpoint
 
-        queue_manager.requestDataQueue.put({"hardware": "system", "valueType": "cores"})
-        queue = queue_manager.getQueue("system", "cores")
-
-        amount = None
-        while amount is None:
-            amount = queue.get()
-            time.sleep(0.02)
-
-        children_ids = []
-        if amount is not None:
-            for i in range(0, amount):
-                children_ids.append(str(i))
-
-        return children_ids
+        return CpucoresCpucoreEndpoint
 
     @staticmethod
-    def _get_children():
-        from .cpucores_cpucore import CpucoresCpucoreEndpoint
-        children = []
+    def _get_hardware_value_type() -> str:
+        return "cores"
 
-        ids = CpucoresEndpoint.__get_children_ids()
-        for child_id in ids:
-            children.append(("/" + child_id, CpucoresCpucoreEndpoint))
-
-        return children
+    @staticmethod
+    def _get_component_type() -> str:
+        return "core"

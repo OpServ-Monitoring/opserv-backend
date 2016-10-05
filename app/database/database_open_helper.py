@@ -19,6 +19,7 @@ class DatabaseOpenHelper:
         DatabaseOpenHelper.__create_tables(connection)
         DatabaseOpenHelper.__create_triggers(connection)
         DatabaseOpenHelper.__insert_supported_component_metrics(connection)
+        DatabaseOpenHelper.__set_gathering_rates(connection)
 
         connection.commit()
 
@@ -67,3 +68,8 @@ class DatabaseOpenHelper:
                 connection.execute("INSERT OR IGNORE INTO metrics_table (metric_name) VALUES (?)", (metric,))
                 connection.execute("INSERT OR IGNORE INTO component_type_metrics_table(component_type_fk, metric_fk) "
                                    "VALUES (?,?)", (component_type, metric))
+
+    @staticmethod
+    def __set_gathering_rates(connection):
+        # TODO Read and set gathering rates, if set. Else set default rates.
+        pass

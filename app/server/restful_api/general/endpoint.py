@@ -134,6 +134,10 @@ class Endpoint(metaclass=ABCMeta):
     def __generate_parent_reference(self, links):
         parent_uri = self.__get_parent_uri()
         parent_name = self.__get_parent_name()
+
+        # TODO remove print
+        print(parent_uri, parent_name)
+
         if parent_uri is not None and parent_name is not None:
             links['parent'] = self._get_link_element(parent_uri, parent_name)
 
@@ -198,9 +202,9 @@ class Endpoint(metaclass=ABCMeta):
 
         return children
 
-    @staticmethod
+    @classmethod
     @abstractmethod
-    def _get_children() -> Iterable:
+    def _get_children(cls) -> Iterable:
         pass
 
     def __match_uri_with_regex(self, regex):

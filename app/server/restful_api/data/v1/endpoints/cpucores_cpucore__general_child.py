@@ -18,6 +18,12 @@ class CpucoresCpucoreGeneralChildEndpoint(GeneralEndpointRealtimeHistorical, met
             CpucoresCpucoreEndpoint.get_cpucore_id_validator()
         ]
 
-    @staticmethod
-    def _get_children():
+    @classmethod
+    def _get_children(cls):
         return []
+
+    def _get_component_arg(self) -> str:
+        return self._request_holder.get_params()["cpu_core"]
+
+    def _get_component_type(self) -> str:
+        return "core"

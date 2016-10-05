@@ -1,3 +1,8 @@
+from app.server.restful_api.data.v1.endpoints.gpus_gpu_gpuclock import GpusGpuGpuclockEndpoint
+from app.server.restful_api.data.v1.endpoints.gpus_gpu_memclock import GpusGpuMemclockEndpoint
+from app.server.restful_api.data.v1.endpoints.gpus_gpu_temperature import GpusGpuTemperatureEndpoint
+from app.server.restful_api.data.v1.endpoints.gpus_gpu_usage import GpusGpuUsageEndpoint
+from app.server.restful_api.data.v1.endpoints.gpus_gpu_vramusage import GpusGpuVramusageEndpoint
 from .data_api_v1_endpoint import DataApiV1Endpoint
 from .endpoints.cpucores import CpucoresEndpoint
 from .endpoints.cpucores_cpucore import CpucoresCpucoreEndpoint
@@ -36,26 +41,20 @@ class EndpointManagementDataV1(EndpointManagement):
             # - - - CPU CORES - - - #
 
             CpucoresEndpoint,  # /v1/cpu-cores
-            # /v1/cpus/<string:cpu>/cpu-cores
             CpucoresCpucoreEndpoint,  # /v1/cpu-cores/<string:cpu_core>
-            # /v1/cpus/<string:cpu>/cpu-cores/<string:cpu_core>
             CpucoresCpucoreUsageEndpoint,  # /v1/cpu-cores/<string:cpu_core>/usage
-            # /v1/cpus/<string:cpu>/cpu-cores/<string:cpu_core>/usage
             CpucoresCpucoreTemperatureEndpoint,  # /v1/cpu-cores/<string:cpu_core>/temperature
-            # /v1/cpus/<string:cpu>/cpu-cores/<string:cpu_core>/temperature
             CpucoresCpucoreFrequencyEndpoint,  # /v1/cpu-cores/<string:cpu_core>/frequency
-            # /v1/cpus/<string:cpu>/cpu-cores/<string:cpu_core>/frequency
-
 
             # - - - GPU - - - #
 
             GpusEndpoint,  # v1/gpus
             GpusGpuEndpoint,  # v1/gpus/<string:gpu>
-            # v1/gpus/<string:gpu>/gpu-clock
-            # v1/gpus/<string:gpu>/memory-clock
-            # v1/gpus/<string:gpu>/vram-usage
-            # v1/gpus/<string:gpu>/temperature
-            # v1/gpus/<string:gpu>/usage
+            GpusGpuGpuclockEndpoint,  # v1/gpus/<string:gpu>/gpuclock
+            GpusGpuMemclockEndpoint,  # v1/gpus/<string:gpu>/memclock
+            GpusGpuTemperatureEndpoint,  # v1/gpus/<string:gpu>/temperature
+            GpusGpuUsageEndpoint,  # v1/gpus/<string:gpu>/usage
+            GpusGpuVramusageEndpoint  # v1/gpus/<string:gpu>/vramusage
 
             # - - - RAM - - - #
 

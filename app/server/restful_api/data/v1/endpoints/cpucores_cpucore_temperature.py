@@ -11,3 +11,6 @@ class CpucoresCpucoreTemperatureEndpoint(CpucoresCpucoreGeneralChildEndpoint):
     @staticmethod
     def get_name():
         return "cpu core temperature measurement"
+
+    def _get_component_metric(self) -> str:
+        return "temperature"

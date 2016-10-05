@@ -11,3 +11,6 @@ class CpucoresCpucoreFrequencyEndpoint(CpucoresCpucoreGeneralChildEndpoint):
     @staticmethod
     def get_name():
         return "cpu core frequency measurement"
+
+    def _get_component_metric(self) -> str:
+        return "frequency"
