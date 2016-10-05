@@ -10,6 +10,7 @@
 # print(implemented_hardware)
 #
 
+from enum import Enum
 
 cpu_valueTypes = {
     "usage",
@@ -99,3 +100,8 @@ HARDWARE_DEFAULTS = {
     "system": (False, None),
     "network": (True, None)
 }
+
+Operating_System = Enum("Operating_Systems", "windows linux macos freebsd")
+GraphicsVendor = Enum("GraphicsVendor", "intel nvidia amd")
+CpuVendor = Enum("CpuVendor", "intel amd")
+

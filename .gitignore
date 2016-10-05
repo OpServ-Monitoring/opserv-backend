@@ -92,7 +92,7 @@ ENV/
 .vscode/*
 
 # Opserv Log file
-opserv.log
+app/opserv.log
 
 # Database file of the app
 app/*.db

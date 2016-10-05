@@ -6,7 +6,9 @@
 #
 
 import logging
+import sys
 
+from misc.constants import Operating_System
 from misc.helper import importIfExists
 
 log = logging.getLogger("opserv.gatheringmeasure")
@@ -18,6 +20,8 @@ psutil = importIfExists("psutil")
 pynvml = importIfExists("pynvml")
 pyspectator = importIfExists("pyspectator")
 cpuinfo = importIfExists("cpuinfo")
+clr = importIfExists("clr")
+
 
 NOTIMPLEMENTED_NUMERICAL = 0
 NOTIMPLEMENTED_TEXT = ""
@@ -116,11 +120,11 @@ def measure_network(valueType, args):
 
 def get_system_data(valueType):
     if valueType == "cpus":
-        return 1
+        return str([1])
     if valueType == "cores":
-        return psutil.cpu_count()
+        return str(psutil.cpu_count())
     if valueType == "gpus":
-        return 1
+        return str([1])
     if valueType == "disks":
         return NOTIMPLEMENTED_TEXT
     if valueType == "partitions":
@@ -140,3 +144,19 @@ def getNetworkInterfaces():
     for interface in detailed_interfaces:
         simple_interfaces.append(interface)
     return simple_interfaces
+
+
+def get_operating_system():
+    baseName = sys.platform
+    if baseName.startswith("linux"):
+        return Operating_System.linux
+    elif baseName.startswith("win"):
+        return Operating_System.windows
+    elif baseName.startswith("darwin"):
+        return Operating_System.macos
+    elif baseName.startswith("freebsd"):
+        return Operating_System.freebsd
+    return None 
+
+
+currentOS = get_operating_system()
