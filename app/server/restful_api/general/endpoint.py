@@ -135,9 +135,6 @@ class Endpoint(metaclass=ABCMeta):
         parent_uri = self.__get_parent_uri()
         parent_name = self.__get_parent_name()
 
-        # TODO remove print
-        print(parent_uri, parent_name)
-
         if parent_uri is not None and parent_name is not None:
             links['parent'] = self._get_link_element(parent_uri, parent_name)
 

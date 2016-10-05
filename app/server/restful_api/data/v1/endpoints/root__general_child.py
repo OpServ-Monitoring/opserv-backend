@@ -1,6 +1,6 @@
 from abc import ABCMeta, abstractmethod
 
-from app.database.unified_database_interface import UnifiedDatabaseInterface
+from database.unified_database_interface import UnifiedDatabaseInterface
 from .__general_data_v1 import GeneralEndpointDataV1
 from ....general.endpoint import Endpoint
 

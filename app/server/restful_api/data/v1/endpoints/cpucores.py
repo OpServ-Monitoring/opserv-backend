@@ -1,4 +1,4 @@
-from app.server.restful_api.general.endpoint import Endpoint
+from ....general.endpoint import Endpoint
 from .root__general_child import RootGeneralChildEndpoint
 
 

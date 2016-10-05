@@ -43,7 +43,7 @@ class ApiRootEndpoint(Endpoint):
     def _get_parent():
         return None
 
-    @staticmethod
+    @classmethod
     def _get_children(cls):
         from ..data.data_api_versions_endpoint import DataApiVersionsEndpoint
 
