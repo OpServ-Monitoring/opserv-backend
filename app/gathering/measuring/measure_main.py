@@ -11,9 +11,10 @@ import sys
 from misc.constants import Operating_System
 from misc.helper import importIfExists
 
-log = logging.getLogger("opserv.gatheringmeasure")
+log = logging.getLogger("opserv.gathering.measure")
 log.setLevel(logging.DEBUG)
 
+log.debug("Logger for Measuremain started")
 
 # Optional depency importing
 psutil = importIfExists("psutil")
@@ -28,6 +29,8 @@ NOTIMPLEMENTED_TEXT = ""
 
 
 def measure_cpu(valueType, args):
+    log.info("Retrieving cpu data")
+
     if valueType == "usage":
         if psutil:
             return psutil.cpu_percent()
@@ -147,6 +150,7 @@ def getNetworkInterfaces():
 
 
 def get_operating_system():
+    log.info("Retrieving operating system")
     baseName = sys.platform
     if baseName.startswith("linux"):
         return Operating_System.linux

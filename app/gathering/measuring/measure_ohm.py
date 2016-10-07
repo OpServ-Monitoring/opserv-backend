@@ -15,7 +15,7 @@ import logging
 
 import clr
 
-log = logging.getLogger("opserv.gatheringmeasureohm")
+log = logging.getLogger("opserv.gathering.measure.ohm")
 log.setLevel(logging.DEBUG)
 
 ohm_ready = False

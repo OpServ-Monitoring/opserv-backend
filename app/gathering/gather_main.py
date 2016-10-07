@@ -14,7 +14,7 @@ import misc.queue_manager as queue_manager
 import misc.data_manager as data_manager
 from gathering.measuring.measure_main import measure_core, measure_cpu, measure_disk, \
     measure_gpu, measure_memory, measure_network, measure_partition, measure_process, \
-    get_system_data, get_operating_system
+    get_system_data
 from database.unified_database_interface import UnifiedDatabaseInterface
 
 log = logging.getLogger("opserv.gathering")
@@ -24,6 +24,7 @@ transaction = UnifiedDatabaseInterface.get_measurement_insertion_transaction()
 
 
 class GatherThread(threading.Thread):
+    ''' Thread for the gathering backend. Handles the collection of the data '''
     def __init__(self):
         """
             Main Init function for the gathering thread
@@ -38,7 +39,6 @@ class GatherThread(threading.Thread):
         """
             Starts the whole gathering process by manually starting the queueListener and then waiting for updates
         """
-        global MEASURE_DELAY
         log.debug("GatherThread running...")
         self.s.enter(1, 1, self.queueListener)
         # Gathering Loop will be indefinite
@@ -124,7 +124,7 @@ def getMeasurementAndSend(component, metric, args):
     newData = getMeasurement(component, metric, args)
 
     # Put that data into the queue
-    queue_manager.putMeasurementIntoQueue(component, metric, args, newData)
+    queue_manager.putMeasurementIntoQueue(component, metric, newData, args)
 
     # Update the data in the realtime dictionary
     data_manager.setMeasurement(component, metric, newData, args)
@@ -179,32 +179,32 @@ def getMeasurement(hardware, valueType, args):
     hardware = hardware.lower()
     valueType = valueType.lower()
 
-    measuredValue = None
+    measured_value = None
     if hardware == "cpu":
-        measuredValue = measure_cpu(valueType, args)
+        measured_value = measure_cpu(valueType, args)
     elif hardware == "memory":
-        measuredValue = measure_memory(valueType, args)
+        measured_value = measure_memory(valueType, args)
     elif hardware == "disk":
-        measuredValue = measure_disk(valueType, args)
+        measured_value = measure_disk(valueType, args)
     elif hardware == "partition":
-        measuredValue = measure_partition(valueType, args)
+        measured_value = measure_partition(valueType, args)
     elif hardware == "process":
-        measuredValue = measure_process(valueType, args)
+        measured_value = measure_process(valueType, args)
     elif hardware == "core":
-        measuredValue = measure_core(valueType, args)
+        measured_value = measure_core(valueType, args)
     elif hardware == "gpu":
-        measuredValue = measure_gpu(valueType, args)
+        measured_value = measure_gpu(valueType, args)
     elif hardware == "network":
-        measuredValue = measure_network(valueType, args)
+        measured_value = measure_network(valueType, args)
 
     # Server Thread wants this to get basic system information
     elif hardware == "system":
-        measuredValue = get_system_data(valueType)
+        measured_value = get_system_data(valueType)
 
-    if measuredValue != None:
+    if measured_value != None:
         return {
             "timestamp" : time.time() * 1000,
-            "value" : measuredValue
+            "value" : measured_value
         }
 
 

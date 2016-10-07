@@ -29,6 +29,8 @@ def argumentHasDefault(hardware):
 
 def createSubDictIfNecessary(mainDict, hardware, args):
     """ Creates a sub-dictionary for arguments if there isn't already one existing and the arguments is not None"""
+    assertIsDict(mainDict)
+    
     if args == None:
         return
     if not args in mainDict[hardware]:
@@ -38,3 +40,9 @@ def assertHardwareExists(mainDict, hardware):
     """ Simple assert to check if the given hardware exists in the constants and realtime dict """
     if not hardware in mainDict or not hardware in HARDWARE_DEFAULTS:
         raise NotImplementedError(hardware)
+
+def assertIsDict(dictToTest):
+    if type(dictToTest) == type(dict()):
+        return True
+    else:
+        raise TypeError("This should be a dict" + str(dictToTest))

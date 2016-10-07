@@ -96,3 +96,6 @@ app/opserv.log
 
 # Database file of the app
 app/*.db
+
+# Pylint settings file for the project
+.pylintrc

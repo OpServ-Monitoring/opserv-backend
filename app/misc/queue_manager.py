@@ -74,12 +74,12 @@ def queueExists(hardware, valueType, args):
     return False
 
 
-def putMeasurementIntoQueue(component, metric, args, measurement):
+def putMeasurementIntoQueue(component, metric, measurement, args=None):
     """ Puts the given measurement into the specified queue """
     getQueue(component, metric, args).put(measurement)
 
 
-def readMeasurementFromQueue(component, metric, args):
+def readMeasurementFromQueue(component, metric, args=None):
     """ Get a single measurement from the specified queue.
         Warning, could cause QueueEmpty Errors"""
     return getQueue(component, metric, args).get()
