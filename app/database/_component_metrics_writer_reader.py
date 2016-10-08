@@ -37,7 +37,7 @@ class ComponentMetricsWriterReader:
     def insert_component_metrics(component_metrics):
         connection = DatabaseOpenHelper.establish_database_connection()
 
-        connection.executemany("INSERT INTO {0} ({1}, {2}, {3}, {4}) VALUES (?, ? , ?, ?)".format(
+        connection.executemany("INSERT OR REPLACE INTO {0} ({1}, {2}, {3}, {4}) VALUES (?, ? , ?, ?)".format(
             ComponentMetricsTableManagement.TABLE_NAME(),
             ComponentMetricsTableManagement.KEY_COMPONENT_TYPE_FK(),
             ComponentMetricsTableManagement.KEY_COMPONENT_ARG(),

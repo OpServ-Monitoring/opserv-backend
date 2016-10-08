@@ -9,9 +9,6 @@ from .tables.user_preferences_table_management import UserPreferencesTableManage
 from .unified_database_interface import UnifiedDatabaseInterface
 
 
-# TODO Decide whether the location should be configurable
-
-
 class DatabaseOpenHelper:
     @staticmethod
     def on_create():
@@ -57,17 +54,21 @@ class DatabaseOpenHelper:
     def __create_triggers():
         connection = DatabaseOpenHelper.establish_database_connection()
 
-        connection.execute("CREATE TRIGGER IF NOT EXISTS add_component BEFORE INSERT ON measurements_table "
-                           "BEGIN "
-                           "INSERT OR IGNORE INTO component_metrics_table "
-                           "(component_type_fk, "
-                           "component_arg, "
-                           "component_metric_fk) "
-                           "VALUES "
-                           "(new.measurement_component_type_fk, "
-                           "new.measurement_component_arg_fk, "
-                           "new.measurement_metric_fk); "
-                           "END;")
+        connection.execute(
+            "CREATE TRIGGER IF NOT EXISTS add_component BEFORE INSERT ON {0} "
+            "BEGIN "
+            "INSERT OR IGNORE INTO {1} ({2}, {3}, {4}) VALUES (new.{5}, new.{6}, new.{7}); "
+            "END;".format(
+                MeasurementsTableManagement.TABLE_NAME(),
+                ComponentMetricsTableManagement.TABLE_NAME(),
+                ComponentMetricsTableManagement.KEY_COMPONENT_TYPE_FK(),
+                ComponentMetricsTableManagement.KEY_COMPONENT_ARG(),
+                ComponentMetricsTableManagement.KEY_COMPONENT_METRIC_FK(),
+                MeasurementsTableManagement.KEY_COMPONENT_TYPE_FK(),
+                MeasurementsTableManagement.KEY_COMPONENT_ARG_FK(),
+                MeasurementsTableManagement.KEY_METRIC_FK()
+            )
+        )
 
         connection.commit()
         connection.close()
@@ -88,13 +89,30 @@ class DatabaseOpenHelper:
                 metrics.add((metric,))
                 component_type_metrics.append((component_type, metric))
 
-        connection.executemany("INSERT OR IGNORE INTO component_types_table (component_type_name) VALUES (?)",
-                               component_types)
+        connection.executemany(
+            "INSERT OR IGNORE INTO {0} ({1}) VALUES (?)".format(
+                ComponentTypesTableManagement.TABLE_NAME(),
+                ComponentTypesTableManagement.KEY_NAME()
+            ),
+            component_types
+        )
 
-        connection.executemany("INSERT OR IGNORE INTO metrics_table (metric_name) VALUES (?)", metrics)
+        connection.executemany(
+            "INSERT OR IGNORE INTO {0} ({1}) VALUES (?)".format(
+                MetricsTableManagement.TABLE_NAME(),
+                MetricsTableManagement.KEY_NAME()
+            ),
+            metrics
+        )
 
-        connection.executemany("INSERT OR IGNORE INTO component_type_metrics_table(component_type_fk, metric_fk) "
-                               "VALUES (?,?)", component_type_metrics)
+        connection.executemany(
+            "INSERT OR IGNORE INTO {0} ({1}, {2}) VALUES (?,?)".format(
+                ComponentTypeMetricsTableManagement.TABLE_NAME(),
+                ComponentTypeMetricsTableManagement.KEY_COMPONENT_TYPE_FK(),
+                ComponentTypeMetricsTableManagement.KEY_METRIC_FK()
+            ),
+            component_type_metrics
+        )
 
         connection.commit()
         connection.close()

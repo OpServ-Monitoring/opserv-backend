@@ -1,60 +1,54 @@
-import sqlite3
-
-from database.database_open_helper import DatabaseOpenHelper
+from .database_open_helper import DatabaseOpenHelper
+from .tables.measurements_table_management import MeasurementsTableManagement
 
 
 class MeasurementDataReader:
     @staticmethod
     def get_min_avg_max(component_type: str, component_arg: str, metric_name: str, start_time: int, end_time: int,
                         limit: float):
-        def triple_tuple(*base_tuple):
-            return 3 * base_tuple
-
-        query = """  SELECT
-                             measurement_component_type_fk,
-                             measurement_component_arg_fk,
-                             measurement_metric_fk,
-                             avg(measurement_timestamp) AS measurement_timestamp,
-                             CAST(min(measurement_value) AS FLOAT) AS minimum,
-                             avg(measurement_value) AS average,
-                             CAST(max(measurement_value) AS FLOAT) AS maximum
-                           FROM (
-                                SELECT
-                                   (SELECT COUNT(*)
-                                     FROM measurements_table
-                                         WHERE measurement_timestamp > ? AND measurement_timestamp < ?
-                                         AND measurement_component_type_fk = ? AND measurement_component_arg_fk = ?
-                                         AND measurement_metric_fk = ?)
-                                   AS row_count,
-
-                                   (SELECT COUNT(0)
-                                     FROM measurements_table t1
-                                         WHERE t1.measurement_timestamp < t2.measurement_timestamp
-                                         AND t1.measurement_timestamp > ? AND t1.measurement_timestamp < ?
-                                         AND t1.measurement_component_type_fk = ? AND t1.measurement_component_arg_fk = ?
-                                         AND t1.measurement_metric_fk = ?
-                                         ORDER BY measurement_timestamp ASC )
-                                   AS row_number,
-
-                                   *
-                                   FROM measurements_table t2
-                                   WHERE t2.measurement_timestamp > ? AND t2.measurement_timestamp < ?
-                                         AND t2.measurement_component_type_fk = ? AND t2.measurement_component_arg_fk = ?
-                                         AND t2.measurement_metric_fk = ?
-
-                                   ORDER BY measurement_timestamp ASC)
-                           GROUP BY CAST((row_number / (row_count / ?)) AS INT)
-               """
-
-        params = (
-            *triple_tuple(
-                start_time, end_time, component_type, component_arg, metric_name
-            ),
-            limit
-        )
-
         connection = DatabaseOpenHelper.establish_database_connection()
-        cursor = connection.execute(query, params)
 
-        result = cursor.fetchall()
+        result = connection.execute(
+            """SELECT
+                 {1}, {2}, {3},
+                 avg({4}) AS measurement_timestamp,
+                 CAST(min({5}) AS FLOAT) AS minimum,
+                 avg({5}) AS average,
+                 CAST(max({5}) AS FLOAT) AS maximum
+               FROM (
+                 SELECT
+                   (SELECT COUNT(*)
+                    FROM {0}
+                    WHERE {4} > ? AND {4} < ? AND {1} = ? AND {2} = ? AND {3} = ?
+                    ) AS row_count,
+
+                   (SELECT COUNT(0)
+                    FROM {0} t1
+                    WHERE t1.{4} < t2.{4} AND t1.{4} > ? AND t1.{4} < ?
+                      AND t1.{1} = ? AND t1.{2} = ?  AND t1.{3} = ?
+                    ORDER BY {4} ASC
+                    ) AS row_number,
+
+                    *
+                    FROM {0} t2
+                    WHERE t2.{4} > ? AND t2.{4} < ?
+                      AND t2.{1} = ? AND t2.{2} = ? AND t2.{3} = ?
+                    ORDER BY {4} ASC)
+               GROUP BY CAST((row_number / (row_count / ?)) AS INT)""".format(
+                MeasurementsTableManagement.TABLE_NAME(),
+                MeasurementsTableManagement.KEY_COMPONENT_TYPE_FK(),
+                MeasurementsTableManagement.KEY_COMPONENT_ARG_FK(),
+                MeasurementsTableManagement.KEY_METRIC_FK(),
+                MeasurementsTableManagement.KEY_TIMESTAMP(),
+                MeasurementsTableManagement.KEY_VALUE()
+            ),
+            (
+                start_time, end_time, component_type, component_arg, metric_name,
+                start_time, end_time, component_type, component_arg, metric_name,
+                start_time, end_time, component_type, component_arg, metric_name,
+                limit
+            )
+        ).fetchall()
+
+        connection.close()
         return result

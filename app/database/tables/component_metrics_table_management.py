@@ -30,16 +30,15 @@ class ComponentMetricsTableManagement(GeneralTableManagement):
 
     @staticmethod
     def _get_columns() -> list:
-        # TODO improve statements!!
-        greater_or_equal_500_statement = ComponentMetricsTableManagement.KEY_COMPONENT_GATHERING_RATE() + " >= 500"
-        is_integer_statement = "typeof(" + ComponentMetricsTableManagement.KEY_COMPONENT_GATHERING_RATE() + ") = 'integer'"
-        check_statement = "CHECK(" + ComponentMetricsTableManagement.KEY_COMPONENT_GATHERING_RATE() + " IS NULL or " + is_integer_statement + " and " + greater_or_equal_500_statement + ")"
+        type_integer_gr_or_eq_500 = "INTEGER CHECK({0} IS NULL OR (typeof({0}) = 'integer' and {0} >= 500))".format(
+            ComponentMetricsTableManagement.KEY_COMPONENT_GATHERING_RATE()
+        )
 
         return [
             (ComponentMetricsTableManagement.KEY_COMPONENT_TYPE_FK(), GeneralTableManagement._type_text_not_null),
             (ComponentMetricsTableManagement.KEY_COMPONENT_ARG(), GeneralTableManagement._type_text_not_null),
             (ComponentMetricsTableManagement.KEY_COMPONENT_METRIC_FK(), GeneralTableManagement._type_text_not_null),
-            (ComponentMetricsTableManagement.KEY_COMPONENT_GATHERING_RATE(), "INTEGER " + check_statement)
+            (ComponentMetricsTableManagement.KEY_COMPONENT_GATHERING_RATE(), type_integer_gr_or_eq_500)
         ]
 
     @staticmethod

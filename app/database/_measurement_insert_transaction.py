@@ -1,6 +1,5 @@
-import sqlite3
-
-from database.database_open_helper import DatabaseOpenHelper
+from .database_open_helper import DatabaseOpenHelper
+from .tables.measurements_table_management import MeasurementsTableManagement
 
 
 class MeasurementInsertTransaction:
@@ -20,12 +19,14 @@ class MeasurementInsertTransaction:
         connection = DatabaseOpenHelper.establish_database_connection()
 
         connection.executemany(
-            "INSERT INTO measurements_table ("
-            "measurement_component_type_fk, "
-            "measurement_component_arg_fk, "
-            "measurement_metric_fk, "
-            "measurement_timestamp, "
-            "measurement_value) VALUES (?, ? ,? ,?, ?)",
+            "INSERT INTO {0} ({1}, {2}, {3}, {4}, {5}) VALUES (?, ? ,? ,?, ?)".format(
+                MeasurementsTableManagement.TABLE_NAME(),
+                MeasurementsTableManagement.KEY_COMPONENT_TYPE_FK(),
+                MeasurementsTableManagement.KEY_COMPONENT_ARG_FK(),
+                MeasurementsTableManagement.KEY_METRIC_FK(),
+                MeasurementsTableManagement.KEY_TIMESTAMP(),
+                MeasurementsTableManagement.KEY_VALUE()
+            ),
             self.__insertions
         )
 
