@@ -67,7 +67,7 @@ class RootGeneralChildEndpoint(GeneralEndpointDataV1, metaclass=ABCMeta):
     def __get_persisted_children_ids(cls) -> list:
         component_type = cls._get_component_type()
 
-        return UnifiedDatabaseInterface.get_component_args(component_type)
+        return UnifiedDatabaseInterface.get_component_metrics_writer_reader().get_component_args(component_type)
 
     @classmethod
     def __merge_two_lists(cls, first_list, second_list):

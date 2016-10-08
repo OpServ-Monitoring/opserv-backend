@@ -44,7 +44,7 @@ class GeneralEndpointRealtimeHistorical(GeneralEndpointDataV1, metaclass=ABCMeta
 
     # TODO Make this a @abstractmethod or generalize it
     def _get_historical_data(self):
-        raw_historical_results = UnifiedDatabaseInterface.get_min_avg_max(
+        raw_historical_results = UnifiedDatabaseInterface.get_measurement_data_reader().get_min_avg_max(
             self._get_component_type(),
             self._get_component_arg(),
             self._get_component_metric(),
