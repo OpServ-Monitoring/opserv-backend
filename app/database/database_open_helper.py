@@ -6,31 +6,35 @@ from .tables.component_types_table_management import ComponentTypesTableManageme
 from .tables.measurements_table_management import MeasurementsTableManagement
 from .tables.metrics_table_management import MetricsTableManagement
 from .tables.user_preferences_table_management import UserPreferencesTableManagement
+from .unified_database_interface import UnifiedDatabaseInterface
+
 
 # TODO Decide whether the location should be configurable
-location = 'opserv.db'
 
 
 class DatabaseOpenHelper:
     @staticmethod
     def on_create():
-        connection = sqlite3.connect(location)
-
-        DatabaseOpenHelper.__perform_settings(connection)
-        DatabaseOpenHelper.__create_tables(connection)
-        DatabaseOpenHelper.__create_triggers(connection)
-        DatabaseOpenHelper.__insert_supported_component_metrics(connection)
-        DatabaseOpenHelper.__set_gathering_rates(connection)
-
-        connection.commit()
+        DatabaseOpenHelper.__perform_settings()
+        DatabaseOpenHelper.__create_tables()
+        DatabaseOpenHelper.__create_triggers()
+        DatabaseOpenHelper.__insert_supported_component_metrics()
+        DatabaseOpenHelper.__set_gathering_rates()
 
     @staticmethod
-    def __perform_settings(connection: sqlite3.Connection):
+    def __perform_settings():
+        connection = DatabaseOpenHelper.establish_database_connection()
+
         connection.execute("PRAGMA JOURNAL_MODE=WAL")
         connection.execute("PRAGMA FOREIGN_KEYS=ON")
 
+        connection.commit()
+        connection.close()
+
     @staticmethod
-    def __create_tables(connection: sqlite3.Connection):
+    def __create_tables():
+        connection = DatabaseOpenHelper.establish_database_connection()
+
         table_managements = [
             # measurements
             ComponentTypesTableManagement,
@@ -46,8 +50,13 @@ class DatabaseOpenHelper:
         for table_management in table_managements:
             connection.execute(table_management.CREATE_TABLE_STATEMENT())
 
+        connection.commit()
+        connection.close()
+
     @staticmethod
-    def __create_triggers(connection: sqlite3.Connection):
+    def __create_triggers():
+        connection = DatabaseOpenHelper.establish_database_connection()
+
         connection.execute("CREATE TRIGGER IF NOT EXISTS add_component BEFORE INSERT ON measurements_table "
                            "BEGIN "
                            "INSERT OR IGNORE INTO component_metrics_table "
@@ -60,8 +69,13 @@ class DatabaseOpenHelper:
                            "new.measurement_metric_fk); "
                            "END;")
 
+        connection.commit()
+        connection.close()
+
     @staticmethod
-    def __insert_supported_component_metrics(connection: sqlite3.Connection):
+    def __insert_supported_component_metrics():
+        connection = DatabaseOpenHelper.establish_database_connection()
+
         component_types = []
         metrics = set()
         component_type_metrics = []
@@ -82,35 +96,19 @@ class DatabaseOpenHelper:
         connection.executemany("INSERT OR IGNORE INTO component_type_metrics_table(component_type_fk, metric_fk) "
                                "VALUES (?,?)", component_type_metrics)
 
+        connection.commit()
+        connection.close()
+
     @staticmethod
-    def __set_gathering_rates(connection):
-        if connection.execute("SELECT COUNT(*) FROM component_metrics_table WHERE component_gathering_rate IS NOT NULL") \
-                .fetchone()[0] == 0:
-            # TODO Extract this into a separate method
-            from misc import constants
-            default_rates = constants.default_gathering_rates
-
-            insert_values = []
-            for component_type in default_rates:
-                for component_arg in default_rates[component_type]:
-                    for metric_rate_tuple in default_rates[component_type][component_arg]:
-                        insert_values.append((component_type, component_arg, *metric_rate_tuple))
-
-            # TODO Extract this into a separate method
-            connection.executemany("""
-                INSERT INTO component_metrics_table
-                (component_type_fk, component_arg, component_metric_fk, component_gathering_rate)
-                VALUES (?, ? , ?, ?)
-            """, insert_values)
-
-        # TODO Extract this into a separate method
-        gathering_rates = connection.execute("""
-        SELECT * FROM component_metrics_table
-        WHERE component_gathering_rate IS NOT NULL
-        """).fetchall()
-
-        # TODO Extract this into a separate method
+    def __set_gathering_rates():
         from misc import queue_manager
+        component_metrics_writer_reader = UnifiedDatabaseInterface.get_component_metrics_writer_reader()
+
+        if not component_metrics_writer_reader.are_gathering_rates_set():
+            DatabaseOpenHelper.__insert_default_gathering_rates()
+
+        gathering_rates = component_metrics_writer_reader.get_gathering_rates()
+
         for gathering_rate in gathering_rates:
             queue_manager.setGatheringRate(
                 gathering_rate[0],
@@ -118,3 +116,23 @@ class DatabaseOpenHelper:
                 gathering_rate[3],
                 gathering_rate[1]
             )
+
+    @staticmethod
+    def __insert_default_gathering_rates():
+        from misc import constants
+        default_rates = constants.default_gathering_rates
+
+        insert_values = []
+        for component_type in default_rates:
+            for component_arg in default_rates[component_type]:
+                for metric_rate_tuple in default_rates[component_type][component_arg]:
+                    insert_values.append((component_type, component_arg, *metric_rate_tuple))
+
+        UnifiedDatabaseInterface.get_component_metrics_writer_reader().insert_component_metrics(insert_values)
+
+    @staticmethod
+    def establish_database_connection():
+        # TODO Decide whether this should be configurable or not
+        location = 'opserv.db'
+
+        return sqlite3.connect(location)

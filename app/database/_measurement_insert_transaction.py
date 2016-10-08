@@ -1,5 +1,7 @@
 import sqlite3
 
+from database.database_open_helper import DatabaseOpenHelper
+
 
 class MeasurementInsertTransaction:
     def __init__(self):
@@ -15,7 +17,7 @@ class MeasurementInsertTransaction:
         self.__insertions.append((component_type, component_arg, metric_name, timestamp, value))
 
     def commit_transaction(self):
-        connection = sqlite3.connect("opserv.db")  # TODO Set location globally
+        connection = DatabaseOpenHelper.establish_database_connection()
 
         connection.executemany(
             "INSERT INTO measurements_table ("

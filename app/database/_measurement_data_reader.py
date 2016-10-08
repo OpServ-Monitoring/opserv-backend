@@ -1,5 +1,7 @@
 import sqlite3
 
+from database.database_open_helper import DatabaseOpenHelper
+
 
 class MeasurementDataReader:
     @staticmethod
@@ -51,7 +53,7 @@ class MeasurementDataReader:
             limit
         )
 
-        connection = sqlite3.connect("opserv.db")  # TODO Set location globally
+        connection = DatabaseOpenHelper.establish_database_connection()
         cursor = connection.execute(query, params)
 
         result = cursor.fetchall()
