@@ -43,9 +43,16 @@ class UnifiedDatabaseInterface:
 
     @staticmethod
     def _is_component_arg_persisted(component_type, component_arg):
-        all_args = UnifiedDatabaseInterface.get_component_args(component_type)
+        con = sqlite3.connect("opserv.db")  # TODO Set location globally
 
-        return component_arg in all_args
+        query = """
+                SELECT COUNT(*)
+                FROM component_metrics_table
+                WHERE component_type_fk = ? AND component_arg = ?
+                """
+
+        with con:
+            return con.execute(query, (component_type, component_arg)).fetchone()[0] > 0
 
     @staticmethod
     def get_component_args(component_type):
@@ -59,13 +66,6 @@ class UnifiedDatabaseInterface:
 
         with con:
             return con.execute(query, (component_type,)).fetchall()
-
-    @staticmethod
-    def get_count():
-        con = sqlite3.connect("opserv.db")  # TODO Set location globally
-
-        with con:
-            return con.execute("SELECT COUNT(*) FROM measurements_table").fetchone()[0]
 
     @staticmethod
     def get_min_avg_max(component_type: str, component_arg: str, metric_name: str, start_time: int, end_time: int,
@@ -116,7 +116,7 @@ class UnifiedDatabaseInterface:
             limit
         )
 
-        connection = sqlite3.connect("opserv.db") # TODO Set location globally
+        connection = sqlite3.connect("opserv.db")  # TODO Set location globally
         cursor = connection.execute(query, params)
 
         result = cursor.fetchall()

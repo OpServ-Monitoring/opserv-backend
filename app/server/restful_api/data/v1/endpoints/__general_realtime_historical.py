@@ -1,7 +1,7 @@
 import time
 from abc import ABCMeta, abstractmethod
 
-from app.database.unified_database_interface import UnifiedDatabaseInterface
+from database.unified_database_interface import UnifiedDatabaseInterface
 from .__general_data_v1 import GeneralEndpointDataV1
 
 
@@ -30,10 +30,15 @@ class GeneralEndpointRealtimeHistorical(GeneralEndpointDataV1, metaclass=ABCMeta
             return self._get_historical_data()
 
     def _get_realtime_data(self):
-        # TODO Intersect with the gathering interface
-        # self._get_component_type()
-        # self._get_component_arg()
-        # self._get_component_metric()
+        # TODO Improve method
+
+        component_type = self._get_component_type()
+        component_arg = self._get_component_arg()
+        component_metric = self._get_component_metric()
+
+        from misc import data_manager
+        data = data_manager.getMeasurement(component=component_type, args=component_arg, metric=component_metric)
+        self._response_holder.set_body_data(data)
 
         return True
 

@@ -1,13 +1,10 @@
-
 from queue import Queue
 
 from misc.constants import HARDWARE_DEFAULTS
-from misc.helper import argumentHasDefault, argumentIsOptional, createSubDictIfNecessary, assertHardwareExists 
+from misc.helper import argumentHasDefault, argumentIsOptional, createSubDictIfNecessary, assertHardwareExists
 
 requestDataQueue = Queue()
 setGatheringRateQueue = Queue()
-
-
 
 realtimeQueues = {
     "cpu": {},
@@ -19,6 +16,7 @@ realtimeQueues = {
     "network": {},
     "system": {}
 }
+
 
 def getQueue(hardware, valueType, args=None):
     """ Returns either the requested queue or creates a new one """
@@ -51,6 +49,7 @@ def removeQueue(hardware, valueType, args):
             realtimeQueues[hardware][args][valueType] = None
         else:
             realtimeQueues[hardware][valueType] = None
+
 
 def createQueueIfNotExists(hardware, valueType, args):
     """ Creates a new Queue if the specified one doesn't already exists """
@@ -89,17 +88,17 @@ def setGatheringRate(component, metric, delayms, args=None):
     """ Send a gathering rate update that will update the queue and realtime data directory
         in the interval specified with delayms """
     setGatheringRateQueue.put({
-        "hardware" : component,
-        "valueType" : metric,
-        "args" : args,
-        "delayms" : delayms
-        })
+        "hardware": component,
+        "valueType": metric,
+        "args": args,
+        "delayms": delayms
+    })
 
 
 def requestData(component, metric, args=None):
     """ Request a single data update that gets send into the queue and realtime data dictionary """
     requestDataQueue.put({
-        "hardware" : component,
-        "valueType" : metric,
-        "args" : args
-        })
+        "hardware": component,
+        "valueType": metric,
+        "args": args
+    })

@@ -10,6 +10,7 @@ class ComponentMetricsTableManagement(GeneralTableManagement):
     __KEY_COMPONENT_TYPE_FK = "component_type_fk"
     __KEY_COMPONENT_ARG = "component_arg"
     __KEY_COMPONENT_METRIC_FK = "component_metric_fk"
+    __KEY_COMPONENT_GATHERING_RATE = "component_gathering_rate"
 
     @staticmethod
     def KEY_COMPONENT_TYPE_FK():
@@ -24,11 +25,21 @@ class ComponentMetricsTableManagement(GeneralTableManagement):
         return ComponentMetricsTableManagement.__KEY_COMPONENT_METRIC_FK
 
     @staticmethod
+    def KEY_COMPONENT_GATHERING_RATE():
+        return ComponentMetricsTableManagement.__KEY_COMPONENT_GATHERING_RATE
+
+    @staticmethod
     def _get_columns() -> list:
+        # TODO improve statements!!
+        greater_or_equal_500_statement = ComponentMetricsTableManagement.KEY_COMPONENT_GATHERING_RATE() + " >= 500"
+        is_integer_statement = "typeof(" + ComponentMetricsTableManagement.KEY_COMPONENT_GATHERING_RATE() + ") = 'integer'"
+        check_statement = "CHECK(" + ComponentMetricsTableManagement.KEY_COMPONENT_GATHERING_RATE() + " IS NULL or " + is_integer_statement + " and " + greater_or_equal_500_statement + ")"
+
         return [
             (ComponentMetricsTableManagement.KEY_COMPONENT_TYPE_FK(), GeneralTableManagement._type_text_not_null),
             (ComponentMetricsTableManagement.KEY_COMPONENT_ARG(), GeneralTableManagement._type_text_not_null),
-            (ComponentMetricsTableManagement.KEY_COMPONENT_METRIC_FK(), GeneralTableManagement._type_text_not_null)
+            (ComponentMetricsTableManagement.KEY_COMPONENT_METRIC_FK(), GeneralTableManagement._type_text_not_null),
+            (ComponentMetricsTableManagement.KEY_COMPONENT_GATHERING_RATE(), "INTEGER " + check_statement)
         ]
 
     @staticmethod

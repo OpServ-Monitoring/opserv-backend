@@ -75,7 +75,6 @@ system_valueTypes = {
     "disks"
 }
 
-
 implemented_hardware = {
     "cpu": cpu_valueTypes,
     "gpu": gpu_valueTypes,
@@ -85,6 +84,28 @@ implemented_hardware = {
     "process": process_valueTypes,
     "network": network_valueTypes,
     "system": system_valueTypes
+}
+
+default_gathering_rates = {
+    "system": {
+        "default": {
+            ("cpus", 300000),
+            ("gpus", 300000),
+            ("cores", 300000),
+            ("partitions", 300000),
+            ("processes", 300000),
+            ("networks", 300000),
+            ("disks", 300000)
+        }
+    },
+    "cpu": {
+        "0": {
+            ("usage", 60000),
+            ("temperature", 60000),
+            ("info", 60000),
+            ("frequency", 60000)
+        }
+    }
 }
 
 # This describes the default values aswell as whether specific hardware requires additional argument information
@@ -104,4 +125,3 @@ HARDWARE_DEFAULTS = {
 Operating_System = Enum("Operating_Systems", "windows linux macos freebsd")
 GraphicsVendor = Enum("GraphicsVendor", "intel nvidia amd")
 CpuVendor = Enum("CpuVendor", "intel amd")
-

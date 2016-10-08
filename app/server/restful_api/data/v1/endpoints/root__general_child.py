@@ -52,17 +52,16 @@ class RootGeneralChildEndpoint(GeneralEndpointDataV1, metaclass=ABCMeta):
 
     @classmethod
     def __get_current_children_ids(cls) -> list:
-        from misc import queue_manager as queue_manager
+        # TODO improve method
 
         hardware_value_type = cls._get_hardware_value_type()
 
-        queue_manager.requestDataQueue.put({
-            "hardware": "system",
-            "valueType": hardware_value_type
-        })
-        queue = queue_manager.getQueue("system", hardware_value_type)
+        from misc import data_manager
+        data = data_manager.getMeasurement(component="system", metric=hardware_value_type)
 
-        return queue.get()['value']
+        if data is not None and 'value' in data:
+            return data['value']
+        return []
 
     @classmethod
     def __get_persisted_children_ids(cls) -> list:
@@ -74,4 +73,4 @@ class RootGeneralChildEndpoint(GeneralEndpointDataV1, metaclass=ABCMeta):
     def __merge_two_lists(cls, first_list, second_list):
         return first_list + list(set(second_list) - set(first_list))
 
-    # TODO Is this the right place for this? -> Extract to some data providing interface
+        # TODO Is this the right place for this? -> Extract to some data providing interface
