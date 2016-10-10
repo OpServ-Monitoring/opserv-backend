@@ -10,6 +10,8 @@ import logging
 import threading
 import time
 
+import appendApp
+
 import misc.queue_manager as queue_manager
 import misc.data_manager as data_manager
 from gathering.gather_main import GatherThread
@@ -48,7 +50,7 @@ def start_gather_thread():
 
 def start_test_thread():
     log.debug("Starting Test Thread")
-    test_thread = TestThread()
+    test_thread = HelpThread()
     test_thread.daemon = True
     test_thread.start()
     return test_thread
@@ -147,10 +149,9 @@ def testDataManager():
     if dataIsTheSame:
         raise Exception("Data Manager Test failed after the timeout")
     
-    log.info("Data Manager Test has passed")
-    log.info("Updating took % seconds", endTime - startTime)
 
-class TestThread(threading.Thread):
+
+class HelpThread(threading.Thread):
     def __init__(self):
         """
             Main Init function for the test thread
@@ -179,7 +180,7 @@ class TestThread(threading.Thread):
         log.info("Whole test finished in {} seconds".format(endTime - startTimeTest))
 
 
-if __name__ == '__main__':
+def test_all():
     setup_logger(LOG_TO_CONSOLE, LOG_TO_FILE, LOGGINGLEVEL, LOG_SERVER, LOG_GATHERING)
     DatabaseOpenHelper().on_create()
 

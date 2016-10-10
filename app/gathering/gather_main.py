@@ -59,6 +59,10 @@ class GatherThread(threading.Thread):
         while not queue_manager.setGatheringRateQueue.empty():
             newRate = queue_manager.setGatheringRateQueue.get(False)
             if rateUpdateValid(newRate):
+                # Before even setting up a new gatherer, send an immediate data update
+                getMeasurementAndSend(newRate["hardware"], newRate["valueType"],
+                                                     newRate["args"])
+                
                 if self.alreadyGathering(newRate):
                     self.updateGatherer(newRate)
                 else:
