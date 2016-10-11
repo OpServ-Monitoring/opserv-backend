@@ -12,14 +12,14 @@
 
 from enum import Enum
 
-cpu_valueTypes = {
+cpu_metrics = {
     "usage",
     "temperature",
     "info",
     "frequency"
 }
 
-gpu_valueTypes = {
+gpu_metrics = {
     "info",
     "gpuclock",
     "memclock",
@@ -28,44 +28,44 @@ gpu_valueTypes = {
     "usage"
 }
 
-core_valueTypes = {
+core_metrics = {
     "info",
     "frequency",
     "usage",
     "temperature"
 }
 
-memory_valueTypes = {
+memory_metrics = {
     "total",
     "free",
     "used"
 }
 
-process_valueTypes = {
+process_metrics = {
     "cpuusage",
     "memusage",
     "name"
 }
 
-partition_valueTypes = {
+partition_metrics = {
     "total",
     "free",
     "used"
 }
 
-disk_valueTypes = {
+disk_metrics = {
     "temperature",
     "usage",
     "status"
 }
 
-network_valueTypes = {
+network_metrics = {
     "info",
     "receivepersec",
     "transmitpersec"
 }
 
-system_valueTypes = {
+system_metrics = {
     "cpus",
     "gpus",
     "cores",
@@ -76,14 +76,14 @@ system_valueTypes = {
 }
 
 implemented_hardware = {
-    "cpu": cpu_valueTypes,
-    "gpu": gpu_valueTypes,
-    "memory": memory_valueTypes,
-    "disk": disk_valueTypes,
-    "partition": partition_valueTypes,
-    "process": process_valueTypes,
-    "network": network_valueTypes,
-    "system": system_valueTypes
+    "cpu": cpu_metrics,
+    "gpu": gpu_metrics,
+    "memory": memory_metrics,
+    "disk": disk_metrics,
+    "partition": partition_metrics,
+    "process": process_metrics,
+    "network": network_metrics,
+    "system": system_metrics
 }
 
 default_gathering_rates = {
@@ -122,6 +122,6 @@ HARDWARE_DEFAULTS = {
     "network": (True, None)
 }
 
-Operating_System = Enum("Operating_Systems", "windows linux macos freebsd")
+Operating_System = Enum("Operating_System", "windows linux macos freebsd")
 GraphicsVendor = Enum("GraphicsVendor", "intel nvidia amd")
 CpuVendor = Enum("CpuVendor", "intel amd")

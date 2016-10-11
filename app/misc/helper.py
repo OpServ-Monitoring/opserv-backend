@@ -36,7 +36,7 @@ def createSubDictIfNecessary(mainDict, hardware, args):
     if not args in mainDict[hardware]:
         mainDict[hardware][args] = {}
 
-def assertHardwareExists(mainDict, hardware):
+def assertComponentExists(mainDict, hardware):
     """ Simple assert to check if the given hardware exists in the constants and realtime dict """
     if not hardware in mainDict or not hardware in HARDWARE_DEFAULTS:
         raise NotImplementedError(hardware)

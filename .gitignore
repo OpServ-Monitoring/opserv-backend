@@ -95,7 +95,9 @@ ENV/
 app/opserv.log
 
 # Database file of the app
-app/*.db
+*.db
+*.db-shm
+*.db-wal
 
 # Pylint settings file for the project
 .pylintrc

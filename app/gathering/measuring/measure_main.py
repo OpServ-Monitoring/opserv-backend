@@ -1,5 +1,5 @@
 #
-# Main file for the different hardware and valueType measure methods
+# Main file for the different component and metric measure methods
 #
 # 27.09.2016
 #
@@ -28,24 +28,24 @@ NOTIMPLEMENTED_NUMERICAL = 0
 NOTIMPLEMENTED_TEXT = ""
 
 
-def measure_cpu(valueType, args):
+def measure_cpu(metric, args):
     log.info("Retrieving cpu data")
 
-    if valueType == "usage":
+    if metric == "usage":
         if psutil:
             return psutil.cpu_percent()
         return NOTIMPLEMENTED_NUMERICAL
-    elif valueType == "frequency":
+    elif metric == "frequency":
         if cpuinfo:
             return cpuinfo.get_cpu_info()["hz_actual_raw"][0]
         return NOTIMPLEMENTED_NUMERICAL
 
-    elif valueType == "info":
+    elif metric == "info":
         if cpuinfo:
             return cpuinfo.get_cpu_info()["brand"]
         return NOTIMPLEMENTED_TEXT
 
-    elif valueType == "temperature":
+    elif metric == "temperature":
         if pyspectator:
             try:
                 c = pyspectator.processor.Cpu(monitoring_latency=0.5)
@@ -55,86 +55,86 @@ def measure_cpu(valueType, args):
 
         return NOTIMPLEMENTED_NUMERICAL
 
-def measure_core(valueType, args):
+def measure_core(metric, args):
     
-    if valueType == "info":
+    if metric == "info":
         if cpuinfo:
             return cpuinfo.brand
-    elif valueType == "frequency":
+    elif metric == "frequency":
         if cpuinfo:
             return cpuinfo.get_cpu_info()["hz_actual_raw"][0]
-    elif valueType == "usage":
+    elif metric == "usage":
         if psutil:
             psutil.cpu_percent(percpu=True)[args]
-    elif valueType == "temperature":
+    elif metric == "temperature":
         return NOTIMPLEMENTED_NUMERICAL
-def measure_gpu(valueType, args):
-    if valueType == "info":
+def measure_gpu(metric, args):
+    if metric == "info":
         return NOTIMPLEMENTED_TEXT
-    elif valueType == "gpuclock":
+    elif metric == "gpuclock":
         return NOTIMPLEMENTED_NUMERICAL
-    elif valueType == "memclock":
+    elif metric == "memclock":
         return NOTIMPLEMENTED_NUMERICAL
-    elif valueType == "vramusage":
+    elif metric == "vramusage":
         return NOTIMPLEMENTED_NUMERICAL
-    elif valueType == "temperature":
+    elif metric == "temperature":
         return NOTIMPLEMENTED_NUMERICAL
-    elif valueType == "usage":
+    elif metric == "usage":
         return NOTIMPLEMENTED_NUMERICAL
 
-def measure_memory(valueType, args):
-    if valueType == "total":
+def measure_memory(metric, args):
+    if metric == "total":
         return psutil.virtual_memory().total
-    elif valueType == "free":
+    elif metric == "free":
         return psutil.virtual_memory().available
-    elif valueType == "used":
+    elif metric == "used":
         return psutil.virtual_memory().used
 
-def measure_process(valueType, args):
-    if valueType == "cpuusage":
+def measure_process(metric, args):
+    if metric == "cpuusage":
         return NOTIMPLEMENTED_NUMERICAL
-    elif valueType == "memusage":
+    elif metric == "memusage":
         return NOTIMPLEMENTED_NUMERICAL
-    elif valueType == "name":
+    elif metric == "name":
         return NOTIMPLEMENTED_TEXT
 
-def measure_partition(valueType, args):
-    if valueType == "totalspace":
+def measure_partition(metric, args):
+    if metric == "totalspace":
         return NOTIMPLEMENTED_NUMERICAL
-    elif valueType == "freespace":
+    elif metric == "freespace":
         return NOTIMPLEMENTED_NUMERICAL
-    elif valueType == "usedspace":
+    elif metric == "usedspace":
         return NOTIMPLEMENTED_NUMERICAL
     
-def measure_disk(valueType, args):
-    if valueType == "temperature":
+def measure_disk(metric, args):
+    if metric == "temperature":
         return NOTIMPLEMENTED_NUMERICAL
-    elif valueType == "status":
+    elif metric == "status":
         return NOTIMPLEMENTED_NUMERICAL
 
 
-def measure_network(valueType, args):
-    if valueType == "info":
+def measure_network(metric, args):
+    if metric == "info":
         return NOTIMPLEMENTED_TEXT
-    elif valueType == "receivepersec":
+    elif metric == "receivepersec":
         return NOTIMPLEMENTED_NUMERICAL
-    elif valueType == "transmitpersec":
+    elif metric == "transmitpersec":
         return NOTIMPLEMENTED_NUMERICAL
 
-def get_system_data(valueType):
-    if valueType == "cpus":
+def get_system_data(metric):
+    if metric == "cpus":
         return list(range(1))
-    if valueType == "cores":
+    if metric == "cores":
         return list(range(psutil.cpu_count()))
-    if valueType == "gpus":
+    if metric == "gpus":
         return list(range(1))
-    if valueType == "disks":
+    if metric == "disks":
         return list(range(0))
-    if valueType == "partitions":
+    if metric == "partitions":
         return psutil.disk_partitions()
-    if valueType == "processes":
+    if metric == "processes":
         return psutil.pids()
-    if valueType == "networks":
+    if metric == "networks":
         return getNetworkInterfaces()
 
 

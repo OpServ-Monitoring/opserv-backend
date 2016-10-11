@@ -14,7 +14,7 @@
  
 from misc.constants import HARDWARE_DEFAULTS
  
-from misc.helper import argumentHasDefault, argumentIsOptional, createSubDictIfNecessary, assertHardwareExists
+from misc.helper import argumentHasDefault, argumentIsOptional, createSubDictIfNecessary, assertComponentExists
 
 realtimeData = {
     "cpu": {},
@@ -30,9 +30,9 @@ realtimeData = {
 
 def getMeasurement(component, metric, args=None):
     """ Returns the currently saved realtime data of the specified component """
-    # Check if the hardware exists
-    assertHardwareExists(realtimeData, component)
-    # TODO MORE ASSERTS ON ARGS & VALUETYPE
+    # Check if the component exists
+    assertComponentExists(realtimeData, component)
+    # TODO MORE ASSERTS ON ARGS & metric
 
     # If no argument is given
     if not args:
@@ -41,7 +41,7 @@ def getMeasurement(component, metric, args=None):
         elif argumentHasDefault(component):
             args = HARDWARE_DEFAULTS[component][1]
         else:
-            raise Exception("Trying to access data without specifying the argument. Hardware: {}".format(component))
+            raise Exception("Trying to access data without specifying the argument. component: {}".format(component))
 
     createSubDictIfNecessary(realtimeData, component, args)
     createMeasurementIfNotExists(component, metric, args)
@@ -53,9 +53,9 @@ def getMeasurement(component, metric, args=None):
 
 def setMeasurement(component, metric, value, args=None):
     """ Sets the specified metric to the desired value"""
-    # Check if the hardware exists
-    assertHardwareExists(realtimeData, component)
-    # TODO MORE ASSERTS ON ARGS & VALUETYPE
+    # Check if the component exists
+    assertComponentExists(realtimeData, component)
+    # TODO MORE ASSERTS ON ARGS & metric
 
     # If no argument is given
     if not args:
@@ -64,7 +64,7 @@ def setMeasurement(component, metric, value, args=None):
         elif argumentHasDefault(component):
             args = HARDWARE_DEFAULTS[component][1]
         else:
-            raise Exception("Trying to access data without specifying the argument. Hardware: {}".format(component))
+            raise Exception("Trying to access data without specifying the argument. component: {}".format(component))
 
     createSubDictIfNecessary(realtimeData, component, args)
     createMeasurementIfNotExists(component, metric, args)
@@ -74,11 +74,11 @@ def setMeasurement(component, metric, value, args=None):
     else:
         realtimeData[component][metric] = value
 
-def createMeasurementIfNotExists(hardware, valueType, args):
+def createMeasurementIfNotExists(component, metric, args):
     """ Creates a new variable if the specified one doesn't already exists """
     if args == None:
-        if not valueType in realtimeData[hardware]:
-            realtimeData[hardware][valueType] = None
+        if not metric in realtimeData[component]:
+            realtimeData[component][metric] = None
     else:
-        if not valueType in realtimeData[hardware][args]:
-            realtimeData[hardware][args][valueType] = None
+        if not metric in realtimeData[component][args]:
+            realtimeData[component][args][metric] = None

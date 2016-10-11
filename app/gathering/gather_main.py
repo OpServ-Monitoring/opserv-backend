@@ -32,6 +32,7 @@ class GatherThread(threading.Thread):
         log.debug("Initializing GatherThread...")
         threading.Thread.__init__(self)
         self.s = sched.scheduler(time.time, time.sleep)
+        self.running = True
         self.gatherers = {}
         return
 
@@ -43,6 +44,8 @@ class GatherThread(threading.Thread):
         self.s.enter(1, 1, self.queueListener)
         # Gathering Loop will be indefinite
         while 1:
+            if not self.running:
+                break
             self.s.run(blocking=False)
             time.sleep(0.05)  # To keep CPU usage low, the loop has to sleep atleast a bit
 
@@ -60,7 +63,7 @@ class GatherThread(threading.Thread):
             newRate = queue_manager.setGatheringRateQueue.get(False)
             if rateUpdateValid(newRate):
                 # Before even setting up a new gatherer, send an immediate data update
-                getMeasurementAndSend(newRate["hardware"], newRate["valueType"],
+                getMeasurementAndSend(newRate["component"], newRate["metric"],
                                                      newRate["args"])
                 
                 if self.alreadyGathering(newRate):
@@ -73,7 +76,7 @@ class GatherThread(threading.Thread):
             newRequest = queue_manager.requestDataQueue.get(False)
             if requestValid(newRequest):
 
-                getMeasurementAndSend(newRequest["hardware"], newRequest["valueType"],
+                getMeasurementAndSend(newRequest["component"], newRequest["metric"],
                                                      newRequest["args"])
   
                 
@@ -88,7 +91,7 @@ class GatherThread(threading.Thread):
             Tasks for the gathering of measurements at a specific rateUpdateValid
             Returns nothing, but sends data to the realtime queue
         """
-        getMeasurementAndSend(gatherData["hardware"], gatherData["valueType"], gatherData["args"])
+        getMeasurementAndSend(gatherData["component"], gatherData["metric"], gatherData["args"])
         self.createGatherer(gatherData)
 
 
@@ -97,8 +100,8 @@ class GatherThread(threading.Thread):
             Updates the given gathering task to the new rate (or deletes it)
         """
         # Remove old scheduled event
-        self.s.cancel(self.gatherers[(newRate["hardware"], newRate["valueType"])])
-        self.gatherers.pop((newRate["hardware"], newRate["valueType"]))
+        self.s.cancel(self.gatherers[(newRate["component"], newRate["metric"])])
+        self.gatherers.pop((newRate["component"], newRate["metric"]))
         if newRate["delayms"] > 0:
             self.createGatherer(newRate)
 
@@ -107,7 +110,7 @@ class GatherThread(threading.Thread):
             Creates a new gathering task by entering it as a event for the scheduler
         """
         if newRate["delayms"] > 0:
-            self.gatherers[(newRate["hardware"], newRate["valueType"])] = self.s.enter(newRate["delayms"] / 1000, 1,
+            self.gatherers[(newRate["component"], newRate["metric"])] = self.s.enter(newRate["delayms"] / 1000, 1,
                                                                                        self.gatherTask,
                                                                                        kwargs={"gatherData": newRate})
         else:
@@ -115,10 +118,10 @@ class GatherThread(threading.Thread):
 
     def alreadyGathering(self, rateToCheck):
         """
-            Checks for a given hardware and valueType combination whether it is already been monitored
+            Checks for a given component and metric combination whether it is already been monitored
             Return True if it is already in the gatherers list
         """
-        if (rateToCheck["hardware"], rateToCheck["valueType"]) in self.gatherers:
+        if (rateToCheck["component"], rateToCheck["metric"]) in self.gatherers:
             return True
         return False
 
@@ -146,7 +149,7 @@ def requestValid(request):
         Returns True if it has the right structure
     """
     if request != None:
-        if "hardware" in request and "valueType" in request:
+        if "component" in request and "metric" in request:
             if "args" in request:
                 return True
             else:
@@ -162,7 +165,7 @@ def rateUpdateValid(rateUpdate):
         Returns True if it has the right structure
     """
     if rateUpdate != None:
-        if "hardware" in rateUpdate and "valueType" in rateUpdate and "delayms" in rateUpdate:
+        if "component" in rateUpdate and "metric" in rateUpdate and "delayms" in rateUpdate:
             if "args" in rateUpdate:
                 return True
             else:
@@ -174,36 +177,36 @@ def rateUpdateValid(rateUpdate):
 
 
 
-def getMeasurement(hardware, valueType, args):
+def getMeasurement(component, metric, args):
     """
-        Given the hardware and valueType this function uses the libraries to make a measurement
+        Given the component and metric this function uses the libraries to make a measurement
         Returns: The value of the measurement
     """
     # Lowercase to avoid any case errors
-    hardware = hardware.lower()
-    valueType = valueType.lower()
+    component = component.lower()
+    metric = metric.lower()
 
     measured_value = None
-    if hardware == "cpu":
-        measured_value = measure_cpu(valueType, args)
-    elif hardware == "memory":
-        measured_value = measure_memory(valueType, args)
-    elif hardware == "disk":
-        measured_value = measure_disk(valueType, args)
-    elif hardware == "partition":
-        measured_value = measure_partition(valueType, args)
-    elif hardware == "process":
-        measured_value = measure_process(valueType, args)
-    elif hardware == "core":
-        measured_value = measure_core(valueType, args)
-    elif hardware == "gpu":
-        measured_value = measure_gpu(valueType, args)
-    elif hardware == "network":
-        measured_value = measure_network(valueType, args)
+    if component == "cpu":
+        measured_value = measure_cpu(metric, args)
+    elif component == "memory":
+        measured_value = measure_memory(metric, args)
+    elif component == "disk":
+        measured_value = measure_disk(metric, args)
+    elif component == "partition":
+        measured_value = measure_partition(metric, args)
+    elif component == "process":
+        measured_value = measure_process(metric, args)
+    elif component == "core":
+        measured_value = measure_core(metric, args)
+    elif component == "gpu":
+        measured_value = measure_gpu(metric, args)
+    elif component == "network":
+        measured_value = measure_network(metric, args)
 
     # Server Thread wants this to get basic system information
-    elif hardware == "system":
-        measured_value = get_system_data(valueType)
+    elif component == "system":
+        measured_value = get_system_data(metric)
 
     if measured_value != None:
         return {
@@ -212,5 +215,5 @@ def getMeasurement(hardware, valueType, args):
         }
 
 
-    log.debug("Tried to get unimplemented hardware")
+    log.debug("Tried to get unimplemented component")
     return "0"
