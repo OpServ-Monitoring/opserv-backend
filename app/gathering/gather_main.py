@@ -12,6 +12,7 @@ import time
 
 import misc.queue_manager as queue_manager
 import misc.data_manager as data_manager
+from misc.constants import GATHERING_QUEUELISTENER_DELAY
 from gathering.measuring.measure_main import measure_core, measure_cpu, measure_disk, \
     measure_gpu, measure_memory, measure_network, measure_partition, measure_process, \
     get_system_data
@@ -41,13 +42,13 @@ class GatherThread(threading.Thread):
             Starts the whole gathering process by manually starting the queueListener and then waiting for updates
         """
         log.debug("GatherThread running...")
-        self.s.enter(1, 1, self.queueListener)
+        self.s.enter(GATHERING_QUEUELISTENER_DELAY, 1, self.queueListener)
         # Gathering Loop will be indefinite
         while 1:
             if not self.running:
                 break
             self.s.run(blocking=False)
-            time.sleep(0.05)  # To keep CPU usage low, the loop has to sleep atleast a bit
+            time.sleep(0.001)  # To keep CPU usage low, the loop has to sleep atleast a bit
 
         # This point shouldn't be reached
         log.debug("Gathering Thread shutting down")
@@ -79,21 +80,21 @@ class GatherThread(threading.Thread):
                 getMeasurementAndSend(newRequest["component"], newRequest["metric"],
                                                      newRequest["args"])
   
-                
-            self.s.enter(1, 1, self.queueListener)
-
         # Reenter itself into the event queue to listen to new commands
-        self.s.enter(1, 1, self.queueListener)
+        self.s.enter(GATHERING_QUEUELISTENER_DELAY, 1, self.queueListener)
 
 
     def gatherTask(self, gatherData):
         """
             Tasks for the gathering of measurements at a specific rateUpdateValid
             Returns nothing, but sends data to the realtime queue
+            Gatherers are created before the actual measurement to ensure a relatively
+            precise timing. (This way measurement computation time
+            doesn't affect the gathering rate)
         """
-        getMeasurementAndSend(gatherData["component"], gatherData["metric"], gatherData["args"])
-        self.createGatherer(gatherData)
 
+        self.createGatherer(gatherData)
+        getMeasurementAndSend(gatherData["component"], gatherData["metric"], gatherData["args"])
 
     def updateGatherer(self, newRate):
         """

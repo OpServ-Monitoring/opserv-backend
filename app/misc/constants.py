@@ -125,3 +125,6 @@ HARDWARE_DEFAULTS = {
 Operating_System = Enum("Operating_System", "windows linux macos freebsd")
 GraphicsVendor = Enum("GraphicsVendor", "intel nvidia amd")
 CpuVendor = Enum("CpuVendor", "intel amd")
+
+
+GATHERING_QUEUELISTENER_DELAY = 0.05 # Delay between the queueListener calls in the gathering thread (in seconds)

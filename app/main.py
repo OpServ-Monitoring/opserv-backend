@@ -11,8 +11,11 @@ import logging
 import server.__management as server
 from gathering.gather_main import GatherThread
 from misc.logging_helper import setup_logger
+import misc.data_manager as data_manager
+import misc.queue_manager as queue_manager
 
 from database.database_open_helper import DatabaseOpenHelper
+
 
 LOGGINGLEVEL = logging.DEBUG
 
@@ -44,6 +47,8 @@ def start_server():
 
 if __name__ == '__main__':
     setup_logger(LOG_TO_CONSOLE, LOG_TO_FILE, LOGGINGLEVEL, LOG_SERVER, LOG_GATHERING)
+    queue_manager.init()
+    data_manager.init()
 
     init_database()
     start_gather_thread()

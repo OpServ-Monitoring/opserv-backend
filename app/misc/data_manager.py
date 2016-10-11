@@ -16,16 +16,23 @@ from misc.constants import HARDWARE_DEFAULTS
  
 from misc.helper import argumentHasDefault, argumentIsOptional, createSubDictIfNecessary, assertComponentExists
 
-realtimeData = {
-    "cpu": {},
-    "gpu": {},
-    "memory": {},
-    "disk": {},
-    "partition": {},
-    "process": {},
-    "network": {},
-    "system": {}
-}    
+realtimeData = None
+
+
+def init():
+    global realtimeData
+    
+    realtimeData = {
+        "cpu": {},
+        "gpu": {},
+        "memory": {},
+        "disk": {},
+        "partition": {},
+        "process": {},
+        "network": {},
+        "system": {}
+    }    
+
 
 
 def getMeasurement(component, metric, args=None):

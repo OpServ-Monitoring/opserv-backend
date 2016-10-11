@@ -3,19 +3,30 @@ from queue import Queue
 from misc.constants import HARDWARE_DEFAULTS
 from misc.helper import argumentHasDefault, argumentIsOptional, createSubDictIfNecessary, assertComponentExists
 
-requestDataQueue = Queue()
-setGatheringRateQueue = Queue()
+requestDataQueue = None
+setGatheringRateQueue = None
 
-realtimeQueues = {
-    "cpu": {},
-    "gpu": {},
-    "memory": {},
-    "disk": {},
-    "partition": {},
-    "process": {},
-    "network": {},
-    "system": {}
-}
+realtimeQueues = None
+
+def init():
+    global requestDataQueue
+    global setGatheringRateQueue
+    global realtimeQueues
+    
+    requestDataQueue = Queue()
+    setGatheringRateQueue = Queue()
+
+    realtimeQueues = {
+        "cpu": {},
+        "gpu": {},
+        "memory": {},
+        "disk": {},
+        "partition": {},
+        "process": {},
+        "network": {},
+        "system": {}
+    }
+    
 
 
 def getQueue(component, metric, args=None):
