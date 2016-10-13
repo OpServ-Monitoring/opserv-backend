@@ -32,8 +32,8 @@ If your Python 3 installation is executed with the python command enter the foll
 
 If you used the python3 -v command use the following:
     
-    pip install -r app/prerequirements.txt
-    pip install -r app/requirements.txt
+    pip3 install -r app/prerequirements.txt
+    pip3 install -r app/requirements.txt
 
 All the reuqirements are installed now
 
