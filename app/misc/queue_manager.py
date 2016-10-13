@@ -91,9 +91,17 @@ def putMeasurementIntoQueue(component, metric, measurement, args=None):
 
 def readMeasurementFromQueue(component, metric, args=None, blocking=False, timeout=None):
     """ Get a single measurement from the specified queue.
-        Warning, could cause QueueEmpty Errors"""
-    return getQueue(component, metric, args).get(blocking, timeout)
+        Warning, could cause Timeout Errors"""
+    if (not getQueue(component, metric, args).empty()) or blocking == True:
+        return getQueue(component, metric, args).get(blocking, timeout)
+    else:
+        return None
 
+def real_time_queue_empty(component, metric, args=None):
+    if getQueue(component, metric, args).empty():
+        return True
+    else:
+        return False
 
 def setGatheringRate(component, metric, delayms, args=None):
     """ Send a gathering rate update that will update the queue and realtime data directory

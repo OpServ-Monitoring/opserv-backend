@@ -14,34 +14,6 @@ DATA_MANAGER_TEST_METRIC = "usage"
 log = logging.getLogger("opserv.test")
 log.setLevel(logging.DEBUG)
 
-
-def start_datamanager():
-    log.info("Starting Data Manager Test")
-
-    # Disable any gathering rates for the tested component to avoid any wrong results
-    queue_manager.setGatheringRate(DATA_MANAGER_TEST_COMPONENT, DATA_MANAGER_TEST_METRIC, 0)
-
-    # Save the current value in the realtime data dictionary
-    startData = data_manager.getMeasurement(DATA_MANAGER_TEST_COMPONENT, DATA_MANAGER_TEST_METRIC)
-
-    # Ask for a data update
-    queue_manager.requestData(DATA_MANAGER_TEST_COMPONENT, DATA_MANAGER_TEST_METRIC)
-    startTime = time.time()
-    dataIsTheSame = True
-
-    # Wait till the new one arrives or timeout expires
-    while time.time() - startTime < DATA_MANAGER_TIMEOUT and dataIsTheSame:
-        newData = data_manager.getMeasurement(DATA_MANAGER_TEST_COMPONENT, DATA_MANAGER_TEST_METRIC)
-        if newData != startData:
-            dataIsTheSame = False
-            endTime = time.time()
-        time.sleep(0.1) # Small sleep to not kill the cpu
-    
-    # Raise exception when the data hasn't changed
-    if dataIsTheSame:
-        raise Exception("Data Manager Test failed after the timeout")
-
-
 # Unit Test Set Gathering Queue
 def test_queue_setgathering():
     test_component = "cpu"
@@ -153,6 +125,38 @@ def test_data_manager():
     result = data_manager.getMeasurement(test_component, test_metric)
     if result != test_measurement:
         raise ValueError("Measurement read from queue was wrong")
+
+
+def start_datamanager():
+    '''
+        Inserts a gathering rate and test wether the data manager measurement changes
+        accordingly
+    '''
+    log.info("Starting Data Manager Test")
+
+    # Disable any gathering rates for the tested component to avoid any wrong results
+    queue_manager.setGatheringRate(DATA_MANAGER_TEST_COMPONENT, DATA_MANAGER_TEST_METRIC, 0)
+
+    # Save the current value in the realtime data dictionary
+    startData = data_manager.getMeasurement(DATA_MANAGER_TEST_COMPONENT, DATA_MANAGER_TEST_METRIC)
+
+    # Ask for a data update
+    queue_manager.requestData(DATA_MANAGER_TEST_COMPONENT, DATA_MANAGER_TEST_METRIC)
+    startTime = time.time()
+    dataIsTheSame = True
+
+    # Wait till the new one arrives or timeout expires
+    while time.time() - startTime < DATA_MANAGER_TIMEOUT and dataIsTheSame:
+        newData = data_manager.getMeasurement(DATA_MANAGER_TEST_COMPONENT, DATA_MANAGER_TEST_METRIC)
+        if newData != startData:
+            dataIsTheSame = False
+            endTime = time.time()
+        time.sleep(0.1) # Small sleep to not kill the cpu
+    
+    # Raise exception when the data hasn't changed
+    if dataIsTheSame:
+        raise Exception("Data Manager Test failed after the timeout")
+
 
 # System Test Data Manager
 def test_datamanager_gathering():

@@ -24,7 +24,7 @@ def test_gathering_speed():
     '''
     # Setup test constants
     test_delayms = 500
-    test_iterations = 30
+    test_iterations = 11
     lowest_delay = test_delayms - SPEEDTEST_ITERATION_TIMEPRECISION
     highest_delay = test_delayms + SPEEDTEST_ITERATION_TIMEPRECISION
 
