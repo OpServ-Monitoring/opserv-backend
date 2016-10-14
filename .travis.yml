@@ -1,15 +1,34 @@
-# declare language
 language: python
-# declare versions to test
 python:
-  - "2.6"
-  - "2.7"
-  - "3.2"
-  - "3.3"
-  - "3.4"
-  - "3.5"
-  - "3.5-dev" # 3.5 development branch
-# dependencies installation
-install: "pip install -r requirements.txt"
-# command to run tests
-script: nosetests
+- '3.2'
+- '3.3'
+- '3.4'
+- '3.5'
+- 3.5-dev
+install:
+- pip install -r app/prerequirements.txt
+- xargs -a app/requirements.txt -n 1 pip install
+- pip install -r app/testrequirements.txt
+- pip install codeclimate-test-reporter
+before_script:
+- echo "Before Script started"
+- git clone https://github.com/OpServ-Monitoring/opserv-frontend.git app/server/static_hosting/frontend
+- echo $CWD
+- echo $PWD
+- zip -r opserv-release.zip .
+- ls -R
+script:
+- pytest --cov=app
+- codeclimate-test-reporter --token $CCTOKEN
+deploy:
+ - provider: releases
+   api_key:
+     secure: dSwymzcbi02BdPOerozK8ePSEk3GIHV0T59BftjN4PcNHpF1Kv8OipQiHESFB+jTBTWGPleS11r2s9YjWBcwwY/XU9jCZG5prGgs5sGZIzzUnSxBcb6iWHKlpjHvNarR+MPTy3ljKUPNrjOn7mgYx54an6CbBSlKlVVPGzwD26XCXzn5WxAmLNoJJjPdT7H9BcmJKod4cnBSUahqr0L5pX/pC242qWlHs3i10MIvlgz4jo4oHh1e8ryPVj1Xs/8ogOVTWN5H4WmDhHHEN/eBVwK05VoclXgcD/+0kJK+fAUPcpTnMAGP9KLUIGHAe3VVEwo+B3mhyUlXnPqbWTn586KdOgKOSi419LBwze5k1ksJukYJzX41mKJGp/OzsMDSFSHR9Po6JhZnz4QMFPz+xhsiRNBDfZAixeFrv8zIzurlM8XgDtug2daRmbfhU5ilvEf9cM6jiQet3d2RXRXfKE8dZ5tGq26OGcarG8dNZJnOp6pwH1EJia4BfXcFZDV0CFNrrratMUOqmQjqMB4lfQcepLlpFA2rYbejkMXvAd5O9/K+B2TO5Z2eYjf0IZX51EdTewgPSGoQbdjuN0M0OInpnuaVYrkjEjcauTL+iA8Tu+Gi3NSYYwqgoe95xbogClRdJ/oThJDUKQQJMdRa1eQgzzC9G1ZKJIShXgy+JEM=
+   file: opserv-release.zip
+   on:
+     repo: OpServ-Monitoring/opserv-backend
+     skip_cleanup: true
+     
+ - provider: heroku
+   api_key: 160a98d9-c5b6-4fdc-a440-1cb90ec78b9c
+   app: enigmatic-caverns-68461

@@ -18,6 +18,15 @@ class DatabaseOpenHelper:
         DatabaseOpenHelper.__insert_supported_component_metrics()
         DatabaseOpenHelper.__set_gathering_rates()
 
+
+    @staticmethod # Only used for testing
+    def mock_on_create():
+        DatabaseOpenHelper.__perform_settings()
+        DatabaseOpenHelper.__create_tables()
+        DatabaseOpenHelper.__create_triggers()
+        DatabaseOpenHelper.__insert_supported_component_metrics()
+
+
     @staticmethod
     def __perform_settings():
         connection = DatabaseOpenHelper.establish_database_connection()
