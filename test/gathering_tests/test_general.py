@@ -34,5 +34,5 @@ def start_gather_thread():
     gather_thread.running = False
 
 def mock_db_open():
-    #DatabaseOpenHelper.on_create()
+    DatabaseOpenHelper.mock_on_create()
     return
