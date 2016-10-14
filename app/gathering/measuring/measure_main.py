@@ -142,7 +142,12 @@ def getNetworkInterfaces():
     ''' Gets the names of all currently available network interfaces and returns them in an array '''
     if not psutil:
         return []
-    detailed_interfaces = psutil.net_if_stats()
+    try:
+        detailed_interfaces = psutil.net_if_stats()
+    except Exception as e:
+        log.error(e)
+        log.error("Couldn't get network interfaces")
+        detailed_interfaces = {}
     simple_interfaces = []
     for interface in detailed_interfaces:
         simple_interfaces.append(interface)
