@@ -27,7 +27,7 @@ deploy:
    file: opserv-release.zip
    on:
      repo: OpServ-Monitoring/opserv-backend
-     skip_cleanup: true
+   skip_cleanup: true
      
  - provider: heroku
    api_key: 160a98d9-c5b6-4fdc-a440-1cb90ec78b9c
