@@ -40,7 +40,7 @@ def test_gathering_speed():
 
         # Handle the immediate set gathering response
         queue_manager.readMeasurementFromQueue("cpu", "usage", None, True,
-                                               test_delayms + SPEEDTEST_QUEUE_TIMEOUTPRECISION)
+                                               (test_delayms + SPEEDTEST_QUEUE_TIMEOUTPRECISION)/1000) 
         current_iterations += 1
         duration = (time.time() - iteration_time) * 1000
         duration_list = [duration]
@@ -51,7 +51,7 @@ def test_gathering_speed():
         # Repeat getting reading measurements until the max iterations are reached
         while current_iterations < test_iterations:
             queue_manager.readMeasurementFromQueue("cpu", "usage", None, True,
-                                                   test_delayms + SPEEDTEST_QUEUE_TIMEOUTPRECISION)
+                                                   (test_delayms + SPEEDTEST_QUEUE_TIMEOUTPRECISION)/1000)
             # Calculate duration of this iterations
             duration = (time.time() - iteration_time) * 1000
             iteration_time = time.time() # Get the new time as fast as possible
