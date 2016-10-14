@@ -129,8 +129,11 @@ class GatherThread(threading.Thread):
 def getMeasurementAndSend(component, metric, args):
     """ Gets the specified metric from the component and sends it into the queue and data dictionary """
     # Get the data
-    newData = getMeasurement(component, metric, args)
-
+    try:
+        newData = getMeasurement(component, metric, args)
+    except Exception as e:
+        log.error(e)
+        log.error("CATCHED MEASUREMENT ERROR")
     # Put that data into the queue
     queue_manager.putMeasurementIntoQueue(component, metric, newData, args)
 
