@@ -125,15 +125,15 @@ def get_system_data(metric):
     if metric == "cpus":
         return list(range(1))
     if metric == "cores":
-        return list(range(psutil.cpu_count()))
+        return get_core_list()
     if metric == "gpus":
         return list(range(1))
     if metric == "disks":
         return list(range(0))
     if metric == "partitions":
-        return psutil.disk_partitions()
+        return get_partition_list()
     if metric == "processes":
-        return psutil.pids()
+        return get_process_list()
     if metric == "networks":
         return getNetworkInterfaces()
 
@@ -147,6 +147,36 @@ def getNetworkInterfaces():
     for interface in detailed_interfaces:
         simple_interfaces.append(interface)
     return simple_interfaces
+
+
+def get_core_list():
+    result = []
+    try:
+        list(range(psutil.cpu_count()))
+    except Exception as e:
+        log.error("Couldn't get corelist")
+        log.error(e)
+    return result
+
+
+def get_partition_list():
+    result = []
+    try:
+        result = psutil.disk_partitions()
+    except Exception as e:
+        log.error("Couldn't get partition list")
+        log.error(e)
+    return result
+
+
+def get_process_list():
+    result = []
+    try:
+        result = psutil.pids()
+    except Exception as e:
+        log.error("Couldn't get processlist")
+        log.error(e)
+    return result
 
 
 def get_operating_system():
