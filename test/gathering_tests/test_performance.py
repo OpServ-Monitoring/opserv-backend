@@ -8,7 +8,6 @@ from test_general import mock_db_open, start_gather_thread
 MAX_TEST_ITERATIONS = 10
 ITERATION_TEST_SPEED = 500
 
-SPEEDTEST_QUEUE_TIMEOUTPRECISION = 250
 SPEEDTEST_ITERATION_TIMEPRECISION = 100 # Iteration should be hit with +- 100ms precision^
 
 
@@ -27,7 +26,7 @@ def test_gathering_speed():
     test_iterations = 11
     lowest_delay = test_delayms - SPEEDTEST_ITERATION_TIMEPRECISION
     highest_delay = test_delayms + SPEEDTEST_ITERATION_TIMEPRECISION
-
+    test_queue_timeout = test_delayms * 2
     mock_db_open()
     with start_gather_thread() as t:
         # Add Gathering Rate
@@ -40,7 +39,7 @@ def test_gathering_speed():
 
         # Handle the immediate set gathering response
         queue_manager.readMeasurementFromQueue("cpu", "usage", None, True,
-                                               (test_delayms + SPEEDTEST_QUEUE_TIMEOUTPRECISION)/1000) 
+                                               (test_delayms + test_queue_timeout)/1000) 
         current_iterations += 1
         duration = (time.time() - iteration_time) * 1000
         duration_list = [duration]
@@ -51,7 +50,7 @@ def test_gathering_speed():
         # Repeat getting reading measurements until the max iterations are reached
         while current_iterations < test_iterations:
             queue_manager.readMeasurementFromQueue("cpu", "usage", None, True,
-                                                   (test_delayms + SPEEDTEST_QUEUE_TIMEOUTPRECISION)/1000)
+                                                   (test_delayms + test_queue_timeout)/1000)
             # Calculate duration of this iterations
             duration = (time.time() - iteration_time) * 1000
             iteration_time = time.time() # Get the new time as fast as possible
