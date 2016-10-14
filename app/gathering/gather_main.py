@@ -134,6 +134,7 @@ def getMeasurementAndSend(component, metric, args):
     except Exception as e:
         log.error(e)
         log.error("CATCHED MEASUREMENT ERROR")
+        return
     # Put that data into the queue
     queue_manager.putMeasurementIntoQueue(component, metric, newData, args)
 
