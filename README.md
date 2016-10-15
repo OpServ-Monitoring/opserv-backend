@@ -1,6 +1,12 @@
 # opserv-backend
 
-[![Code Climate](https://codeclimate.com/github/OpServ-Monitoring/opserv-backend/badges/gpa.svg)](https://codeclimate.com/github/OpServ-Monitoring/opserv-backend)  [![Codacy Badge](https://api.codacy.com/project/badge/Grade/ad9c86466d164cc7a432df119e7b7c99)](https://www.codacy.com/app/alex22212/opserv-backend?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=OpServ-Monitoring/opserv-backend&amp;utm_campaign=Badge_Grade)  [![Test Coverage](https://codeclimate.com/github/OpServ-Monitoring/opserv-backend/badges/coverage.svg)](https://codeclimate.com/github/OpServ-Monitoring/opserv-backend/coverage)
+[![Code Climate](https://codeclimate.com/github/OpServ-Monitoring/opserv-backend/badges/gpa.svg)](https://codeclimate.com/github/OpServ-Monitoring/opserv-backend)  [![Codacy Badge](https://api.codacy.com/project/badge/Grade/ad9c86466d164cc7a432df119e7b7c99)](https://www.codacy.com/app/alex22212/opserv-backend?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=OpServ-Monitoring/opserv-backend&amp;utm_campaign=Badge_Grade)
+
+| OS | Build Status | Coverage |
+| --- | --- | --- |
+| Windows | N/A | N/A |
+| Linux | [![Build Status](https://travis-ci.org/OpServ-Monitoring/opserv-backend.svg?branch=master)](https://travis-ci.org/OpServ-Monitoring/opserv-backend) | [![Test Coverage](https://codeclimate.com/github/OpServ-Monitoring/opserv-backend/badges/coverage.svg)](https://codeclimate.com/github/OpServ-Monitoring/opserv-backend/coverage) |
+| MacOS | N/A | N/A |
 
 This repository contains the backend of the OpServ-Monitoring software.
 Generally it should be used with together with the frontend so please use a bundled release for your OS.
