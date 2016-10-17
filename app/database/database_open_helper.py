@@ -153,8 +153,10 @@ class DatabaseOpenHelper:
         for component_type in default_rates:
             for component_arg in default_rates[component_type]:
                 for metric_rate_tuple in default_rates[component_type][component_arg]:
-                    insert_values.append((component_type, component_arg, *metric_rate_tuple))
-
+                    # Add the metric rate tuple to the comptype and compargs
+                    # The line below just concatenates the tuples
+                    # The * operator may not be used inside of tuples with Python < 3.5
+                    insert_values.append((component_type, component_arg) + metric_rate_tuple)
         UnifiedDatabaseInterface.get_component_metrics_writer_reader().insert_component_metrics(insert_values)
 
     @staticmethod
