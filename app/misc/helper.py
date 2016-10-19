@@ -1,6 +1,7 @@
 from importlib import import_module
+import sys
 
-from misc.constants import HARDWARE_DEFAULTS
+from misc.constants import HARDWARE_DEFAULTS, Operating_System
 
 def importIfExists(module):
     """ Loads and returns the handle for the given module if it available on the system"""
@@ -46,3 +47,16 @@ def assertIsDict(dictToTest):
         return True
     else:
         raise TypeError("This should be a dict" + str(dictToTest))
+
+
+def get_operating_system():
+    baseName = sys.platform
+    if baseName.startswith("linux"):
+        return Operating_System.linux
+    elif baseName.startswith("win"):
+        return Operating_System.windows
+    elif baseName.startswith("darwin"):
+        return Operating_System.macos
+    elif baseName.startswith("freebsd"):
+        return Operating_System.freebsd
+    return None 

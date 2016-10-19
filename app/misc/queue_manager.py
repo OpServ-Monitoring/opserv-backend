@@ -1,7 +1,13 @@
+"""
+    This module contains the queue manager which initalizes, handles and exposes 
+    most of the communication functionality between server and gathering thread
+"""
+
 from queue import Queue
 
-from misc.constants import HARDWARE_DEFAULTS
-from misc.helper import argumentHasDefault, argumentIsOptional, createSubDictIfNecessary, assertComponentExists
+from misc.constants import HARDWARE_DEFAULTS, QUEUEMANAGER_DEFAULT_TIMEOUT
+from misc.helper import argumentHasDefault, argumentIsOptional,\
+                        createSubDictIfNecessary, assertComponentExists
 
 requestDataQueue = None
 setGatheringRateQueue = None
@@ -89,7 +95,8 @@ def putMeasurementIntoQueue(component, metric, measurement, args=None):
     getQueue(component, metric, args).put(measurement)
 
 
-def readMeasurementFromQueue(component, metric, args=None, blocking=False, timeout=None):
+def readMeasurementFromQueue(component, metric, args=None, blocking=False,
+                             timeout=QUEUEMANAGER_DEFAULT_TIMEOUT):
     """ Get a single measurement from the specified queue.
         Warning, could cause Timeout Errors"""
     if (not getQueue(component, metric, args).empty()) or blocking == True:

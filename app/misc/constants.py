@@ -1,4 +1,4 @@
-#
+"""#
 # Constant declarations that are centralized here
 #
 # 27.09.2016
@@ -9,7 +9,7 @@
 #
 # print(implemented_hardware)
 #
-
+"""
 from enum import Enum
 
 cpu_metrics = {
@@ -128,3 +128,5 @@ CpuVendor = Enum("CpuVendor", "intel amd")
 
 
 GATHERING_QUEUELISTENER_DELAY = 0.05 # Delay between the queueListener calls in the gathering thread (in seconds)
+
+QUEUEMANAGER_DEFAULT_TIMEOUT = 2

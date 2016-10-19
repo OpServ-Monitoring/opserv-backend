@@ -76,6 +76,20 @@ def check_all_hardware():
                 queue_manager.requestDataQueue.put({"component": hw, "metric": met})
                 queue_manager.getQueue(hw, met).get(timeout=DATA_TEST_TIMEOUT)
 
+# Check that system gathering is always a list
+def test_system_is_list():
+    '''
+        Test that the system gathering data is always list type
+    '''
+    mock_db_open()
+    with start_gather_thread() as t:
+        for metric in implemented_hardware["system"]:
+            queue_manager.requestData("system", metric)
+            return_type = type(queue_manager.readMeasurementFromQueue("system", metric,
+                                                                      blocking=True)["value"])
+            assert return_type == type(list())
+    return
+
 
 
 # Get System Data, and test everything ADVANCED
