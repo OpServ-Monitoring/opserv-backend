@@ -7,7 +7,7 @@ import time
 
 from gathering.measuring.MeasuringSource import MeasuringSource
 from misc.constants import Operating_System
-from misc.helper import importIfExists, get_operating_system
+from misc.helper import import_if_exists, get_operating_system
 
 log = logging.getLogger("opserv.gathering.psutil")
 log.setLevel(logging.DEBUG)
@@ -85,7 +85,7 @@ class PsUtilWrap(MeasuringSource):
             If errors occured, the return value will be False
         '''
 
-        self.psutil = importIfExists("psutil")
+        self.psutil = import_if_exists("psutil")
 
         if not self.psutil:
             return False

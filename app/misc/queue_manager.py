@@ -6,8 +6,8 @@
 from queue import Queue
 
 from misc.constants import HARDWARE_DEFAULTS, QUEUEMANAGER_DEFAULT_TIMEOUT
-from misc.helper import argumentHasDefault, argumentIsOptional,\
-                        createSubDictIfNecessary, assertComponentExists
+from misc.helper import argument_has_default, argument_is_optional,\
+                        create_subdict_if_necessary, assert_component_exists
 
 requestDataQueue = None
 setGatheringRateQueue = None
@@ -39,19 +39,19 @@ def init():
 def getQueue(component, metric, args=None):
     """ Returns either the requested queue or creates a new one """
     # Check if the component exists
-    assertComponentExists(realtimeQueues, component)
+    assert_component_exists(realtimeQueues, component)
     # TODO MORE ASSERTS ON ARGS & metric
 
     # If no argument is given
     if not args:
-        if argumentIsOptional(component):
+        if argument_is_optional(component):
             args = None
-        elif argumentHasDefault(component):
+        elif argument_has_default(component):
             args = HARDWARE_DEFAULTS[component][1]
         else:
             raise Exception("Trying to access queue without specifying the argument. component: {}".format(component))
 
-    createSubDictIfNecessary(realtimeQueues, component, args)
+    create_subdict_if_necessary(realtimeQueues, component, args)
     createQueueIfNotExists(component, metric, args)
 
     if args != None:

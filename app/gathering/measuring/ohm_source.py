@@ -6,18 +6,19 @@
     It maps the Hardware and Sensors concept from the OHMLib onto the components/metrics system
 '''
 
-from misc.helper import importIfExists
+import logging
+import sys
+import os
+import atexit
+
+
+from misc.helper import import_if_exists, get_path_to_app
 from misc.constants import Operating_System
 from gathering.measuring.MeasuringSource import MeasuringSource
-import logging
 
 log = logging.getLogger("opserv.gathering.ohm")
 log.setLevel(logging.DEBUG)
 
-import sys
-import time
-import os
-import atexit
 
 # These type definitions come directly from the OHM source
 sensor_types = [
@@ -49,7 +50,7 @@ hardware_type =  [
 tempList = []
 
 
-sys.path.append("C:/Users/Alex/Dropbox/Schule/Semester 5/Studienarbeit 2/Source/opserv-backend/app/extern_dependency")
+sys.path.append(os.path.join(get_path_to_app(), "extern_dependency"))
 class OHMSource(MeasuringSource):
     '''
         Source description
@@ -84,7 +85,7 @@ class OHMSource(MeasuringSource):
             If errors occured, the return value will be False
         '''
 
-        self.clr = importIfExists("clr")
+        self.clr = import_if_exists("clr")
 
         if not self.clr:
             return

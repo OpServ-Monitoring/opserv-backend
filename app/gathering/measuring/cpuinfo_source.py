@@ -16,7 +16,7 @@
 '''
 
 from misc.constants import Operating_System
-from misc.helper import importIfExists
+from misc.helper import import_if_exists
 from gathering.measuring.MeasuringSource import MeasuringSource
 
 class PyCpuInfoSource(MeasuringSource):
@@ -42,7 +42,7 @@ class PyCpuInfoSource(MeasuringSource):
 
     def __init__(self):
         self._init_complete = False
-        self.cpuinfo = importIfExists("cpuinfo")
+        self.cpuinfo = import_if_exists("cpuinfo")
 
         if self.cpuinfo:
             self._init_complete = True

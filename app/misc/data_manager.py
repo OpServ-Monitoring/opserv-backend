@@ -14,7 +14,7 @@
  
 from misc.constants import HARDWARE_DEFAULTS
  
-from misc.helper import argumentHasDefault, argumentIsOptional, createSubDictIfNecessary, assertComponentExists
+from misc.helper import argument_has_default, argument_is_optional, create_subdict_if_necessary, assert_component_exists
 
 realtimeData = None
 
@@ -39,19 +39,19 @@ def init():
 def getMeasurement(component, metric, args=None):
     """ Returns the currently saved realtime data of the specified component """
     # Check if the component exists
-    assertComponentExists(realtimeData, component)
+    assert_component_exists(realtimeData, component)
     # TODO MORE ASSERTS ON ARGS & metric
 
     # If no argument is given
     if not args:
-        if argumentIsOptional(component):
+        if argument_is_optional(component):
             args = None
-        elif argumentHasDefault(component):
+        elif argument_has_default(component):
             args = HARDWARE_DEFAULTS[component][1]
         else:
             raise Exception("Trying to access data without specifying the argument. component: {}".format(component))
 
-    createSubDictIfNecessary(realtimeData, component, args)
+    create_subdict_if_necessary(realtimeData, component, args)
     createMeasurementIfNotExists(component, metric, args)
 
     if args != None:
@@ -62,19 +62,19 @@ def getMeasurement(component, metric, args=None):
 def setMeasurement(component, metric, value, args=None):
     """ Sets the specified metric to the desired value"""
     # Check if the component exists
-    assertComponentExists(realtimeData, component)
+    assert_component_exists(realtimeData, component)
     # TODO MORE ASSERTS ON ARGS & metric
 
     # If no argument is given
     if not args:
-        if argumentIsOptional(component):
+        if argument_is_optional(component):
             args = None
-        elif argumentHasDefault(component):
+        elif argument_has_default(component):
             args = HARDWARE_DEFAULTS[component][1]
         else:
             raise Exception("Trying to access data without specifying the argument. component: {}".format(component))
 
-    createSubDictIfNecessary(realtimeData, component, args)
+    create_subdict_if_necessary(realtimeData, component, args)
     createMeasurementIfNotExists(component, metric, args)
 
     if args != None:

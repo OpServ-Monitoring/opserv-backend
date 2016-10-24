@@ -8,7 +8,7 @@
 '''
 
 from misc.constants import Operating_System
-from misc.helper import importIfExists
+from misc.helper import import_if_exists
 from gathering.measuring.MeasuringSource import MeasuringSource
 
 class PySpectatorSource(MeasuringSource):
@@ -27,7 +27,7 @@ class PySpectatorSource(MeasuringSource):
 
         self._init_complete = False
 
-        self.pyspectator = importIfExists("pyspectator.processor")
+        self.pyspectator = import_if_exists("pyspectator.processor")
 
         if self.pyspectator:
             self._init_complete = True

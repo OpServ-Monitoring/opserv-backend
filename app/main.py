@@ -1,10 +1,10 @@
-#
-# Main system launch file, creates the gathering thread and starts flask
-#
-# 27.09.2016
-#
-# Usage: Simply launch this file
-#
+"""
+ Main system launch file, creates the gathering thread and starts flask
+
+ 27.09.2016
+
+ Usage: Simply launch this file
+"""
 
 import logging
 
@@ -16,7 +16,6 @@ import misc.queue_manager as queue_manager
 
 from database.database_open_helper import DatabaseOpenHelper
 
-
 LOGGINGLEVEL = logging.DEBUG
 
 LOG_TO_FILE = False
@@ -27,10 +26,16 @@ LOG_SERVER = True
 
 
 def init_database():
+    """
+        Initiates the database
+    """
     DatabaseOpenHelper().on_create()
 
 
 def start_gather_thread():
+    """
+        Starts the gathering thread as a daemon
+    """
     print("Starting up the gathering thread.")
 
     gather_thread = GatherThread()
@@ -49,7 +54,7 @@ if __name__ == '__main__':
     setup_logger(LOG_TO_CONSOLE, LOG_TO_FILE, LOGGINGLEVEL, LOG_SERVER, LOG_GATHERING)
     queue_manager.init()
     data_manager.init()
-
     init_database()
+
     start_gather_thread()
     start_server()
