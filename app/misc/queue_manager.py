@@ -6,8 +6,7 @@
 from queue import Queue
 
 from misc.constants import QUEUEMANAGER_DEFAULT_TIMEOUT
-from misc.helper import create_subdict_if_necessary, assert_component_exists,\
-                        assert_argument_value
+from misc.helper import check_comp_args
 
 requestDataQueue = None
 setGatheringRateQueue = None
@@ -41,12 +40,8 @@ def init():
 
 def getQueue(component, metric, args=None):
     """ Returns either the requested queue or creates a new one """
-    assert_component_exists(realtimeQueues, component)
+    check_comp_args(realtimeQueues, component, args)
 
-    # If no argument is given
-    assert_argument_value(component, args)
-
-    create_subdict_if_necessary(realtimeQueues, component, args)
     createQueueIfNotExists(component, metric, args)
 
     if args != None:

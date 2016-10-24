@@ -112,3 +112,13 @@ def assert_argument_value(component, args):
         else:
             raise ValueError("Trying to access data without specifying the argument. component: {}"
                              .format(component))
+def check_comp_args(main_dict, component, args):
+    """
+        Performs all necessary assertions and checks on the component metric and args value
+        Also checks given main_dict whether the comp exists there
+    """
+    assert_component_exists(main_dict, component)
+
+    assert_argument_value(component, args)
+
+    create_subdict_if_necessary(main_dict, component, args)

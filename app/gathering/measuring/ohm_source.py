@@ -35,6 +35,21 @@ SENSORTYPES = [
     "Data", # GB = 2^30 Bytes
 ]
 
+
+# Map sensor types to dict keys
+# These two dicts are necessary to bind the opserv component system to the OHM hardware/sensors
+TYPE_MAP = {
+    "Load" : ("usage", "usage_sensor"),
+    "Temperature" : ("temperature", "temperature_sensor"),
+    "Clock" : ("frequency", "frequency_sensor")
+}
+
+TYPE_MAP_REVERSE = {
+    "usage" : ("Load", "usage_sensor"),
+    "frequency" : ("Clock", "frequency_sensor"),
+    "temperature" : ("Temperature", "temperature_sensor")
+}
+
 HARDWARETYPES = [
     "Mainboard",
     "SuperIO",
@@ -116,7 +131,6 @@ class OHMSource(MeasuringSource):
 
         self.computer.Open()
         self._init_complete = True
-        pass
 
     def deinit(self):
         '''
@@ -125,9 +139,6 @@ class OHMSource(MeasuringSource):
         '''
         self.computer.Close()
         self._init_complete = False
-        # Close PC connection
-
-        pass
 
     def get_measurement(self, component, metric, args):
         '''
@@ -178,14 +189,12 @@ class OHMSource(MeasuringSource):
             log.info("Found an HDD %s", hardware.name)
             self.add_disk(hardware)
 
-        #self.hardware.append(hardware)
-
-        for hw in hardware.SubHardware:
-            self.ohm_hardware_added_handler(hw)
+        for sub_hw in hardware.SubHardware:
+            self.ohm_hardware_added_handler(sub_hw)
     def ohm_hardware_removed_handler(self, hardware):
         """
             Hardware Removal handler for the OHM library
-            This is called when a given hardware is disconnected or the 
+            This is called when a given hardware is disconnected or the
             Computer object is closed
         """
         log.info("Removing Hardware")
@@ -224,7 +233,7 @@ class OHMSource(MeasuringSource):
         for i in range(new_cpu["cores"]):
             new_cores.append({
                 # Assumes all CPUs have the same corecount
-                "id" : i + (new_cpu["id"] * new_cpu["cores"]), 
+                "id" : i + (new_cpu["id"] * new_cpu["cores"]),
                 "info" : "CPU #{0} Core #{1}".format(new_cpu["id"], i)
             })
 
@@ -245,19 +254,13 @@ class OHMSource(MeasuringSource):
             # Ignore Bus Speed
             if sensor.Name.find("Bus Speed") != -1:
                 break
-            # Map sensor types to dict keys
-            type_map = {
-                "Load" : ("usage", "usage_sensor"),
-                "Temperature" : ("temperature", "temperature_sensor"),
-                "Clock" : ("frequency", "frequency_sensor")
-            }
-            if sens_type in type_map:
+            if sens_type in TYPE_MAP:
                 if sensor_id == -1:
-                    self.add_supported_metric("cpu", type_map[sens_type][0])
-                    new_cpu[type_map[sens_type][1]] = (hardware, sensor)
+                    self.add_supported_metric("cpu", TYPE_MAP[sens_type][0])
+                    new_cpu[TYPE_MAP[sens_type][1]] = (hardware, sensor)
                 else:
-                    self.add_supported_metric("core", type_map[sens_type][0])
-                    new_cores[sensor_id][type_map[sens_type][1]] = (hardware, sensor)
+                    self.add_supported_metric("core", TYPE_MAP[sens_type][0])
+                    new_cores[sensor_id][TYPE_MAP[sens_type][1]] = (hardware, sensor)
 
         # Add the newly found CPU and its cores into the lists
         self.cpu_list.append(new_cpu)
@@ -287,21 +290,15 @@ class OHMSource(MeasuringSource):
         for cpu in self.cpu_list:
             log.info(cpu)
             if int(cpu["id"]) == int(args):
-                if metric == "usage":
-                    sensor_type = "usage_sensor"
-                elif metric == "frequency":
-                    sensor_type = "frequency_sensor"
-                elif metric == "temperature":
-                    sensor_type = "temperature_sensor"
-                cpu[sensor_type][0].Update()
-                log.info("Taking measurement, Type: {0}, Value: {1}".format(metric, cpu[sensor_type][1].Value))
-                return cpu[sensor_type][1].Value
+                if metric in TYPE_MAP_REVERSE:
+                    sens_type = TYPE_MAP_REVERSE[metric][1]
+                    cpu[sens_type][0].Update()
+                    log.info("Taking measurement, Type: %s, Value: %f",
+                             metric, cpu[sens_type][1].Value)
+                    return cpu[sens_type][1].Value
         raise ValueError("CPU given in args not found! {}".format(args))
-    def get_gpu_measurement(self, metric, args):
-        """
-            Updates the hardware object for the specified GPU and returns the value for metric
-        """
-        pass
+
+
     def get_core_measurement(self, metric, args):
         """
             Updates the hardware of the given cpu core to get a measurement
@@ -309,16 +306,20 @@ class OHMSource(MeasuringSource):
         """
         for core in self.core_list:
             if core["id"] == args:
-                if metric == "usage":
-                    sensor_type = "usage_sensor"
-                elif metric == "frequency":
-                    sensor_type = "frequency_sensor"
-                elif metric == "temperature":
-                    sensor_type = "temperature_sensor"
-                core[sensor_type][0].Update()
-                log.info("Taking measurement, Type: {0}, Value: {1}".format(metric, core[sensor_type][1].Value))
-                return core[sensor_type][1].Value
+                if metric in TYPE_MAP_REVERSE:
+                    sens_type = TYPE_MAP_REVERSE[metric][1]
+                    core[sens_type][0].Update()
+                    log.info("Taking measurement, Type: %s, Value: %f",
+                             metric, core[sens_type][1].Value)
+                    return core[sens_type][1].Value
         raise ValueError("Core given in args not found! {}".format(args))
+
+
+    def get_gpu_measurement(self, metric, args):
+        """
+            Updates the hardware object for the specified GPU and returns the value for metric
+        """
+        pass
     def get_disk_measurement(self, metric, args):
         """
             Gets a measurement from the specified disk (not as in partition, but physical disks)
@@ -341,13 +342,13 @@ class OHMSource(MeasuringSource):
 
 def parse_cpu_sensor_name(name):
     """
-        Tries to resolve the Name attribute from the OHM CPU class into a 
+        Tries to resolve the Name attribute from the OHM CPU class into a
         core number or into -1 (which is the whole cpu package)
     """
     num_pos = name.find("#")  + 1
     try:
         core_number = int(name[num_pos:])
         return core_number - 1 # Minus one to make it zero based
-    except ValueError as err:
+    except ValueError:
         # Core number cannot be parsed (so it is either total load or not in the name)
         return -1

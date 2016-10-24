@@ -14,9 +14,7 @@
  
 from misc.constants import HARDWARE_DEFAULTS
  
-from misc.helper import argument_has_default, argument_is_optional,\
-                        create_subdict_if_necessary, assert_component_exists,\
-                        assert_argument_value
+from misc.helper import check_comp_args
 
 realtimeData = None
 
@@ -43,11 +41,8 @@ def init():
 
 def getMeasurement(component, metric, args=None):
     """ Returns the currently saved realtime data of the specified component """
-    assert_component_exists(realtimeData, component)
-    # If no argument is given
-    assert_argument_value(component, args)
+    check_comp_args(realtimeData, component, args)
 
-    create_subdict_if_necessary(realtimeData, component, args)
     createMeasurementIfNotExists(component, metric, args)
 
     if args != None:
@@ -57,13 +52,8 @@ def getMeasurement(component, metric, args=None):
 
 def setMeasurement(component, metric, value, args=None):
     """ Sets the specified metric to the desired value"""
-    # Check if the component exists
-    assert_component_exists(realtimeData, component)
-    # TODO MORE ASSERTS ON ARGS & metric
+    check_comp_args(realtimeData, component, args)
 
-    assert_argument_value(component, args)
-
-    create_subdict_if_necessary(realtimeData, component, args)
     createMeasurementIfNotExists(component, metric, args)
 
     if args != None:
