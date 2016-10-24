@@ -16,36 +16,38 @@ log.setLevel(logging.DEBUG)
 NOTIMPLEMENTED_NUMERICAL = 0
 NOTIMPLEMENTED_TEXT = ""
 
+
 class PsUtilWrap(MeasuringSource):
     '''
         MeasuringSource adaption to the psutil interface
     '''
 
-    _supported_os = [Operating_System.macos, Operating_System.windows, Operating_System.linux]
+    _supported_os = [Operating_System.macos,
+                     Operating_System.windows, Operating_System.linux]
 
     _supported_comps = {
-        "cpu" : {
+        "cpu": {
             "usage"
         },
-        "core" : {
+        "core": {
             "usage"
         },
-        "memory" : {
+        "memory": {
             "total",
             "free",
             "used"
         },
-        "process" : {
+        "process": {
             "cpuusage",
             "memusage",
             "name"
         },
-        "partition" : {
+        "partition": {
             "total",
             "free",
             "used"
         },
-        "network" : {
+        "network": {
             "info",
             "receivepersec",
             "transmitpersec"
@@ -57,9 +59,8 @@ class PsUtilWrap(MeasuringSource):
             "networks"
         }
     }
-    def __init__(self):
-        self.os_is_supported(get_operating_system())
 
+    def __init__(self):
         self._init_complete = False
         self.psutil = None
 
@@ -91,7 +92,6 @@ class PsUtilWrap(MeasuringSource):
 
         self._init_complete = True
         return True
-
 
     def deinit(self):
         '''
@@ -135,7 +135,6 @@ class PsUtilWrap(MeasuringSource):
             result = self.get_system_data(metric)
 
         return result
-
 
     def measure_memory(self, metric):
         '''
@@ -190,7 +189,8 @@ class PsUtilWrap(MeasuringSource):
                 return self.net_calc_bytesper_sec(False, args)
         except FileNotFoundError as err:
             log.error(err)
-            log.error("The following network interface couldnt be found %s", str(args))
+            log.error(
+                "The following network interface couldnt be found %s", str(args))
 
     def net_calc_bytesper_sec(self, received, name):
         '''
@@ -218,13 +218,13 @@ class PsUtilWrap(MeasuringSource):
         # Save data to thei specific dict entries
         if received:
             self.net_last_receive_data[name] = {
-                "bytes" : new_bytes,
-                "timestamp" : new_time
+                "bytes": new_bytes,
+                "timestamp": new_time
             }
         else:
             self.net_last_sent_data[name] = {
-                "bytes" : new_bytes,
-                "timestamp" : new_time
+                "bytes": new_bytes,
+                "timestamp": new_time
             }
         return bytes_per_second
 
@@ -242,7 +242,6 @@ class PsUtilWrap(MeasuringSource):
         else:
             raise FileNotFoundError
 
-
     def get_system_data(self, metric):
         '''
             Returns a measurement of the specified basic system metric
@@ -255,7 +254,6 @@ class PsUtilWrap(MeasuringSource):
             return self.get_process_list()
         if metric == "networks":
             return self.get_network_interfaces()
-
 
     def get_network_interfaces(self):
         '''
@@ -275,7 +273,6 @@ class PsUtilWrap(MeasuringSource):
             simple_interfaces.append(interface)
         return simple_interfaces
 
-
     def get_core_list(self):
         '''
             Returns a list of all the available cpu cores
@@ -289,7 +286,6 @@ class PsUtilWrap(MeasuringSource):
             log.error(error)
         return result
 
-
     def get_partition_list(self):
         '''
             Returns a list of all the available partitions
@@ -302,7 +298,6 @@ class PsUtilWrap(MeasuringSource):
             log.error("Couldn't get partition list")
             log.error(err)
         return result
-
 
     def get_process_list(self):
         '''

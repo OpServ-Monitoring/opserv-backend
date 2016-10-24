@@ -22,3 +22,5 @@ def pytest_runtest_setup():
     # Ensure tests are run in fresh environments
     queue_manager.init()
     data_manager.init()
+    # Remove Gathering Rates
+    # Re Init all measuring sources

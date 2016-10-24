@@ -20,6 +20,7 @@ from gathering.measuring.psutil_source import PsUtilWrap
 from gathering.measuring.null_source import NullSource
 from gathering.measuring.cpuinfo_source import PyCpuInfoSource
 from gathering.measuring.pyspectator_source import PySpectatorSource
+from gathering.measuring.ohm_source import OHMSource
 
 log = logging.getLogger("opserv.gathering")
 log.setLevel(logging.DEBUG)
@@ -28,8 +29,10 @@ transaction = UnifiedDatabaseInterface.get_measurement_insertion_transaction()
 
 measuring_sources = []
 
+
 class GatherThread(threading.Thread):
     ''' Thread for the gathering backend. Handles the collection of the data '''
+
     def __init__(self):
         """
             Main Init function for the gathering thread
@@ -44,6 +47,7 @@ class GatherThread(threading.Thread):
         measuring_sources.append(PsUtilWrap())
         measuring_sources.append(PyCpuInfoSource())
         measuring_sources.append(PySpectatorSource())
+        measuring_sources.append(OHMSource())
         measuring_sources.append(NullSource())
         if not measuring_sources[0].init():
             log.error("Psutil Measuring Source could not be loaded!")
@@ -61,7 +65,8 @@ class GatherThread(threading.Thread):
             if not self.running:
                 break
             self.s.run(blocking=False)
-            time.sleep(0.001)  # To keep CPU usage low, the loop has to sleep atleast a bit
+            # To keep CPU usage low, the loop has to sleep atleast a bit
+            time.sleep(0.001)
 
         # This point shouldn't be reached
         log.debug("Gathering Thread shutting down")
@@ -76,9 +81,10 @@ class GatherThread(threading.Thread):
         while not queue_manager.setGatheringRateQueue.empty():
             new_rate = queue_manager.setGatheringRateQueue.get(False)
             if rate_update_valid(new_rate):
-                # Before even setting up a new gatherer, send an immediate data update
+                # Before even setting up a new gatherer, send an immediate data
+                # update
                 get_measurement_and_send(new_rate["component"], new_rate["metric"],
-                                      new_rate["args"])
+                                         new_rate["args"])
 
                 if self.already_gathering(new_rate):
                     self.update_gatherer(new_rate)
@@ -91,11 +97,10 @@ class GatherThread(threading.Thread):
             if request_valid(newRequest):
 
                 get_measurement_and_send(newRequest["component"], newRequest["metric"],
-                                                     newRequest["args"])
+                                         newRequest["args"])
 
         # Reenter itself into the event queue to listen to new commands
         self.s.enter(GATHERING_QUEUELISTENER_DELAY, 1, self.queue_listener)
-
 
     def gather_task(self, gatherData):
         """
@@ -114,7 +119,8 @@ class GatherThread(threading.Thread):
             Updates the given gathering task to the new rate (or deletes it)
         """
         # Remove old scheduled event
-        self.s.cancel(self.gatherers[(new_rate["component"], new_rate["metric"])])
+        self.s.cancel(
+            self.gatherers[(new_rate["component"], new_rate["metric"])])
         self.gatherers.pop((new_rate["component"], new_rate["metric"]))
         if new_rate["delayms"] > 0:
             self.create_gatherer(new_rate)
@@ -140,6 +146,7 @@ class GatherThread(threading.Thread):
             return True
         return False
 
+
 def get_measurement_and_send(component, metric, args):
     """
         Gets the specified metric from the component and sends it into the queue and data dictionary
@@ -157,7 +164,8 @@ def get_measurement_and_send(component, metric, args):
                                    str(new_data["value"]), component, args)
     transaction.commit_transaction()
 
-    log.debug("Gathered {0} from {1},{2},{3}".format(new_data, component, metric, args))
+    log.debug("Gathered {0} from {1},{2},{3}".format(
+        new_data, component, metric, args))
 
 
 def request_valid(request):
@@ -193,7 +201,6 @@ def rate_update_valid(rateUpdate):
     return False
 
 
-
 def get_measurement(component, metric, args):
     """
         Given the component and metric this function uses the libraries to make a measurement
@@ -208,18 +215,17 @@ def get_measurement(component, metric, args):
         if src.can_measure(component, metric):
             try:
                 measured_value = src.get_measurement(component, metric, args)
-                break # Just use the first src that is able to measure
+                break  # Just use the first src that is able to measure
             except Exception as err:
                 log.error(err)
-                log.error("Measuring failed here %s, %s, %s, %s", component, metric, args, str(src))
-
+                log.error("Measuring failed here %s, %s, %s, %s",
+                        component, metric, args, str(src))
 
     if measured_value != None:
         return {
-            "timestamp" : time.time() * 1000,
-            "value" : measured_value
+            "timestamp": time.time() * 1000,
+            "value": measured_value
         }
-
 
     log.debug("Tried to get unimplemented component")
     return "0"

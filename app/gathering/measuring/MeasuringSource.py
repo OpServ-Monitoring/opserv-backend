@@ -79,3 +79,34 @@ class MeasuringSource(metaclass=ABCMeta):
         if current_os in self._supported_os:
             return True
         return False
+
+    def add_supported_metric(self, component, metric):
+        '''
+            This helper function will add the specified component metric combo to the supported list
+        '''
+        # If this is the first metric for that component, create the comp dict
+        if not component in self._supported_comps:
+            self._supported_comps[component] = {}
+
+        # As long as the metric doesn't exist, add it into the dict
+        if not metric in self._supported_comps[component]:
+            self._supported_comps[component][metric] = None
+
+    def remove_supported_metric(self, component, metric):
+        '''
+            This function removes the specified component metric combo
+            If there is no other metric in the component, the comp will be deleted completely
+        '''
+        # If the component doesn't exist here just stop
+        if not component in self._supported_comps:
+            return
+        # If the metric in that component doesn't exist, just stop
+        if not metric in self._supported_comps[component]:
+            return
+
+        # At this point the metric/comp combo will exist, remove that
+        del self._supported_comps[component][metric]
+
+        # If there are no other metrics left, remove the component as a whole
+        if len(self._supported_comps[component]) == 0:
+            del self._supported_comps[component]

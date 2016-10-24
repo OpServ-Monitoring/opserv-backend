@@ -21,9 +21,10 @@ realtimeData = None
 
 def init():
     global realtimeData
-    
+
     realtimeData = {
         "cpu": {},
+        "core" : {},
         "gpu": {},
         "memory": {},
         "disk": {},
@@ -31,7 +32,7 @@ def init():
         "process": {},
         "network": {},
         "system": {}
-    }    
+    }
 
 
 

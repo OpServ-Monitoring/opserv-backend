@@ -1,11 +1,13 @@
 import logging
 import threading
 import time
+import sys
 from test_general import start_gather_thread, mock_db_open
- 
+
 import misc.queue_manager as queue_manager
 import misc.data_manager as data_manager
 from misc.constants import implemented_hardware, HARDWARE_DEFAULTS
+import pytest
 
 
 DATA_TEST_TIMEOUT = 2.5
@@ -91,6 +93,13 @@ def test_system_is_list():
     return
 
 
+@pytest.mark.skipif(sys.platform != 'win32',
+                    reason="does not run on windows")
+def test_ohm():
+    from gathering.measuring.ohm_source import OHMSource
+    ohm = OHMSource()
+    newTemp = ohm.get_measurement("cpu", "temperature", "0")
+    ohm.deinit()
 
 # Get System Data, and test everything ADVANCED
 

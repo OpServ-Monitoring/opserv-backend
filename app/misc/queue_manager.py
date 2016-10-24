@@ -18,12 +18,13 @@ def init():
     global requestDataQueue
     global setGatheringRateQueue
     global realtimeQueues
-    
+
     requestDataQueue = Queue()
     setGatheringRateQueue = Queue()
 
     realtimeQueues = {
         "cpu": {},
+        "core": {},
         "gpu": {},
         "memory": {},
         "disk": {},
@@ -32,7 +33,7 @@ def init():
         "network": {},
         "system": {}
     }
-    
+
 
 
 def getQueue(component, metric, args=None):

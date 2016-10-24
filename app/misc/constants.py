@@ -67,6 +67,7 @@ network_metrics = {
 
 system_metrics = {
     "cpus",
+    "cores",
     "gpus",
     "cores",
     "partitions",
@@ -77,6 +78,7 @@ system_metrics = {
 
 implemented_hardware = {
     "cpu": cpu_metrics,
+    "core": core_metrics,
     "gpu": gpu_metrics,
     "memory": memory_metrics,
     "disk": disk_metrics,
