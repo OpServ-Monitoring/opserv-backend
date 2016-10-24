@@ -21,7 +21,7 @@ log.setLevel(logging.DEBUG)
 
 
 # These type definitions come directly from the OHM source
-sensor_types = [
+SENSORTYPES = [
     "Voltage", #V
     "Clock", # MHz
     "Temperature", # °C
@@ -35,7 +35,7 @@ sensor_types = [
     "Data", # GB = 2^30 Bytes
 ]
 
-hardware_type =  [
+HARDWARETYPES = [
     "Mainboard",
     "SuperIO",
     "CPU",
@@ -46,8 +46,6 @@ hardware_type =  [
     "Heatmaster",
     "HDD"
 ]
-
-tempList = []
 
 
 sys.path.append(os.path.join(get_path_to_app(), "extern_dependency"))
@@ -96,26 +94,27 @@ class OHMSource(MeasuringSource):
             log.error("Error during addReference to the OHM Lib")
             return
         try:
-            from OpenHardwareMonitor import Hardware
+            # Ignore PyLint error since this module is being loaded at runtime
+            from OpenHardwareMonitor import Hardware # pylint: disable=E0401
         except Exception as err:
             log.error(err)
             log.error("Error during importing of hardware class from OHM Lib")
             return
         # Open PC Connection
         self.hardware_class = Hardware
-        self.pc = Hardware.Computer()
+        self.computer = Hardware.Computer()
 
-        self.pc.MotherboardEnabled = True
-        self.pc.RAMEnabled = True
-        self.pc.GPUEnabled = True
-        self.pc.CPUEnabled = True
-        self.pc.HDDEnabled = True
+        self.computer.MotherboardEnabled = True
+        self.computer.RAMEnabled = True
+        self.computer.GPUEnabled = True
+        self.computer.CPUEnabled = True
+        self.computer.HDDEnabled = True
         # Set Handlers
 
-        self.pc.HardwareAdded += self.ohm_hardware_added_handler
-        self.pc.HardwareRemoved += self.ohm_hardware_removed_handler
+        self.computer.HardwareAdded += self.ohm_hardware_added_handler
+        self.computer.HardwareRemoved += self.ohm_hardware_removed_handler
 
-        self.pc.Open()
+        self.computer.Open()
         self._init_complete = True
         pass
 
@@ -124,7 +123,7 @@ class OHMSource(MeasuringSource):
             De-Initializes the measuring source, removing connections etc.
             Returns True if deinit was successfull, False if it errord
         '''
-        self.pc.Close()
+        self.computer.Close()
         self._init_complete = False
         # Close PC connection
 
@@ -162,10 +161,10 @@ class OHMSource(MeasuringSource):
         log.info("Adding Hardware")
         log.info(type(hardware))
         log.info(hardware.name)
-        log.info(hardware_type[hardware.get_HardwareType()])
+        log.info(HARDWARETYPES[hardware.get_HardwareType()])
         log.info(hardware.active)
         log.info(hardware.settings)
-        current_hw = hardware_type[hardware.get_HardwareType()]
+        current_hw = HARDWARETYPES[hardware.get_HardwareType()]
         if current_hw == "CPU":
             log.info("Found a CPU %s", hardware.name)
             self.add_cpu(hardware)
@@ -192,7 +191,7 @@ class OHMSource(MeasuringSource):
         log.info("Removing Hardware")
         log.info(type(hardware))
         log.info(hardware.name)
-        log.info(hardware_type[hardware.get_HardwareType()])
+        log.info(HARDWARETYPES[hardware.get_HardwareType()])
         log.info(hardware.active)
         log.info(hardware.settings)
 
@@ -224,7 +223,8 @@ class OHMSource(MeasuringSource):
         new_cores = []
         for i in range(new_cpu["cores"]):
             new_cores.append({
-                "id" : i + (new_cpu["id"] * new_cpu["cores"]), # Assumes all CPUs have the same corecount
+                # Assumes all CPUs have the same corecount
+                "id" : i + (new_cpu["id"] * new_cpu["cores"]), 
                 "info" : "CPU #{0} Core #{1}".format(new_cpu["id"], i)
             })
 
@@ -237,33 +237,27 @@ class OHMSource(MeasuringSource):
 
 
         for sensor in hardware.Sensors:
-            sens_type = sensor_types[sensor.SensorType]
+            sens_type = SENSORTYPES[sensor.SensorType]
             # Get Core Number, value is -1 if its for the cpu package
             sensor_id = parse_cpu_sensor_name(sensor.Name)
             log.info("Got new sensor %s ID: %d, Type: %s", sensor.Name, sensor_id, sens_type)
-            if sens_type == "Load":
+
+            # Ignore Bus Speed
+            if sensor.Name.find("Bus Speed") != -1:
+                break
+            # Map sensor types to dict keys
+            type_map = {
+                "Load" : ("usage", "usage_sensor"),
+                "Temperature" : ("temperature", "temperature_sensor"),
+                "Clock" : ("frequency", "frequency_sensor")
+            }
+            if sens_type in type_map:
                 if sensor_id == -1:
-                    self.add_supported_metric("cpu", "usage")
-                    new_cpu["usage_sensor"] = (hardware, sensor)
+                    self.add_supported_metric("cpu", type_map[sens_type][0])
+                    new_cpu[type_map[sens_type][1]] = (hardware, sensor)
                 else:
-                    self.add_supported_metric("core", "usage")
-                    new_cores[sensor_id]["usage_sensor"] = (hardware, sensor)
-            elif sens_type == "Temperature":
-                if sensor_id == -1:
-                    self.add_supported_metric("cpu", "temperature")
-                    new_cpu["temperature_sensor"] = (hardware, sensor)
-                else:
-                    self.add_supported_metric("core", "temperature")
-                    new_cores[sensor_id]["temperature_sensor"] = (hardware, sensor)
-            elif sens_type == "Clock":
-                if sensor.Name.find("Bus Speed") != -1:
-                    break # Ignore Bus speeds
-                if sensor_id == -1:
-                    self.add_supported_metric("cpu", "frequency")
-                    new_cpu["frequency_sensor"] = (hardware, sensor)
-                else:
-                    self.add_supported_metric("core", "frequency")
-                    new_cores[sensor_id]["frequency_sensor"] = (hardware, sensor)
+                    self.add_supported_metric("core", type_map[sens_type][0])
+                    new_cores[sensor_id][type_map[sens_type][1]] = (hardware, sensor)
 
         # Add the newly found CPU and its cores into the lists
         self.cpu_list.append(new_cpu)

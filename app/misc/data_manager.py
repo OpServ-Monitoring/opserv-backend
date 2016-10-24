@@ -14,12 +14,17 @@
  
 from misc.constants import HARDWARE_DEFAULTS
  
-from misc.helper import argument_has_default, argument_is_optional, create_subdict_if_necessary, assert_component_exists
+from misc.helper import argument_has_default, argument_is_optional,\
+                        create_subdict_if_necessary, assert_component_exists,\
+                        assert_argument_value
 
 realtimeData = None
 
 
 def init():
+    """
+        Initializes the data manager
+    """
     global realtimeData
 
     realtimeData = {
@@ -38,18 +43,9 @@ def init():
 
 def getMeasurement(component, metric, args=None):
     """ Returns the currently saved realtime data of the specified component """
-    # Check if the component exists
     assert_component_exists(realtimeData, component)
-    # TODO MORE ASSERTS ON ARGS & metric
-
     # If no argument is given
-    if not args:
-        if argument_is_optional(component):
-            args = None
-        elif argument_has_default(component):
-            args = HARDWARE_DEFAULTS[component][1]
-        else:
-            raise Exception("Trying to access data without specifying the argument. component: {}".format(component))
+    assert_argument_value(component, args)
 
     create_subdict_if_necessary(realtimeData, component, args)
     createMeasurementIfNotExists(component, metric, args)
@@ -65,14 +61,7 @@ def setMeasurement(component, metric, value, args=None):
     assert_component_exists(realtimeData, component)
     # TODO MORE ASSERTS ON ARGS & metric
 
-    # If no argument is given
-    if not args:
-        if argument_is_optional(component):
-            args = None
-        elif argument_has_default(component):
-            args = HARDWARE_DEFAULTS[component][1]
-        else:
-            raise Exception("Trying to access data without specifying the argument. component: {}".format(component))
+    assert_argument_value(component, args)
 
     create_subdict_if_necessary(realtimeData, component, args)
     createMeasurementIfNotExists(component, metric, args)

@@ -96,3 +96,19 @@ def get_path_to_app():
         current_dir = os.path.dirname(current_dir) # Get the parent directory of current_dir
 
     return current_dir
+
+def assert_argument_value(component, args):
+    '''
+    Checks whether the given arg/component combo has the right Value
+    If the component needs no argument, it will return none
+    If an argument is needed but there is a default value, it will return the default
+    If the argument is needed but there is no default value it will raise a ValueError
+    '''
+    if not args:
+        if argument_is_optional(component):
+            return None
+        elif argument_has_default(component):
+            return HARDWARE_DEFAULTS[component][1]
+        else:
+            raise ValueError("Trying to access data without specifying the argument. component: {}"
+                             .format(component))
