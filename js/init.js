@@ -9,12 +9,12 @@
 	skel.init({
 		reset: 'full',
 		breakpoints: {
-			global:		{ range: '*', href: '/css/style.css', containers: 1400, grid: { gutters: 50 } },
-			wide:		{ range: '-1680', href: '/css/style-wide.css', containers: 1200, grid: { gutters: 40 } },
-			normal:		{ range: '-1280', href: '/css/style-normal.css', containers: 960, viewport: { scalable: false } },
-			narrow:		{ range: '-980', href: '/css/style-narrow.css', containers: '95%', grid: { gutters: 30 } },
-			narrower:	{ range: '-840', href: '/css/style-narrower.css', grid: { collapse: 1 } },
-			mobile:		{ range: '-736', href: '/css/style-mobile.css', containers: '100%', grid: { gutters: 15, collapse: 2 } }
+			global:		{ range: '*', href: '/opserv-monitoring/css/style.css', containers: 1400, grid: { gutters: 50 } },
+			wide:		{ range: '-1680', href: '/opserv-monitoring/css/style-wide.css', containers: 1200, grid: { gutters: 40 } },
+			normal:		{ range: '-1280', href: '/opserv-monitoring/css/style-normal.css', containers: 960, viewport: { scalable: false } },
+			narrow:		{ range: '-980', href: '/opserv-monitoring/css/style-narrow.css', containers: '95%', grid: { gutters: 30 } },
+			narrower:	{ range: '-840', href: '/opserv-monitoring/css/style-narrower.css', grid: { collapse: 1 } },
+			mobile:		{ range: '-736', href: '/opserv-monitoring/css/style-mobile.css', containers: '100%', grid: { gutters: 15, collapse: 2 } }
 		},
 		plugins: {
 			layers: {
