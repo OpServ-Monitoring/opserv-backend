@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: doc-entry
 title:  "RESTful API"
 ---
 
