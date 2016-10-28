@@ -2,14 +2,16 @@
 layout: default
 ---
 
-    <article id="main">
-  <header class="special container">
+    <article id="main" class="markdown-body">
+ <!-- <header class="special container">
     <h2 class="post-title">{{ page.title }}</h2>
     <p class="post-meta">{{ page.date | date: "%b %-d, %Y" }}{% if page.author %} • {{ page.author }}{% endif %}{% if page.meta %} • {{ page.meta }}{% endif %}</p>
-  </header>
-
+  </header>-->
+  
   <section class="style4 wrapper container">
-    {{ content }}
+	  <h1>{{ page.title }}</h1>
+	  <br>
+	  {{ content }}
   </section>
     
     <footer>
