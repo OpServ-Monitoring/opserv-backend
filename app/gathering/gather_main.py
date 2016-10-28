@@ -21,6 +21,7 @@ from gathering.measuring.null_source import NullSource
 from gathering.measuring.cpuinfo_source import PyCpuInfoSource
 from gathering.measuring.pyspectator_source import PySpectatorSource
 from gathering.measuring.ohm_source import OHMSource
+from gathering.measuring.raspi_temp_source import RaspiTempSource
 
 log = logging.getLogger("opserv.gathering")
 log.setLevel(logging.DEBUG)
@@ -48,6 +49,7 @@ class GatherThread(threading.Thread):
         measuring_sources.append(PyCpuInfoSource())
         measuring_sources.append(PySpectatorSource())
         measuring_sources.append(OHMSource())
+        measuring_sources.append(RaspiTempSource())
         measuring_sources.append(NullSource())
         if not measuring_sources[0].init():
             log.error("Psutil Measuring Source could not be loaded!")
@@ -219,8 +221,7 @@ def get_measurement(component, metric, args):
             except Exception as err:
                 log.error(err)
                 log.error("Measuring failed here %s, %s, %s, %s",
-                        component, metric, args, str(src))
-
+                          component, metric, args, str(src))
     if measured_value != None:
         return {
             "timestamp": time.time() * 1000,

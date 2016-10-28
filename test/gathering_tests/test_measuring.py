@@ -101,6 +101,17 @@ def test_ohm():
     newTemp = ohm.get_measurement("cpu", "temperature", "0")
     ohm.deinit()
 
+def nvm_network_usage():
+    from gathering.measuring.psutil_source import PsUtilWrap
+    ps = PsUtilWrap()
+    all_netif = ps.get_measurement("system", "networks", None)
+    while True:
+        for netif in all_netif:
+            log.info(ps.get_measurement("network", "receivepersec", netif))
+            log.info(ps.get_measurement("network", "transmitpersec", netif))
+        time.sleep(0.5)
+
+
 # Get System Data, and test everything ADVANCED
 
 # Test measuring wrong metric, component or argument

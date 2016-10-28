@@ -130,6 +130,8 @@ class PsUtilWrap(MeasuringSource):
 
         elif component == "partition":
             result = self.measure_partition(metric, args)
+        elif component == "network":
+            result = self.measure_network(metric, args)
 
         elif component == "system":
             result = self.get_system_data(metric)
@@ -201,16 +203,17 @@ class PsUtilWrap(MeasuringSource):
         new_bytes = self.net_get_bytes(received, name)
         new_time = time.time()
         bytes_per_second = 0
-        last = 0
-
+        last = {
+            "bytes" : 0
+        }
         # Get specifc data for received and sent
-        if received and self.net_last_receive_data[name]:
+        if received and name in self.net_last_receive_data:
             last = self.net_last_receive_data[name]
-        elif not received and self.net_last_sent_data[name]:
+        elif not received and name in self.net_last_sent_data:
             last = self.net_last_sent_data[name]
 
         # Try to calculate bytes per second
-        if last["bytes"] >= new_bytes:
+        if last["bytes"] <= new_bytes and last["bytes"] != 0:
             byte_diff = new_bytes - last["bytes"]
             time_diff = new_time - last["timestamp"]
             bytes_per_second = byte_diff / time_diff
@@ -285,7 +288,7 @@ class PsUtilWrap(MeasuringSource):
             log.error("Couldn't get corelist")
             log.error(error)
         return result
-
+        
     def get_partition_list(self):
         '''
             Returns a list of all the available partitions

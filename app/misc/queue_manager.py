@@ -69,7 +69,7 @@ def createQueueIfNotExists(component, metric, args):
 
 
 def queueExists(component, metric, args):
-    """ Checks whehter the specified queue already exists """
+    """ Checks whether the specified queue already exists """
     if component in realtimeQueues:
         if args != None:
             if args in realtimeQueues[component]:

@@ -1,8 +1,9 @@
 '''
     This module is pretty experimental and uses pythonnet to laod a C#-DLL
-    The OpenHardwareMonitrLib is part of a great Windows software that has
-    a lot of hardware monitoring.
-
+    The OpenHardwareMonitorLib is a pretty sophisticated library to get system metrics
+    For more information about the project/code visit the GitHub Repository
+    https://github.com/openhardwaremonitor/openhardwaremonitor
+    
     It maps the Hardware and Sensors concept from the OHMLib onto the components/metrics system
 '''
 
@@ -62,8 +63,9 @@ HARDWARETYPES = [
     "HDD"
 ]
 
-
+# Append DLL path to the sys path array
 sys.path.append(os.path.join(get_path_to_app(), "extern_dependency"))
+
 class OHMSource(MeasuringSource):
     '''
         Source description
@@ -137,8 +139,9 @@ class OHMSource(MeasuringSource):
             De-Initializes the measuring source, removing connections etc.
             Returns True if deinit was successfull, False if it errord
         '''
-        self.computer.Close()
-        self._init_complete = False
+        if self._init_complete:
+            self.computer.Close()
+            self._init_complete = False
 
     def get_measurement(self, component, metric, args):
         '''

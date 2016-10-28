@@ -15,7 +15,6 @@ class PySpectatorSource(MeasuringSource):
     '''
         Source description
     '''
-
     _supported_os = [Operating_System.windows, Operating_System.linux]
     _supported_comps = {
         "cpu" : {
