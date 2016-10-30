@@ -29,6 +29,7 @@ class DataApiV1Endpoint(GeneralEndpointDataV1):
         from .endpoints.networks import NetworksEndpoint
         from .endpoints.partitions import PartitionsEndpoint
         from .endpoints.processes import ProcessesEndpoint
+        from .endpoints.system import SystemEndpoint
 
         return [
             ("/cpus", CpusEndpoint),
@@ -38,5 +39,6 @@ class DataApiV1Endpoint(GeneralEndpointDataV1):
             ("/memory", MemoryEndpoint),
             ("/networks", NetworksEndpoint),
             ("/partitions", PartitionsEndpoint),
-            ("/processes", ProcessesEndpoint)
+            ("/processes", ProcessesEndpoint),
+            ("/system", SystemEndpoint)
         ]
