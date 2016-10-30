@@ -69,7 +69,7 @@ system_metrics = {
     "cpus",
     "cores",
     "gpus",
-    "cores",
+    "cores",  # TODO double entry?
     "partitions",
     "processes",
     "networks",
@@ -96,8 +96,8 @@ default_gathering_rates = {
             ("gpus", 300000),
             ("cores", 300000),
             ("partitions", 300000),
-            ("processes", 300000),
-            ("networks", 300000),
+            ("processes", 300000),  # TODO Increase rate
+            ("networks", 300000),  # TODO Increase rate
             ("disks", 300000)
         }
     },
