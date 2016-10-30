@@ -67,7 +67,7 @@ Only GET requests are supported by this endpoint.
 |:---:|:-----:|---|---|
 |id|The ID assigned to the cpu by the OpServ system. A list of all ids present at the moment can be retrieved with [this request](#cpus)|dynamic|yes|
 
-##### Header
+##### Request Header
 
 |key|description|possible values|mandatory|default value|
 |:---:|:-----:|---|---|---|
@@ -77,7 +77,7 @@ Only GET requests are supported by this endpoint.
 |limit|The maximum number of datapoints to return|any positive integer greater 0, passing anything greater than 5000 will result in a limit of 5000|no|50|
 |unit|A string indicating whether the temperature should be expressed as celsius or fahrenheit|"c" or "celsius"; "f" or "fahrenheit"|no|"c"|
 
-##### Body
+##### Request Body
 
 \- none -
 
