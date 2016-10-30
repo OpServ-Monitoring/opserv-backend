@@ -4,21 +4,23 @@
 
 from abc import ABCMeta, abstractmethod, abstractproperty
 
+
 class MeasuringSource(metaclass=ABCMeta):
     '''
         Abstract interface, which the measuring source implements
     '''
+
     @abstractproperty
     def _supported_os(self):
         ''' Array of Operating_System enums, that contain the supported operating systems '''
         pass
+
     @abstractproperty
     def _supported_comps(self):
         '''
             Dictionary of supported components, which are itself dictionaries of supported metrics
         '''
         pass
-
 
     @abstractmethod
     def init(self):
@@ -45,7 +47,6 @@ class MeasuringSource(metaclass=ABCMeta):
         '''
         pass
 
-
     def can_measure(self, component, metric):
         '''
             Checks whether the source can measure the specified component metric combo
@@ -55,7 +56,6 @@ class MeasuringSource(metaclass=ABCMeta):
                 return True
         return False
 
-
     def get_supported_comps(self):
         '''
             Returns a list of all the components and their metrics
@@ -63,13 +63,11 @@ class MeasuringSource(metaclass=ABCMeta):
         '''
         return self._supported_comps
 
-
     def get_supported_os(self):
         '''
             Returns a list of supported operating systems
         '''
         return self._supported_os
-
 
     def os_is_supported(self, current_os):
         '''

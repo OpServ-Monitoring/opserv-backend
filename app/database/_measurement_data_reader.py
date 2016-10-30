@@ -52,3 +52,29 @@ class MeasurementDataReader:
 
         connection.close()
         return result
+
+    @staticmethod
+    def get_last_value(component_type: str, component_arg: str, metric_name: str):
+        connection = DatabaseOpenHelper.establish_database_connection()
+
+        result = connection.execute(
+            """
+            SELECT {4}, {5}
+            FROM {0}
+            WHERE {1} = ?
+              AND {2} = ?
+              AND {3} = ?
+            ORDER BY {4} DESC
+            LIMIT 1
+            """.format(
+                MeasurementsTableManagement.TABLE_NAME(),
+                MeasurementsTableManagement.KEY_COMPONENT_TYPE_FK(),
+                MeasurementsTableManagement.KEY_COMPONENT_ARG_FK(),
+                MeasurementsTableManagement.KEY_METRIC_FK(),
+                MeasurementsTableManagement.KEY_TIMESTAMP(),
+                MeasurementsTableManagement.KEY_VALUE()
+            ),
+            (component_type, component_arg, metric_name)
+        ).fetchone()
+
+        return result

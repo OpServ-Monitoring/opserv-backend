@@ -10,18 +10,16 @@ import sched
 import threading
 import time
 
-import misc.queue_manager as queue_manager
 import misc.data_manager as data_manager
-from misc.constants import GATHERING_QUEUELISTENER_DELAY
-
+import misc.queue_manager as queue_manager
 from database.unified_database_interface import UnifiedDatabaseInterface
-
-from gathering.measuring.psutil_source import PsUtilWrap
-from gathering.measuring.null_source import NullSource
 from gathering.measuring.cpuinfo_source import PyCpuInfoSource
-from gathering.measuring.pyspectator_source import PySpectatorSource
+from gathering.measuring.null_source import NullSource
 from gathering.measuring.ohm_source import OHMSource
 from gathering.measuring.raspi_temp_source import RaspiTempSource
+from gathering.measuring.psutil_source import PsUtilWrap
+from gathering.measuring.pyspectator_source import PySpectatorSource
+from misc.constants import GATHERING_QUEUELISTENER_DELAY
 
 log = logging.getLogger("opserv.gathering")
 log.setLevel(logging.DEBUG)
@@ -97,7 +95,6 @@ class GatherThread(threading.Thread):
         while not queue_manager.requestDataQueue.empty():
             newRequest = queue_manager.requestDataQueue.get(False)
             if request_valid(newRequest):
-
                 get_measurement_and_send(newRequest["component"], newRequest["metric"],
                                          newRequest["args"])
 
@@ -222,6 +219,7 @@ def get_measurement(component, metric, args):
                 log.error(err)
                 log.error("Measuring failed here %s, %s, %s, %s",
                           component, metric, args, str(src))
+
     if measured_value != None:
         return {
             "timestamp": time.time() * 1000,

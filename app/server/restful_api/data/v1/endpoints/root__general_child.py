@@ -1,6 +1,7 @@
 from abc import ABCMeta, abstractmethod
 
 from database.unified_database_interface import UnifiedDatabaseInterface
+
 from .__general_data_v1 import GeneralEndpointDataV1
 from ....general.endpoint import Endpoint
 
@@ -48,7 +49,10 @@ class RootGeneralChildEndpoint(GeneralEndpointDataV1, metaclass=ABCMeta):
         realtime_data = cls.__get_current_children_ids()
         persisted_data = cls.__get_persisted_children_ids()
 
-        return cls.__merge_two_lists(realtime_data, persisted_data)
+        return cls.__merge_two_lists(
+            cls.__stringify_list(realtime_data),
+            cls.__stringify_list(persisted_data)
+        )
 
     @classmethod
     def __get_current_children_ids(cls) -> list:
@@ -69,8 +73,15 @@ class RootGeneralChildEndpoint(GeneralEndpointDataV1, metaclass=ABCMeta):
 
         return UnifiedDatabaseInterface.get_component_metrics_writer_reader().get_component_args(component_type)
 
+    # TODO Is this the right place for this? -> Extract to some data providing interface
+    @classmethod
+    def __stringify_list(cls, raw_list) -> list:
+        return list(
+            map(str, raw_list)
+        )
+
+    # TODO Is this the right place for this? -> Extract to some data providing interface
     @classmethod
     def __merge_two_lists(cls, first_list, second_list):
         return first_list + list(set(second_list) - set(first_list))
-
-        # TODO Is this the right place for this? -> Extract to some data providing interface
+        # TODO Fix error that occurs when value is the same but of different type, e.g. '0' and 0

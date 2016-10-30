@@ -13,6 +13,7 @@ setGatheringRateQueue = None
 
 realtimeQueues = None
 
+
 def init():
     """
         Initializes the queue manager
@@ -35,7 +36,6 @@ def init():
         "network": {},
         "system": {}
     }
-
 
 
 def getQueue(component, metric, args=None):
@@ -95,11 +95,13 @@ def readMeasurementFromQueue(component, metric, args=None, blocking=False,
     else:
         return None
 
+
 def real_time_queue_empty(component, metric, args=None):
     if getQueue(component, metric, args).empty():
         return True
     else:
         return False
+
 
 def setGatheringRate(component, metric, delayms, args=None):
     """ Send a gathering rate update that will update the queue and realtime data directory

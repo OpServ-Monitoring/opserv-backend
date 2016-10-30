@@ -15,9 +15,10 @@
     From https://github.com/workhorsy/py-cpuinfo
 '''
 
+from gathering.measuring.MeasuringSource import MeasuringSource
 from misc.constants import Operating_System
 from misc.helper import import_if_exists
-from gathering.measuring.MeasuringSource import MeasuringSource
+
 
 class PyCpuInfoSource(MeasuringSource):
     '''
@@ -27,11 +28,11 @@ class PyCpuInfoSource(MeasuringSource):
     _supported_os = [Operating_System.windows, Operating_System.macos,
                      Operating_System.linux, Operating_System.freebsd]
     _supported_comps = {
-        "cpu" : {
+        "cpu": {
             "info",
             "frequency"
         },
-        "core" : {
+        "core": {
             "info",
             "frequency"
         },

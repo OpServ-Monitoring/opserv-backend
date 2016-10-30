@@ -2,8 +2,8 @@
     This module is a generic not implemented source
 '''
 
-from misc.constants import Operating_System
 from gathering.measuring.MeasuringSource import MeasuringSource
+
 
 class GenericSource(MeasuringSource):
     '''
@@ -14,7 +14,6 @@ class GenericSource(MeasuringSource):
     _supported_comps = {
 
     }
-
 
     def init(self):
         '''

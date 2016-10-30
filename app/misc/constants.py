@@ -91,6 +91,7 @@ implemented_hardware = {
 default_gathering_rates = {
     "system": {
         "default": {
+            # every 5 minutes
             ("cpus", 300000),
             ("gpus", 300000),
             ("cores", 300000),
@@ -102,10 +103,17 @@ default_gathering_rates = {
     },
     "cpu": {
         "0": {
-            ("usage", 60000),
-            ("temperature", 60000),
-            ("info", 60000),
-            ("frequency", 60000)
+            ("usage", 60000),  # every minute
+            ("temperature", 60000),  # every minute
+            ("info", 300000),  # every 5 minutes
+            ("frequency", 60000)  # every minute
+        }
+    },
+    "memory": {
+        "default": {
+            ("total", 300000),  # every 5 minutes
+            ("free", 60000),  # every minute
+            ("used", 60000)  # every minute
         }
     }
 }
@@ -128,7 +136,6 @@ Operating_System = Enum("Operating_System", "windows linux macos freebsd")
 GraphicsVendor = Enum("GraphicsVendor", "intel nvidia amd")
 CpuVendor = Enum("CpuVendor", "intel amd")
 
-
-GATHERING_QUEUELISTENER_DELAY = 0.05 # Delay between the queueListener calls in the gathering thread (in seconds)
+GATHERING_QUEUELISTENER_DELAY = 0.05  # Delay between the queueListener calls in the gathering thread (in seconds)
 
 QUEUEMANAGER_DEFAULT_TIMEOUT = 2

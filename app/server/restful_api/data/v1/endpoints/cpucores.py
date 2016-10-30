@@ -1,5 +1,5 @@
-from ....general.endpoint import Endpoint
 from .root__general_child import RootGeneralChildEndpoint
+from ....general.endpoint import Endpoint
 
 
 class CpucoresEndpoint(RootGeneralChildEndpoint):

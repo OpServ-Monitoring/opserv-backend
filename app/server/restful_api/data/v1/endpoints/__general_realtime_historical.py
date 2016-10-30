@@ -2,6 +2,7 @@ import time
 from abc import ABCMeta, abstractmethod
 
 from database.unified_database_interface import UnifiedDatabaseInterface
+
 from .__general_data_v1 import GeneralEndpointDataV1
 
 

@@ -4,14 +4,24 @@ from .__general_data_v1 import GeneralEndpointDataV1
 class CpucoresCpucoreEndpoint(GeneralEndpointDataV1):
     def _get(self) -> bool:
         # TODO implement endpoint
-        self._response_holder.set_body_data("Nothing to see here really. :)")
+        from app.database.unified_database_interface import UnifiedDatabaseInterface
+        cpu_core_id = self._request_holder.get_params()["core"]
+
+        persisted_info = UnifiedDatabaseInterface.get_measurement_data_reader().get_last_value("core", cpu_core_id,
+                                                                                               "info")
+
+        if persisted_info is not None:
+            self._response_holder.set_body_data({
+                "timestamp": persisted_info[0],
+                "general-info": persisted_info[1]
+            })
 
         return True
 
     @staticmethod
     def get_paths():
         return [
-            "/cpu-cores/<string:cpu_core>"
+            "/cpu-cores/<string:core>"
         ]
 
     @staticmethod
@@ -45,4 +55,4 @@ class CpucoresCpucoreEndpoint(GeneralEndpointDataV1):
     @staticmethod
     def get_cpucore_id_validator():
         # TODO Validate cpucore id
-        return "cpu_core", lambda x: True
+        return "core", lambda x: True

@@ -1,5 +1,3 @@
-import sqlite3
-
 from .component_metrics_table_management import ComponentMetricsTableManagement
 from .general_table_management import GeneralTableManagement
 

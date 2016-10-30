@@ -7,48 +7,45 @@
     It maps the Hardware and Sensors concept from the OHMLib onto the components/metrics system
 '''
 
-import logging
-import sys
-import os
 import atexit
+import logging
+import os
+import sys
 
-
-from misc.helper import import_if_exists, get_path_to_app
-from misc.constants import Operating_System
 from gathering.measuring.MeasuringSource import MeasuringSource
+from misc.constants import Operating_System
+from misc.helper import import_if_exists, get_path_to_app
 
 log = logging.getLogger("opserv.gathering.ohm")
 log.setLevel(logging.DEBUG)
 
-
 # These type definitions come directly from the OHM source
 SENSORTYPES = [
-    "Voltage", #V
-    "Clock", # MHz
-    "Temperature", # °C
-    "Load", # %
-    "Fan", # RPM
-    "Flow", # L/h
-    "Control", # %
-    "Level", # %
-    "Factor", # 1
-    "Power", # W
-    "Data", # GB = 2^30 Bytes
+    "Voltage",  # V
+    "Clock",  # MHz
+    "Temperature",  # °C
+    "Load",  # %
+    "Fan",  # RPM
+    "Flow",  # L/h
+    "Control",  # %
+    "Level",  # %
+    "Factor",  # 1
+    "Power",  # W
+    "Data",  # GB = 2^30 Bytes
 ]
-
 
 # Map sensor types to dict keys
 # These two dicts are necessary to bind the opserv component system to the OHM hardware/sensors
 TYPE_MAP = {
-    "Load" : ("usage", "usage_sensor"),
-    "Temperature" : ("temperature", "temperature_sensor"),
-    "Clock" : ("frequency", "frequency_sensor")
+    "Load": ("usage", "usage_sensor"),
+    "Temperature": ("temperature", "temperature_sensor"),
+    "Clock": ("frequency", "frequency_sensor")
 }
 
 TYPE_MAP_REVERSE = {
-    "usage" : ("Load", "usage_sensor"),
-    "frequency" : ("Clock", "frequency_sensor"),
-    "temperature" : ("Temperature", "temperature_sensor")
+    "usage": ("Load", "usage_sensor"),
+    "frequency": ("Clock", "frequency_sensor"),
+    "temperature": ("Temperature", "temperature_sensor")
 }
 
 HARDWARETYPES = [
@@ -65,6 +62,7 @@ HARDWARETYPES = [
 
 # Append DLL path to the sys path array
 sys.path.append(os.path.join(get_path_to_app(), "extern_dependency"))
+
 
 class OHMSource(MeasuringSource):
     '''
@@ -112,7 +110,7 @@ class OHMSource(MeasuringSource):
             return
         try:
             # Ignore PyLint error since this module is being loaded at runtime
-            from OpenHardwareMonitor import Hardware # pylint: disable=E0401
+            from OpenHardwareMonitor import Hardware  # pylint: disable=E0401
         except Exception as err:
             log.error(err)
             log.error("Error during importing of hardware class from OHM Lib")
@@ -166,7 +164,6 @@ class OHMSource(MeasuringSource):
             result = self.get_system_measurement(metric)
         return result
 
-
     def ohm_hardware_added_handler(self, hardware):
         """
             Hardware Added Handler
@@ -194,6 +191,7 @@ class OHMSource(MeasuringSource):
 
         for sub_hw in hardware.SubHardware:
             self.ohm_hardware_added_handler(sub_hw)
+
     def ohm_hardware_removed_handler(self, hardware):
         """
             Hardware Removal handler for the OHM library
@@ -236,8 +234,8 @@ class OHMSource(MeasuringSource):
         for i in range(new_cpu["cores"]):
             new_cores.append({
                 # Assumes all CPUs have the same corecount
-                "id" : i + (new_cpu["id"] * new_cpu["cores"]),
-                "info" : "CPU #{0} Core #{1}".format(new_cpu["id"], i)
+                "id": i + (new_cpu["id"] * new_cpu["cores"]),
+                "info": "CPU #{0} Core #{1}".format(new_cpu["id"], i)
             })
 
         # Update the supported_comps dict
@@ -246,7 +244,6 @@ class OHMSource(MeasuringSource):
         self.add_supported_metric("core", "info")
         self.add_supported_metric("system", "cpus")
         self.add_supported_metric("system", "cores")
-
 
         for sensor in hardware.Sensors:
             sens_type = SENSORTYPES[sensor.SensorType]
@@ -274,11 +271,13 @@ class OHMSource(MeasuringSource):
             Sub-Handler to process GPUs in the system
         """
         pass
+
     def add_memory(self, hardware):
         """
             Sub-Handler to process memory in the system
         """
         pass
+
     def add_disk(self, hardware):
         """
             Sub-Handler to process newly found disks in the system
@@ -301,7 +300,6 @@ class OHMSource(MeasuringSource):
                     return cpu[sens_type][1].Value
         raise ValueError("CPU given in args not found! {}".format(args))
 
-
     def get_core_measurement(self, metric, args):
         """
             Updates the hardware of the given cpu core to get a measurement
@@ -317,23 +315,25 @@ class OHMSource(MeasuringSource):
                     return core[sens_type][1].Value
         raise ValueError("Core given in args not found! {}".format(args))
 
-
     def get_gpu_measurement(self, metric, args):
         """
             Updates the hardware object for the specified GPU and returns the value for metric
         """
         pass
+
     def get_disk_measurement(self, metric, args):
         """
             Gets a measurement from the specified disk (not as in partition, but physical disks)
             And returns the value of the specified metric
         """
         pass
+
     def get_memory_measurement(self, metric, args):
         """
             Updates the memory hardware object and returns the value of the specified metric
         """
         pass
+
     def get_system_measurement(self, metric):
         """
             Gets the measurement from specified metric for the system component
@@ -343,15 +343,16 @@ class OHMSource(MeasuringSource):
         elif metric == "cores":
             return list(range(len(self.core_list)))
 
+
 def parse_cpu_sensor_name(name):
     """
         Tries to resolve the Name attribute from the OHM CPU class into a
         core number or into -1 (which is the whole cpu package)
     """
-    num_pos = name.find("#")  + 1
+    num_pos = name.find("#") + 1
     try:
         core_number = int(name[num_pos:])
-        return core_number - 1 # Minus one to make it zero based
+        return core_number - 1  # Minus one to make it zero based
     except ValueError:
         # Core number cannot be parsed (so it is either total load or not in the name)
         return -1

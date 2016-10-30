@@ -7,9 +7,10 @@
     enough to give it its own wrapper here
 '''
 
+from gathering.measuring.MeasuringSource import MeasuringSource
 from misc.constants import Operating_System
 from misc.helper import import_if_exists
-from gathering.measuring.MeasuringSource import MeasuringSource
+
 
 class PySpectatorSource(MeasuringSource):
     '''
@@ -17,7 +18,7 @@ class PySpectatorSource(MeasuringSource):
     '''
     _supported_os = [Operating_System.windows, Operating_System.linux]
     _supported_comps = {
-        "cpu" : {
+        "cpu": {
             "temperature"
         }
     }
@@ -30,7 +31,6 @@ class PySpectatorSource(MeasuringSource):
 
         if self.pyspectator:
             self._init_complete = True
-
 
     def init(self):
         '''

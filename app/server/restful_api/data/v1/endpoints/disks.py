@@ -2,27 +2,28 @@ from .root__general_child import RootGeneralChildEndpoint
 from ....general.endpoint import Endpoint
 
 
-class GpusEndpoint(RootGeneralChildEndpoint):
+class DisksEndpoint(RootGeneralChildEndpoint):
     @staticmethod
     def get_paths():
         return [
-            "/gpus"
+            "/disks"
         ]
 
     @staticmethod
     def get_name():
-        return "gpu entities"
+        return "disk entities"
 
     @staticmethod
     def _get_hardware_value_type() -> str:
-        return "gpus"
+        return "disks"
 
     @staticmethod
     def _get_component_type() -> str:
-        return "gpu"
+        return "disk"
 
     @staticmethod
     def _get_children_endpoint_type() -> Endpoint:
-        from .gpus_gpu import GpusGpuEndpoint
+        # TODO exchange children
+        from .cpus_cpu import CpusCpuEndpoint
 
-        return GpusGpuEndpoint
+        return CpusCpuEndpoint

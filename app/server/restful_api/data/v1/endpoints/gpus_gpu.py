@@ -4,7 +4,16 @@ from .__general_data_v1 import GeneralEndpointDataV1
 class GpusGpuEndpoint(GeneralEndpointDataV1):
     def _get(self) -> bool:
         # TODO implement endpoint
-        self._response_holder.set_body_data("Neither am I. :(")
+        from app.database.unified_database_interface import UnifiedDatabaseInterface
+        gpu_id = self._request_holder.get_params()["gpu"]
+
+        persisted_info = UnifiedDatabaseInterface.get_measurement_data_reader().get_last_value("gpu", gpu_id, "info")
+
+        if persisted_info is not None:
+            self._response_holder.set_body_data({
+                "timestamp": persisted_info[0],
+                "general-info": persisted_info[1]
+            })
 
         return True
 

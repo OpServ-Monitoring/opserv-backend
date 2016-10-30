@@ -19,10 +19,19 @@ class Endpoint(metaclass=ABCMeta):
         any of the processing functions _get(), _post(), _put() or _delete() and finally the _pre_process() function
         :return: The final Response object to answer the request with
         """
+        # TODO Improve logging
+        import logging
+
+        log_server_rest = logging.getLogger("opserv.server.restful_api")
+        log_server_rest.setLevel(logging.DEBUG)
+        log_server_rest.debug(
+            "Received a request at: " + request_holder.get_uri()
+        )
+        # Remove upper part
+
         self._request_holder = request_holder
 
         keep_processing = self._pre_process()
-
         if keep_processing:
             keep_processing = keep_processing and self.__main_process()
 

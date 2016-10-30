@@ -7,11 +7,10 @@ import time
 
 from gathering.measuring.MeasuringSource import MeasuringSource
 from misc.constants import Operating_System
-from misc.helper import import_if_exists, get_operating_system
+from misc.helper import import_if_exists
 
 log = logging.getLogger("opserv.gathering.psutil")
 log.setLevel(logging.DEBUG)
-
 
 NOTIMPLEMENTED_NUMERICAL = 0
 NOTIMPLEMENTED_TEXT = ""

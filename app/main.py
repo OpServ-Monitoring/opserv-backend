@@ -6,23 +6,13 @@
  Usage: Simply launch this file
 """
 
-import logging
-
-import server.__management as server
-from gathering.gather_main import GatherThread
-from misc.logging_helper import setup_logger
+import application_settings.settings_management as app_settings
 import misc.data_manager as data_manager
 import misc.queue_manager as queue_manager
-
+import server.__management as server
 from database.database_open_helper import DatabaseOpenHelper
-
-LOGGINGLEVEL = logging.DEBUG
-
-LOG_TO_FILE = False
-LOG_TO_CONSOLE = True
-
-LOG_GATHERING = True
-LOG_SERVER = True
+from gathering.gather_main import GatherThread
+from misc.logging_helper import setup_logger
 
 
 def init_database():
@@ -36,7 +26,7 @@ def start_gather_thread():
     """
         Starts the gathering thread as a daemon
     """
-    print("Starting up the gathering thread.")
+    print("Starting up the gathering thread.")  # TODO Exchange with logging
 
     gather_thread = GatherThread()
     gather_thread.daemon = True
@@ -50,10 +40,19 @@ def start_server():
     server.start()
 
 
+def manage_runtime_settings():
+    # TODO Document this function
+    app_settings.init()
+
+
 if __name__ == '__main__':
-    setup_logger(LOG_TO_CONSOLE, LOG_TO_FILE, LOGGINGLEVEL, LOG_SERVER, LOG_GATHERING)
+    manage_runtime_settings()
+
+    setup_logger()
+
     queue_manager.init()
     data_manager.init()
+
     init_database()
 
     start_gather_thread()

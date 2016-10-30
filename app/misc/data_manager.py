@@ -11,9 +11,7 @@
 # import data_manager
 # data_manager.getMeasurement("cpu", "usage")
 #
- 
-from misc.constants import HARDWARE_DEFAULTS
- 
+
 from misc.helper import check_comp_args
 
 realtimeData = None
@@ -27,7 +25,7 @@ def init():
 
     realtimeData = {
         "cpu": {},
-        "core" : {},
+        "core": {},
         "gpu": {},
         "memory": {},
         "disk": {},
@@ -36,7 +34,6 @@ def init():
         "network": {},
         "system": {}
     }
-
 
 
 def getMeasurement(component, metric, args=None):
@@ -48,7 +45,9 @@ def getMeasurement(component, metric, args=None):
     if args != None:
         return realtimeData[component][args][metric]
     else:
-        return realtimeData[component][metric]
+        # TODO Evaluate saving schema - added "default" so get actual values. partition values are kind of strange
+        return realtimeData[component]["default"][metric]
+
 
 def setMeasurement(component, metric, value, args=None):
     """ Sets the specified metric to the desired value"""
@@ -60,6 +59,7 @@ def setMeasurement(component, metric, value, args=None):
         realtimeData[component][args][metric] = value
     else:
         realtimeData[component][metric] = value
+
 
 def createMeasurementIfNotExists(component, metric, args):
     """ Creates a new variable if the specified one doesn't already exists """

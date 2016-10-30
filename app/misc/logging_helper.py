@@ -1,15 +1,25 @@
 import logging
 import sys
 
+import application_settings.settings_management as app_settings
 
-def setup_logger(log_to_console, log_to_file, logging_level, log_server, log_gathering):
+
+def setup_logger():
+    log_to_console = app_settings.runtime_settings["log-to-console"]
+    log_to_file = app_settings.runtime_settings["log-to-file"]
+    logging_level = logging.DEBUG  # TODO Read from runtime args
+
+    __setup_logger(log_to_console, log_to_file, logging_level, True, True)
+
+
+def __setup_logger(log_to_console, log_to_file, logging_level, log_server, log_gathering):
     # SETUP LOGGER
     mainLog = logging.getLogger("opserv")
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
     # create file handler, set the formatting to it and add it as an handler
     if log_to_file:
-        fh = logging.FileHandler('opserv.log')
+        fh = logging.FileHandler('opserv.log')  # TODO Exchange static logging file with path run time arg
         fh.setLevel(logging_level)
         fh.setFormatter(formatter)
         mainLog.addHandler(fh)

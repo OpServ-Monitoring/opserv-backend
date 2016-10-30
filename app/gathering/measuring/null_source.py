@@ -17,8 +17,10 @@ class NullSource(MeasuringSource):
     '''
     _supported_comps = implemented_hardware
     _supported_os = [Operating_System.macos, Operating_System.windows, Operating_System.linux]
+
     def __init__(self):
         pass
+
     def init(self):
         '''
             Initializes the measuring source (opening hardware connections etc.)

@@ -23,10 +23,20 @@ class DataApiV1Endpoint(GeneralEndpointDataV1):
     def _get_children(cls):
         from .endpoints.cpus import CpusEndpoint
         from .endpoints.cpucores import CpucoresEndpoint
+        from .endpoints.disks import DisksEndpoint
         from .endpoints.gpus import GpusEndpoint
+        from .endpoints.memory import MemoryEndpoint
+        from .endpoints.networks import NetworksEndpoint
+        from .endpoints.partitions import PartitionsEndpoint
+        from .endpoints.processes import ProcessesEndpoint
 
         return [
             ("/cpus", CpusEndpoint),
             ("/cpu-cores", CpucoresEndpoint),
-            ("/gpus", GpusEndpoint)
+            ("/gpus", GpusEndpoint),
+            ("/disks", DisksEndpoint),
+            ("/memory", MemoryEndpoint),
+            ("/networks", NetworksEndpoint),
+            ("/partitions", PartitionsEndpoint),
+            ("/processes", ProcessesEndpoint)
         ]

@@ -1,8 +1,3 @@
-from .endpoints.gpus_gpu_gpuclock import GpusGpuGpuclockEndpoint
-from .endpoints.gpus_gpu_memclock import GpusGpuMemclockEndpoint
-from .endpoints.gpus_gpu_temperature import GpusGpuTemperatureEndpoint
-from .endpoints.gpus_gpu_usage import GpusGpuUsageEndpoint
-from .endpoints.gpus_gpu_vramusage import GpusGpuVramusageEndpoint
 from .data_api_v1_endpoint import DataApiV1Endpoint
 from .endpoints.cpucores import CpucoresEndpoint
 from .endpoints.cpucores_cpucore import CpucoresCpucoreEndpoint
@@ -14,8 +9,18 @@ from .endpoints.cpus_cpu import CpusCpuEndpoint
 from .endpoints.cpus_cpu_frequency import CpusCpuFrequencyEndpoint
 from .endpoints.cpus_cpu_temperature import CpusCpuTemperatureEndpoint
 from .endpoints.cpus_cpu_usage import CpusCpuUsageEndpoint
+from .endpoints.disks import DisksEndpoint
 from .endpoints.gpus import GpusEndpoint
 from .endpoints.gpus_gpu import GpusGpuEndpoint
+from .endpoints.gpus_gpu_gpuclock import GpusGpuGpuclockEndpoint
+from .endpoints.gpus_gpu_memclock import GpusGpuMemclockEndpoint
+from .endpoints.gpus_gpu_temperature import GpusGpuTemperatureEndpoint
+from .endpoints.gpus_gpu_usage import GpusGpuUsageEndpoint
+from .endpoints.gpus_gpu_vramusage import GpusGpuVramusageEndpoint
+from .endpoints.memory import MemoryEndpoint
+from .endpoints.networks import NetworksEndpoint
+from .endpoints.partitions import PartitionsEndpoint
+from .endpoints.processes import ProcessesEndpoint
 from ...general.endpoint_management import EndpointManagement
 
 
@@ -54,18 +59,22 @@ class EndpointManagementDataV1(EndpointManagement):
             GpusGpuMemclockEndpoint,  # v1/gpus/<string:gpu>/memclock
             GpusGpuTemperatureEndpoint,  # v1/gpus/<string:gpu>/temperature
             GpusGpuUsageEndpoint,  # v1/gpus/<string:gpu>/usage
-            GpusGpuVramusageEndpoint  # v1/gpus/<string:gpu>/vramusage
+            GpusGpuVramusageEndpoint,  # v1/gpus/<string:gpu>/vramusage
 
             # - - - RAM - - - #
+            MemoryEndpoint,
 
-            # v1/ram
-            # v1/ram/used-memory
-            # v1/ram/total-memory
+            # - - - DISK - - - #
+            DisksEndpoint,  # v1/disks
 
+            # - - - NETWORK - - - #
+            NetworksEndpoint,  # v1/networks
+
+            # - - - PARTITION - - - #
+            PartitionsEndpoint,  # v1/partitions
+
+            # - - - PROCESS - - - #
+            ProcessesEndpoint  # v1/processes
+
+            # - - - SYSTEM - - - #
         ]
-
-
-"""
-    Processes
-    Filesystem / HDD
-"""

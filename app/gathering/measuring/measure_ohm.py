@@ -10,7 +10,6 @@
 # Usage: 
 #
 
-import sys
 import logging
 
 import clr
@@ -24,24 +23,23 @@ hardwareList = []
 
 typeList = [
     "Voltage",
-    "Clock", # MHz
-    "Temperature", # °C
-    "Load", # %
-    "Fan", # RPM
-    "Flow", # L/h
-    "Control", # %
-    "Level", # %
-    "Factor", # 1
-    "Power", # W
-    "Data", # GB = 2^30 Bytes    
+    "Clock",  # MHz
+    "Temperature",  # °C
+    "Load",  # %
+    "Fan",  # RPM
+    "Flow",  # L/h
+    "Control",  # %
+    "Level",  # %
+    "Factor",  # 1
+    "Power",  # W
+    "Data",  # GB = 2^30 Bytes
 ]
-
 
 
 def init():
     # Load Assembly
     clr.AddReference("OpenHardwareMonitorLib")
-    
+
     # Import necessary Classes
     from OpenHardwareMonitor import Hardware
 
@@ -61,9 +59,8 @@ def init():
     except Exception as e:
         log.error(e)
         log.error("Could not open OHM Driver Connection. Does the app have Administrator rights?")
-    # OpenHardwareMonitorLib connection ready
+        # OpenHardwareMonitorLib connection ready
+
 
 def deinit():
     pc.Close()
-
-

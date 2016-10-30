@@ -2,23 +2,24 @@
     Helper Module to help you through the ups and down of the project
 """
 
-from importlib import import_module
-import sys
 import os
+import sys
+from importlib import import_module
 
 from misc.constants import HARDWARE_DEFAULTS, Operating_System
 
 APP_FOLDER_NAME = "app"
+
 
 def import_if_exists(module):
     """ Loads and returns the handle for the given module if it available on the system"""
     try:
         new_module = globals()[module] = import_module(module)
     except ImportError:
-        print("{} couldn't be imported'".format(module))
+        print("{} couldn't be imported'".format(module))  # TODO Exchange with logging
         return None
     else:
-        print("{} has been successfully imported".format(module))
+        print("{} has been successfully imported".format(module))  # TODO Exchange with logging
         return new_module
 
 
@@ -79,6 +80,7 @@ def get_operating_system():
         return Operating_System.freebsd
     return None
 
+
 def get_path_to_app():
     """
         Returns the absolute path to the app folder of the project
@@ -91,11 +93,12 @@ def get_path_to_app():
     current_dir = os.path.dirname(os.path.abspath(__file__))
     # Search for parent until arrived at test
     while os.path.basename(current_dir) != APP_FOLDER_NAME:
-        if current_dir == os.path.dirname(current_dir): # Top Level of filesystem reached
+        if current_dir == os.path.dirname(current_dir):  # Top Level of filesystem reached
             FileNotFoundError("Couldn't find app directory'")
-        current_dir = os.path.dirname(current_dir) # Get the parent directory of current_dir
+        current_dir = os.path.dirname(current_dir)  # Get the parent directory of current_dir
 
     return current_dir
+
 
 def assert_argument_value(component, args):
     '''
@@ -112,6 +115,8 @@ def assert_argument_value(component, args):
         else:
             raise ValueError("Trying to access data without specifying the argument. component: {}"
                              .format(component))
+
+
 def check_comp_args(main_dict, component, args):
     """
         Performs all necessary assertions and checks on the component metric and args value

@@ -36,6 +36,7 @@ class GeneralEndpointDataV1(Endpoint, metaclass=ABCMeta):
 
         return False
 
+    # TODO Remove this as PUTs are now supported (to set gathering rates) or keep this and simply override the needed endpoints
     def _put(self) -> bool:
         """
         The PUT-method is not supported by this api version, thus an response indicating a bad request is returned

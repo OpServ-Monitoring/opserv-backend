@@ -1,6 +1,8 @@
 from .api_root.endpoint_management_api_root import EndpointManagementRoot
 from .data.endpoint_management_data import EndpointManagementData
 from .data.v1.endpoint_management_data_v1 import EndpointManagementDataV1
+from .preferences.endpoint_management_preferences import EndpointManagementPreferences
+from .preferences.v1.endpoint_management_preferences_v1 import EndpointManagementPreferencesV1
 
 
 class RestApiManagement:
@@ -25,6 +27,6 @@ class RestApiManagement:
             (data_api_path, EndpointManagementDataV1, True),  # data v1
 
             # preferences api
-            (preferences_api_path, None),  # TODO preferences version overview
-            (preferences_api_path, None, True)  # TODO preferences v1
+            (preferences_api_path, EndpointManagementPreferences),
+            (preferences_api_path, EndpointManagementPreferencesV1, True)
         ]

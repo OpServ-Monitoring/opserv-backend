@@ -72,8 +72,8 @@ class ComponentMetricsWriterReader:
     def get_component_args(component_type):
         connection = DatabaseOpenHelper.establish_database_connection()
 
-        component_args = connection.execute(
-            "SELECT {0} FROM {1} WHERE {2} = ?".format(
+        raw_component_args = connection.execute(
+            "SELECT DISTINCT {0} FROM {1} WHERE {2} = ?".format(
                 ComponentMetricsTableManagement.KEY_COMPONENT_ARG(),
                 ComponentMetricsTableManagement.TABLE_NAME(),
                 ComponentMetricsTableManagement.KEY_COMPONENT_TYPE_FK()
@@ -84,5 +84,10 @@ class ComponentMetricsWriterReader:
         ).fetchall()
 
         connection.close()
+
+        # TODO ggf. durch bessere query fixen oder anders verbessern
+        component_args = []
+        for component_arg in raw_component_args:
+            component_args.append(component_arg[0])
 
         return component_args
