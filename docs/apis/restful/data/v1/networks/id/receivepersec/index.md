@@ -1,6 +1,6 @@
 ---
 layout: doc-entry
-title:  "Title"
+title:  "Work in progress"
 ---
 
 WORK IN PROGRESS
