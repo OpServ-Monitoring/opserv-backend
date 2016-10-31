@@ -77,9 +77,9 @@ class GatherThread(threading.Thread):
             Task that is called by the event scheduler and checks for new messages within the queues
         """
 
-        # Check the setGatheringRateQueue for any new messages
-        while not queue_manager.setGatheringRateQueue.empty():
-            new_rate = queue_manager.setGatheringRateQueue.get(False)
+        # Check the set_gathering_rate_queue for any new messages
+        while not queue_manager.set_gathering_rate_queue.empty():
+            new_rate = queue_manager.set_gathering_rate_queue.get(False)
             if rate_update_valid(new_rate):
                 # Before even setting up a new gatherer, send an immediate data
                 # update
@@ -91,9 +91,9 @@ class GatherThread(threading.Thread):
                 else:
                     self.create_gatherer(new_rate)
 
-        # Check the requestDataQueue for any new messages
-        while not queue_manager.requestDataQueue.empty():
-            newRequest = queue_manager.requestDataQueue.get(False)
+        # Check the request_data_queue for any new messages
+        while not queue_manager.request_data_queue.empty():
+            newRequest = queue_manager.request_data_queue.get(False)
             if request_valid(newRequest):
                 get_measurement_and_send(newRequest["component"], newRequest["metric"],
                                          newRequest["args"])
@@ -153,10 +153,10 @@ def get_measurement_and_send(component, metric, args):
     # Get the data
     new_data = get_measurement(component, metric, args)
     # Put that data into the queue
-    queue_manager.putMeasurementIntoQueue(component, metric, new_data, args)
+    queue_manager.put_measurement_into_queue(component, metric, new_data, args)
 
     # Update the data in the realtime dictionary
-    data_manager.setMeasurement(component, metric, new_data, args)
+    data_manager.set_measurement(component, metric, new_data, args)
 
     # Save data to the Database
     transaction.insert_measurement(metric, new_data["timestamp"],

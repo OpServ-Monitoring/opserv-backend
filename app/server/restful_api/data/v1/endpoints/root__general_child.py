@@ -61,7 +61,7 @@ class RootGeneralChildEndpoint(GeneralEndpointDataV1, metaclass=ABCMeta):
         hardware_value_type = cls._get_hardware_value_type()
 
         from misc import data_manager
-        data = data_manager.getMeasurement(component="system", metric=hardware_value_type)
+        data = data_manager.get_measurement(component="system", metric=hardware_value_type)
 
         if data is not None and 'value' in data:
             return data['value']

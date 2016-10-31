@@ -17,7 +17,7 @@ from misc.constants import Operating_System
 from misc.helper import import_if_exists, get_path_to_app
 
 log = logging.getLogger("opserv.gathering.ohm")
-log.setLevel(logging.ERROR)
+log.setLevel(logging.DEBUG)
 
 # These type definitions come directly from the OHM source
 SENSORTYPES = [

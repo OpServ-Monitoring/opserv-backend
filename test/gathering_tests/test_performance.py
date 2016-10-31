@@ -38,7 +38,7 @@ def test_gathering_speed():
         iteration_time = time.time()
 
         # Handle the immediate set gathering response
-        queue_manager.readMeasurementFromQueue("cpu", "usage", None, True,
+        queue_manager.read_measurement_from_queue("cpu", "usage", None, True,
                                                (test_delayms + test_queue_timeout)/1000) 
         current_iterations += 1
         duration = (time.time() - iteration_time) * 1000
@@ -49,7 +49,7 @@ def test_gathering_speed():
 
         # Repeat getting reading measurements until the max iterations are reached
         while current_iterations < test_iterations:
-            queue_manager.readMeasurementFromQueue("cpu", "usage", None, True,
+            queue_manager.read_measurement_from_queue("cpu", "usage", None, True,
                                                    (test_delayms + test_queue_timeout)/1000)
             # Calculate duration of this iterations
             duration = (time.time() - iteration_time) * 1000
@@ -80,7 +80,7 @@ def test_gathering_speed():
 
 
 def speedtest_insert_gatherings(delayms):
-    queue_manager.setGatheringRate("cpu", "usage", delayms)
+    queue_manager.set_gathering_rate("cpu", "usage", delayms)
 
 # Test Gathering Speed Basic
 

@@ -22,8 +22,8 @@ def test_queue_setgathering():
     test_args = "5"
     
     # First test with args
-    queue_manager.setGatheringRate(test_component, test_metric, test_delayms, test_args)
-    result = queue_manager.setGatheringRateQueue.get(False)
+    queue_manager.set_gathering_rate(test_component, test_metric, test_delayms, test_args)
+    result = queue_manager.set_gathering_rate_queue.get(False)
     if not result["component"] == test_component:
         raise ValueError("Wrong Component in queue{}".format(str(result)))
     if not result["metric"] == test_metric:
@@ -34,8 +34,8 @@ def test_queue_setgathering():
         raise ValueError("Wrong args in queue{}".format(str(result)))
 
     # Second test without args
-    queue_manager.setGatheringRate(test_component, test_metric, test_delayms)
-    result = queue_manager.setGatheringRateQueue.get(False)
+    queue_manager.set_gathering_rate(test_component, test_metric, test_delayms)
+    result = queue_manager.set_gathering_rate_queue.get(False)
     if not result["component"] == test_component:
         raise ValueError("Wrong Component in queue{}".format(str(result)))
     if not result["metric"] == test_metric:
@@ -46,15 +46,15 @@ def test_queue_setgathering():
     return
 
 
-# Unit Test RequestDataQueue
+# Unit Test request_data_queue
 def test_queue_datarequest():
     test_component = "cpu"
     test_metric = "usage"
     test_args = "5"
     
     # First test with args
-    queue_manager.requestData(test_component, test_metric, test_args)
-    result = queue_manager.requestDataQueue.get(False)
+    queue_manager.request_data(test_component, test_metric, test_args)
+    result = queue_manager.request_data_queue.get(False)
     if not result["component"] == test_component:
         raise ValueError("Wrong Component in queue{}".format(str(result)))
     if not result["metric"] == test_metric:
@@ -63,8 +63,8 @@ def test_queue_datarequest():
         raise ValueError("Wrong args in queue{}".format(str(result)))
 
     # Second test without args
-    queue_manager.requestData(test_component, test_metric)
-    result = queue_manager.requestDataQueue.get(False)
+    queue_manager.request_data(test_component, test_metric)
+    result = queue_manager.request_data_queue.get(False)
     if not result["component"] == test_component:
         raise ValueError("Wrong Component in queue{}".format(str(result)))
     if not result["metric"] == test_metric:
@@ -84,14 +84,14 @@ def test_queue_realtime():
     test_args = "5"
 
     # First test with args    
-    queue_manager.putMeasurementIntoQueue(test_component, test_metric, test_measurement, test_args)
-    result = queue_manager.readMeasurementFromQueue(test_component, test_metric, test_args)
+    queue_manager.put_measurement_into_queue(test_component, test_metric, test_measurement, test_args)
+    result = queue_manager.read_measurement_from_queue(test_component, test_metric, test_args)
     if not result == test_measurement:
         raise ValueError("Measurement read from queue was wrong")
 
     # Second test without args
-    queue_manager.putMeasurementIntoQueue(test_component, test_metric, test_measurement)
-    result = queue_manager.readMeasurementFromQueue(test_component, test_metric)
+    queue_manager.put_measurement_into_queue(test_component, test_metric, test_measurement)
+    result = queue_manager.read_measurement_from_queue(test_component, test_metric)
     if not result == test_measurement:
         raise ValueError("Measurement read from queue was wrong")
 
@@ -108,21 +108,21 @@ def test_data_manager():
 
 
     # First test with args
-    result = data_manager.getMeasurement(test_component, test_metric, test_args)
+    result = data_manager.get_measurement(test_component, test_metric, test_args)
     if result is not None:
         raise ValueError("Starting value should always be None")
-    data_manager.setMeasurement(test_component, test_metric, test_measurement, test_args)
+    data_manager.set_measurement(test_component, test_metric, test_measurement, test_args)
 
-    result = data_manager.getMeasurement(test_component, test_metric, test_args)
+    result = data_manager.get_measurement(test_component, test_metric, test_args)
     if result != test_measurement:
         raise ValueError("Measurement read from queue was wrong")
 
     # Then Test without args
-    result = data_manager.getMeasurement(test_component, test_metric)
+    result = data_manager.get_measurement(test_component, test_metric)
     if result is not None:
         raise ValueError("Starting value should always be None")
-    data_manager.setMeasurement(test_component, test_metric, test_measurement)
-    result = data_manager.getMeasurement(test_component, test_metric)
+    data_manager.set_measurement(test_component, test_metric, test_measurement)
+    result = data_manager.get_measurement(test_component, test_metric)
     if result != test_measurement:
         raise ValueError("Measurement read from queue was wrong")
 
@@ -135,19 +135,19 @@ def start_datamanager():
     log.info("Starting Data Manager Test")
 
     # Disable any gathering rates for the tested component to avoid any wrong results
-    queue_manager.setGatheringRate(DATA_MANAGER_TEST_COMPONENT, DATA_MANAGER_TEST_METRIC, 0)
+    queue_manager.set_gathering_rate(DATA_MANAGER_TEST_COMPONENT, DATA_MANAGER_TEST_METRIC, 0)
 
     # Save the current value in the realtime data dictionary
-    startData = data_manager.getMeasurement(DATA_MANAGER_TEST_COMPONENT, DATA_MANAGER_TEST_METRIC)
+    startData = data_manager.get_measurement(DATA_MANAGER_TEST_COMPONENT, DATA_MANAGER_TEST_METRIC)
 
     # Ask for a data update
-    queue_manager.requestData(DATA_MANAGER_TEST_COMPONENT, DATA_MANAGER_TEST_METRIC)
+    queue_manager.request_data(DATA_MANAGER_TEST_COMPONENT, DATA_MANAGER_TEST_METRIC)
     startTime = time.time()
     dataIsTheSame = True
 
     # Wait till the new one arrives or timeout expires
     while time.time() - startTime < DATA_MANAGER_TIMEOUT and dataIsTheSame:
-        newData = data_manager.getMeasurement(DATA_MANAGER_TEST_COMPONENT, DATA_MANAGER_TEST_METRIC)
+        newData = data_manager.get_measurement(DATA_MANAGER_TEST_COMPONENT, DATA_MANAGER_TEST_METRIC)
         if newData != startData:
             dataIsTheSame = False
             endTime = time.time()

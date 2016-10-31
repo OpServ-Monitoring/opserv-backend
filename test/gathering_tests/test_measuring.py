@@ -42,15 +42,15 @@ def test_gathering_delete():
 
     mock_db_open()
     with start_gather_thread() as t:
-        queue_manager.setGatheringRate(test_comp, test_metric, 500)
+        queue_manager.set_gathering_rate(test_comp, test_metric, 500)
         time.sleep(1)
-        queue_manager.setGatheringRate(test_comp, test_metric, 0)
+        queue_manager.set_gathering_rate(test_comp, test_metric, 0)
 
         # Add some extra sleep to ensure no function is still inserting data into the queue
         time.sleep(0.5)
 
         # Empty the whole queue
-        while queue_manager.readMeasurementFromQueue(test_comp, test_metric) is not None:
+        while queue_manager.read_measurement_from_queue(test_comp, test_metric) is not None:
             pass
         time.sleep(2)
 
@@ -70,13 +70,13 @@ def check_all_hardware():
         # For Each metric of that specific hardware
         for met in implemented_hardware[hw]:
             if HARDWARE_DEFAULTS[hw][0] and HARDWARE_DEFAULTS[hw][1] is not None:
-                queue_manager.requestDataQueue.put({"component": hw, "metric": met,
+                queue_manager.request_data_queue.put({"component": hw, "metric": met,
                                                     "args" : HARDWARE_DEFAULTS[hw][1]})
-                queue_manager.getQueue(hw, met,
+                queue_manager.get_queue(hw, met,
                                        HARDWARE_DEFAULTS[hw][1]).get(timeout=DATA_TEST_TIMEOUT)
             elif not HARDWARE_DEFAULTS[hw][0]:
-                queue_manager.requestDataQueue.put({"component": hw, "metric": met})
-                queue_manager.getQueue(hw, met).get(timeout=DATA_TEST_TIMEOUT)
+                queue_manager.request_data_queue.put({"component": hw, "metric": met})
+                queue_manager.get_queue(hw, met).get(timeout=DATA_TEST_TIMEOUT)
 
 # Check that system gathering is always a list
 def test_system_is_list():
@@ -86,8 +86,8 @@ def test_system_is_list():
     mock_db_open()
     with start_gather_thread() as t:
         for metric in implemented_hardware["system"]:
-            queue_manager.requestData("system", metric)
-            return_type = type(queue_manager.readMeasurementFromQueue("system", metric,
+            queue_manager.request_data("system", metric)
+            return_type = type(queue_manager.read_measurement_from_queue("system", metric,
                                                                       blocking=True)["value"])
             assert return_type == type(list())
     return

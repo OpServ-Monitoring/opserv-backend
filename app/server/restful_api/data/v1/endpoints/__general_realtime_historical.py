@@ -38,7 +38,7 @@ class GeneralEndpointRealtimeHistorical(GeneralEndpointDataV1, metaclass=ABCMeta
         component_metric = self._get_component_metric()
 
         from misc import data_manager
-        data = data_manager.getMeasurement(component=component_type, args=component_arg, metric=component_metric)
+        data = data_manager.get_measurement(component=component_type, args=component_arg, metric=component_metric)
         self._response_holder.set_body_data(data)
 
         return True

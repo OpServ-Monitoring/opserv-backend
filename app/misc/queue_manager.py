@@ -8,24 +8,24 @@ from queue import Queue
 from misc.constants import QUEUEMANAGER_DEFAULT_TIMEOUT
 from misc.helper import check_comp_args
 
-requestDataQueue = None
-setGatheringRateQueue = None
+request_data_queue = None
+set_gathering_rate_queue = None
 
-realtimeQueues = None
+realtime_queues = None
 
 
 def init():
     """
         Initializes the queue manager
     """
-    global requestDataQueue
-    global setGatheringRateQueue
-    global realtimeQueues
+    global request_data_queue
+    global set_gathering_rate_queue
+    global realtime_queues
 
-    requestDataQueue = Queue()
-    setGatheringRateQueue = Queue()
+    request_data_queue = Queue()
+    set_gathering_rate_queue = Queue()
 
-    realtimeQueues = {
+    realtime_queues = {
         "cpu": {},
         "core": {},
         "gpu": {},
@@ -38,83 +38,83 @@ def init():
     }
 
 
-def getQueue(component, metric, args=None):
+def get_queue(component, metric, args=None):
     """ Returns either the requested queue or creates a new one """
-    args = check_comp_args(realtimeQueues, component, args)
+    args = check_comp_args(realtime_queues, component, args)
 
-    createQueueIfNotExists(component, metric, args)
+    create_queue_if_not_exists(component, metric, args)
 
     if args is not None:
-        return realtimeQueues[component][args][metric]
+        return realtime_queues[component][args][metric]
     else:
-        return realtimeQueues[component][metric]
+        return realtime_queues[component][metric]
 
 
-def removeQueue(component, metric, args=None):
+def remove_queue(component, metric, args=None):
     """Removes the specified queue from the dict"""
-    args = check_comp_args(realtimeQueues, component, args)
+    args = check_comp_args(realtime_queues, component, args)
 
-    if queueExists(component, metric, args):
+    if queue_exists(component, metric, args):
         if args:
-            realtimeQueues[component][args][metric] = None
+            realtime_queues[component][args][metric] = None
         else:
-            realtimeQueues[component][metric] = None
+            realtime_queues[component][metric] = None
 
 
-def createQueueIfNotExists(component, metric, args):
+def create_queue_if_not_exists(component, metric, args):
     """ Creates a new Queue if the specified one doesn't already exists """
-    if not queueExists(component, metric, args):
+    if not queue_exists(component, metric, args):
         if args is not None:
-            realtimeQueues[component][args][metric] = Queue()
+            realtime_queues[component][args][metric] = Queue()
         else:
-            realtimeQueues[component][metric] = Queue()
+            realtime_queues[component][metric] = Queue()
 
 
-def queueExists(component, metric, args):
+def queue_exists(component, metric, args):
     """ Checks whether the specified queue already exists """
-    if component in realtimeQueues:
+    if component in realtime_queues:
         if args is not None:
-            if args in realtimeQueues[component]:
-                if metric in realtimeQueues[component][args]:
+            if args in realtime_queues[component]:
+                if metric in realtime_queues[component][args]:
                     return True
         else:
-            if metric in realtimeQueues[component]:
+            if metric in realtime_queues[component]:
                 return True
     return False
 
 
-def putMeasurementIntoQueue(component, metric, measurement, args=None):
+def put_measurement_into_queue(component, metric, measurement, args=None):
     """ Puts the given measurement into the specified queue """
-    args = check_comp_args(realtimeQueues, component, args)
+    args = check_comp_args(realtime_queues, component, args)
 
-    getQueue(component, metric, args).put(measurement)
+    get_queue(component, metric, args).put(measurement)
 
 
-def readMeasurementFromQueue(component, metric, args=None, blocking=False,
+def read_measurement_from_queue(component, metric, args=None, blocking=False,
                              timeout=QUEUEMANAGER_DEFAULT_TIMEOUT):
     """ Get a single measurement from the specified queue.
         Warning, could cause Timeout Errors"""
-    args = check_comp_args(realtimeQueues, component, args)
+    args = check_comp_args(realtime_queues, component, args)
 
-    if (not getQueue(component, metric, args).empty()) or blocking == True:
-        return getQueue(component, metric, args).get(blocking, timeout)
+    if (not get_queue(component, metric, args).empty()) or blocking == True:
+        return get_queue(component, metric, args).get(blocking, timeout)
     else:
         return None
 
 
 def real_time_queue_empty(component, metric, args=None):
-    if getQueue(component, metric, args).empty():
+    if get_queue(component, metric, args).empty():
         return True
     else:
         return False
 
 
-def setGatheringRate(component, metric, delayms, args=None):
+def set_gathering_rate(component, metric, delayms, args=None):
     """ Send a gathering rate update that will update the queue and realtime data directory
         in the interval specified with delayms """
-    args = check_comp_args(realtimeQueues, component, args)
+    args = check_comp_args(realtime_queues, component, args)
 
-    setGatheringRateQueue.put({
+    set_gathering_rate_queue.put({
         "component": component,
         "metric": metric,
         "args": args,
@@ -122,11 +122,11 @@ def setGatheringRate(component, metric, delayms, args=None):
     })
 
 
-def requestData(component, metric, args=None):
+def request_data(component, metric, args=None):
     """ Request a single data update that gets send into the queue and realtime data dictionary """
-    args = check_comp_args(realtimeQueues, component, args)
+    args = check_comp_args(realtime_queues, component, args)
 
-    requestDataQueue.put({
+    request_data_queue.put({
         "component": component,
         "metric": metric,
         "args": args

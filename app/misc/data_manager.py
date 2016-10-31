@@ -1,29 +1,25 @@
-#
-# Data manager used for transfering data between the gathering and server thread
-#
-# The Real-Time is deprecated right now
-#
-#
-# 27.08.2016
-#
-# Example usage:
-#
-# import data_manager
-# data_manager.getMeasurement("cpu", "usage")
-#
+'''#
+Data manager used for transfering data between the gathering and server thread
 
+27.08.2016
+
+Example usage:
+
+import data_manager
+data_manager.get_measurement("cpu", "usage")
+'''
 from misc.helper import check_comp_args
 
-realtimeData = None
+realtime_data = None
 
 
 def init():
     """
         Initializes the data manager
     """
-    global realtimeData
+    global realtime_data
 
-    realtimeData = {
+    realtime_data = {
         "cpu": {},
         "core": {},
         "gpu": {},
@@ -36,37 +32,37 @@ def init():
     }
 
 
-def getMeasurement(component, metric, args=None):
+def get_measurement(component, metric, args=None):
     """ Returns the currently saved realtime data of the specified component """
-    args = check_comp_args(realtimeData, component, args)
+    args = check_comp_args(realtime_data, component, args)
 
-    createMeasurementIfNotExists(component, metric, args)
+    create_measurement_if_not_exists(component, metric, args)
 
     if args is not None:
-        return realtimeData[component][args][metric]
+        return realtime_data[component][args][metric]
     else:
-        return realtimeData[component][metric]
+        return realtime_data[component][metric]
 
 
-def setMeasurement(component, metric, value, args=None):
+def set_measurement(component, metric, value, args=None):
     """ Sets the specified metric to the desired value"""
-    args = check_comp_args(realtimeData, component, args)
+    args = check_comp_args(realtime_data, component, args)
 
-    createMeasurementIfNotExists(component, metric, args)
+    create_measurement_if_not_exists(component, metric, args)
 
     if args is not None:
-        realtimeData[component][args][metric] = value
+        realtime_data[component][args][metric] = value
     else:
-        realtimeData[component][metric] = value
+        realtime_data[component][metric] = value
 
 
-def createMeasurementIfNotExists(component, metric, args):
+def create_measurement_if_not_exists(component, metric, args):
     """ Creates a new variable if the specified one doesn't already exists """
     if args is None:
-        if not metric in realtimeData[component]:
-            realtimeData[component][metric] = None
+        if not metric in realtime_data[component]:
+            realtime_data[component][metric] = None
     else:
-        if not args in realtimeData[component]:
+        if not args in realtime_data[component]:
             print("wtf")
-        if not metric in realtimeData[component][args]:
-            realtimeData[component][args][metric] = None
+        if not metric in realtime_data[component][args]:
+            realtime_data[component][args][metric] = None

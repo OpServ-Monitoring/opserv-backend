@@ -135,7 +135,7 @@ class DatabaseOpenHelper:
         gathering_rates = component_metrics_writer_reader.get_gathering_rates()
 
         for gathering_rate in gathering_rates:
-            queue_manager.setGatheringRate(
+            queue_manager.set_gathering_rate(
                 gathering_rate[0],
                 gathering_rate[2],
                 gathering_rate[3],
