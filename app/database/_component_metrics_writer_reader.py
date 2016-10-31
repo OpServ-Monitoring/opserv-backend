@@ -35,6 +35,7 @@ class ComponentMetricsWriterReader:
 
     @staticmethod
     def insert_component_metrics(component_metrics):
+        # TODO Change param to receive each param one by one, make None -> "default" for args
         connection = DatabaseOpenHelper.establish_database_connection()
 
         connection.executemany("INSERT OR REPLACE INTO {0} ({1}, {2}, {3}, {4}) VALUES (?, ? , ?, ?)".format(
@@ -85,9 +86,9 @@ class ComponentMetricsWriterReader:
 
         connection.close()
 
-        # TODO ggf. durch bessere query fixen oder anders verbessern
-        component_args = []
-        for component_arg in raw_component_args:
-            component_args.append(component_arg[0])
-
-        return component_args
+        return list(
+            map(
+                lambda x: x[0],
+                raw_component_args
+            )
+        )

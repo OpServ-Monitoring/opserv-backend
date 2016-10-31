@@ -159,7 +159,7 @@ class DatabaseOpenHelper:
 
     @staticmethod
     def establish_database_connection():
-        # TODO Decide whether this should be configurable or not
+        # TODO Make this configurable in code - not as runtime params
         location = 'opserv.db'
 
         return sqlite3.connect(location)

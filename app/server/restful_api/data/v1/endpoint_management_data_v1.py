@@ -1,30 +1,30 @@
-from .endpoints.memory_used import MemoryUsedEndpoint
-from .endpoints.disks_disk import DisksDiskEndpoint
-from .endpoints.disks_disk_status import DisksDiskStatusEndpoint
-from .endpoints.disks_disk_temperature import DisksDiskTemperatureEndpoint
-from .endpoints.disks_disk_usage import DisksDiskUsageEndpoint
-from .endpoints.memory_free import MemoryFreeEndpoint
-from .endpoints.memory_total import MemoryTotalEndpoint
-from .endpoints.networks_network import NetworksNetworkEndpoint
-from .endpoints.networks_network_receivepersec import NetworksNetworkReceivepersecEndpoint
-from .endpoints.networks_network_transmitpersec import \
-    NetworksNetworkTransmitpersecEndpoint
-from .endpoints.partitions_partition import PartitionsPartitionEndpoint
-from .endpoints.partitions_partition_free import PartitionsPartitionFreeEndpoint
-from .endpoints.partitions_partition_total import PartitionsPartitionTotalEndpoint
-from .endpoints.partitions_partition_used import PartitionsPartitionUsedEndpoint
-from .endpoints.processes_process import ProcessesProcessEndpoint
-from .endpoints.processes_process_cpuusage import ProcessesProcessCpuusageEndpoint
-from .endpoints.processes_process_memusage import ProcessesProcessMemusageEndpoint
-from .endpoints.processes_process_name import ProcessesProcessNameEndpoint
-from .endpoints.system import SystemEndpoint
-from .endpoints.system_cpucores import SystemCpucoresEndpoint
-from .endpoints.system_cpus import SystemCpusEndpoint
-from .endpoints.system_disks import SystemDisksEndpoint
-from .endpoints.system_gpus import SystemGpusEndpoint
-from .endpoints.system_networks import SystemNetworksEndpoint
-from .endpoints.system_partitions import SystemPartitionsEndpoint
-from .endpoints.system_processes import SystemProcessesEndpoint
+# from .endpoints.memory_used import MemoryUsedEndpoint
+# from .endpoints.disks_disk import DisksDiskEndpoint
+# from .endpoints.disks_disk_status import DisksDiskStatusEndpoint
+# from .endpoints.disks_disk_temperature import DisksDiskTemperatureEndpoint
+# from .endpoints.disks_disk_usage import DisksDiskUsageEndpoint
+# from .endpoints.memory_free import MemoryFreeEndpoint
+# from .endpoints.memory_total import MemoryTotalEndpoint
+# from .endpoints.networks_network import NetworksNetworkEndpoint
+# from .endpoints.networks_network_receivepersec import NetworksNetworkReceivepersecEndpoint
+# from .endpoints.networks_network_transmitpersec import \
+#     NetworksNetworkTransmitpersecEndpoint
+# from .endpoints.partitions_partition import PartitionsPartitionEndpoint
+# from .endpoints.partitions_partition_free import PartitionsPartitionFreeEndpoint
+# from .endpoints.partitions_partition_total import PartitionsPartitionTotalEndpoint
+# from .endpoints.partitions_partition_used import PartitionsPartitionUsedEndpoint
+# from .endpoints.processes_process import ProcessesProcessEndpoint
+# from .endpoints.processes_process_cpuusage import ProcessesProcessCpuusageEndpoint
+# from .endpoints.processes_process_memusage import ProcessesProcessMemusageEndpoint
+# from .endpoints.processes_process_name import ProcessesProcessNameEndpoint
+# from .endpoints.system import SystemEndpoint
+# from .endpoints.system_cpucores import SystemCpucoresEndpoint
+# from .endpoints.system_cpus import SystemCpusEndpoint
+# from .endpoints.system_disks import SystemDisksEndpoint
+# from .endpoints.system_gpus import SystemGpusEndpoint
+# from .endpoints.system_networks import SystemNetworksEndpoint
+# from .endpoints.system_partitions import SystemPartitionsEndpoint
+# from .endpoints.system_processes import SystemProcessesEndpoint
 from .data_api_v1_endpoint import DataApiV1Endpoint
 from .endpoints.cpucores import CpucoresEndpoint
 from .endpoints.cpucores_cpucore import CpucoresCpucoreEndpoint
@@ -89,45 +89,45 @@ class EndpointManagementDataV1(EndpointManagement):
             GpusGpuVramusageEndpoint,  # v1/gpus/<string:gpu>/vramusage
 
             # - - - RAM - - - #
-            MemoryEndpoint,
-            MemoryFreeEndpoint,
-            MemoryTotalEndpoint,
-            MemoryUsedEndpoint,
-
-            # - - - DISK - - - #
-            DisksEndpoint,  # v1/disks
-            DisksDiskEndpoint,
-            DisksDiskStatusEndpoint,
-            DisksDiskTemperatureEndpoint,
-            DisksDiskUsageEndpoint,
-
-            # - - - NETWORK - - - #
-            NetworksEndpoint,  # v1/networks
-            NetworksNetworkEndpoint,
-            NetworksNetworkReceivepersecEndpoint,
-            NetworksNetworkTransmitpersecEndpoint,
-
-            # - - - PARTITION - - - #
-            PartitionsEndpoint,  # v1/partitions
-            PartitionsPartitionEndpoint,
-            PartitionsPartitionFreeEndpoint,
-            PartitionsPartitionTotalEndpoint,
-            PartitionsPartitionUsedEndpoint,
-
-            # - - - PROCESS - - - #
-            ProcessesEndpoint,  # v1/processes
-            ProcessesProcessEndpoint,
-            ProcessesProcessCpuusageEndpoint,
-            ProcessesProcessMemusageEndpoint,
-            ProcessesProcessNameEndpoint,
-
-            # - - - SYSTEM - - - #
-            SystemEndpoint,
-            SystemCpucoresEndpoint,
-            SystemCpusEndpoint,
-            SystemDisksEndpoint,
-            SystemGpusEndpoint,
-            SystemNetworksEndpoint,
-            SystemPartitionsEndpoint,
-            SystemProcessesEndpoint
+            # MemoryEndpoint,  # v1/memory
+            # MemoryFreeEndpoint,  # v1/memory/free
+            # MemoryTotalEndpoint,  # v1/memory/total
+            # MemoryUsedEndpoint,  # v1/memory/used
+            #
+            # # - - - DISK - - - #
+            # DisksEndpoint,  # v1/disks
+            # DisksDiskEndpoint,  # v1/disks/<string:disk>
+            # DisksDiskStatusEndpoint,  # v1/disks/<string:disk>/status
+            # DisksDiskTemperatureEndpoint,  # v1/disks/<string:disk>/temperature
+            # DisksDiskUsageEndpoint,  # v1/disks/<string:disk>/usage
+            #
+            # # - - - NETWORK - - - #
+            # NetworksEndpoint,  # v1/networks
+            # NetworksNetworkEndpoint,  # v1/networks/<string:network>
+            # NetworksNetworkReceivepersecEndpoint,  # v1/networks/<string:network>/receivepersec
+            # NetworksNetworkTransmitpersecEndpoint,  # v1/networks/<string:network>/transmitpersec
+            #
+            # # - - - PARTITION - - - #
+            # PartitionsEndpoint,  # v1/partitions
+            # PartitionsPartitionEndpoint,  # v1/partitions/<string:partition>
+            # PartitionsPartitionFreeEndpoint,  # v1/partitions/<string:partition>/free
+            # PartitionsPartitionTotalEndpoint,  # v1/partitions/<string:partition>/total
+            # PartitionsPartitionUsedEndpoint,  # v1/partitions/<string:partition>/used
+            #
+            # # - - - PROCESS - - - #
+            # ProcessesEndpoint,  # v1/processes
+            # ProcessesProcessEndpoint,  # v1/processes/<string:process>
+            # ProcessesProcessCpuusageEndpoint,  # v1/processes/<string:process>/cpuusage
+            # ProcessesProcessMemusageEndpoint,  # v1/processes/<string:process>/memusage
+            # ProcessesProcessNameEndpoint,  # v1/processes/<string:process>/name
+            #
+            # # - - - SYSTEM - - - #
+            # SystemEndpoint,  # v1/system
+            # SystemCpucoresEndpoint,  # v1/system/cpucores
+            # SystemCpusEndpoint,  # v1/system/cpus
+            # SystemDisksEndpoint,  # v1/system/disks
+            # SystemGpusEndpoint,  # v1/system/gpus
+            # SystemNetworksEndpoint,  # v1/system/networks
+            # SystemPartitionsEndpoint,  # v1/system/partitions
+            # SystemProcessesEndpoint  # v1/system/processes
         ]
