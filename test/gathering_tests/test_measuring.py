@@ -50,7 +50,7 @@ def test_gathering_delete():
         time.sleep(0.5)
 
         # Empty the whole queue
-        while queue_manager.readMeasurementFromQueue(test_comp, test_metric) != None:
+        while queue_manager.readMeasurementFromQueue(test_comp, test_metric) is not None:
             pass
         time.sleep(2)
 
@@ -69,7 +69,7 @@ def check_all_hardware():
     for hw in implemented_hardware:
         # For Each metric of that specific hardware
         for met in implemented_hardware[hw]:
-            if HARDWARE_DEFAULTS[hw][0] and HARDWARE_DEFAULTS[hw][1] != None:
+            if HARDWARE_DEFAULTS[hw][0] and HARDWARE_DEFAULTS[hw][1] is not None:
                 queue_manager.requestDataQueue.put({"component": hw, "metric": met,
                                                     "args" : HARDWARE_DEFAULTS[hw][1]})
                 queue_manager.getQueue(hw, met,

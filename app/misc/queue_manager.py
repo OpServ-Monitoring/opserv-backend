@@ -44,7 +44,7 @@ def getQueue(component, metric, args=None):
 
     createQueueIfNotExists(component, metric, args)
 
-    if args != None:
+    if args is not None:
         return realtimeQueues[component][args][metric]
     else:
         return realtimeQueues[component][metric]
@@ -64,7 +64,7 @@ def removeQueue(component, metric, args=None):
 def createQueueIfNotExists(component, metric, args):
     """ Creates a new Queue if the specified one doesn't already exists """
     if not queueExists(component, metric, args):
-        if args != None:
+        if args is not None:
             realtimeQueues[component][args][metric] = Queue()
         else:
             realtimeQueues[component][metric] = Queue()
@@ -73,7 +73,7 @@ def createQueueIfNotExists(component, metric, args):
 def queueExists(component, metric, args):
     """ Checks whether the specified queue already exists """
     if component in realtimeQueues:
-        if args != None:
+        if args is not None:
             if args in realtimeQueues[component]:
                 if metric in realtimeQueues[component][args]:
                     return True

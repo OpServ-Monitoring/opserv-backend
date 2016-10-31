@@ -42,7 +42,7 @@ def getMeasurement(component, metric, args=None):
 
     createMeasurementIfNotExists(component, metric, args)
 
-    if args != None:
+    if args is not None:
         return realtimeData[component][args][metric]
     else:
         return realtimeData[component][metric]
@@ -54,7 +54,7 @@ def setMeasurement(component, metric, value, args=None):
 
     createMeasurementIfNotExists(component, metric, args)
 
-    if args != None:
+    if args is not None:
         realtimeData[component][args][metric] = value
     else:
         realtimeData[component][metric] = value
@@ -62,7 +62,7 @@ def setMeasurement(component, metric, value, args=None):
 
 def createMeasurementIfNotExists(component, metric, args):
     """ Creates a new variable if the specified one doesn't already exists """
-    if args == None:
+    if args is None:
         if not metric in realtimeData[component]:
             realtimeData[component][metric] = None
     else:

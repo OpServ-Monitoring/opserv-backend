@@ -172,7 +172,7 @@ def request_valid(request):
         Checks the given request for the correct data structure
         Returns True if it has the right structure
     """
-    if request != None:
+    if request is not None:
         if "component" in request and "metric" in request:
             if "args" in request:
                 return True
@@ -188,7 +188,7 @@ def rate_update_valid(rateUpdate):
         Checks the given rateUpdate for the correct data structure
         Returns True if it has the right structure
     """
-    if rateUpdate != None:
+    if rateUpdate is not None:
         if "component" in rateUpdate and "metric" in rateUpdate and "delayms" in rateUpdate:
             if "args" in rateUpdate:
                 return True
@@ -220,7 +220,7 @@ def get_measurement(component, metric, args):
                 log.error("Measuring failed here %s, %s, %s, %s",
                           component, metric, args, str(src))
 
-    if measured_value != None:
+    if measured_value is not None:
         return {
             "timestamp": time.time() * 1000,
             "value": measured_value

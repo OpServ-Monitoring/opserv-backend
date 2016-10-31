@@ -30,7 +30,7 @@ def argument_is_optional(hardware):
 
 def argument_has_default(hardware):
     """ Checks whether the given hardware has a default argument """
-    if HARDWARE_DEFAULTS[hardware][1] != None:
+    if HARDWARE_DEFAULTS[hardware][1] is not None:
         return True
     return False
 

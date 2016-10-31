@@ -109,7 +109,7 @@ def test_data_manager():
 
     # First test with args
     result = data_manager.getMeasurement(test_component, test_metric, test_args)
-    if result != None:
+    if result is not None:
         raise ValueError("Starting value should always be None")
     data_manager.setMeasurement(test_component, test_metric, test_measurement, test_args)
 
@@ -119,7 +119,7 @@ def test_data_manager():
 
     # Then Test without args
     result = data_manager.getMeasurement(test_component, test_metric)
-    if result != None:
+    if result is not None:
         raise ValueError("Starting value should always be None")
     data_manager.setMeasurement(test_component, test_metric, test_measurement)
     result = data_manager.getMeasurement(test_component, test_metric)
