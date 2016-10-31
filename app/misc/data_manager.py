@@ -38,20 +38,19 @@ def init():
 
 def getMeasurement(component, metric, args=None):
     """ Returns the currently saved realtime data of the specified component """
-    check_comp_args(realtimeData, component, args)
+    args = check_comp_args(realtimeData, component, args)
 
     createMeasurementIfNotExists(component, metric, args)
 
     if args != None:
         return realtimeData[component][args][metric]
     else:
-        # TODO Evaluate saving schema - added "default" so get actual values. partition values are kind of strange
-        return realtimeData[component]["default"][metric]
+        return realtimeData[component][metric]
 
 
 def setMeasurement(component, metric, value, args=None):
     """ Sets the specified metric to the desired value"""
-    check_comp_args(realtimeData, component, args)
+    args = check_comp_args(realtimeData, component, args)
 
     createMeasurementIfNotExists(component, metric, args)
 
@@ -67,5 +66,7 @@ def createMeasurementIfNotExists(component, metric, args):
         if not metric in realtimeData[component]:
             realtimeData[component][metric] = None
     else:
+        if not args in realtimeData[component]:
+            print("wtf")
         if not metric in realtimeData[component][args]:
             realtimeData[component][args][metric] = None

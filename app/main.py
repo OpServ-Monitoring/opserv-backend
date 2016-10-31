@@ -12,7 +12,7 @@ import misc.queue_manager as queue_manager
 import server.__management as server
 from database.database_open_helper import DatabaseOpenHelper
 from gathering.gather_main import GatherThread
-from misc.logging_helper import setup_logger
+from misc.logging_helper import setup_argparse_logger
 
 
 def init_database():
@@ -48,7 +48,7 @@ def manage_runtime_settings():
 if __name__ == '__main__':
     manage_runtime_settings()
 
-    setup_logger()
+    setup_argparse_logger()
 
     queue_manager.init()
     data_manager.init()

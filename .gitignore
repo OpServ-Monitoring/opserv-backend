@@ -101,3 +101,6 @@ app/opserv.log
 
 # Pylint settings file for the project
 .pylintrc
+
+# Sys file from OHMLib if it hasn't been deleted
+app/extern_dependency/OpenHardwareMonitorLib.sys

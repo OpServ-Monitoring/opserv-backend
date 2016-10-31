@@ -90,7 +90,7 @@ implemented_hardware = {
 
 default_gathering_rates = {
     "system": {
-        "default": {
+        None: {
             # every 5 minutes
             ("cpus", 300000),
             ("gpus", 300000),
@@ -110,7 +110,7 @@ default_gathering_rates = {
         }
     },
     "memory": {
-        "default": {
+        None: {
             ("total", 300000),  # every 5 minutes
             ("free", 60000),  # every minute
             ("used", 60000)  # every minute

@@ -4,15 +4,15 @@ import sys
 import application_settings.settings_management as app_settings
 
 
-def setup_logger():
+def setup_argparse_logger():
     log_to_console = app_settings.runtime_settings["log-to-console"]
     log_to_file = app_settings.runtime_settings["log-to-file"]
     logging_level = logging.DEBUG  # TODO Read from runtime args
 
-    __setup_logger(log_to_console, log_to_file, logging_level, True, True)
+    setup_logger(log_to_console, log_to_file, logging_level, True, True)
 
 
-def __setup_logger(log_to_console, log_to_file, logging_level, log_server, log_gathering):
+def setup_logger(log_to_console, log_to_file, logging_level, log_server, log_gathering):
     # SETUP LOGGER
     mainLog = logging.getLogger("opserv")
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')

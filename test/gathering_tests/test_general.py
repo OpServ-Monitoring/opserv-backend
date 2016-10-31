@@ -15,7 +15,6 @@ from contextlib import contextmanager
 import misc.queue_manager as queue_manager
 import misc.data_manager as data_manager
 from gathering.gather_main import GatherThread
-from misc.logging_helper import setup_logger
 from misc.constants import implemented_hardware, HARDWARE_DEFAULTS
 from database.database_open_helper import DatabaseOpenHelper
 

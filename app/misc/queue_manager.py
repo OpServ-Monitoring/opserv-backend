@@ -40,7 +40,7 @@ def init():
 
 def getQueue(component, metric, args=None):
     """ Returns either the requested queue or creates a new one """
-    check_comp_args(realtimeQueues, component, args)
+    args = check_comp_args(realtimeQueues, component, args)
 
     createQueueIfNotExists(component, metric, args)
 
@@ -50,8 +50,10 @@ def getQueue(component, metric, args=None):
         return realtimeQueues[component][metric]
 
 
-def removeQueue(component, metric, args):
+def removeQueue(component, metric, args=None):
     """Removes the specified queue from the dict"""
+    args = check_comp_args(realtimeQueues, component, args)
+
     if queueExists(component, metric, args):
         if args:
             realtimeQueues[component][args][metric] = None
@@ -83,6 +85,8 @@ def queueExists(component, metric, args):
 
 def putMeasurementIntoQueue(component, metric, measurement, args=None):
     """ Puts the given measurement into the specified queue """
+    args = check_comp_args(realtimeQueues, component, args)
+
     getQueue(component, metric, args).put(measurement)
 
 
@@ -90,6 +94,8 @@ def readMeasurementFromQueue(component, metric, args=None, blocking=False,
                              timeout=QUEUEMANAGER_DEFAULT_TIMEOUT):
     """ Get a single measurement from the specified queue.
         Warning, could cause Timeout Errors"""
+    args = check_comp_args(realtimeQueues, component, args)
+
     if (not getQueue(component, metric, args).empty()) or blocking == True:
         return getQueue(component, metric, args).get(blocking, timeout)
     else:
@@ -106,6 +112,8 @@ def real_time_queue_empty(component, metric, args=None):
 def setGatheringRate(component, metric, delayms, args=None):
     """ Send a gathering rate update that will update the queue and realtime data directory
         in the interval specified with delayms """
+    args = check_comp_args(realtimeQueues, component, args)
+
     setGatheringRateQueue.put({
         "component": component,
         "metric": metric,
@@ -116,6 +124,8 @@ def setGatheringRate(component, metric, delayms, args=None):
 
 def requestData(component, metric, args=None):
     """ Request a single data update that gets send into the queue and realtime data dictionary """
+    args = check_comp_args(realtimeQueues, component, args)
+
     requestDataQueue.put({
         "component": component,
         "metric": metric,
