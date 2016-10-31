@@ -1,15 +1,21 @@
 import logging
 import sys
 
-import application_settings.settings_management as app_settings
+from application_settings.logging_settings import LoggingSettings
 
 
 def setup_argparse_logger():
-    log_to_console = app_settings.runtime_settings["log-to-console"]
-    log_to_file = app_settings.runtime_settings["log-to-file"]
-    logging_level = logging.DEBUG  # TODO Read from runtime args
+    # TODO Use LoggingSettings.get_setting(LoggingSettings.KEY_LOG_LEVEL)
+    # TODO Transform to  logging  package values
+    logging_level = logging.DEBUG
 
-    setup_logger(log_to_console, log_to_file, logging_level, True, True)
+    setup_logger(
+        LoggingSettings.get_setting(LoggingSettings.KEY_LOG_TO_CONSOLE),
+        LoggingSettings.get_setting(LoggingSettings.KEY_LOG_TO_FILE),
+        logging_level,
+        True,
+        True
+    )
 
 
 def setup_logger(log_to_console, log_to_file, logging_level, log_server, log_gathering):
@@ -19,7 +25,10 @@ def setup_logger(log_to_console, log_to_file, logging_level, log_server, log_gat
 
     # create file handler, set the formatting to it and add it as an handler
     if log_to_file:
-        fh = logging.FileHandler('opserv.log')  # TODO Exchange static logging file with path run time arg
+        # TODO Use runtime arg - maybe as a param to prevent dependencies
+        # logging_file = LoggingSettings.get_setting(LoggingSettings.KEY_LOGGING_FILE)
+
+        fh = logging.FileHandler('opserv.log')
         fh.setLevel(logging_level)
         fh.setFormatter(formatter)
         mainLog.addHandler(fh)

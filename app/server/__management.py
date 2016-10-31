@@ -1,9 +1,9 @@
-import application_settings.settings_management as app_settings
 import server.restful_api.flask_restful_wrapper as rest_api
 import server.static_hosting.__management as static_hosting
 from flask import Flask
 from flask import redirect
 from flask_compress import Compress
+from application_settings.server_settings import ServerSettings
 
 
 # Optional: Exchange Flask with Tornado (to add web socket support)
@@ -32,9 +32,9 @@ def start():
 
     context = ('server/ssl.cert', 'server/ssl.key')
 
-    port = 31337
-    if "port" in app_settings.runtime_settings and app_settings.runtime_settings["port"] is not None:
-        port = app_settings.runtime_settings["port"]
+    port = ServerSettings.get_setting(ServerSettings.KEY_PORT)
+    if port is None:
+        port = 31337
 
     app.run(host='127.0.0.1', port=port, ssl_context=context, debug=False, threaded=True)
     # to do: Generate certificate

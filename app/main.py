@@ -15,6 +15,7 @@ from gathering.gather_main import GatherThread
 from misc.logging_helper import setup_argparse_logger
 
 
+
 def init_database():
     """
         Initiates the database
