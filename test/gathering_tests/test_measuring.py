@@ -6,7 +6,7 @@ from test_general import start_gather_thread, mock_db_open
 
 import misc.queue_manager as queue_manager
 import misc.data_manager as data_manager
-from misc.constants import implemented_hardware, HARDWARE_DEFAULTS
+from misc.constants import implemented_hardware, HARDWARE_DEFAULTS, SYSTEM_METRICS_TO_COMPS
 import pytest
 
 
@@ -101,15 +101,54 @@ def test_ohm():
     newTemp = ohm.get_measurement("cpu", "temperature", "0")
     ohm.deinit()
 
-def nvm_network_usage():
+def test_advanced_all_components():
+    '''
+        Similar test to test all components, but here all the arguments are gathered aswell
+        and are used to really test all the available hardware
+    '''
+    # Get available args for each componennt
+    # RequestData for each comp/arg/metric only do one process
+    # Wait for a queue entry for each combo
+    SYSTEM_DATA_TIMEOUT = 3
+    mock_db_open()
+    with start_gather_thread() as t:
+        available_args = {}
+        for component in implemented_hardware["system"]:
+            queue_manager.request_data("system", component)
+            new_args = queue_manager.read_measurement_from_queue("system", component,
+                                                                 None, True, SYSTEM_DATA_TIMEOUT)
+            available_args[SYSTEM_METRICS_TO_COMPS[component]] = new_args["value"]
+
+        # Specifically add memory
+        available_args["memory"] = [None]
+
+        # For each component in the system
+        for comp in available_args:
+            # For each possible argument in the
+            for i, arg in enumerate(available_args[comp]):
+                if comp == "process":
+                    print("olsfd")
+                if not (comp == "process" and i != 3):
+                    for metric in implemented_hardware[comp]:
+                        queue_manager.request_data(comp, metric, arg)
+                        result = queue_manager.read_measurement_from_queue(comp, metric, arg, True,
+                                                                       SYSTEM_DATA_TIMEOUT)
+                    log.info("result: %s", result)
+
+def test_psutil_network():
+    '''
+        Tests the Psutil MeasuringSource directly
+        Currently only then network measures
+    '''
     from gathering.measuring.psutil_source import PsUtilWrap
     ps = PsUtilWrap()
     all_netif = ps.get_measurement("system", "networks", None)
-    while True:
-        for netif in all_netif:
-            log.info(ps.get_measurement("network", "receivepersec", netif))
-            log.info(ps.get_measurement("network", "transmitpersec", netif))
+    for netif in all_netif:
+        log.info(ps.get_measurement("network", "receivepersec", netif))
+        log.info(ps.get_measurement("network", "transmitpersec", netif))
+        log.info(ps.get_measurement("network", "info", netif))
         time.sleep(0.5)
+
 
 
 # Get System Data, and test everything ADVANCED

@@ -152,12 +152,13 @@ class PsUtilWrap(MeasuringSource):
         '''
             Returns a measurement of the desired process and metric
         '''
+        requested_process = self.psutil.Process(args)
         if metric == "cpuusage":
-            return NOTIMPLEMENTED_NUMERICAL
+            return requested_process.cpu_percent()
         elif metric == "memusage":
-            return NOTIMPLEMENTED_NUMERICAL
+            return requested_process.memory_info().rss
         elif metric == "name":
-            return NOTIMPLEMENTED_TEXT
+            return requested_process.name()
 
     def measure_partition(self, metric, args):
         '''
@@ -180,7 +181,7 @@ class PsUtilWrap(MeasuringSource):
         '''
         try:
             if metric == "info":
-                return NOTIMPLEMENTED_TEXT
+                return str(self.psutil.net_if_stats()[args]) + str(self.psutil.net_if_addrs()[args])
             elif metric == "receivepersec":
                 # Check if there is already an entry for this netif
                 # If, then check if the bytes went down since last TimeoutError
@@ -295,7 +296,9 @@ class PsUtilWrap(MeasuringSource):
         '''
         result = []
         try:
-            result = self.psutil.disk_partitions()
+            part_tuples = self.psutil.disk_partitions()
+            for part in part_tuples:
+                result.append(part.mountpoint)
         except Exception as err:
             log.error("Couldn't get partition list")
             log.error(err)
