@@ -2,7 +2,7 @@ import os
 from argparse import ArgumentParser, Namespace
 from unittest import TestCase
 
-from application_settings.logging_settings import LoggingSettings
+from app.application_settings.logging_settings import LoggingSettings
 
 
 class TestLoggingSettings(TestCase):
@@ -53,17 +53,18 @@ class TestLoggingSettings(TestCase):
             LoggingSettings.validate_settings_arguments(self.parser, args)
         self.assertEqual(cm.exception.code, 2)
 
-        args.logging_file = "test.log"
-        try:
-            LoggingSettings.validate_settings_arguments(self.parser, args)
-        except SystemExit:
-            self.fail("validate_settings_arguments() raised SystemExit unexpectedly!")
+        with open("test.log", "r") as file:
+            args.logging_file = file
+            try:
+                LoggingSettings.validate_settings_arguments(self.parser, args)
+            except SystemExit:
+                self.fail("validate_settings_arguments() raised SystemExit unexpectedly!")
 
-        args.log_to_file = None
-        try:
-            LoggingSettings.validate_settings_arguments(self.parser, args)
-        except SystemExit:
-            self.fail("validate_settings_arguments() raised SystemExit unexpectedly!")
+            args.log_to_file = None
+            try:
+                LoggingSettings.validate_settings_arguments(self.parser, args)
+            except SystemExit:
+                self.fail("validate_settings_arguments() raised SystemExit unexpectedly!")
 
     def tearDown(self):
         os.remove('test.log')
