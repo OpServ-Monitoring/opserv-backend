@@ -2,7 +2,7 @@ import os
 from argparse import ArgumentParser, Namespace
 from unittest import TestCase
 
-from app.application_settings.configuration_settings import ConfigurationSettings
+from application_settings.configuration_settings import ConfigurationSettings
 
 
 class TestConfigurationSettings(TestCase):

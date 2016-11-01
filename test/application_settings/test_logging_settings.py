@@ -2,7 +2,7 @@ import os
 from argparse import ArgumentParser, Namespace
 from unittest import TestCase
 
-from app.application_settings.logging_settings import LoggingSettings
+from application_settings.logging_settings import LoggingSettings
 
 
 class TestLoggingSettings(TestCase):
