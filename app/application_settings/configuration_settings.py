@@ -23,5 +23,7 @@ class ConfigurationSettings(SettingsBase):
                     json.load(
                         file
                     )
-            except json.JSONDecodeError:
+
+                # TODO Check for json object -> dict
+            except ValueError:
                 parser.error("-cf, --conf-file has to be a valid json object")

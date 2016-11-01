@@ -1,9 +1,8 @@
-import json
 import os
 from argparse import ArgumentParser, Namespace
+from unittest import TestCase
 
 from application_settings.configuration_settings import ConfigurationSettings
-from unittest import TestCase
 
 
 class TestConfigurationSettings(TestCase):
