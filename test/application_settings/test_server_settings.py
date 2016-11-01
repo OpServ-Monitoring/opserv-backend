@@ -20,7 +20,6 @@ class TestServerSettings(TestCase):
     def test_validate_settings_arguments(self):
         args = Namespace()
 
-        ### PORT ARGUMENT ###
         args.port = -1
         with self.assertRaises(SystemExit) as cm:
             ServerSettings.validate_settings_arguments(self.parser, args)

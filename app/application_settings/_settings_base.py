@@ -19,7 +19,6 @@ class SettingsBase(metaclass=ABCMeta):
         :param parser: an argparse.ArgumentParser object to which the args should be added
         :return: None
         """
-        pass
 
     @classmethod
     @abstractmethod
@@ -32,10 +31,10 @@ class SettingsBase(metaclass=ABCMeta):
         :param args: the arguments parsed by the argparse.ArgumentParser in form of a args.Namespace object
         :return: None
         """
-        pass
 
     @classmethod
     def get_setting(cls, key):
-        global settings
+        if key in settings:
+            return settings[key]
 
-        return settings[key]
+        return None

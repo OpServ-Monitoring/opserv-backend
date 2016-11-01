@@ -9,8 +9,7 @@ class TestConfigurationSettings(TestCase):
     def setUp(self):
         self.parser = ArgumentParser()
 
-        with open("test.conf", "w") as file:
-            pass
+        open("test.conf", "w").close()
 
     def test_add_settings_arguments(self):
         ConfigurationSettings.add_settings_arguments(self.parser)
@@ -27,13 +26,43 @@ class TestConfigurationSettings(TestCase):
 
         with open("test.conf", "w") as file:
             file.write("{}")
+
         try:
             ConfigurationSettings.validate_settings_arguments(self.parser, args)
         except SystemExit:
             self.fail("validate_settings_arguments() raised SystemExit unexpectedly!")
 
         with open("test.conf", "w") as file:
+            file.write("[]")
+
+        with self.assertRaises(SystemExit) as cm:
+            ConfigurationSettings.validate_settings_arguments(self.parser, args)
+        self.assertEqual(cm.exception.code, 2)
+
+        with open("test.conf", "w") as file:
+            file.write("2")
+
+        with self.assertRaises(SystemExit) as cm:
+            ConfigurationSettings.validate_settings_arguments(self.parser, args)
+        self.assertEqual(cm.exception.code, 2)
+
+        with open("test.conf", "w") as file:
+            file.write(''"A test string"'')
+
+        with self.assertRaises(SystemExit) as cm:
+            ConfigurationSettings.validate_settings_arguments(self.parser, args)
+        self.assertEqual(cm.exception.code, 2)
+
+        with open("test.conf", "w") as file:
             file.write("{2}")
+
+        with self.assertRaises(SystemExit) as cm:
+            ConfigurationSettings.validate_settings_arguments(self.parser, args)
+        self.assertEqual(cm.exception.code, 2)
+
+        with open("test.conf", "w") as file:
+            file.write("")
+
         with self.assertRaises(SystemExit) as cm:
             ConfigurationSettings.validate_settings_arguments(self.parser, args)
         self.assertEqual(cm.exception.code, 2)

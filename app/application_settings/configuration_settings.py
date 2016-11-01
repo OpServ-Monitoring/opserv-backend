@@ -5,6 +5,8 @@ from ._settings_base import SettingsBase
 
 
 class ConfigurationSettings(SettingsBase):
+    KEY_CONF_FILE = "conf_file"
+
     @classmethod
     def add_settings_arguments(cls, parser: ArgumentParser) -> None:
         parser.add_argument(
@@ -19,11 +21,11 @@ class ConfigurationSettings(SettingsBase):
     def validate_settings_arguments(cls, parser: ArgumentParser, args: Namespace) -> None:
         if "conf_file" in args and args.conf_file is not None:
             try:
-                with open(args.conf_file, "r") as file:
-                    json.load(
-                        file
-                    )
+                file_args = json.load(
+                    open(args.conf_file.name, "r")
+                )
 
-                # TODO Check for json object -> dict
+                if type(file_args) is not dict:
+                    raise ValueError
             except ValueError:
                 parser.error("-cf, --conf-file has to be a valid json object")
