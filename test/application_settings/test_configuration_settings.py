@@ -10,7 +10,8 @@ class TestConfigurationSettings(TestCase):
     def setUp(self):
         self.parser = ArgumentParser()
 
-        open("test.conf", "w").close()
+        with open("test.conf", "w") as file:
+            pass
 
     def test_add_settings_arguments(self):
         ConfigurationSettings.add_settings_arguments(self.parser)
@@ -25,17 +26,15 @@ class TestConfigurationSettings(TestCase):
         args = Namespace()
         args.conf_file = "test.conf"
 
-        file = open("test.conf", "w")
-        file.write("{}")
-        file.close()
+        with open("test.conf", "w") as file:
+            file.write("{}")
         try:
             ConfigurationSettings.validate_settings_arguments(self.parser, args)
         except SystemExit:
             self.fail("validate_settings_arguments() raised SystemExit unexpectedly!")
 
-        file = open("test.conf", "w")
-        file.write("{2}")
-        file.close()
+        with open("test.conf", "w") as file:
+            file.write("{2}")
         with self.assertRaises(SystemExit) as cm:
             ConfigurationSettings.validate_settings_arguments(self.parser, args)
         self.assertEqual(cm.exception.code, 2)

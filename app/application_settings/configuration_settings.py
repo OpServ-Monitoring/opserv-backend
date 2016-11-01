@@ -19,8 +19,9 @@ class ConfigurationSettings(SettingsBase):
     def validate_settings_arguments(cls, parser: ArgumentParser, args: Namespace) -> None:
         if "conf_file" in args and args.conf_file is not None:
             try:
-                json.load(
-                    open(args.conf_file, "r")
-                )
+                with open(args.conf_file, "r") as file:
+                    json.load(
+                        file
+                    )
             except json.JSONDecodeError:
                 parser.error("-cf, --conf-file has to be a valid json object")

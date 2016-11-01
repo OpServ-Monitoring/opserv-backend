@@ -126,8 +126,7 @@ def test_advanced_all_components():
         for comp in available_args:
             # For each possible argument in the
             for i, arg in enumerate(available_args[comp]):
-                if comp == "process":
-                    print("olsfd")
+                # Only check one process and only the third process in the list
                 if not (comp == "process" and i != 3):
                     for metric in implemented_hardware[comp]:
                         queue_manager.request_data(comp, metric, arg)
