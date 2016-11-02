@@ -80,3 +80,22 @@ class DataGateInterface(metaclass=ABCMeta):
         :param argument: A string ???, default is None
         :return: None
         """
+
+    @classmethod
+    @abstractmethod
+    def get_user_preference(cls, key: str) -> str:
+        """
+        ???
+        :param key: ???
+        :return: ???
+        """
+
+    @classmethod
+    @abstractmethod
+    def set_user_preference(cls, key: str, value: str) -> None:
+        """
+        ???
+        :param key: ???
+        :param value: ???
+        :return: ???
+        """

@@ -19,8 +19,8 @@ class DefaultDataGate(DataGateInterface):
         persisted_arguments = UnifiedDatabaseInterface.get_component_metrics_writer_reader().get_component_args(component)
 
         return cls.__merge_two_lists(
-            cls.__stringify_list(present_arguments),
-            cls.__stringify_list(persisted_arguments)
+            present_arguments,
+            persisted_arguments
         )
 
     @classmethod
@@ -57,22 +57,32 @@ class DefaultDataGate(DataGateInterface):
     @classmethod
     def get_gathering_rate(cls, component: str, metric: str, argument: str = None) -> int:
         # TODO Implement method
-        pass
+        return 0
 
     @classmethod
     def set_gathering_rate(cls, component: str, metric: str, gathering_rate: int, argument: str = None) -> None:
         # TODO Implement method
-        pass
+        return None
 
-    # TODO Is this the right place for this? -> Extract to some helper interface
     @classmethod
-    def __stringify_list(cls, raw_list) -> list:
-        return list(
-            map(str, raw_list)
-        )
+    def get_user_preference(cls, key: str) -> str:
+        # TODO Implement method
+        return "Hello World!"
+
+    @classmethod
+    def set_user_preference(cls, key: str, value: str) -> None:
+        # TODO Implement method
+        return None
 
     # TODO Is this the right place for this? -> Extract to some helper interface
     @classmethod
     def __merge_two_lists(cls, first_list, second_list):
+        def __stringify_list(raw_list) -> list:
+            return list(
+                map(str, raw_list)
+            )
+
+        first_list = __stringify_list(first_list)
+        second_list = __stringify_list(second_list)
+
         return first_list + list(set(second_list) - set(first_list))
-        # TODO Fix error that occurs when value is the same but of different type, e.g. '0' and 0
