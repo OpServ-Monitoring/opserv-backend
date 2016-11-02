@@ -12,9 +12,9 @@ class MeasurementDataReader:
             """SELECT
                  {1}, {2}, {3},
                  avg({4}) AS measurement_timestamp,
-                 CAST(min({5}) AS FLOAT) AS minimum,
-                 avg({5}) AS average,
-                 CAST(max({5}) AS FLOAT) AS maximum
+                 min({5} * 1.0) AS minimum,
+                 avg({5} * 1.0) AS average,
+                 max({5} * 1.0) AS maximum
                FROM (
                  SELECT
                    (SELECT COUNT(*)
@@ -46,7 +46,7 @@ class MeasurementDataReader:
                 start_time, end_time, component_type, component_arg, metric_name,
                 start_time, end_time, component_type, component_arg, metric_name,
                 start_time, end_time, component_type, component_arg, metric_name,
-                limit
+                float(limit)
             )
         ).fetchall()
 
