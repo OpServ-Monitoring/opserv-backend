@@ -9,12 +9,14 @@ install:
 - xargs -a app/requirements.txt -n 1 pip install || true
 - pip install -r app/testrequirements.txt
 - pip install codeclimate-test-reporter
+- pip install pyinstaller
 before_script:
 - echo "Before Script started"
 - git clone https://github.com/OpServ-Monitoring/opserv-frontend.git app/server/static_hosting/frontend
 - echo $CWD
 - echo $PWD
 - zip -r opserv-release.zip .
+- pyinstaller –onefile app/main.py
 - ls -R
 script:
 - pytest --cov=app
