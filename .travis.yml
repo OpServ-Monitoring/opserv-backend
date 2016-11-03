@@ -16,7 +16,7 @@ before_script:
 - echo $CWD
 - echo $PWD
 - zip -r opserv-release.zip .
-- pyinstaller --onefile app/main.py
+- pyinstaller --onefile -n opserv app/main.py
 - ls -R
 script:
 - pytest --cov=app
@@ -25,7 +25,9 @@ deploy:
   provider: releases
   api_key:
     secure: dSwymzcbi02BdPOerozK8ePSEk3GIHV0T59BftjN4PcNHpF1Kv8OipQiHESFB+jTBTWGPleS11r2s9YjWBcwwY/XU9jCZG5prGgs5sGZIzzUnSxBcb6iWHKlpjHvNarR+MPTy3ljKUPNrjOn7mgYx54an6CbBSlKlVVPGzwD26XCXzn5WxAmLNoJJjPdT7H9BcmJKod4cnBSUahqr0L5pX/pC242qWlHs3i10MIvlgz4jo4oHh1e8ryPVj1Xs/8ogOVTWN5H4WmDhHHEN/eBVwK05VoclXgcD/+0kJK+fAUPcpTnMAGP9KLUIGHAe3VVEwo+B3mhyUlXnPqbWTn586KdOgKOSi419LBwze5k1ksJukYJzX41mKJGp/OzsMDSFSHR9Po6JhZnz4QMFPz+xhsiRNBDfZAixeFrv8zIzurlM8XgDtug2daRmbfhU5ilvEf9cM6jiQet3d2RXRXfKE8dZ5tGq26OGcarG8dNZJnOp6pwH1EJia4BfXcFZDV0CFNrrratMUOqmQjqMB4lfQcepLlpFA2rYbejkMXvAd5O9/K+B2TO5Z2eYjf0IZX51EdTewgPSGoQbdjuN0M0OInpnuaVYrkjEjcauTL+iA8Tu+Gi3NSYYwqgoe95xbogClRdJ/oThJDUKQQJMdRa1eQgzzC9G1ZKJIShXgy+JEM=
-  file: opserv-release.zip
+  file: 
+  - opserv-release.zip
+  - dist/opserv
   on:
     repo: OpServ-Monitoring/opserv-backend
     tags: true
