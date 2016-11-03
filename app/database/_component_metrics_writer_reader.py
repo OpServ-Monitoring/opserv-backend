@@ -36,6 +36,23 @@ class ComponentMetricsWriterReader:
     @staticmethod
     def insert_component_metrics(component_metrics):
         # TODO Change param to receive each param one by one, make None -> "default" for args
+        # quick fix
+        def test(component_metric):
+            if component_metric[1] is None:
+                return (
+                    component_metric[0],
+                    "default",
+                    component_metric[2],
+                    component_metric[3]
+                )
+
+            return component_metric
+
+        component_metrics = map(
+            lambda item: test(item),
+            component_metrics
+        )
+
         connection = DatabaseOpenHelper.establish_database_connection()
 
         connection.executemany("INSERT OR REPLACE INTO {0} ({1}, {2}, {3}, {4}) VALUES (?, ? , ?, ?)".format(
