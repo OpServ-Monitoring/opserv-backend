@@ -91,6 +91,9 @@ ENV/
 # Visual Studio Code Configs
 .vscode/*
 
+# IntelliJ / PyCharm Configs
+.idea/*
+
 # Opserv Log file
 app/opserv.log
 
