@@ -16,7 +16,9 @@ before_script:
 - echo $CWD
 - echo $PWD
 - zip -r opserv-release.zip .
-- pyinstaller --onefile -n opserv app/main.py
+- cd app
+- pyinstaller --onefile -n opserv main.py
+- cd ..
 - ls -R
 script:
 - pytest --cov=app
