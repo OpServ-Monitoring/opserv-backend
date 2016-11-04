@@ -35,6 +35,9 @@ class UserPreferencesWriterReader:
 
     @staticmethod
     def set_user_preference(key, value):
+        if key is None:
+            return None
+
         connection = DatabaseOpenHelper.establish_database_connection()
 
         connection.execute(
