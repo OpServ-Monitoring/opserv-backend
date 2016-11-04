@@ -19,7 +19,7 @@ environment:
 install:
   # We need wheel installed to build wheels
     - "%PYTHON%\\python.exe -m pip install -r app/prerequirements.txt"
-  # - "%PYTHON%\\python.exe -m xargs -a app/requirements.txt -n 1 pip install || true"
+    - "%PYTHON%\\python.exe -m xargs -a app/requirements.txt -n 1 pip install || true"
     - "%PYTHON%\\python.exe -m pip install -r app/testrequirements.txt"
     - "%PYTHON%\\python.exe -m pip install codeclimate-test-reporter"
 
@@ -34,7 +34,8 @@ test_script:
   # the interpreter you're using - Appveyor does not do anything special
   # to put the Python evrsion you want to use on PATH.
   # - "build.cmd %PYTHON%\\python.exe pytest"
-    - "%PYTHON%\\python.exe pytest"
+    - "pytest" # %PYTHON%\\python.exe pytest"
+    - "%PYTHON%\\python.exe -m pytest"
 
 after_test:
   # This step builds your wheels.
