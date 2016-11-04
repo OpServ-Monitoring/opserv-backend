@@ -23,7 +23,7 @@ install:
     - "%PYTHON%\\python.exe -m pip install -r app/testrequirements.txt"
     - "%PYTHON%\\python.exe -m pip install codeclimate-test-reporter"
 
-build: on
+build: off
 
 test_script:
   # Put your test command here.
