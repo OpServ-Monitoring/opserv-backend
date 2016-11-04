@@ -6,8 +6,7 @@
 
 | OS | Build Status | Coverage |
 | --- | --- | --- |
-| Windows | [![Build status](https://ci.appveyor.com/api/projects/status/7gkd53ag5isi1cyu/branch/master?svg=true)](https://ci.appveyor.com/project/OpServ-Monitoring/opserv-backend/branch/master)
- | N/A |
+| Windows | [![Build status](https://ci.appveyor.com/api/projects/status/7gkd53ag5isi1cyu/branch/master?svg=true)](https://ci.appveyor.com/project/OpServ-Monitoring/opserv-backend/branch/master) | N/A |
 | Linux | [![Build Status](https://travis-ci.org/OpServ-Monitoring/opserv-backend.svg?branch=master)](https://travis-ci.org/OpServ-Monitoring/opserv-backend) | [![Test Coverage](https://codeclimate.com/github/OpServ-Monitoring/opserv-backend/badges/coverage.svg)](https://codeclimate.com/github/OpServ-Monitoring/opserv-backend/coverage) |
 | MacOS | N/A | N/A |
 
