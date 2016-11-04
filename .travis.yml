@@ -1,34 +1,15 @@
-matrix:
-    include:
-        - os: linux
-          sudo: required
-          python: 3.3
-          env: TOXENV=py33
-        - os: linux
-          sudo: required
-          python: 3.4
-          env: TOXENV=py34
-        - os: linux
-          sudo: required
-          python: 3.5
-          env: TOXENV=py35
-        - os: osx
-          language: generic
-          env: TOXENV=py33
-        - os: osx
-          language: generic
-          env: TOXENV=py34
-        - os: osx
-          language: generic
-          env: TOXENV=py35
-
+language: python
+python:
+- '3.3'
+- '3.4'
+- '3.5'
+- 3.5-dev
 install:
 - pip install -r app/prerequirements.txt
 - xargs -a app/requirements.txt -n 1 pip install || true
 - pip install -r app/testrequirements.txt
 - pip install codeclimate-test-reporter
 - pip install coveralls
-
 before_script:
 - echo "Before Script started"
 - git clone https://github.com/OpServ-Monitoring/opserv-frontend.git app/server/static_hosting/frontend
@@ -36,14 +17,11 @@ before_script:
 - echo $PWD
 - zip -r opserv-release.zip .
 - ls -R
-
 script:
 - pytest --cov=app
 - codeclimate-test-reporter --token $CCTOKEN
-
 after_success:
   coveralls
-  
 deploy:
   provider: releases
   api_key:
