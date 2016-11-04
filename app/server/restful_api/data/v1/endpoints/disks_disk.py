@@ -1,14 +1,12 @@
-from ....general.endpoint import Endpoint
+from server.data_gates.default_data_gate import DefaultDataGate
+from .__general_data_v1 import GeneralEndpointDataV1
 
 
-# TODO Implement endpoint
-class DisksDiskEndpoint(Endpoint):
+class DisksDiskEndpoint(GeneralEndpointDataV1):
     def _get(self) -> bool:
-        # TODO implement endpoint
-        from app.database.unified_database_interface import UnifiedDatabaseInterface
         disk_id = self._request_holder.get_params()["disk"]
 
-        persisted_info = UnifiedDatabaseInterface.get_measurement_data_reader().get_last_value("disk", disk_id, "info")
+        persisted_info = DefaultDataGate.get_last_measurement("disk", disk_id, "info")
 
         if persisted_info is not None:
             self._response_holder.set_body_data({
@@ -54,5 +52,4 @@ class DisksDiskEndpoint(Endpoint):
 
     @staticmethod
     def get_disk_id_validator():
-        # TODO Validate disk id
-        return "disk", lambda x: True
+        return "disk", lambda x: DefaultDataGate.is_argument_valid(x, "disks")

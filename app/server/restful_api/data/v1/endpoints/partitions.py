@@ -23,7 +23,6 @@ class PartitionsEndpoint(RootGeneralChildEndpoint):
 
     @staticmethod
     def _get_children_endpoint_type() -> Endpoint:
-        # TODO exchange children
-        from .cpus_cpu import CpusCpuEndpoint
+        from .partitions_partition import PartitionsPartitionEndpoint
 
-        return CpusCpuEndpoint
+        return PartitionsPartitionEndpoint

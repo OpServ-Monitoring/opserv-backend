@@ -1,13 +1,12 @@
+from server.data_gates.default_data_gate import DefaultDataGate
 from .__general_data_v1 import GeneralEndpointDataV1
 
 
 class CpusCpuEndpoint(GeneralEndpointDataV1):
     def _get(self) -> bool:
-        # TODO implement endpoint
-        from app.database.unified_database_interface import UnifiedDatabaseInterface
         cpu_id = self._request_holder.get_params()["cpu"]
 
-        persisted_info = UnifiedDatabaseInterface.get_measurement_data_reader().get_last_value("cpu", cpu_id, "info")
+        persisted_info = DefaultDataGate.get_last_measurement("cpu", cpu_id, "info")
 
         if persisted_info is not None:
             self._response_holder.set_body_data({
@@ -53,5 +52,4 @@ class CpusCpuEndpoint(GeneralEndpointDataV1):
 
     @staticmethod
     def get_cpu_id_validator():
-        # TODO Validate cpu id
-        return "cpu", lambda x: True
+        return "cpu", lambda x: DefaultDataGate.is_argument_valid(x, "cpus")

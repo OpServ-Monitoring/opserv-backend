@@ -1,7 +1,7 @@
 import time
 from abc import ABCMeta, abstractmethod
 
-from database.unified_database_interface import UnifiedDatabaseInterface
+from server.data_gates.default_data_gate import DefaultDataGate
 
 from .__general_data_v1 import GeneralEndpointDataV1
 
@@ -37,27 +37,22 @@ class GeneralEndpointRealtimeHistorical(GeneralEndpointDataV1, metaclass=ABCMeta
         component_arg = self._get_component_arg()
         component_metric = self._get_component_metric()
 
-        from misc import data_manager
-        data = data_manager.get_measurement(component=component_type, args=component_arg, metric=component_metric)
-        self._response_holder.set_body_data(data)
+        self._response_holder.set_body_data(
+            DefaultDataGate.get_last_measurement(component_type, component_metric, component_arg)
+        )
 
         return True
 
-    # TODO Make this a @abstractmethod or generalize it
     def _get_historical_data(self):
-        raw_historical_results = UnifiedDatabaseInterface.get_measurement_data_reader().get_min_avg_max(
-            self._get_component_type(),
-            self._get_component_arg(),
-            self._get_component_metric(),
-            self._start,
-            self._end,
-            float(self._limit)
-        )
-
-        parsed_historical_results = self.__parse_history_results(raw_historical_results)
-
         self._response_holder.set_body_data(
-            parsed_historical_results
+            DefaultDataGate.get_measurements(
+                self._get_component_type(),
+                self._get_component_metric(),
+                self._get_component_arg(),
+                self._start,
+                self._end,
+                self._limit
+            )
         )
 
         return True

@@ -1,13 +1,12 @@
+from server.data_gates.default_data_gate import DefaultDataGate
 from .__general_data_v1 import GeneralEndpointDataV1
 
 
 class GpusGpuEndpoint(GeneralEndpointDataV1):
     def _get(self) -> bool:
-        # TODO implement endpoint
-        from app.database.unified_database_interface import UnifiedDatabaseInterface
         gpu_id = self._request_holder.get_params()["gpu"]
 
-        persisted_info = UnifiedDatabaseInterface.get_measurement_data_reader().get_last_value("gpu", gpu_id, "info")
+        persisted_info = DefaultDataGate.get_last_measurement("gpu", gpu_id, "info")
 
         if persisted_info is not None:
             self._response_holder.set_body_data({
@@ -57,5 +56,5 @@ class GpusGpuEndpoint(GeneralEndpointDataV1):
 
     @staticmethod
     def get_gpu_id_validator():
-        # TODO Validate gpu id
-        return "gpu", lambda x: True
+        return "gpu", lambda x: DefaultDataGate.is_argument_valid(x, "gpus")
+

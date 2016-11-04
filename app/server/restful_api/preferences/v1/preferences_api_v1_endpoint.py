@@ -60,10 +60,10 @@ class PreferencesApiV1Endpoint(Endpoint):
 
     @classmethod
     def _get_children(cls):
-        from app.database.unified_database_interface import UnifiedDatabaseInterface
+        from app.database.unified_database_interface import UnifiedDatabaseInterface  # TODO Exchange with data gate
         from app.server.restful_api.preferences.v1.preference import PreferenceEndpoint
 
-        keys_in_use = UnifiedDatabaseInterface.get_user_preferences_writer_reader().get_used_user_preference_keys()
+        keys_in_use = UnifiedDatabaseInterface.get_user_preferences_writer_reader().get_used_user_preference_keys()  # TODO Exchange with data gate
 
         children = []
         for key in keys_in_use:

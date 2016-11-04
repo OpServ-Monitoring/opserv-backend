@@ -23,7 +23,6 @@ class NetworksEndpoint(RootGeneralChildEndpoint):
 
     @staticmethod
     def _get_children_endpoint_type() -> Endpoint:
-        # TODO exchange children
-        from .cpus_cpu import CpusCpuEndpoint
+        from .networks_network import NetworksNetworkEndpoint
 
-        return CpusCpuEndpoint
+        return NetworksNetworkEndpoint

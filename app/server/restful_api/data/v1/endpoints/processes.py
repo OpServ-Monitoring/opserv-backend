@@ -23,7 +23,6 @@ class ProcessesEndpoint(RootGeneralChildEndpoint):
 
     @staticmethod
     def _get_children_endpoint_type() -> Endpoint:
-        # TODO exchange children
-        from .cpus_cpu import CpusCpuEndpoint
+        from .processes_process import ProcessesProcessEndpoint
 
-        return CpusCpuEndpoint
+        return ProcessesProcessEndpoint

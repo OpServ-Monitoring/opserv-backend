@@ -7,7 +7,7 @@ import time
 # TODO Documentation needed
 
 
-class DataGateInterface(metaclass=ABCMeta):
+class OutboundGateInterface(metaclass=ABCMeta):
     @classmethod
     @abstractmethod
     def get_valid_arguments(cls, component: str) -> Iterable:
@@ -35,7 +35,7 @@ class DataGateInterface(metaclass=ABCMeta):
                          argument: str=None,
                          start_time: int=0,
                          end_time: int=time.time() * 1000,
-                         limit: int=5000) -> str:
+                         limit: int=5000) -> Iterable:
         """
         ???
         :param component: A String ???
@@ -49,7 +49,7 @@ class DataGateInterface(metaclass=ABCMeta):
 
     @classmethod
     @abstractmethod
-    def get_last_measurement(cls, component: str, metric: str, argument: str=None) -> str:
+    def get_last_measurement(cls, component: str, metric: str, argument: str=None) -> dict:
         """
         ???
         :param component: A String ???
