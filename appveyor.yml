@@ -37,8 +37,8 @@ test_script:
   # - "build.cmd %PYTHON%\\python.exe pytest"
   # 
   # Ensures the build to send coverage-data even on a fail
-  # REMOVE && exit 0 on FIRST RELEASE
-    - "py.test --cov=app test/ && exit 0"
+  # REMOVE > /dev/null on FIRST RELEASE
+    - "py.test --cov=app test/ > /dev/null"
 
 after_test:
   # This step builds your wheels.
