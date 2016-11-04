@@ -1,15 +1,17 @@
-# opserv-backend
+### UNDER ACTIVE DEVELOPMENT ###
 
-![Something](https://img.shields.io/badge/project%20status-under%20active%20development-red.svg)
+The software is currently developed thus versions are likely to be unstable.
+
+
+
+# opserv-backend
 
 [![Code Climate](https://codeclimate.com/github/OpServ-Monitoring/opserv-backend/badges/gpa.svg)](https://codeclimate.com/github/OpServ-Monitoring/opserv-backend)  [![Codacy Badge](https://api.codacy.com/project/badge/Grade/ad9c86466d164cc7a432df119e7b7c99)](https://www.codacy.com/app/alex22212/opserv-backend?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=OpServ-Monitoring/opserv-backend&amp;utm_campaign=Badge_Grade)
 
-| OS | Build Status | Coverage |
-| --- | --- | --- |
-| Windows | [![Build status](https://ci.appveyor.com/api/projects/status/7gkd53ag5isi1cyu/branch/master?svg=true)](https://ci.appveyor.com/project/OpServ-Monitoring/opserv-backend/branch/master) | [![Test Coverage](https://codeclimate.com/github/OpServ-Monitoring/opserv-backend/badges/coverage.svg)](https://codeclimate.com/github/OpServ-Monitoring/opserv-backend/coverage) |
-| Linux | [![Build Status](https://travis-ci.org/OpServ-Monitoring/opserv-backend.svg?branch=master)](https://travis-ci.org/OpServ-Monitoring/opserv-backend) | [![Test Coverage](https://coveralls.io/repos/github/OpServ-Monitoring/opserv-backend/badge.svg?branch=master)](https://coveralls.io/github/OpServ-Monitoring/opserv-backend?branch=master) |
-| MacOS | N/A | N/A |
-
+| OS | Windows | Linux | Mac OS X |
+| --- | --- | --- | --- |
+| Build Status | [![Build status](https://ci.appveyor.com/api/projects/status/7gkd53ag5isi1cyu/branch/master?svg=true)](https://ci.appveyor.com/project/OpServ-Monitoring/opserv-backend/branch/master) | [![Build Status](https://travis-ci.org/OpServ-Monitoring/opserv-backend.svg?branch=master)](https://travis-ci.org/OpServ-Monitoring/opserv-backend) | N/A |
+| Coverage | [![Test Coverage](https://codeclimate.com/github/OpServ-Monitoring/opserv-backend/badges/coverage.svg)](https://codeclimate.com/github/OpServ-Monitoring/opserv-backend/coverage) | [![Test Coverage](https://coveralls.io/repos/github/OpServ-Monitoring/opserv-backend/badge.svg?branch=master)](https://coveralls.io/github/OpServ-Monitoring/opserv-backend?branch=master) | N/A |
 
 This repository contains the backend of the OpServ-Monitoring software.
 Generally it should be used with together with the frontend so please use a bundled release for your OS.
