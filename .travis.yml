@@ -1,16 +1,21 @@
+os:
+  - linux
+  - osx
+
 language: python
 python:
 - '3.3'
 - '3.4'
 - '3.5'
 - 3.5-dev
+
 install:
 - pip install -r app/prerequirements.txt
 - xargs -a app/requirements.txt -n 1 pip install || true
 - pip install -r app/testrequirements.txt
 - pip install codeclimate-test-reporter
 - pip install coveralls
-#- pip install pyinstaller
+
 before_script:
 - echo "Before Script started"
 - git clone https://github.com/OpServ-Monitoring/opserv-frontend.git app/server/static_hosting/frontend
@@ -18,22 +23,20 @@ before_script:
 - echo $PWD
 - zip -r opserv-release.zip .
 - ls -R
+
 script:
 - pytest --cov=app
 - codeclimate-test-reporter --token $CCTOKEN
-#- echo "Start bundling with pyinstaller"
-#- cd app
-#- pyinstaller --onefile -n opserv main.py
-#- cd ..
+
 after_success:
   coveralls
+  
 deploy:
   provider: releases
   api_key:
     secure: dSwymzcbi02BdPOerozK8ePSEk3GIHV0T59BftjN4PcNHpF1Kv8OipQiHESFB+jTBTWGPleS11r2s9YjWBcwwY/XU9jCZG5prGgs5sGZIzzUnSxBcb6iWHKlpjHvNarR+MPTy3ljKUPNrjOn7mgYx54an6CbBSlKlVVPGzwD26XCXzn5WxAmLNoJJjPdT7H9BcmJKod4cnBSUahqr0L5pX/pC242qWlHs3i10MIvlgz4jo4oHh1e8ryPVj1Xs/8ogOVTWN5H4WmDhHHEN/eBVwK05VoclXgcD/+0kJK+fAUPcpTnMAGP9KLUIGHAe3VVEwo+B3mhyUlXnPqbWTn586KdOgKOSi419LBwze5k1ksJukYJzX41mKJGp/OzsMDSFSHR9Po6JhZnz4QMFPz+xhsiRNBDfZAixeFrv8zIzurlM8XgDtug2daRmbfhU5ilvEf9cM6jiQet3d2RXRXfKE8dZ5tGq26OGcarG8dNZJnOp6pwH1EJia4BfXcFZDV0CFNrrratMUOqmQjqMB4lfQcepLlpFA2rYbejkMXvAd5O9/K+B2TO5Z2eYjf0IZX51EdTewgPSGoQbdjuN0M0OInpnuaVYrkjEjcauTL+iA8Tu+Gi3NSYYwqgoe95xbogClRdJ/oThJDUKQQJMdRa1eQgzzC9G1ZKJIShXgy+JEM=
   file: 
   - opserv-release.zip
-#  - app/dist/opserv
   on:
     repo: OpServ-Monitoring/opserv-backend
     tags: true
