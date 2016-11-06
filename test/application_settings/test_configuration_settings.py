@@ -85,4 +85,9 @@ class TestConfigurationSettings(TestCase):
             self.assertEqual(cm.exception.code, 2)
 
     def tearDown(self):
-        os.remove("test.conf")
+        # TODO Use more stable approach
+        try:
+            os.remove("test.conf")
+        except PermissionError:
+            print("Could not delete file: test.conf")
+

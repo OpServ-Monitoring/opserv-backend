@@ -67,4 +67,8 @@ class TestLoggingSettings(TestCase):
                 self.fail("validate_settings_arguments() raised SystemExit unexpectedly!")
 
     def tearDown(self):
-        os.remove('test.log')
+        # TODO Use more stable approach
+        try:
+            os.remove("test.log")
+        except PermissionError:
+            print("Could not delete file: test.log")
