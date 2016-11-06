@@ -1,6 +1,5 @@
 from abc import ABCMeta, abstractmethod
 
-from server.data_gates.default_data_gate import DefaultDataGate
 from .__general_data_v1 import GeneralEndpointDataV1
 from ....general.endpoint import Endpoint
 
@@ -45,4 +44,4 @@ class RootGeneralChildEndpoint(GeneralEndpointDataV1, metaclass=ABCMeta):
 
     @classmethod
     def __get_children_ids(cls) -> list:
-        return DefaultDataGate.get_valid_arguments(cls._get_hardware_value_type())
+        return cls._outbound_gate.get_valid_arguments(cls._get_hardware_value_type())

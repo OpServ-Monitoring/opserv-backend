@@ -1,8 +1,6 @@
 import time
 from abc import ABCMeta, abstractmethod
 
-from server.data_gates.default_data_gate import DefaultDataGate
-
 from .__general_data_v1 import GeneralEndpointDataV1
 
 
@@ -38,14 +36,14 @@ class GeneralEndpointRealtimeHistorical(GeneralEndpointDataV1, metaclass=ABCMeta
         component_metric = self._get_component_metric()
 
         self._response_holder.set_body_data(
-            DefaultDataGate.get_last_measurement(component_type, component_metric, component_arg)
+            self._outbound_gate.get_last_measurement(component_type, component_metric, component_arg)
         )
 
         return True
 
     def _get_historical_data(self):
         self._response_holder.set_body_data(
-            DefaultDataGate.get_measurements(
+            self._outbound_gate.get_measurements(
                 self._get_component_type(),
                 self._get_component_metric(),
                 self._get_component_arg(),

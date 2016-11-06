@@ -1,4 +1,3 @@
-from server.data_gates.default_data_gate import DefaultDataGate
 from .__general_data_v1 import GeneralEndpointDataV1
 
 
@@ -6,7 +5,7 @@ class NetworksNetworkEndpoint(GeneralEndpointDataV1):
     def _get(self) -> bool:
         network_id = self._request_holder.get_params()["network"]
 
-        persisted_info = DefaultDataGate.get_last_measurement("network", network_id, "info")
+        persisted_info = self._outbound_gate.get_last_measurement("network", network_id, "info")
 
         if persisted_info is not None:
             self._response_holder.set_body_data({
@@ -48,6 +47,6 @@ class NetworksNetworkEndpoint(GeneralEndpointDataV1):
             NetworksNetworkEndpoint.get_network_id_validator()
         ]
 
-    @staticmethod
-    def get_network_id_validator():
-        return "network", lambda x: DefaultDataGate.is_argument_valid(x, "networks")
+    @classmethod
+    def get_network_id_validator(cls):
+        return "network", lambda x: cls._outbound_gate.is_argument_valid(x, "networks")

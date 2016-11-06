@@ -1,4 +1,3 @@
-from server.data_gates.default_data_gate import DefaultDataGate
 from .__general_data_v1 import GeneralEndpointDataV1
 
 
@@ -6,7 +5,7 @@ class PartitionsPartitionEndpoint(GeneralEndpointDataV1):
     def _get(self) -> bool:
         partition_id = self._request_holder.get_params()["partition"]
 
-        persisted_info = DefaultDataGate.get_last_measurement("partition", partition_id, "info")
+        persisted_info = self._outbound_gate.get_last_measurement("partition", partition_id, "info")
 
         if persisted_info is not None:
             self._response_holder.set_body_data({
@@ -50,6 +49,6 @@ class PartitionsPartitionEndpoint(GeneralEndpointDataV1):
             PartitionsPartitionEndpoint.get_partition_id_validator()
         ]
 
-    @staticmethod
-    def get_partition_id_validator():
-        return "partition", lambda x: DefaultDataGate.is_argument_valid(x, "partitions")
+    @classmethod
+    def get_partition_id_validator(cls):
+        return "partition", lambda x: cls._outbound_gate.is_argument_valid(x, "partitions")

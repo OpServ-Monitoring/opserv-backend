@@ -2,11 +2,15 @@ import re
 from abc import ABCMeta, abstractmethod
 from collections import Iterable
 
+from server.data_gates.default_data_gate import DefaultDataGate
+from server.data_gates.outbound_gate_interface import OutboundGateInterface
 from .requestholder import RequestHolder
 from .responseholder import ResponseHolder
 
 
 class Endpoint(metaclass=ABCMeta):
+    _outbound_gate = DefaultDataGate
+
     _request_holder = None
     _response_holder = None
 
@@ -19,16 +23,6 @@ class Endpoint(metaclass=ABCMeta):
         any of the processing functions _get(), _post(), _put() or _delete() and finally the _pre_process() function
         :return: The final Response object to answer the request with
         """
-        # TODO Improve logging
-        import logging
-
-        log_server_rest = logging.getLogger("opserv.server.restful_api")
-        log_server_rest.setLevel(logging.DEBUG)
-        log_server_rest.debug(
-            "Received a request at: " + request_holder.get_uri()
-        )
-        # Remove upper part
-
         self._request_holder = request_holder
 
         keep_processing = self._pre_process()
@@ -238,6 +232,7 @@ class Endpoint(metaclass=ABCMeta):
         """
         return {'href': uri, 'name': name}
 
+    # TODO Extract into the ResponseHolder class
     def __set_fault_response(self, status_code, error_message):
         """
         helper method to set an error response
@@ -252,6 +247,7 @@ class Endpoint(metaclass=ABCMeta):
         )
         self._response_holder.set_status(status_code)
 
+    # TODO Extract into the ResponseHolder class
     def _set_bad_request_response(self, error_message=None):
         """
         helper method to set a bad request response
@@ -263,12 +259,17 @@ class Endpoint(metaclass=ABCMeta):
 
         self.__set_fault_response(400, error_message)
 
+    # TODO Extract into the ResponseHolder class
     def _set_internal_server_error_response(self):
         """
         helper method to set a internal server error response
         :return: None
         """
         self.__set_fault_response(500, "Internal server error")
+
+    @classmethod
+    def set_outbound_gate(cls, outbound_gate: OutboundGateInterface):
+        cls._outbound_gate = outbound_gate
 
     @staticmethod
     def KEEP_PROCESSING():

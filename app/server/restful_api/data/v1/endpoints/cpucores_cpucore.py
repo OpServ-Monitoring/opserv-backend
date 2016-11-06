@@ -1,4 +1,3 @@
-from server.data_gates.default_data_gate import DefaultDataGate
 from .__general_data_v1 import GeneralEndpointDataV1
 
 
@@ -6,7 +5,7 @@ class CpucoresCpucoreEndpoint(GeneralEndpointDataV1):
     def _get(self) -> bool:
         cpu_core_id = self._request_holder.get_params()["cpu_core"]
 
-        persisted_info = DefaultDataGate.get_last_measurement("core", cpu_core_id, "info")
+        persisted_info = self._outbound_gate.get_last_measurement("core", cpu_core_id, "info")
 
         if persisted_info is not None:
             self._response_holder.set_body_data({
@@ -50,6 +49,6 @@ class CpucoresCpucoreEndpoint(GeneralEndpointDataV1):
             CpucoresCpucoreEndpoint.get_cpucore_id_validator()
         ]
 
-    @staticmethod
-    def get_cpucore_id_validator():
-        return "cpu_core", lambda x: DefaultDataGate.is_argument_valid(x, "cores")
+    @classmethod
+    def get_cpucore_id_validator(cls):
+        return "cpu_core", lambda x: cls._outbound_gate.is_argument_valid(x, "cores")

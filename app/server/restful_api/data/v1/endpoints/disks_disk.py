@@ -1,4 +1,3 @@
-from server.data_gates.default_data_gate import DefaultDataGate
 from .__general_data_v1 import GeneralEndpointDataV1
 
 
@@ -6,7 +5,7 @@ class DisksDiskEndpoint(GeneralEndpointDataV1):
     def _get(self) -> bool:
         disk_id = self._request_holder.get_params()["disk"]
 
-        persisted_info = DefaultDataGate.get_last_measurement("disk", disk_id, "info")
+        persisted_info = self._outbound_gate.get_last_measurement("disk", disk_id, "info")
 
         if persisted_info is not None:
             self._response_holder.set_body_data({
@@ -50,6 +49,6 @@ class DisksDiskEndpoint(GeneralEndpointDataV1):
             DisksDiskEndpoint.get_disk_id_validator()
         ]
 
-    @staticmethod
-    def get_disk_id_validator():
-        return "disk", lambda x: DefaultDataGate.is_argument_valid(x, "disks")
+    @classmethod
+    def get_disk_id_validator(cls):
+        return "disk", lambda x: cls._outbound_gate.is_argument_valid(x, "disks")
