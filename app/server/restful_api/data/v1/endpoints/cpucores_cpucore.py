@@ -5,12 +5,11 @@ class CpucoresCpucoreEndpoint(GeneralEndpointDataV1):
     def _get(self) -> bool:
         cpu_core_id = self._request_holder.get_params()["cpu_core"]
 
-        persisted_info = self._outbound_gate.get_last_measurement("core", cpu_core_id, "info")
-
+        persisted_info = self._outbound_gate.get_last_measurement("core", "info", cpu_core_id)
         if persisted_info is not None:
             self._response_holder.set_body_data({
-                "timestamp": persisted_info[0],
-                "general-info": persisted_info[1]
+                "timestamp": persisted_info["timestamp"],
+                "general-info": persisted_info["value"]
             })
 
         return True

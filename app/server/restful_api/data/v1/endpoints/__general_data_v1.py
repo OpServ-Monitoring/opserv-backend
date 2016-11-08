@@ -24,16 +24,18 @@ class GeneralEndpointDataV1(Endpoint, metaclass=ABCMeta):
         parameter_name = mandatory_parameter[0]
         verification_function = mandatory_parameter[1]
 
-        actual_value = self._request_holder.get_params()[parameter_name]
-        if actual_value is None:
+        params = self._request_holder.get_params()
+        if params is None or parameter_name not in params:
             self._set_bad_request_response("parameter " + parameter_name + " missing.")
-        elif verification_function is None or not callable(verification_function):
-            self._set_internal_server_error_response()
-        elif not verification_function(actual_value):
-            self._set_bad_request_response("parameter " + parameter_name + " is not properly formatted.")
         else:
-            return True
+            actual_value = params[parameter_name]
 
+            if verification_function is None or not callable(verification_function):
+                self._set_internal_server_error_response()
+            elif not verification_function(actual_value):
+                self._set_bad_request_response("parameter " + parameter_name + " is not properly formatted.")
+            else:
+                return True
         return False
 
     # TODO Remove this as PUTs are now supported (to set gathering rates) or keep this and simply override the needed endpoints

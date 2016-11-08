@@ -5,12 +5,12 @@ class ProcessesProcessEndpoint(GeneralEndpointDataV1):
     def _get(self) -> bool:
         process_id = self._request_holder.get_params()["process"]
 
-        persisted_info = self._outbound_gate.get_last_measurement("process", process_id, "info")
+        persisted_info = self._outbound_gate.get_last_measurement("process", "info", process_id)
 
         if persisted_info is not None:
             self._response_holder.set_body_data({
-                "timestamp": persisted_info[0],
-                "general-info": persisted_info[1]
+                "timestamp": persisted_info["timestamp"],
+                "general-info": persisted_info["value"]
             })
 
         return True

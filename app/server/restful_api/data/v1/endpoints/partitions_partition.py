@@ -5,12 +5,12 @@ class PartitionsPartitionEndpoint(GeneralEndpointDataV1):
     def _get(self) -> bool:
         partition_id = self._request_holder.get_params()["partition"]
 
-        persisted_info = self._outbound_gate.get_last_measurement("partition", partition_id, "info")
+        persisted_info = self._outbound_gate.get_last_measurement("partition", "info", partition_id)
 
         if persisted_info is not None:
             self._response_holder.set_body_data({
-                "timestamp": persisted_info[0],
-                "general-info": persisted_info[1]
+                "timestamp": persisted_info["timestamp"],
+                "general-info": persisted_info["value"]
             })
 
         return True

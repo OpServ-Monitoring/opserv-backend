@@ -5,12 +5,12 @@ class DisksDiskEndpoint(GeneralEndpointDataV1):
     def _get(self) -> bool:
         disk_id = self._request_holder.get_params()["disk"]
 
-        persisted_info = self._outbound_gate.get_last_measurement("disk", disk_id, "info")
+        persisted_info = self._outbound_gate.get_last_measurement("disk", "info", disk_id)
 
         if persisted_info is not None:
             self._response_holder.set_body_data({
-                "timestamp": persisted_info[0],
-                "general-info": persisted_info[1]
+                "timestamp": persisted_info["timestamp"],
+                "general-info": persisted_info["value"]
             })
 
         return True
