@@ -4,15 +4,15 @@ from test_general import start_gather_thread, mock_db_open
 
 import misc.queue_manager as queue_manager
 import misc.data_manager as data_manager
-from database.database_open_helper import DatabaseOpenHelper   
+from database.database_open_helper import DatabaseOpenHelper
 
 DATA_MANAGER_TIMEOUT = 5
 DATA_MANAGER_TEST_COMPONENT = "cpu"
 DATA_MANAGER_TEST_METRIC = "usage"
 
-
 log = logging.getLogger("opserv.test")
 log.setLevel(logging.DEBUG)
+
 
 # Unit Test Set Gathering Queue
 def test_queue_setgathering():
@@ -20,7 +20,7 @@ def test_queue_setgathering():
     test_metric = "usage"
     test_delayms = 1000
     test_args = "5"
-    
+
     # First test with args
     queue_manager.set_gathering_rate(test_component, test_metric, test_delayms, test_args)
     result = queue_manager.set_gathering_rate_queue.get(False)
@@ -51,7 +51,7 @@ def test_queue_datarequest():
     test_component = "cpu"
     test_metric = "usage"
     test_args = "5"
-    
+
     # First test with args
     queue_manager.request_data(test_component, test_metric, test_args)
     result = queue_manager.request_data_queue.get(False)
@@ -78,8 +78,8 @@ def test_queue_realtime():
     test_component = "cpu"
     test_metric = "usage"
     test_measurement = {
-        "value" : 50,
-        "timestamp" : time.time()
+        "value": 50,
+        "timestamp": time.time()
     }
     test_args = "5"
 
@@ -101,11 +101,10 @@ def test_data_manager():
     test_component = "cpu"
     test_metric = "usage"
     test_measurement = {
-        "value" : 50,
-        "timestamp" : time.time()
+        "value": 50,
+        "timestamp": time.time()
     }
     test_args = "5"
-
 
     # First test with args
     result = data_manager.get_measurement(test_component, test_metric, test_args)
@@ -151,8 +150,8 @@ def start_datamanager():
         if newData != startData:
             dataIsTheSame = False
             endTime = time.time()
-        time.sleep(0.1) # Small sleep to not kill the cpu
-    
+        time.sleep(0.1)  # Small sleep to not kill the cpu
+
     # Raise exception when the data hasn't changed
     if dataIsTheSame:
         raise Exception("Data Manager Test failed after the timeout")
@@ -160,11 +159,12 @@ def start_datamanager():
 
 # System Test Data Manager
 def test_datamanager_gathering():
-    mock_db_open() 
+    mock_db_open()
     with start_gather_thread() as t:
         start_datamanager()
     return
-    
+
+
 # System Test Queue Manager
 def test_queuemanager_gathering():
     pass

@@ -16,7 +16,8 @@ class DefaultDataGate(OutboundGateInterface):
         if last_saved_measurement is not None and 'value' in last_saved_measurement:
             present_arguments = last_saved_measurement['value']
 
-        persisted_arguments = UnifiedDatabaseInterface.get_component_metrics_writer_reader().get_component_args(component)
+        persisted_arguments = UnifiedDatabaseInterface.get_component_metrics_writer_reader().get_component_args(
+            component)
 
         # TODO url encode every value
         return cls.__merge_two_lists(

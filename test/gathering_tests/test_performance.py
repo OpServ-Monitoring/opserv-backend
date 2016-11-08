@@ -9,11 +9,11 @@ from test_general import mock_db_open, start_gather_thread
 MAX_TEST_ITERATIONS = 10
 ITERATION_TEST_SPEED = 500
 
-SPEEDTEST_ITERATION_TIMEPRECISION = 100 # Iteration should be hit with +- 100ms precision^
-
+SPEEDTEST_ITERATION_TIMEPRECISION = 100  # Iteration should be hit with +- 100ms precision^
 
 log = logging.getLogger("opserv.test")
 log.setLevel(logging.DEBUG)
+
 
 def test_gathering_speed():
     '''
@@ -33,7 +33,7 @@ def test_gathering_speed():
             current_iteration += 1
     if current_iteration == max_test_tries:
         raise TimeoutError("Gathering Speed test failed all test tries")
-    
+
 
 def check_gathering_speed():
     '''
@@ -59,7 +59,7 @@ def check_gathering_speed():
 
         # Handle the immediate set gathering response
         queue_manager.read_measurement_from_queue("cpu", "usage", None, True,
-                                               (test_delayms + test_queue_timeout)/1000) 
+                                                  (test_delayms + test_queue_timeout) / 1000)
         current_iterations += 1
         duration = (time.time() - iteration_time) * 1000
         duration_list = [duration]
@@ -70,10 +70,10 @@ def check_gathering_speed():
         # Repeat getting reading measurements until the max iterations are reached
         while current_iterations < test_iterations:
             queue_manager.read_measurement_from_queue("cpu", "usage", None, True,
-                                                   (test_delayms + test_queue_timeout)/1000)
+                                                      (test_delayms + test_queue_timeout) / 1000)
             # Calculate duration of this iterations
             duration = (time.time() - iteration_time) * 1000
-            iteration_time = time.time() # Get the new time as fast as possible
+            iteration_time = time.time()  # Get the new time as fast as possible
             duration_list.append(duration)
             log.debug("Min Delay: %dms, Max Delay: %dms, Measured Delay: %fms, Current Iterations: %d",
                       lowest_delay, highest_delay, duration, current_iterations)
@@ -87,7 +87,6 @@ def check_gathering_speed():
                 assert lowest_delay < duration < highest_delay
             current_iterations += 1
 
-
         test_duration = time.time() - start_time
         # Ignore the first iteration in the calculation since it is immediate
         estimated_time = ((test_iterations - 1) * test_delayms) / 1000
@@ -96,7 +95,6 @@ def check_gathering_speed():
         log.debug("Total Time: %fs", test_duration)
 
     return
-
 
 
 def speedtest_insert_gatherings(delayms):

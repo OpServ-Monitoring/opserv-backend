@@ -117,6 +117,7 @@ def assert_argument_value(component, args):
                              .format(component))
     return args
 
+
 def check_comp_args(main_dict, component, args=None):
     """
         Performs all necessary assertions and checks on the component metric and args value

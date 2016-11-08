@@ -50,7 +50,8 @@ class PreferenceEndpoint(Endpoint):
     def _delete(self) -> bool:
         pref_key = self._request_holder.get_params()["pref_key"]
 
-        UnifiedDatabaseInterface.get_user_preferences_writer_reader().delete_user_preference(pref_key)  # TODO Exchange with data gate
+        UnifiedDatabaseInterface.get_user_preferences_writer_reader().delete_user_preference(
+            pref_key)  # TODO Exchange with data gate
 
         self._response_holder.set_body_data({
             "message": "preference " + pref_key + " deleted."

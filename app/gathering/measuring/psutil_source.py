@@ -204,7 +204,7 @@ class PsUtilWrap(MeasuringSource):
         new_time = time.time()
         bytes_per_second = 0
         last = {
-            "bytes" : 0
+            "bytes": 0
         }
         # Get specifc data for received and sent
         if received and name in self.net_last_receive_data:
@@ -288,7 +288,7 @@ class PsUtilWrap(MeasuringSource):
             log.error("Couldn't get corelist")
             log.error(error)
         return result
-        
+
     def get_partition_list(self):
         '''
             Returns a list of all the available partitions

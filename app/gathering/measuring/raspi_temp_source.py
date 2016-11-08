@@ -18,14 +18,13 @@ class RaspiTempSource(MeasuringSource):
 
     _supported_os = [Operating_System.linux]
     _supported_comps = {
-        "cpu" : {
+        "cpu": {
             "temperature"
         },
-        "core" : {
+        "core": {
             "frequency"
-            }
+        }
     }
-
 
     def init(self):
         '''
@@ -41,6 +40,7 @@ class RaspiTempSource(MeasuringSource):
             Returns True if deinit was successfull, False if it errord
         '''
         pass
+
     def get_measurement(self, component, metric, args):
         '''
             Reads the temperature and frequency out of a file.
@@ -51,7 +51,7 @@ class RaspiTempSource(MeasuringSource):
                 file_handle = open(RASPI_TEMP_FILE, 'r')
                 temp = file_handle.read()
                 file_handle.close()
-                temp = float(temp)/1000.0
+                temp = float(temp) / 1000.0
                 return temp
         if component == "core":
             if metric == "frequency":

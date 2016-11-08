@@ -90,13 +90,13 @@ implemented_hardware = {
 
 # Map System metrics onto the regular components
 SYSTEM_METRICS_TO_COMPS = {
-    "cpus" : "cpu",
-    "cores" : "core",
-    "gpus" : "gpu",
-    "partitions" : "partition",
-    "processes" : "process",
-    "networks" : "network",
-    "disks" : "disk"
+    "cpus": "cpu",
+    "cores": "core",
+    "gpus": "gpu",
+    "partitions": "partition",
+    "processes": "process",
+    "networks": "network",
+    "disks": "disk"
 }
 
 default_gathering_rates = {

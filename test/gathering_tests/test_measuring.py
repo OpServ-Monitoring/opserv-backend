@@ -9,12 +9,11 @@ import misc.data_manager as data_manager
 from misc.constants import implemented_hardware, HARDWARE_DEFAULTS, SYSTEM_METRICS_TO_COMPS
 import pytest
 
-
 DATA_TEST_TIMEOUT = 2.5
-
 
 log = logging.getLogger("opserv.test")
 log.setLevel(logging.DEBUG)
+
 
 # Test system gathering more specifically, e.g. check results for fitting structure
 def test_system_gathering():
@@ -32,6 +31,7 @@ def test_all_components():
     with start_gather_thread() as t:
         check_all_hardware()
     return
+
 
 def test_gathering_delete():
     '''
@@ -71,12 +71,13 @@ def check_all_hardware():
         for met in implemented_hardware[hw]:
             if HARDWARE_DEFAULTS[hw][0] and HARDWARE_DEFAULTS[hw][1] is not None:
                 queue_manager.request_data_queue.put({"component": hw, "metric": met,
-                                                    "args" : HARDWARE_DEFAULTS[hw][1]})
+                                                      "args": HARDWARE_DEFAULTS[hw][1]})
                 queue_manager.get_queue(hw, met,
-                                       HARDWARE_DEFAULTS[hw][1]).get(timeout=DATA_TEST_TIMEOUT)
+                                        HARDWARE_DEFAULTS[hw][1]).get(timeout=DATA_TEST_TIMEOUT)
             elif not HARDWARE_DEFAULTS[hw][0]:
                 queue_manager.request_data_queue.put({"component": hw, "metric": met})
                 queue_manager.get_queue(hw, met).get(timeout=DATA_TEST_TIMEOUT)
+
 
 # Check that system gathering is always a list
 def test_system_is_list():
@@ -88,7 +89,7 @@ def test_system_is_list():
         for metric in implemented_hardware["system"]:
             queue_manager.request_data("system", metric)
             return_type = type(queue_manager.read_measurement_from_queue("system", metric,
-                                                                      blocking=True)["value"])
+                                                                         blocking=True)["value"])
             assert return_type == type(list())
     return
 
@@ -100,6 +101,7 @@ def test_ohm():
     ohm = OHMSource()
     newTemp = ohm.get_measurement("cpu", "temperature", "0")
     ohm.deinit()
+
 
 def test_advanced_all_components():
     '''
@@ -131,8 +133,9 @@ def test_advanced_all_components():
                     for metric in implemented_hardware[comp]:
                         queue_manager.request_data(comp, metric, arg)
                         result = queue_manager.read_measurement_from_queue(comp, metric, arg, True,
-                                                                       SYSTEM_DATA_TIMEOUT)
+                                                                           SYSTEM_DATA_TIMEOUT)
                     log.info("result: %s", result)
+
 
 def test_psutil_network():
     '''
@@ -147,8 +150,6 @@ def test_psutil_network():
         log.info(ps.get_measurement("network", "transmitpersec", netif))
         log.info(ps.get_measurement("network", "info", netif))
         time.sleep(0.5)
-
-
 
 # Get System Data, and test everything ADVANCED
 

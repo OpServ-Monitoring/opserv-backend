@@ -90,4 +90,3 @@ class TestConfigurationSettings(TestCase):
             os.remove("test.conf")
         except PermissionError:
             print("Could not delete file: test.conf")
-

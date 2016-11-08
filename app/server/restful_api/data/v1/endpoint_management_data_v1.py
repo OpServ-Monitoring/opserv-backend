@@ -2,7 +2,7 @@ from .endpoints.disks_disk import DisksDiskEndpoint
 from .endpoints.disks_disk_status import DisksDiskStatusEndpoint
 from .endpoints.disks_disk_temperature import DisksDiskTemperatureEndpoint
 from .endpoints.disks_disk_usage import DisksDiskUsageEndpoint
-from .endpoints.memory import MemoryEndpoint
+# from .endpoints.memory import MemoryEndpoint
 # from .endpoints.memory_used import MemoryUsedEndpoint
 # from .endpoints.memory_free import MemoryFreeEndpoint
 # from .endpoints.memory_total import MemoryTotalEndpoint

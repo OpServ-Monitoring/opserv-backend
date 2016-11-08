@@ -4,6 +4,7 @@ from collections import Iterable
 
 import time
 
+
 # TODO Documentation needed
 
 
@@ -32,10 +33,10 @@ class OutboundGateInterface(metaclass=ABCMeta):
     def get_measurements(cls,
                          component: str,
                          metric: str,
-                         argument: str=None,
-                         start_time: int=0,
-                         end_time: int=time.time() * 1000,
-                         limit: int=5000) -> Iterable:
+                         argument: str = None,
+                         start_time: int = 0,
+                         end_time: int = time.time() * 1000,
+                         limit: int = 5000) -> Iterable:
         """
         ???
         :param component: A String ???
@@ -49,7 +50,7 @@ class OutboundGateInterface(metaclass=ABCMeta):
 
     @classmethod
     @abstractmethod
-    def get_last_measurement(cls, component: str, metric: str, argument: str=None) -> dict:
+    def get_last_measurement(cls, component: str, metric: str, argument: str = None) -> dict:
         """
         ???
         :param component: A String ???
@@ -60,7 +61,7 @@ class OutboundGateInterface(metaclass=ABCMeta):
 
     @classmethod
     @abstractmethod
-    def get_gathering_rate(cls, component: str, metric: str, argument: str=None) -> int:
+    def get_gathering_rate(cls, component: str, metric: str, argument: str = None) -> int:
         """
         Retrieves the currently set gathering rate in milliseconds or 0 if gathering is disabled
         :param component: A String ???
@@ -71,7 +72,7 @@ class OutboundGateInterface(metaclass=ABCMeta):
 
     @classmethod
     @abstractmethod
-    def set_gathering_rate(cls, component: str, metric: str, gathering_rate: int, argument: str=None) -> None:
+    def set_gathering_rate(cls, component: str, metric: str, gathering_rate: int, argument: str = None) -> None:
         """
         Sets the gathering rate of the defined component metric
         :param component: A string ???

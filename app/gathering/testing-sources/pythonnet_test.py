@@ -3,27 +3,27 @@ import time
 import os
 import atexit
 
-
-#sys.path.append("C:/Users/Alex/Dropbox/Schule/Semester 5/Studienarbeit 2/Source/opserv-backend/app/gathering/testing-sources")
+# sys.path.append("C:/Users/Alex/Dropbox/Schule/Semester 5/Studienarbeit 2/Source/opserv-backend/app/gathering/testing-sources")
 sys.path.append("C:/Users/Lucas/PycharmProjects/opserv-backend/app/extern_dependency")
 
-#sys.path.append(os.path.dirname(__file__))
+# sys.path.append(os.path.dirname(__file__))
 
 typeList = [
     "Voltage",
-    "Clock", # MHz
-    "Temperature", # °C
-    "Load", # %
-    "Fan", # RPM
-    "Flow", # L/h
-    "Control", # %
-    "Level", # %
-    "Factor", # 1
-    "Power", # W
-    "Data", # GB = 2^30 Bytes    
+    "Clock",  # MHz
+    "Temperature",  # °C
+    "Load",  # %
+    "Fan",  # RPM
+    "Flow",  # L/h
+    "Control",  # %
+    "Level",  # %
+    "Factor",  # 1
+    "Power",  # W
+    "Data",  # GB = 2^30 Bytes
 ]
 
 tempList = []
+
 
 def hardwareAdded(hardware):
     print(hardware.Name)
@@ -32,7 +32,7 @@ def hardwareAdded(hardware):
         print(typeList[sensor.SensorType])
         print(sensor.Name, sensor.Value)
         if typeList[sensor.SensorType] == "Temperature":
-            tempList.append([hardware,sensor])
+            tempList.append([hardware, sensor])
         for val in sensor.Values:
             print(val)
     for hw in hardware.SubHardware:
@@ -43,13 +43,9 @@ import clr
 
 clr.AddReference("OpenHardwareMonitorLib")
 
-
 from OpenHardwareMonitor import Hardware
 
-
-
 print(Hardware.Computer())
-
 
 pc = Hardware.Computer()
 pc.MotherboardEnabled = True
@@ -62,11 +58,13 @@ pc.HardwareRemoved += hardwareAdded
 print(pc.GetReport())
 pc.Open()
 
+
 def closingHandler():
     pc.Close()
     print("closed that ho")
-atexit.register(closingHandler)
 
+
+atexit.register(closingHandler)
 
 print("SUCCEED")
 startTime = time.time()

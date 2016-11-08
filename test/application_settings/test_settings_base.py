@@ -4,7 +4,6 @@ from unittest import TestCase
 
 
 class TestSettingsBase(TestCase):
-
     def setUp(self):
         application_settings.settings = {
             "test_0": "hello",

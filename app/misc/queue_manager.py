@@ -91,7 +91,7 @@ def put_measurement_into_queue(component, metric, measurement, args=None):
 
 
 def read_measurement_from_queue(component, metric, args=None, blocking=False,
-                             timeout=QUEUEMANAGER_DEFAULT_TIMEOUT):
+                                timeout=QUEUEMANAGER_DEFAULT_TIMEOUT):
     """ Get a single measurement from the specified queue.
         Warning, could cause Timeout Errors"""
     args = check_comp_args(realtime_queues, component, args)
