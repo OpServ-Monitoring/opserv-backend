@@ -22,7 +22,3 @@ class CpucoresEndpoint(RootGeneralChildEndpoint):
     @staticmethod
     def _get_hardware_value_type() -> str:
         return "cores"
-
-    @staticmethod
-    def _get_component_type() -> str:
-        return "core"

@@ -18,10 +18,6 @@ class CpusEndpoint(RootGeneralChildEndpoint):
         return "cpus"
 
     @staticmethod
-    def _get_component_type() -> str:
-        return "cpu"
-
-    @staticmethod
     def _get_children_endpoint_type() -> Endpoint:
         from .cpus_cpu import CpusCpuEndpoint
 

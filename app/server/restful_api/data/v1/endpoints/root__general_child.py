@@ -34,11 +34,6 @@ class RootGeneralChildEndpoint(GeneralEndpointDataV1, metaclass=ABCMeta):
 
     @staticmethod
     @abstractmethod
-    def _get_component_type() -> str:
-        pass
-
-    @staticmethod
-    @abstractmethod
     def _get_children_endpoint_type() -> Endpoint:
         pass
 

@@ -18,10 +18,6 @@ class GpusEndpoint(RootGeneralChildEndpoint):
         return "gpus"
 
     @staticmethod
-    def _get_component_type() -> str:
-        return "gpu"
-
-    @staticmethod
     def _get_children_endpoint_type() -> Endpoint:
         from .gpus_gpu import GpusGpuEndpoint
 

@@ -18,10 +18,6 @@ class PartitionsEndpoint(RootGeneralChildEndpoint):
         return "partitions"
 
     @staticmethod
-    def _get_component_type() -> str:
-        return "partition"
-
-    @staticmethod
     def _get_children_endpoint_type() -> Endpoint:
         from .partitions_partition import PartitionsPartitionEndpoint
 

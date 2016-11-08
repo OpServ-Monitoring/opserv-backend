@@ -18,10 +18,6 @@ class DisksEndpoint(RootGeneralChildEndpoint):
         return "disks"
 
     @staticmethod
-    def _get_component_type() -> str:
-        return "disk"
-
-    @staticmethod
     def _get_children_endpoint_type() -> Endpoint:
         from .disks_disk import DisksDiskEndpoint
 

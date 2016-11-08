@@ -18,10 +18,6 @@ class ProcessesEndpoint(RootGeneralChildEndpoint):
         return "processes"
 
     @staticmethod
-    def _get_component_type() -> str:
-        return "process"
-
-    @staticmethod
     def _get_children_endpoint_type() -> Endpoint:
         from .processes_process import ProcessesProcessEndpoint
 
