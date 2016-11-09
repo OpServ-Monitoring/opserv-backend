@@ -12,7 +12,7 @@ before_install:
     
 install:
 - pip install -r app/prerequirements.txt
-- xargs -a app/requirements.txt -n 1 pip install || true
+- pip install -r app/requirements.txt || true
 - pip install -r app/testrequirements.txt
 # - pip install codeclimate-test-reporter
 - pip install coveralls

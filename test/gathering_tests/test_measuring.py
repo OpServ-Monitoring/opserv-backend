@@ -9,7 +9,7 @@ import misc.data_manager as data_manager
 from misc.constants import implemented_hardware, HARDWARE_DEFAULTS, SYSTEM_METRICS_TO_COMPS
 import pytest
 
-DATA_TEST_TIMEOUT = 2.5
+DATA_TEST_TIMEOUT = 5
 
 log = logging.getLogger("opserv.test")
 log.setLevel(logging.DEBUG)
@@ -99,7 +99,8 @@ def test_system_is_list():
 def test_ohm():
     from gathering.measuring.ohm_source import OHMSource
     ohm = OHMSource()
-    newTemp = ohm.get_measurement("cpu", "temperature", "0")
+    if ohm.can_measure("cpu", "temperature"):
+        newTemp = ohm.get_measurement("cpu", "temperature", "0")
     ohm.deinit()
 
 
@@ -111,7 +112,7 @@ def test_advanced_all_components():
     # Get available args for each componennt
     # RequestData for each comp/arg/metric only do one process
     # Wait for a queue entry for each combo
-    SYSTEM_DATA_TIMEOUT = 3
+    SYSTEM_DATA_TIMEOUT = 6
     mock_db_open()
     with start_gather_thread() as t:
         available_args = {}

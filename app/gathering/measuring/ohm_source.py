@@ -157,7 +157,7 @@ class OHMSource(MeasuringSource):
         elif component == "gpu":
             result = self.get_gpu_measurement(metric, args)
         elif component == "memory":
-            result = self.get_memory_measurement(metric, args)
+            result = self.get_memory_measurement(metric)
         elif component == "disk":
             result = self.get_disk_measurement(metric, args)
         elif component == "system":
