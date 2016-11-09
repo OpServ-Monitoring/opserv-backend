@@ -77,7 +77,7 @@ class OHMSource(MeasuringSource):
     cpu_list = []
     core_list = []
     gpu_list = []
-    memory_data = {}
+    memory_data = None
     disk_list = []
 
     def __init__(self):
@@ -276,7 +276,11 @@ class OHMSource(MeasuringSource):
         """
             Sub-Handler to process memory in the system
         """
-        pass
+        log.info("Got a new RAM hardware")
+        self.add_supported_metric("memory", "free")
+        self.add_supported_metric("memory", "used")
+        self.add_supported_metric("memory", "total")
+        self.memory_data = hardware
 
     def add_disk(self, hardware):
         """
@@ -328,11 +332,20 @@ class OHMSource(MeasuringSource):
         """
         pass
 
-    def get_memory_measurement(self, metric, args):
+    def get_memory_measurement(self, metric):
         """
             Updates the memory hardware object and returns the value of the specified metric
         """
-        pass
+        self.memory_data.Update()
+        byte_multiplier = 1024 * 1024 * 1024
+        if metric == "free":
+            return self.memory_data.availableMemory.Value * byte_multiplier
+        elif metric == "used":
+            return self.memory_data.usedMemory.Value * byte_multiplier
+        elif metric == "total":
+            return (self.memory_data.usedMemory.Value
+                    + self.memory_data.availableMemory.Value) * byte_multiplier
+
 
     def get_system_measurement(self, metric):
         """

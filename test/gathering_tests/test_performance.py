@@ -5,6 +5,7 @@ from queue import Empty
 import misc.data_manager as data_manager
 import misc.queue_manager as queue_manager
 from test_general import mock_db_open, start_gather_thread
+import pytest
 
 MAX_TEST_ITERATIONS = 10
 ITERATION_TEST_SPEED = 500
@@ -14,7 +15,7 @@ SPEEDTEST_ITERATION_TIMEPRECISION = 100  # Iteration should be hit with +- 100ms
 log = logging.getLogger("opserv.test")
 log.setLevel(logging.DEBUG)
 
-
+@pytest.mark.skipif(True,reason="currently disabled")
 def test_gathering_speed():
     '''
         Wrapper for the gathering speed test. Inconsistencies especialle on VMs
