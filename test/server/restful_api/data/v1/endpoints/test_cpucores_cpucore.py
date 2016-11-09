@@ -8,10 +8,10 @@ from server.restful_api.general.requestholder import RequestHolder
 
 class TestCpucoresCpucore(TestCase):
     def setUp(self):
-        class MockCpucoresEndpoint(CpucoresCpucoreEndpoint):
+        class MockEndpoint(CpucoresCpucoreEndpoint):
             _outbound_gate = BaseMockOutboundGate
 
-        self.endpoint = MockCpucoresEndpoint()
+        self.endpoint = MockEndpoint()
 
         self.request = RequestHolder()
         self.request.set_uri("opserv.org/test/api/data/v1/cpu-cores/id")

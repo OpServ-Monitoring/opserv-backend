@@ -45,7 +45,7 @@ class CpucoresCpucoreEndpoint(GeneralEndpointDataV1):
     @classmethod
     def _get_mandatory_parameters(cls):
         return [
-            CpucoresCpucoreEndpoint.get_cpucore_id_validator()
+            cls.get_cpucore_id_validator()
         ]
 
     @classmethod

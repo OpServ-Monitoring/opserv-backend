@@ -50,7 +50,7 @@ class GpusGpuEndpoint(GeneralEndpointDataV1):
     @classmethod
     def _get_mandatory_parameters(cls):
         return [
-            GpusGpuEndpoint.get_gpu_id_validator()
+            cls.get_gpu_id_validator()
         ]
 
     @classmethod

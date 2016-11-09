@@ -46,7 +46,7 @@ class ProcessesProcessEndpoint(GeneralEndpointDataV1):
     @classmethod
     def _get_mandatory_parameters(cls):
         return [
-            ProcessesProcessEndpoint.get_process_id_validator()
+            cls.get_process_id_validator()
         ]
 
     @classmethod

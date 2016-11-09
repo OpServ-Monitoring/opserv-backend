@@ -46,7 +46,7 @@ class PartitionsPartitionEndpoint(GeneralEndpointDataV1):
     @classmethod
     def _get_mandatory_parameters(cls):
         return [
-            PartitionsPartitionEndpoint.get_partition_id_validator()
+            cls.get_partition_id_validator()
         ]
 
     @classmethod

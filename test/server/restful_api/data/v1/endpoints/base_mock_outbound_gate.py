@@ -15,6 +15,8 @@ class BaseMockOutboundGate(OutboundGateInterface):
 
     @classmethod
     def is_argument_valid(cls, argument: str, component: str) -> bool:
+        print("is arg valid", argument in BaseMockOutboundGate.get_valid_arguments(component))
+
         return argument in BaseMockOutboundGate.get_valid_arguments(component)
 
     @classmethod

@@ -25,6 +25,7 @@ class GeneralEndpointDataV1(Endpoint, metaclass=ABCMeta):
         verification_function = mandatory_parameter[1]
 
         params = self._request_holder.get_params()
+
         if params is None or parameter_name not in params:
             self._set_bad_request_response("parameter " + parameter_name + " missing.")
         else:

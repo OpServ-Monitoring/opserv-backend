@@ -44,7 +44,7 @@ class NetworksNetworkEndpoint(GeneralEndpointDataV1):
     @classmethod
     def _get_mandatory_parameters(cls):
         return [
-            NetworksNetworkEndpoint.get_network_id_validator()
+            cls.get_network_id_validator()
         ]
 
     @classmethod

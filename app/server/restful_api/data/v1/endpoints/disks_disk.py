@@ -46,7 +46,7 @@ class DisksDiskEndpoint(GeneralEndpointDataV1):
     @classmethod
     def _get_mandatory_parameters(cls):
         return [
-            DisksDiskEndpoint.get_disk_id_validator()
+            cls.get_disk_id_validator()
         ]
 
     @classmethod
