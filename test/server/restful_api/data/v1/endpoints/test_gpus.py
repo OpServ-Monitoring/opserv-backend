@@ -7,8 +7,10 @@ from base_mock_outbound_gate import BaseMockOutboundGate
 
 class TestGpusEndpoint(TestCase):
     def setUp(self):
-        self.endpoint = GpusEndpoint()
-        self.endpoint.set_outbound_gate(BaseMockOutboundGate)
+        class MockCpucoresEndpoint(GpusEndpoint):
+            _outbound_gate = BaseMockOutboundGate
+
+        self.endpoint = MockCpucoresEndpoint()
 
         self.request = RequestHolder()
         self.request.set_uri("opserv.org/test/api/data/v1/gpus")

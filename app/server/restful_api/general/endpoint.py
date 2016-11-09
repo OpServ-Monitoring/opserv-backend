@@ -72,7 +72,6 @@ class Endpoint(metaclass=ABCMeta):
         in case the request is a GET request
         :return: A boolean indicating whether to carry on processing the request or not
         """
-        pass
 
     @abstractmethod
     def _post(self) -> bool:
@@ -81,7 +80,6 @@ class Endpoint(metaclass=ABCMeta):
         in case the request is a POST request
         :return: A boolean indicating whether to carry on processing the request or not
         """
-        pass
 
     @abstractmethod
     def _put(self) -> bool:
@@ -90,7 +88,6 @@ class Endpoint(metaclass=ABCMeta):
         in case the request is a PUT request
         :return: A boolean indicating whether to carry on processing the request or not
         """
-        pass
 
     @abstractmethod
     def _delete(self) -> bool:
@@ -99,7 +96,6 @@ class Endpoint(metaclass=ABCMeta):
         in case the request is a DELETE request
         :return: A boolean indicating whether to carry on processing the request or not
         """
-        pass
 
     @abstractmethod
     def _post_process(self) -> bool:
@@ -108,7 +104,6 @@ class Endpoint(metaclass=ABCMeta):
         Override this method in any subclass of Endpoint to manipulate the Response object afterwards.
         :return: A boolean indicating whether to carry on processing the request or not
         """
-        pass
 
     @staticmethod
     @abstractmethod
@@ -117,7 +112,6 @@ class Endpoint(metaclass=ABCMeta):
         Override this method in any subclass of Endpoint to set the paths this endpoint should operate on
         :return: A tupel of paths this endpoint should operate on
         """
-        pass
 
     def __generate_links(self):
         links = {}
@@ -153,7 +147,6 @@ class Endpoint(metaclass=ABCMeta):
         Each type of endpoint should have a name which is displayed in the api as part of the links section
         :return: A string indicating the type of resource this endpoint represents
         """
-        pass
 
     @staticmethod
     @abstractmethod
@@ -162,7 +155,6 @@ class Endpoint(metaclass=ABCMeta):
         To support HATEOAS each type of endpoint should define a parent endpoint.
         :return: A (subclass of) endpoint that is the direct api-parent of this endpoint or None
         """
-        pass
 
     def __get_parent_uri(self):
         found_match = self.__match_for_parent_path()
@@ -266,10 +258,6 @@ class Endpoint(metaclass=ABCMeta):
         :return: None
         """
         self.__set_fault_response(500, "Internal server error")
-
-    @classmethod
-    def set_outbound_gate(cls, outbound_gate: OutboundGateInterface):
-        cls._outbound_gate = outbound_gate
 
     @staticmethod
     def KEEP_PROCESSING():

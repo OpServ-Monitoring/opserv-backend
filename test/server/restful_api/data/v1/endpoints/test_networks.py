@@ -5,10 +5,12 @@ from server.restful_api.general.requestholder import RequestHolder
 from base_mock_outbound_gate import BaseMockOutboundGate
 
 
-class TestDisksEndpoint(TestCase):
+class TestNetworksEndpoint(TestCase):
     def setUp(self):
-        self.endpoint = NetworksEndpoint()
-        self.endpoint.set_outbound_gate(BaseMockOutboundGate)
+        class MockCpucoresEndpoint(NetworksEndpoint):
+            _outbound_gate = BaseMockOutboundGate
+
+        self.endpoint = MockCpucoresEndpoint()
 
         self.request = RequestHolder()
         self.request.set_uri("opserv.org/test/api/data/v1/networks")

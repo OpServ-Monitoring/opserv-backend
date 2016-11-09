@@ -7,8 +7,10 @@ from base_mock_outbound_gate import BaseMockOutboundGate
 
 class TestCpucoresEndpoint(TestCase):
     def setUp(self):
-        self.endpoint = CpucoresEndpoint()
-        self.endpoint.set_outbound_gate(BaseMockOutboundGate)
+        class MockCpucoresEndpoint(CpucoresEndpoint):
+            _outbound_gate = BaseMockOutboundGate
+
+        self.endpoint = MockCpucoresEndpoint()
 
         self.request = RequestHolder()
         self.request.set_uri("opserv.org/test/api/data/v1/cpu-cores")
