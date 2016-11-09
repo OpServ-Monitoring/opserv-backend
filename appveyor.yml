@@ -68,6 +68,7 @@ install:
   # target Python version and architecture
   - "%CMD_IN_ENV% pip install -r app/prerequirements.txt"
   - "%CMD_IN_ENV% pip install -r app/requirements.txt"
+  - "%CMD_IN_ENV% pip install -r app/winrequirements.txt"
   - "%CMD_IN_ENV% pip install -r app/testrequirements.txt"
   - "%CMD_IN_ENV% pip install codeclimate-test-reporter"
 
