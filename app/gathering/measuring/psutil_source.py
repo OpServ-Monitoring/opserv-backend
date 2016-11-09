@@ -181,7 +181,18 @@ class PsUtilWrap(MeasuringSource):
         '''
         try:
             if metric == "info":
-                return str(self.psutil.net_if_stats()[args]) + str(self.psutil.net_if_addrs()[args])
+                network_info = ""
+                try:
+                    network_info += str(self.psutil.net_if_stats()[args])
+                except KeyError as err: # Error can be catched, 
+                    log.error(err)
+                    log.error("Network Info couldnt be fetched with net_if_stats")
+                try:
+                    network_info += str(self.psutil.net_if_addrs()[args])
+                except KeyError as err:
+                    log.error(err)
+                    log.error("Network Info couldnt be fetched with net_if_stats")
+                return network_info
             elif metric == "receivepersec":
                 # Check if there is already an entry for this netif
                 # If, then check if the bytes went down since last TimeoutError
