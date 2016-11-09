@@ -1,5 +1,12 @@
+import logging
+
 from database.helper.base_database_connector import DatabaseConnector
 from database.tables.measurements_table_management import MeasurementsTableManagement
+from sqlite3 import IntegrityError
+
+log = logging.getLogger("database.transaction")
+log.setLevel(logging.DEBUG)
+
 
 
 class MeasurementInsertTransaction(DatabaseConnector):
@@ -29,9 +36,11 @@ class MeasurementInsertTransaction(DatabaseConnector):
             ),
             self.__insertions
         )
-
-        connection.commit()
-
+        try:
+            connection.commit()
+        except IntegrityError as err:
+            log.error("Error during commit of transaction, probably multiple measurements per millisecond")
+            log.error(err) 
         self.__reset_variables()
 
     def rollback(self):
