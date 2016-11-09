@@ -2,10 +2,10 @@ from .endpoints.disks_disk import DisksDiskEndpoint
 from .endpoints.disks_disk_status import DisksDiskStatusEndpoint
 from .endpoints.disks_disk_temperature import DisksDiskTemperatureEndpoint
 from .endpoints.disks_disk_usage import DisksDiskUsageEndpoint
-# from .endpoints.memory import MemoryEndpoint
-# from .endpoints.memory_used import MemoryUsedEndpoint
-# from .endpoints.memory_free import MemoryFreeEndpoint
-# from .endpoints.memory_total import MemoryTotalEndpoint
+from .endpoints.memory import MemoryEndpoint
+from .endpoints.memory_used import MemoryUsedEndpoint
+from .endpoints.memory_free import MemoryFreeEndpoint
+from .endpoints.memory_total import MemoryTotalEndpoint
 from .endpoints.networks_network import NetworksNetworkEndpoint
 from .endpoints.networks_network_receivepersec import NetworksNetworkReceivepersecEndpoint
 from .endpoints.networks_network_transmitpersec import \
@@ -20,14 +20,14 @@ from .endpoints.processes_process import ProcessesProcessEndpoint
 from .endpoints.processes_process_cpuusage import ProcessesProcessCpuusageEndpoint
 from .endpoints.processes_process_memusage import ProcessesProcessMemusageEndpoint
 from .endpoints.processes_process_name import ProcessesProcessNameEndpoint
-# from .endpoints.system import SystemEndpoint
-# from .endpoints.system_cpucores import SystemCpucoresEndpoint
-# from .endpoints.system_cpus import SystemCpusEndpoint
-# from .endpoints.system_disks import SystemDisksEndpoint
-# from .endpoints.system_gpus import SystemGpusEndpoint
-# from .endpoints.system_networks import SystemNetworksEndpoint
-# from .endpoints.system_partitions import SystemPartitionsEndpoint
-# from .endpoints.system_processes import SystemProcessesEndpoint
+from .endpoints.system import SystemEndpoint
+from .endpoints.system_cpucores import SystemCpucoresEndpoint
+from .endpoints.system_cpus import SystemCpusEndpoint
+from .endpoints.system_disks import SystemDisksEndpoint
+from .endpoints.system_gpus import SystemGpusEndpoint
+from .endpoints.system_networks import SystemNetworksEndpoint
+from .endpoints.system_partitions import SystemPartitionsEndpoint
+from .endpoints.system_processes import SystemProcessesEndpoint
 from .data_api_v1_endpoint import DataApiV1Endpoint
 from .endpoints.cpucores import CpucoresEndpoint
 from .endpoints.cpucores_cpucore import CpucoresCpucoreEndpoint
@@ -89,11 +89,11 @@ class EndpointManagementDataV1(EndpointManagement):
             GpusGpuVramusageEndpoint,  # v1/gpus/<string:gpu>/vramusage
 
             # - - - RAM - - - #
-            # MemoryEndpoint,  # v1/memory
-            # MemoryFreeEndpoint,  # v1/memory/free
-            # MemoryTotalEndpoint,  # v1/memory/total
-            # MemoryUsedEndpoint,  # v1/memory/used
-            #
+            MemoryEndpoint,  # v1/memory
+            MemoryFreeEndpoint,  # v1/memory/free
+            MemoryTotalEndpoint,  # v1/memory/total
+            MemoryUsedEndpoint,  # v1/memory/used
+
             # - - - DISK - - - #
             DisksEndpoint,  # v1/disks
             DisksDiskEndpoint,  # v1/disks/<string:disk>
@@ -119,15 +119,15 @@ class EndpointManagementDataV1(EndpointManagement):
             ProcessesProcessEndpoint,  # v1/processes/<string:process>
             ProcessesProcessCpuusageEndpoint,  # v1/processes/<string:process>/cpuusage
             ProcessesProcessMemusageEndpoint,  # v1/processes/<string:process>/memusage
-            ProcessesProcessNameEndpoint  # v1/processes/<string:process>/name
+            ProcessesProcessNameEndpoint,  # v1/processes/<string:process>/name
 
             # # - - - SYSTEM - - - #
-            # SystemEndpoint,  # v1/system
-            # SystemCpucoresEndpoint,  # v1/system/cpucores
-            # SystemCpusEndpoint,  # v1/system/cpus
-            # SystemDisksEndpoint,  # v1/system/disks
-            # SystemGpusEndpoint,  # v1/system/gpus
-            # SystemNetworksEndpoint,  # v1/system/networks
-            # SystemPartitionsEndpoint,  # v1/system/partitions
-            # SystemProcessesEndpoint  # v1/system/processes
+            SystemEndpoint,  # v1/system
+            SystemCpucoresEndpoint,  # v1/system/cpu-cores
+            SystemCpusEndpoint,  # v1/system/cpus
+            SystemDisksEndpoint,  # v1/system/disks
+            SystemGpusEndpoint,  # v1/system/gpus
+            SystemNetworksEndpoint,  # v1/system/networks
+            SystemPartitionsEndpoint,  # v1/system/partitions
+            SystemProcessesEndpoint  # v1/system/processes
         ]

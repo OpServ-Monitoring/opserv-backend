@@ -35,3 +35,12 @@ class TestUnifiedDatabaseInterface(TestCase):
             UnifiedDatabaseInterface().get_component_metrics_writer_reader(),
             ComponentMetricsWriterReader
         )
+
+    def test_get_database_opener(self):
+        from database.connectors.database_opener import DatabaseOpener
+
+        self.assertIsInstance(
+            UnifiedDatabaseInterface().get_database_opener(),
+            DatabaseOpener
+        )
+

@@ -1,19 +1,9 @@
 from collections import Iterable
 
-from ....general.endpoint import Endpoint
+from server.restful_api.data.v1.endpoints.__general_data_v1 import GeneralEndpointDataV1
 
 
-# TODO Implement endpoint
-class SystemEndpoint(Endpoint):
-    def _post_process(self) -> bool:
-        return Endpoint.KEEP_PROCESSING()
-
-    def _put(self) -> bool:
-        pass
-
-    def _post(self) -> bool:
-        pass
-
+class SystemEndpoint(GeneralEndpointDataV1):
     @classmethod
     def get_paths(cls):
         return [
@@ -31,7 +21,7 @@ class SystemEndpoint(Endpoint):
         from .system_processes import SystemProcessesEndpoint
 
         return [
-            ("/cpucores", SystemCpucoresEndpoint),
+            ("/cpu-cores", SystemCpucoresEndpoint),
             ("/cpus", SystemCpusEndpoint),
             ("/disks", SystemDisksEndpoint),
             ("/gpus", SystemGpusEndpoint),
@@ -46,11 +36,10 @@ class SystemEndpoint(Endpoint):
 
         return DataApiV1Endpoint
 
-    def _delete(self) -> bool:
-        pass
-
     def _get(self) -> bool:
-        pass
+        # No data section available
+
+        return self.KEEP_PROCESSING()
 
     @classmethod
     def get_name(cls):

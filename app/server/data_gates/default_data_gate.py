@@ -3,6 +3,7 @@ from collections import Iterable
 from urllib.parse import unquote_plus, quote_plus
 from database.unified_database_interface import UnifiedDatabaseInterface
 from misc import data_manager
+from misc import queue_manager
 from server.data_gates.outbound_gate_interface import OutboundGateInterface
 
 
@@ -96,7 +97,12 @@ class DefaultDataGate(OutboundGateInterface):
             gathering_rate
         )
 
-        return None
+        queue_manager.set_gathering_rate(
+            component,
+            metric,
+            gathering_rate,
+            argument
+        )
 
     @classmethod
     def get_user_preference(cls, key: str) -> str:
@@ -130,8 +136,12 @@ class DefaultDataGate(OutboundGateInterface):
 
     @classmethod
     def encode_argument(cls, argument) -> str:
+        if argument is None:
+            return None
         return quote_plus(argument)
 
     @classmethod
     def decode_argument(cls, argument) -> str:
+        if argument is None:
+            return None
         return unquote_plus(argument)

@@ -23,9 +23,14 @@ class MemoryEndpoint(GeneralEndpointDataV1):
 
     @classmethod
     def _get_children(cls):
-        # TODO children
+        from .memory_free import MemoryFreeEndpoint
+        from .memory_total import MemoryTotalEndpoint
+        from .memory_used import MemoryUsedEndpoint
 
         return [
+            ("/free", MemoryFreeEndpoint),
+            ("/total", MemoryTotalEndpoint),
+            ("/used", MemoryUsedEndpoint)
         ]
 
     @classmethod

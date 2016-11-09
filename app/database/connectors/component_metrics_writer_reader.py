@@ -37,6 +37,10 @@ class ComponentMetricsWriterReader(DatabaseConnector):
     def get_gathering_rate(cls, component_type, component_arg, metric):
         connection = cls._connection_helper.retrieve_database_connection()
 
+        # TODO Better handle this
+        if component_arg is None:
+            component_arg = "default"
+
         gathering_rate = connection.execute(
             "SELECT * FROM {0} WHERE {1} = ? AND {2} = ? AND {3} = ? AND {4} IS NOT NULL".format(
                 ComponentMetricsTableManagement.TABLE_NAME(),

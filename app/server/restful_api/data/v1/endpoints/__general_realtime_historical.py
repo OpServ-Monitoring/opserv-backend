@@ -1,10 +1,11 @@
 import time
 from abc import ABCMeta, abstractmethod
 
+from server.restful_api.data.v1.endpoints.__general_gathering_metric import GeneralGatheringMetricEndpoint
 from .__general_data_v1 import GeneralEndpointDataV1
 
 
-class GeneralEndpointRealtimeHistorical(GeneralEndpointDataV1, metaclass=ABCMeta):
+class GeneralEndpointRealtimeHistorical(GeneralGatheringMetricEndpoint, metaclass=ABCMeta):
     def __init__(self):
         super(GeneralEndpointRealtimeHistorical, self).__init__()
 
@@ -15,7 +16,7 @@ class GeneralEndpointRealtimeHistorical(GeneralEndpointDataV1, metaclass=ABCMeta
 
     def _pre_process(self):
         # Check for mandatory parameters
-        keep_processing = super(GeneralEndpointRealtimeHistorical, self)._pre_process()
+        keep_processing = super(GeneralGatheringMetricEndpoint, self)._pre_process()
 
         if keep_processing:
             self.__read_headers()
@@ -23,10 +24,15 @@ class GeneralEndpointRealtimeHistorical(GeneralEndpointDataV1, metaclass=ABCMeta
         return keep_processing
 
     def _get(self):
-        if self._is_realtime:
-            return self._get_realtime_data()
+        keep_processing = super(GeneralEndpointRealtimeHistorical, self)._get()
+
+        if keep_processing:
+            if self._is_realtime:
+                return self._get_realtime_data()
+            else:
+                return self._get_historical_data()
         else:
-            return self._get_historical_data()
+            return self.STOP_PROCESSING()
 
     def _get_realtime_data(self):
         # TODO Improve method
@@ -35,43 +41,32 @@ class GeneralEndpointRealtimeHistorical(GeneralEndpointDataV1, metaclass=ABCMeta
         component_arg = self._get_component_arg()
         component_metric = self._get_component_metric()
 
-        self._response_holder.set_body_data(
-            self._outbound_gate.get_last_measurement(component_type, component_metric, component_arg)
-        )
+        realtime_data = self._outbound_gate.get_last_measurement(component_type, component_metric, component_arg)
 
-        return True
+        realtime_data.update({
+            "unit": None
+        })
+
+        self._response_holder.set_body_data(realtime_data)
+
+        return self.KEEP_PROCESSING()
 
     def _get_historical_data(self):
-        self._response_holder.set_body_data(
-            self._outbound_gate.get_measurements(
+        historical_data = self._outbound_gate.get_measurements(
                 self._get_component_type(),
                 self._get_component_metric(),
                 self._get_component_arg(),
                 self._start,
                 self._end,
                 self._limit
-            )
         )
 
-        return True
+        self._response_holder.set_body_data({
+            "values": historical_data,
+            "unit": None
+        })
 
-    def __parse_history_results(self, query_result: list) -> dict:
-        parsed_response = {
-            'values': [],
-            'unit': None
-        }
-
-        for row in query_result:
-            parsed_response["values"].append(
-                {
-                    'timestamp': row[3],
-                    'min': row[4],
-                    'avg': row[5],
-                    'max': row[6]
-                }
-            )
-
-        return parsed_response
+        return self.KEEP_PROCESSING()
 
     def __read_headers(self):
         headers = self._request_holder.get_request_headers()
@@ -111,19 +106,3 @@ class GeneralEndpointRealtimeHistorical(GeneralEndpointDataV1, metaclass=ABCMeta
                 self._limit = limit
             elif limit > 5000:
                 self._limit = 5000
-
-    @classmethod
-    def _get_children(cls):
-        return []
-
-    @abstractmethod
-    def _get_component_type(self) -> str:
-        pass
-
-    @abstractmethod
-    def _get_component_arg(self) -> str:
-        return "default"
-
-    @abstractmethod
-    def _get_component_metric(self) -> str:
-        pass

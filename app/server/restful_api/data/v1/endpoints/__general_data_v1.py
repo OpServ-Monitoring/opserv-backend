@@ -34,6 +34,7 @@ class GeneralEndpointDataV1(Endpoint, metaclass=ABCMeta):
             if verification_function is None or not callable(verification_function):
                 self._set_internal_server_error_response()
             elif not verification_function(actual_value):
+
                 self._set_bad_request_response("parameter " + parameter_name + " is not properly formatted.")
             else:
                 return True

@@ -30,7 +30,16 @@ class ResponseHolder:
         self.__body = body
 
     def set_body_data(self, data):
-        self.__body['data'] = data
+        # TODO Check if this does any harm - if not rename
+        old_data = self.__body['data']
+
+        if old_data is None:
+            old_data = {}
+
+        new_data = old_data.copy()
+        new_data.update(data)
+
+        self.__body['data'] = new_data
 
     def set_status(self, status):
         self.__status = status
