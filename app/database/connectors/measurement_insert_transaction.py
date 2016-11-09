@@ -25,18 +25,18 @@ class MeasurementInsertTransaction(DatabaseConnector):
     def commit_transaction(self):
         connection = self._connection_helper.retrieve_database_connection()
 
-        connection.executemany(
-            "INSERT INTO {0} ({1}, {2}, {3}, {4}, {5}) VALUES (?, ? ,? ,?, ?)".format(
-                MeasurementsTableManagement.TABLE_NAME(),
-                MeasurementsTableManagement.KEY_COMPONENT_TYPE_FK(),
-                MeasurementsTableManagement.KEY_COMPONENT_ARG_FK(),
-                MeasurementsTableManagement.KEY_METRIC_FK(),
-                MeasurementsTableManagement.KEY_TIMESTAMP(),
-                MeasurementsTableManagement.KEY_VALUE()
-            ),
-            self.__insertions
-        )
         try:
+            connection.executemany(
+                "INSERT INTO {0} ({1}, {2}, {3}, {4}, {5}) VALUES (?, ? ,? ,?, ?)".format(
+                    MeasurementsTableManagement.TABLE_NAME(),
+                    MeasurementsTableManagement.KEY_COMPONENT_TYPE_FK(),
+                    MeasurementsTableManagement.KEY_COMPONENT_ARG_FK(),
+                    MeasurementsTableManagement.KEY_METRIC_FK(),
+                    MeasurementsTableManagement.KEY_TIMESTAMP(),
+                    MeasurementsTableManagement.KEY_VALUE()
+                ),
+                self.__insertions
+            )
             connection.commit()
         except IntegrityError as err:
             log.error("Error during commit of transaction, probably multiple measurements per millisecond")
