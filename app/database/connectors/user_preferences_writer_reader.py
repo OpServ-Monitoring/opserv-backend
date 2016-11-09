@@ -1,4 +1,4 @@
-from database.connectors.database_connector import DatabaseConnector
+from database.helper.base_database_connector import DatabaseConnector
 
 from database.tables.user_preferences_table_management import UserPreferencesTableManagement
 
