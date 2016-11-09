@@ -1,10 +1,11 @@
+from database.database_connector import DatabaseConnector
 from .database_open_helper import DatabaseOpenHelper
 from .tables.measurements_table_management import MeasurementsTableManagement
 
 
-class MeasurementDataReader:
-    @staticmethod
-    def get_min_avg_max(component_type: str, component_arg: str, metric_name: str, start_time: int, end_time: int,
+class MeasurementDataReader(DatabaseConnector):
+    @classmethod
+    def get_min_avg_max(cls, component_type: str, component_arg: str, metric_name: str, start_time: int, end_time: int,
                         limit: float):
         connection = DatabaseOpenHelper.establish_database_connection()
 
@@ -53,8 +54,8 @@ class MeasurementDataReader:
         connection.close()
         return result
 
-    @staticmethod
-    def get_last_value(component_type: str, component_arg: str, metric_name: str):
+    @classmethod
+    def get_last_value(cls, component_type: str, component_arg: str, metric_name: str):
         connection = DatabaseOpenHelper.establish_database_connection()
 
         result = connection.execute(

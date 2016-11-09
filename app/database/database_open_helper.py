@@ -1,5 +1,4 @@
-import sqlite3
-
+from database.database_connector import DatabaseConnector
 from .tables.component_metrics_table_management import ComponentMetricsTableManagement
 from .tables.component_type_metrics_table_management import ComponentTypeMetricsTableManagement
 from .tables.component_types_table_management import ComponentTypesTableManagement
@@ -9,35 +8,23 @@ from .tables.user_preferences_table_management import UserPreferencesTableManage
 from .unified_database_interface import UnifiedDatabaseInterface
 
 
-class DatabaseOpenHelper:
-    @staticmethod
-    def on_create():
-        DatabaseOpenHelper.__perform_settings()
-        DatabaseOpenHelper.__create_tables()
-        DatabaseOpenHelper.__create_triggers()
-        DatabaseOpenHelper.__insert_supported_component_metrics()
-        DatabaseOpenHelper.__set_gathering_rates()
+class DatabaseOpenHelper(DatabaseConnector):
+    @classmethod
+    def on_create(cls):
+        DatabaseOpenHelper.create_tables()
+        DatabaseOpenHelper.create_triggers()
+        DatabaseOpenHelper.insert_supported_component_metrics()
+        DatabaseOpenHelper.set_gathering_rates()
 
-    @staticmethod  # Only used for testing
-    def mock_on_create():
-        DatabaseOpenHelper.__perform_settings()
-        DatabaseOpenHelper.__create_tables()
-        DatabaseOpenHelper.__create_triggers()
-        DatabaseOpenHelper.__insert_supported_component_metrics()
+    @classmethod  # Only used for testing
+    def mock_on_create(cls):
+        DatabaseOpenHelper.create_tables()
+        DatabaseOpenHelper.create_triggers()
+        DatabaseOpenHelper.insert_supported_component_metrics()
 
-    @staticmethod
-    def __perform_settings():
-        connection = DatabaseOpenHelper.establish_database_connection()
-
-        connection.execute("PRAGMA JOURNAL_MODE=WAL")
-        connection.execute("PRAGMA FOREIGN_KEYS=ON")
-
-        connection.commit()
-        connection.close()
-
-    @staticmethod
-    def __create_tables():
-        connection = DatabaseOpenHelper.establish_database_connection()
+    @classmethod
+    def create_tables(cls):
+        connection = cls._connection_helper.retrieve_database_connection()
 
         table_managements = [
             # measurements
@@ -57,9 +44,9 @@ class DatabaseOpenHelper:
         connection.commit()
         connection.close()
 
-    @staticmethod
-    def __create_triggers():
-        connection = DatabaseOpenHelper.establish_database_connection()
+    @classmethod
+    def create_triggers(cls):
+        connection = cls._connection_helper.retrieve_database_connection()
 
         connection.execute(
             "CREATE TRIGGER IF NOT EXISTS add_component BEFORE INSERT ON {0} "
@@ -80,9 +67,9 @@ class DatabaseOpenHelper:
         connection.commit()
         connection.close()
 
-    @staticmethod
-    def __insert_supported_component_metrics():
-        connection = DatabaseOpenHelper.establish_database_connection()
+    @classmethod
+    def insert_supported_component_metrics(cls):
+        connection = cls._connection_helper.retrieve_database_connection()
 
         component_types = []
         metrics = set()
@@ -124,8 +111,8 @@ class DatabaseOpenHelper:
         connection.commit()
         connection.close()
 
-    @staticmethod
-    def __set_gathering_rates():
+    @classmethod
+    def set_gathering_rates(cls):
         from misc import queue_manager
         component_metrics_writer_reader = UnifiedDatabaseInterface.get_component_metrics_writer_reader()
 
@@ -138,18 +125,22 @@ class DatabaseOpenHelper:
             arg = gathering_rate[1]
 
             from misc import constants
-            if not constants.HARDWARE_DEFAULTS[gathering_rate[0]][0]:
-                arg = None
+            if gathering_rate[0] in constants.HARDWARE_DEFAULTS:
+                if not constants.HARDWARE_DEFAULTS[gathering_rate[0]][0]:
+                    arg = None
 
-            queue_manager.set_gathering_rate(
-                gathering_rate[0],
-                gathering_rate[2],
-                gathering_rate[3],
-                arg
-            )
+                queue_manager.set_gathering_rate(
+                    gathering_rate[0],
+                    gathering_rate[2],
+                    gathering_rate[3],
+                    arg
+                )
+            else:
+                pass
+                # TODO LOG ERROR - Tried to set gathering rate for component type gathering_rate[0] which is undefined
 
-    @staticmethod
-    def __insert_default_gathering_rates():
+    @classmethod
+    def __insert_default_gathering_rates(cls):
         from misc import constants
         default_rates = constants.default_gathering_rates
 
@@ -162,10 +153,3 @@ class DatabaseOpenHelper:
                     # The * operator may not be used inside of tuples with Python < 3.5
                     insert_values.append((component_type, component_arg) + metric_rate_tuple)
         UnifiedDatabaseInterface.get_component_metrics_writer_reader().insert_component_metrics(insert_values)
-
-    @staticmethod
-    def establish_database_connection():
-        # TODO Make this configurable in code - not as runtime params
-        location = 'opserv.db'
-
-        return sqlite3.connect(location)

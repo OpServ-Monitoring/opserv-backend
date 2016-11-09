@@ -1,0 +1,15 @@
+import sqlite3
+
+
+class DatabaseConnectionHelper:
+    __location = 'opserv.db'
+
+    @classmethod
+    def retrieve_database_connection(cls):
+        connection = sqlite3.connect(cls.__location)
+
+        connection.execute("PRAGMA FOREIGN_KEYS=ON")
+        connection.execute("PRAGMA JOURNAL_MODE=WAL")
+        connection.commit()
+
+        return connection

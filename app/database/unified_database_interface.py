@@ -22,3 +22,5 @@ class UnifiedDatabaseInterface:
         from ._component_metrics_writer_reader import ComponentMetricsWriterReader
 
         return ComponentMetricsWriterReader()
+
+    # TODO Add method for open helper

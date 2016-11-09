@@ -1,3 +1,4 @@
+from database.database_connector import DatabaseConnector
 from database.database_open_helper import DatabaseOpenHelper
 
 from .tables.user_preferences_table_management import UserPreferencesTableManagement
@@ -6,13 +7,13 @@ from .tables.user_preferences_table_management import UserPreferencesTableManage
 # TODO Improve methods and write tests
 
 
-class UserPreferencesWriterReader:
-    @staticmethod
-    def get_user_preference(key):
+class UserPreferencesWriterReader(DatabaseConnector):
+    @classmethod
+    def get_user_preference(cls, key):
         if key is None:
             return None
 
-        connection = DatabaseOpenHelper.establish_database_connection()
+        connection = cls._connection_helper.retrieve_database_connection()
 
         user_preference = connection.execute(
             """
@@ -33,15 +34,15 @@ class UserPreferencesWriterReader:
 
         return user_preference
 
-    @staticmethod
-    def set_user_preference(key, value):
+    @classmethod
+    def set_user_preference(cls, key, value):
         if key is None:
             return None
 
-        connection = DatabaseOpenHelper.establish_database_connection()
+        connection = cls._connection_helper.retrieve_database_connection()
 
         connection.execute(
-            "INSERT OR REPLACE INTO {0} ({1}, {2}) VALUES (?, ?)".format(
+            "REPLACE INTO {0} ({1}, {2}) VALUES (?, ?)".format(
                 UserPreferencesTableManagement.TABLE_NAME(),
                 UserPreferencesTableManagement.KEY_KEY(),
                 UserPreferencesTableManagement.KEY_VALUE()
@@ -55,12 +56,12 @@ class UserPreferencesWriterReader:
         connection.commit()
         connection.close()
 
-    @staticmethod
-    def delete_user_preference(key):
+    @classmethod
+    def delete_user_preference(cls, key):
         if key is None:
             return None
 
-        connection = DatabaseOpenHelper.establish_database_connection()
+        connection = cls._connection_helper.retrieve_database_connection()
 
         connection.execute(
             """
@@ -79,9 +80,9 @@ class UserPreferencesWriterReader:
 
         connection.close()
 
-    @staticmethod
-    def get_used_user_preference_keys() -> map:
-        connection = DatabaseOpenHelper.establish_database_connection()
+    @classmethod
+    def get_used_user_preference_keys(cls) -> map:
+        connection = cls._connection_helper.retrieve_database_connection()
 
         user_preference = connection.execute(
             """
@@ -98,8 +99,8 @@ class UserPreferencesWriterReader:
         return map(lambda row: row[0], user_preference)
 
     # TODO embed into db or api call
-    @staticmethod
-    def is_valid_json(value):
+    @classmethod
+    def is_valid_json(cls, value):
         import json
 
         return json.loads(value) is not None

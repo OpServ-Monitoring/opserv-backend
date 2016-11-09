@@ -1,8 +1,9 @@
+from database.database_connector import DatabaseConnector
 from .database_open_helper import DatabaseOpenHelper
 from .tables.measurements_table_management import MeasurementsTableManagement
 
 
-class MeasurementInsertTransaction:
+class MeasurementInsertTransaction(DatabaseConnector):
     def __init__(self):
         self.__reset_variables()
 
@@ -16,7 +17,7 @@ class MeasurementInsertTransaction:
         self.__insertions.append((component_type, component_arg, metric_name, timestamp, value))
 
     def commit_transaction(self):
-        connection = DatabaseOpenHelper.establish_database_connection()
+        connection = self._connection_helper.retrieve_database_connection()
 
         connection.executemany(
             "INSERT INTO {0} ({1}, {2}, {3}, {4}, {5}) VALUES (?, ? ,? ,?, ?)".format(

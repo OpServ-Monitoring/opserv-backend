@@ -1,11 +1,12 @@
+from database.database_connector import DatabaseConnector
 from .database_open_helper import DatabaseOpenHelper
 from .tables.component_metrics_table_management import ComponentMetricsTableManagement
 
 
-class ComponentMetricsWriterReader:
-    @staticmethod
-    def are_gathering_rates_set():
-        connection = DatabaseOpenHelper.establish_database_connection()
+class ComponentMetricsWriterReader(DatabaseConnector):
+    @classmethod
+    def are_gathering_rates_set(cls):
+        connection = cls._connection_helper.retrieve_database_connection()
 
         are_gathering_rates_set = connection.execute(
             "SELECT COUNT(*) FROM {0} WHERE {1} IS NOT NULL".format(
@@ -18,9 +19,9 @@ class ComponentMetricsWriterReader:
 
         return are_gathering_rates_set
 
-    @staticmethod
-    def get_gathering_rates():
-        connection = DatabaseOpenHelper.establish_database_connection()
+    @classmethod
+    def get_gathering_rates(cls):
+        connection = cls._connection_helper.retrieve_database_connection()
 
         gathering_rates = connection.execute(
             "SELECT * FROM {0} WHERE {1} IS NOT NULL".format(
@@ -33,9 +34,9 @@ class ComponentMetricsWriterReader:
 
         return gathering_rates
 
-    @staticmethod
-    def get_gathering_rate(component_type, component_arg, metric):
-        connection = DatabaseOpenHelper.establish_database_connection()
+    @classmethod
+    def get_gathering_rate(cls, component_type, component_arg, metric):
+        connection = cls._connection_helper.retrieve_database_connection()
 
         gathering_rate = connection.execute(
             "SELECT * FROM {0} WHERE {1} = ? AND {2} = ? AND {3} = ? AND {4} IS NOT NULL".format(
@@ -54,7 +55,7 @@ class ComponentMetricsWriterReader:
 
     @classmethod
     def set_gathering_rate(cls, component_type, component_arg, metric, gathering_rate):
-        connection = DatabaseOpenHelper.establish_database_connection()
+        connection = cls._connection_helper.retrieve_database_connection()
 
         connection.execute(
             "REPLACE INTO {0} ({1}, {2}, {3}, {4}) VALUES(?, ?, ?, ?)".format(
@@ -70,8 +71,8 @@ class ComponentMetricsWriterReader:
         connection.close()
 
 
-    @staticmethod
-    def insert_component_metrics(component_metrics):
+    @classmethod
+    def insert_component_metrics(cls, component_metrics):
         # TODO Change param to receive each param one by one, make None -> "default" for args
         # quick fix
         def test(component_metric):
@@ -90,7 +91,7 @@ class ComponentMetricsWriterReader:
             component_metrics
         )
 
-        connection = DatabaseOpenHelper.establish_database_connection()
+        connection = cls._connection_helper.retrieve_database_connection()
 
         connection.executemany("INSERT OR REPLACE INTO {0} ({1}, {2}, {3}, {4}) VALUES (?, ? , ?, ?)".format(
             ComponentMetricsTableManagement.TABLE_NAME(),
@@ -103,9 +104,9 @@ class ComponentMetricsWriterReader:
         connection.commit()
         connection.close()
 
-    @staticmethod
-    def _is_component_arg_persisted(component_type, component_arg):
-        connection = DatabaseOpenHelper.establish_database_connection()
+    @classmethod
+    def _is_component_arg_persisted(cls, component_type, component_arg):
+        connection = cls._connection_helper.retrieve_database_connection()
 
         is_component_arg_persisted = connection.execute(
             "SELECT COUNT(*) FROM {0} WHERE {1} = ? AND {2} = ?".format(
@@ -123,9 +124,9 @@ class ComponentMetricsWriterReader:
 
         return is_component_arg_persisted
 
-    @staticmethod
-    def get_component_args(component_type):
-        connection = DatabaseOpenHelper.establish_database_connection()
+    @classmethod
+    def get_component_args(cls, component_type):
+        connection = cls._connection_helper.retrieve_database_connection()
 
         raw_component_args = connection.execute(
             "SELECT DISTINCT {0} FROM {1} WHERE {2} = ?".format(
