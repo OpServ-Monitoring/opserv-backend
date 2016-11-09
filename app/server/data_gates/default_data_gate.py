@@ -1,6 +1,6 @@
 import time
 from collections import Iterable
-
+from urllib.parse import unquote_plus, quote_plus
 from database.unified_database_interface import UnifiedDatabaseInterface
 from misc import data_manager
 from server.data_gates.outbound_gate_interface import OutboundGateInterface
@@ -19,10 +19,16 @@ class DefaultDataGate(OutboundGateInterface):
         persisted_arguments = UnifiedDatabaseInterface.get_component_metrics_writer_reader().get_component_args(
             component)
 
-        # TODO url encode every value
-        return cls.__merge_two_lists(
+        all_arguments = cls.__merge_two_lists(
             present_arguments,
             persisted_arguments
+        )
+
+        return list(
+            map(
+                cls.encode_argument,
+                all_arguments
+            )
         )
 
     @classmethod
@@ -35,7 +41,9 @@ class DefaultDataGate(OutboundGateInterface):
     @classmethod
     def get_measurements(cls, component: str, metric: str, argument: str = None, start_time: int = 0,
                          end_time: int = time.time() * 1000, limit: int = 5000) -> Iterable:
-        # TODO url decode every value
+        component = cls.decode_argument(component)
+        metric = cls.decode_argument(metric)
+        argument = cls.decode_argument(argument)
 
         raw_measurements = UnifiedDatabaseInterface.get_measurement_data_reader().get_min_avg_max(
             component, argument, metric, start_time, end_time, limit
@@ -53,7 +61,9 @@ class DefaultDataGate(OutboundGateInterface):
 
     @classmethod
     def get_last_measurement(cls, component: str, metric: str, argument: str = None) -> dict:
-        # TODO url decode every value
+        component = cls.decode_argument(component)
+        metric = cls.decode_argument(metric)
+        argument = cls.decode_argument(argument)
 
         if component is None or metric is None:
             return None
@@ -62,21 +72,35 @@ class DefaultDataGate(OutboundGateInterface):
 
     @classmethod
     def get_gathering_rate(cls, component: str, metric: str, argument: str = None) -> int:
-        # TODO url decode every value
+        # TODO arg None <-> default?
+        component = cls.decode_argument(component)
+        metric = cls.decode_argument(metric)
+        argument = cls.decode_argument(argument)
 
-        # TODO Implement method
-        return 0
+        return UnifiedDatabaseInterface.get_component_metrics_writer_reader().get_gathering_rate(
+            component,
+            argument,
+            metric
+        )
 
     @classmethod
     def set_gathering_rate(cls, component: str, metric: str, gathering_rate: int, argument: str = None) -> None:
-        # TODO url decode every value
+        component = cls.decode_argument(component)
+        metric = cls.decode_argument(metric)
+        argument = cls.decode_argument(argument)
 
-        # TODO Implement method
+        UnifiedDatabaseInterface.get_component_metrics_writer_reader().set_gathering_rate(
+            component,
+            argument,
+            metric,
+            gathering_rate
+        )
+
         return None
 
     @classmethod
     def get_user_preference(cls, key: str) -> str:
-        # TODO url decode every value
+        key = cls.decode_argument(key)
 
         if key is None:
             return None
@@ -85,7 +109,8 @@ class DefaultDataGate(OutboundGateInterface):
 
     @classmethod
     def set_user_preference(cls, key: str, value: str) -> None:
-        # TODO url decode every value
+        key = cls.decode_argument(key)
+        value = cls.decode_argument(value)
 
         if key is not None:
             UnifiedDatabaseInterface.get_user_preferences_writer_reader().set_user_preference(key, value)
@@ -102,3 +127,11 @@ class DefaultDataGate(OutboundGateInterface):
         second_list = __stringify_list(second_list)
 
         return first_list + list(set(second_list) - set(first_list))
+
+    @classmethod
+    def encode_argument(cls, argument) -> str:
+        return quote_plus(argument)
+
+    @classmethod
+    def decode_argument(cls, argument) -> str:
+        return unquote_plus(argument)

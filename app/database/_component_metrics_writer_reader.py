@@ -34,6 +34,43 @@ class ComponentMetricsWriterReader:
         return gathering_rates
 
     @staticmethod
+    def get_gathering_rate(component_type, component_arg, metric):
+        connection = DatabaseOpenHelper.establish_database_connection()
+
+        gathering_rate = connection.execute(
+            "SELECT * FROM {0} WHERE {1} = ? AND {2} = ? AND {3} = ? AND {4} IS NOT NULL".format(
+                ComponentMetricsTableManagement.TABLE_NAME(),
+                ComponentMetricsTableManagement.KEY_COMPONENT_TYPE_FK(),
+                ComponentMetricsTableManagement.KEY_COMPONENT_ARG(),
+                ComponentMetricsTableManagement.KEY_COMPONENT_METRIC_FK(),
+                ComponentMetricsTableManagement.KEY_COMPONENT_GATHERING_RATE()
+            ),
+            (component_type, component_arg, metric)
+        ).fetchone()
+
+        connection.close()
+
+        return gathering_rate
+
+    @classmethod
+    def set_gathering_rate(cls, component_type, component_arg, metric, gathering_rate):
+        connection = DatabaseOpenHelper.establish_database_connection()
+
+        connection.execute(
+            "REPLACE INTO {0} ({1}, {2}, {3}, {4}) VALUES(?, ?, ?, ?)".format(
+                ComponentMetricsTableManagement.TABLE_NAME(),
+                ComponentMetricsTableManagement.KEY_COMPONENT_TYPE_FK(),
+                ComponentMetricsTableManagement.KEY_COMPONENT_ARG(),
+                ComponentMetricsTableManagement.KEY_COMPONENT_METRIC_FK(),
+                ComponentMetricsTableManagement.KEY_COMPONENT_GATHERING_RATE()
+            ),
+            (component_type, component_arg, metric, gathering_rate)
+        )
+        connection.commit()
+        connection.close()
+
+
+    @staticmethod
     def insert_component_metrics(component_metrics):
         # TODO Change param to receive each param one by one, make None -> "default" for args
         # quick fix
