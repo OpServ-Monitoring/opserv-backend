@@ -10,7 +10,7 @@ import application_settings.settings_management as app_settings
 import misc.data_manager as data_manager
 import misc.queue_manager as queue_manager
 import server.__management as server
-from database.database_open_helper import DatabaseOpenHelper
+from database.unified_database_interface import UnifiedDatabaseInterface
 from gathering.gather_main import GatherThread
 from misc.logging_helper import setup_argparse_logger
 
@@ -19,7 +19,7 @@ def init_database():
     """
         Initiates the database
     """
-    DatabaseOpenHelper().on_create()
+    UnifiedDatabaseInterface.get_database_opener().on_create()
 
 
 def start_gather_thread():
