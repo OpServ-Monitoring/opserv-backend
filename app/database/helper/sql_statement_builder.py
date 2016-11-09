@@ -1,3 +1,4 @@
+# TODO Rename the class as it only builds CREATE TABLE statements
 class SqlStatementBuilder:
     @classmethod
     def __parse_columns(cls, columns):

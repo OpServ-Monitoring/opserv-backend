@@ -1,6 +1,5 @@
-from database.database_connector import DatabaseConnector
-from .database_open_helper import DatabaseOpenHelper
-from .tables.component_metrics_table_management import ComponentMetricsTableManagement
+from database.connectors.database_connector import DatabaseConnector
+from database.tables.component_metrics_table_management import ComponentMetricsTableManagement
 
 
 class ComponentMetricsWriterReader(DatabaseConnector):

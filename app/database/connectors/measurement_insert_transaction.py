@@ -1,6 +1,5 @@
-from database.database_connector import DatabaseConnector
-from .database_open_helper import DatabaseOpenHelper
-from .tables.measurements_table_management import MeasurementsTableManagement
+from database.connectors.database_connector import DatabaseConnector
+from database.tables.measurements_table_management import MeasurementsTableManagement
 
 
 class MeasurementInsertTransaction(DatabaseConnector):

@@ -1,10 +1,10 @@
 import logging
 import time
+
 from test_general import start_gather_thread, mock_db_open
 
-import misc.queue_manager as queue_manager
 import misc.data_manager as data_manager
-from database.database_open_helper import DatabaseOpenHelper
+import misc.queue_manager as queue_manager
 
 DATA_MANAGER_TIMEOUT = 5
 DATA_MANAGER_TEST_COMPONENT = "cpu"

@@ -1,26 +1,26 @@
-from database.database_connector import DatabaseConnector
-from .tables.component_metrics_table_management import ComponentMetricsTableManagement
-from .tables.component_type_metrics_table_management import ComponentTypeMetricsTableManagement
-from .tables.component_types_table_management import ComponentTypesTableManagement
-from .tables.measurements_table_management import MeasurementsTableManagement
-from .tables.metrics_table_management import MetricsTableManagement
-from .tables.user_preferences_table_management import UserPreferencesTableManagement
-from .unified_database_interface import UnifiedDatabaseInterface
+from database.connectors.database_connector import DatabaseConnector
+from database.tables.component_metrics_table_management import ComponentMetricsTableManagement
+from database.tables.component_type_metrics_table_management import ComponentTypeMetricsTableManagement
+from database.tables.component_types_table_management import ComponentTypesTableManagement
+from database.tables.measurements_table_management import MeasurementsTableManagement
+from database.tables.metrics_table_management import MetricsTableManagement
+from database.tables.user_preferences_table_management import UserPreferencesTableManagement
+from database.unified_database_interface import UnifiedDatabaseInterface
 
 
-class DatabaseOpenHelper(DatabaseConnector):
+class DatabaseOpener(DatabaseConnector):
     @classmethod
     def on_create(cls):
-        DatabaseOpenHelper.create_tables()
-        DatabaseOpenHelper.create_triggers()
-        DatabaseOpenHelper.insert_supported_component_metrics()
-        DatabaseOpenHelper.set_gathering_rates()
+        cls.create_tables()
+        cls.create_triggers()
+        cls.insert_supported_component_metrics()
+        cls.set_gathering_rates()
 
     @classmethod  # Only used for testing
     def mock_on_create(cls):
-        DatabaseOpenHelper.create_tables()
-        DatabaseOpenHelper.create_triggers()
-        DatabaseOpenHelper.insert_supported_component_metrics()
+        cls.create_tables()
+        cls.create_triggers()
+        cls.insert_supported_component_metrics()
 
     @classmethod
     def create_tables(cls):
@@ -117,7 +117,7 @@ class DatabaseOpenHelper(DatabaseConnector):
         component_metrics_writer_reader = UnifiedDatabaseInterface.get_component_metrics_writer_reader()
 
         if not component_metrics_writer_reader.are_gathering_rates_set():
-            DatabaseOpenHelper.__insert_default_gathering_rates()
+            cls.__insert_default_gathering_rates()
 
         gathering_rates = component_metrics_writer_reader.get_gathering_rates()
 
