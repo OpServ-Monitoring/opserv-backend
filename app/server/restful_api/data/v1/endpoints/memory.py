@@ -5,18 +5,18 @@ class MemoryEndpoint(GeneralEndpointDataV1):
     def _get(self) -> bool:
         return True
 
-    @staticmethod
-    def get_paths():
+    @classmethod
+    def get_paths(cls):
         return [
             "/memory"
         ]
 
-    @staticmethod
-    def get_name():
+    @classmethod
+    def get_name(cls):
         return "memory entity"
 
-    @staticmethod
-    def _get_parent():
+    @classmethod
+    def _get_parent(cls):
         from ...data_api_versions_endpoint import DataApiVersionsEndpoint
 
         return DataApiVersionsEndpoint
@@ -28,6 +28,6 @@ class MemoryEndpoint(GeneralEndpointDataV1):
         return [
         ]
 
-    @staticmethod
-    def _get_mandatory_parameters():
+    @classmethod
+    def _get_mandatory_parameters(cls):
         return []

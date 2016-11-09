@@ -20,21 +20,21 @@ class GeneralTableManagement(metaclass=ABCMeta):
     def TABLE_NAME(cls) -> str:
         pass
 
-    @staticmethod
+    @classmethod
     @abstractmethod
-    def _get_columns() -> list:
+    def _get_columns(cls) -> list:
         pass
 
-    @staticmethod
+    @classmethod
     @abstractmethod
-    def _get_foreign_keys() -> list:
+    def _get_foreign_keys(cls) -> list:
         pass
 
-    @staticmethod
+    @classmethod
     @abstractmethod
-    def _get_primary_key() -> list:
+    def _get_primary_key(cls) -> list:
         pass
 
-    @staticmethod
-    def _build_foreign_key(keys_on_table: list, ref_table_name: str, keys_on_ref_table: list) -> tuple:
+    @classmethod
+    def _build_foreign_key(cls, keys_on_table: list, ref_table_name: str, keys_on_ref_table: list) -> tuple:
         return keys_on_table, ref_table_name, keys_on_ref_table

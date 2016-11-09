@@ -15,18 +15,18 @@ class NetworksNetworkEndpoint(GeneralEndpointDataV1):
 
         return True
 
-    @staticmethod
-    def get_paths():
+    @classmethod
+    def get_paths(cls):
         return [
             "/networks/<string:network>"
         ]
 
-    @staticmethod
-    def get_name():
+    @classmethod
+    def get_name(cls):
         return "network entity"
 
-    @staticmethod
-    def _get_parent():
+    @classmethod
+    def _get_parent(cls):
         from .networks import NetworksEndpoint
 
         return NetworksEndpoint
@@ -41,8 +41,8 @@ class NetworksNetworkEndpoint(GeneralEndpointDataV1):
             ("/transmitpersec", NetworksNetworkTransmitpersecEndpoint)
         ]
 
-    @staticmethod
-    def _get_mandatory_parameters():
+    @classmethod
+    def _get_mandatory_parameters(cls):
         return [
             NetworksNetworkEndpoint.get_network_id_validator()
         ]

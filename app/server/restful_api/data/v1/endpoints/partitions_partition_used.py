@@ -2,14 +2,14 @@ from .partitions_partition__general_child import PartitionsPartitionGeneralChild
 
 
 class PartitionsPartitionUsedEndpoint(PartitionsPartitionGeneralChildEndpoint):
-    @staticmethod
-    def get_paths():
+    @classmethod
+    def get_paths(cls):
         return [
             "/partitions/<string:partition>/used"
         ]
 
-    @staticmethod
-    def get_name():
+    @classmethod
+    def get_name(cls):
         return "partition used space measurement"
 
     def _get_component_metric(self) -> str:

@@ -84,6 +84,6 @@ class GeneralEndpointDataV1(Endpoint, metaclass=ABCMeta):
         return True
 
     # TODO Simply check if key exists - DataGate
-    @staticmethod
-    def _get_mandatory_parameters():
+    @classmethod
+    def _get_mandatory_parameters(cls):
         return []

@@ -4,14 +4,14 @@ from .__general_realtime_historical import GeneralEndpointRealtimeHistorical
 
 
 class DisksDiskGeneralChildEndpoint(GeneralEndpointRealtimeHistorical, metaclass=ABCMeta):
-    @staticmethod
-    def _get_parent():
+    @classmethod
+    def _get_parent(cls):
         from .disks_disk import DisksDiskEndpoint
 
         return DisksDiskEndpoint
 
-    @staticmethod
-    def _get_mandatory_parameters():
+    @classmethod
+    def _get_mandatory_parameters(cls):
         from .disks_disk import DisksDiskEndpoint
 
         return [

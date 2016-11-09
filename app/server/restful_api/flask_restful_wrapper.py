@@ -68,8 +68,8 @@ class FlaskRestfulWrapper:
 
                 return RequestHolder(uri, http_method, headers, params, body)
 
-            @staticmethod
-            def __get_method_code(method_string):
+            @classmethod
+            def __get_method_code(cls, method_string):
                 if method_string == "GET":
                     return RequestHolder.METHOD_GET()
 
@@ -90,8 +90,8 @@ class FlaskRestfulWrapper:
 
         self.__api.add_resource(resource, *paths, endpoint=endpoint_name)
 
-    @staticmethod
-    def __get_api_paths(base_api_path, sub_paths, version, is_current):
+    @classmethod
+    def __get_api_paths(cls, base_api_path, sub_paths, version, is_current):
         paths = []
 
         for sub_path in sub_paths:

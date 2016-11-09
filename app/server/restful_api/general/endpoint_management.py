@@ -1,13 +1,13 @@
-import abc
+from abc import abstractmethod
 
 
 class EndpointManagement:
-    @staticmethod
-    @abc.abstractmethod
-    def get_endpoints():
+    @classmethod
+    @abstractmethod
+    def get_endpoints(cls):
         return []
 
-    @staticmethod
-    @abc.abstractmethod
-    def get_prefix():
+    @classmethod
+    @abstractmethod
+    def get_prefix(cls):
         return ""

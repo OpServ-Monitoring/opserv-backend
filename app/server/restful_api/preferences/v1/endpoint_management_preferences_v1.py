@@ -4,12 +4,12 @@ from ...general.endpoint_management import EndpointManagement
 
 
 class EndpointManagementPreferencesV1(EndpointManagement):
-    @staticmethod
-    def get_prefix():
+    @classmethod
+    def get_prefix(cls):
         return "/v1"
 
-    @staticmethod
-    def get_endpoints():
+    @classmethod
+    def get_endpoints(cls):
         return [
             PreferencesApiV1Endpoint,  # /v1
             PreferenceEndpoint

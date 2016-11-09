@@ -15,18 +15,18 @@ class GpusGpuEndpoint(GeneralEndpointDataV1):
 
         return True
 
-    @staticmethod
-    def get_paths():
+    @classmethod
+    def get_paths(cls):
         return [
             "/gpus/<string:gpu>"
         ]
 
-    @staticmethod
-    def get_name():
+    @classmethod
+    def get_name(cls):
         return "gpu entity"
 
-    @staticmethod
-    def _get_parent():
+    @classmethod
+    def _get_parent(cls):
         from .gpus import GpusEndpoint
 
         return GpusEndpoint
@@ -47,8 +47,8 @@ class GpusGpuEndpoint(GeneralEndpointDataV1):
             ("/temperature", GpusGpuTemperatureEndpoint)
         ]
 
-    @staticmethod
-    def _get_mandatory_parameters():
+    @classmethod
+    def _get_mandatory_parameters(cls):
         return [
             GpusGpuEndpoint.get_gpu_id_validator()
         ]

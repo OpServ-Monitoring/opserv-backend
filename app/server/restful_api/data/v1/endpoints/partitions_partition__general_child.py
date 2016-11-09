@@ -4,14 +4,14 @@ from .__general_realtime_historical import GeneralEndpointRealtimeHistorical
 
 
 class PartitionsPartitionGeneralChildEndpoint(GeneralEndpointRealtimeHistorical, metaclass=ABCMeta):
-    @staticmethod
-    def _get_parent():
+    @classmethod
+    def _get_parent(cls):
         from .partitions_partition import PartitionsPartitionEndpoint
 
         return PartitionsPartitionEndpoint
 
-    @staticmethod
-    def _get_mandatory_parameters():
+    @classmethod
+    def _get_mandatory_parameters(cls):
         from .partitions_partition import PartitionsPartitionEndpoint
 
         return [

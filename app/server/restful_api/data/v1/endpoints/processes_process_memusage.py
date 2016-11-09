@@ -2,14 +2,14 @@ from .processes_process__general_child import ProcessesProcessGeneralChildEndpoi
 
 
 class ProcessesProcessMemusageEndpoint(ProcessesProcessGeneralChildEndpoint):
-    @staticmethod
-    def get_paths():
+    @classmethod
+    def get_paths(cls):
         return [
             "/processes/<string:process>/memusage"
         ]
 
-    @staticmethod
-    def get_name():
+    @classmethod
+    def get_name(cls):
         return "process memory usage measurement"
 
     def _get_component_metric(self) -> str:

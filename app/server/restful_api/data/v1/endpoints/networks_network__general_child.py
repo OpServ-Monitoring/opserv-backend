@@ -4,14 +4,14 @@ from .__general_realtime_historical import GeneralEndpointRealtimeHistorical
 
 
 class NetworksNetworkGeneralChildEndpoint(GeneralEndpointRealtimeHistorical, metaclass=ABCMeta):
-    @staticmethod
-    def _get_parent():
+    @classmethod
+    def _get_parent(cls):
         from .networks_network import NetworksNetworkEndpoint
 
         return NetworksNetworkEndpoint
 
-    @staticmethod
-    def _get_mandatory_parameters():
+    @classmethod
+    def _get_mandatory_parameters(cls):
         from .networks_network import NetworksNetworkEndpoint
 
         return [

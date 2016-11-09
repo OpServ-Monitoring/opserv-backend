@@ -3,22 +3,22 @@ from ....general.endpoint import Endpoint
 
 
 class NetworksEndpoint(RootGeneralChildEndpoint):
-    @staticmethod
-    def get_paths():
+    @classmethod
+    def get_paths(cls):
         return [
             "/networks"
         ]
 
-    @staticmethod
-    def get_name():
+    @classmethod
+    def get_name(cls):
         return "network entities"
 
-    @staticmethod
-    def _get_hardware_value_type() -> str:
+    @classmethod
+    def _get_hardware_value_type(cls) -> str:
         return "networks"
 
-    @staticmethod
-    def _get_children_endpoint_type() -> Endpoint:
+    @classmethod
+    def _get_children_endpoint_type(cls) -> Endpoint:
         from .networks_network import NetworksNetworkEndpoint
 
         return NetworksNetworkEndpoint

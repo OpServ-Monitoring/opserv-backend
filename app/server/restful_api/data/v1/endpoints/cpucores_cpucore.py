@@ -14,18 +14,18 @@ class CpucoresCpucoreEndpoint(GeneralEndpointDataV1):
 
         return True
 
-    @staticmethod
-    def get_paths():
+    @classmethod
+    def get_paths(cls):
         return [
             "/cpu-cores/<string:cpu_core>"
         ]
 
-    @staticmethod
-    def get_name():
+    @classmethod
+    def get_name(cls):
         return "cpu core entity"
 
-    @staticmethod
-    def _get_parent():
+    @classmethod
+    def _get_parent(cls):
         from .cpucores import CpucoresEndpoint
 
         return CpucoresEndpoint
@@ -42,8 +42,8 @@ class CpucoresCpucoreEndpoint(GeneralEndpointDataV1):
             ("/usage", CpucoresCpucoreUsageEndpoint)
         ]
 
-    @staticmethod
-    def _get_mandatory_parameters():
+    @classmethod
+    def _get_mandatory_parameters(cls):
         return [
             CpucoresCpucoreEndpoint.get_cpucore_id_validator()
         ]

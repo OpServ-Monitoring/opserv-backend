@@ -3,22 +3,22 @@ from ....general.endpoint import Endpoint
 
 
 class DisksEndpoint(RootGeneralChildEndpoint):
-    @staticmethod
-    def get_paths():
+    @classmethod
+    def get_paths(cls):
         return [
             "/disks"
         ]
 
-    @staticmethod
-    def get_name():
+    @classmethod
+    def get_name(cls):
         return "disk entities"
 
-    @staticmethod
-    def _get_hardware_value_type() -> str:
+    @classmethod
+    def _get_hardware_value_type(cls) -> str:
         return "disks"
 
-    @staticmethod
-    def _get_children_endpoint_type() -> Endpoint:
+    @classmethod
+    def _get_children_endpoint_type(cls) -> Endpoint:
         from .disks_disk import DisksDiskEndpoint
 
         return DisksDiskEndpoint

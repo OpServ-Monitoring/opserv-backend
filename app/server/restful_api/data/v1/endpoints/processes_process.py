@@ -15,18 +15,18 @@ class ProcessesProcessEndpoint(GeneralEndpointDataV1):
 
         return True
 
-    @staticmethod
-    def get_paths():
+    @classmethod
+    def get_paths(cls):
         return [
             "/processes/<string:process>"
         ]
 
-    @staticmethod
-    def get_name():
+    @classmethod
+    def get_name(cls):
         return "process entity"
 
-    @staticmethod
-    def _get_parent():
+    @classmethod
+    def _get_parent(cls):
         from .processes import ProcessesEndpoint
 
         return ProcessesEndpoint
@@ -43,8 +43,8 @@ class ProcessesProcessEndpoint(GeneralEndpointDataV1):
             ("/name", ProcessesProcessNameEndpoint)
         ]
 
-    @staticmethod
-    def _get_mandatory_parameters():
+    @classmethod
+    def _get_mandatory_parameters(cls):
         return [
             ProcessesProcessEndpoint.get_process_id_validator()
         ]

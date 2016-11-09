@@ -9,27 +9,27 @@ class UserPreferencesTableManagement(GeneralTableManagement):
     def TABLE_NAME(cls) -> str:
         return "user_preferences_table"
 
-    @staticmethod
-    def KEY_KEY():
+    @classmethod
+    def KEY_KEY(cls):
         return UserPreferencesTableManagement.__KEY_KEY
 
-    @staticmethod
-    def KEY_VALUE():
+    @classmethod
+    def KEY_VALUE(cls):
         return UserPreferencesTableManagement.__KEY_VALUE
 
-    @staticmethod
-    def _get_columns() -> list:
+    @classmethod
+    def _get_columns(cls) -> list:
         return [
             (UserPreferencesTableManagement.KEY_KEY(), GeneralTableManagement._type_text_not_null),
             (UserPreferencesTableManagement.KEY_VALUE(), "TEXT")
         ]
 
-    @staticmethod
-    def _get_foreign_keys() -> list:
+    @classmethod
+    def _get_foreign_keys(cls) -> list:
         return []
 
-    @staticmethod
-    def _get_primary_key() -> list:
+    @classmethod
+    def _get_primary_key(cls) -> list:
         return [
             UserPreferencesTableManagement.KEY_KEY()
         ]

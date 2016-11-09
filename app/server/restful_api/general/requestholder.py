@@ -12,20 +12,20 @@ class RequestHolder:
         self.__params = params
         self.__body = body
 
-    @staticmethod
-    def METHOD_GET():
+    @classmethod
+    def METHOD_GET(cls):
         return 0
 
-    @staticmethod
-    def METHOD_POST():
+    @classmethod
+    def METHOD_POST(cls):
         return 1
 
-    @staticmethod
-    def METHOD_PUT():
+    @classmethod
+    def METHOD_PUT(cls):
         return 2
 
-    @staticmethod
-    def METHOD_DELETE():
+    @classmethod
+    def METHOD_DELETE(cls):
         return 3
 
     def get_uri(self):

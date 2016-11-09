@@ -4,14 +4,14 @@ from .__general_realtime_historical import GeneralEndpointRealtimeHistorical
 
 
 class GpusGpuGeneralChildEndpoint(GeneralEndpointRealtimeHistorical, metaclass=ABCMeta):
-    @staticmethod
-    def _get_parent():
+    @classmethod
+    def _get_parent(cls):
         from .gpus_gpu import GpusGpuEndpoint
 
         return GpusGpuEndpoint
 
-    @staticmethod
-    def _get_mandatory_parameters():
+    @classmethod
+    def _get_mandatory_parameters(cls):
         from .gpus_gpu import GpusGpuEndpoint
 
         return [

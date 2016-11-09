@@ -52,12 +52,12 @@ from ...general.endpoint_management import EndpointManagement
 
 
 class EndpointManagementDataV1(EndpointManagement):
-    @staticmethod
-    def get_prefix():
+    @classmethod
+    def get_prefix(cls):
         return "/v1"
 
-    @staticmethod
-    def get_endpoints():
+    @classmethod
+    def get_endpoints(cls):
         return [
             DataApiV1Endpoint,  # /v1
 

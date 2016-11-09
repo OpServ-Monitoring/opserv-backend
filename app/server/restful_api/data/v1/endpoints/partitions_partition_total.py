@@ -2,14 +2,14 @@ from .partitions_partition__general_child import PartitionsPartitionGeneralChild
 
 
 class PartitionsPartitionTotalEndpoint(PartitionsPartitionGeneralChildEndpoint):
-    @staticmethod
-    def get_paths():
+    @classmethod
+    def get_paths(cls):
         return [
             "/partitions/<string:partition>/total"
         ]
 
-    @staticmethod
-    def get_name():
+    @classmethod
+    def get_name(cls):
         return "partition total space measurement"
 
     def _get_component_metric(self) -> str:

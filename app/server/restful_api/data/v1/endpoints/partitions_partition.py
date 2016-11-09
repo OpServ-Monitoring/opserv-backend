@@ -15,18 +15,18 @@ class PartitionsPartitionEndpoint(GeneralEndpointDataV1):
 
         return True
 
-    @staticmethod
-    def get_paths():
+    @classmethod
+    def get_paths(cls):
         return [
             "/partitions/<string:partition>"
         ]
 
-    @staticmethod
-    def get_name():
+    @classmethod
+    def get_name(cls):
         return "partition entity"
 
-    @staticmethod
-    def _get_parent():
+    @classmethod
+    def _get_parent(cls):
         from .partitions import PartitionsEndpoint
 
         return PartitionsEndpoint
@@ -43,8 +43,8 @@ class PartitionsPartitionEndpoint(GeneralEndpointDataV1):
             ("/used", PartitionsPartitionUsedEndpoint)
         ]
 
-    @staticmethod
-    def _get_mandatory_parameters():
+    @classmethod
+    def _get_mandatory_parameters(cls):
         return [
             PartitionsPartitionEndpoint.get_partition_id_validator()
         ]

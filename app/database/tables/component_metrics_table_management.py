@@ -12,24 +12,24 @@ class ComponentMetricsTableManagement(GeneralTableManagement):
     __KEY_COMPONENT_METRIC_FK = "component_metric_fk"
     __KEY_COMPONENT_GATHERING_RATE = "component_gathering_rate"
 
-    @staticmethod
-    def KEY_COMPONENT_TYPE_FK():
+    @classmethod
+    def KEY_COMPONENT_TYPE_FK(cls):
         return ComponentMetricsTableManagement.__KEY_COMPONENT_TYPE_FK
 
-    @staticmethod
-    def KEY_COMPONENT_ARG():
+    @classmethod
+    def KEY_COMPONENT_ARG(cls):
         return ComponentMetricsTableManagement.__KEY_COMPONENT_ARG
 
-    @staticmethod
-    def KEY_COMPONENT_METRIC_FK():
+    @classmethod
+    def KEY_COMPONENT_METRIC_FK(cls):
         return ComponentMetricsTableManagement.__KEY_COMPONENT_METRIC_FK
 
-    @staticmethod
-    def KEY_COMPONENT_GATHERING_RATE():
+    @classmethod
+    def KEY_COMPONENT_GATHERING_RATE(cls):
         return ComponentMetricsTableManagement.__KEY_COMPONENT_GATHERING_RATE
 
-    @staticmethod
-    def _get_columns() -> list:
+    @classmethod
+    def _get_columns(cls) -> list:
         type_integer_gr_or_eq_500 = "INTEGER CHECK({0} IS NULL OR (typeof({0}) = 'integer' and {0} >= 500))".format(
             ComponentMetricsTableManagement.KEY_COMPONENT_GATHERING_RATE()
         )
@@ -41,16 +41,16 @@ class ComponentMetricsTableManagement(GeneralTableManagement):
             (ComponentMetricsTableManagement.KEY_COMPONENT_GATHERING_RATE(), type_integer_gr_or_eq_500)
         ]
 
-    @staticmethod
-    def _get_primary_key() -> list:
+    @classmethod
+    def _get_primary_key(cls) -> list:
         return [
             ComponentMetricsTableManagement.KEY_COMPONENT_TYPE_FK(),
             ComponentMetricsTableManagement.KEY_COMPONENT_ARG(),
             ComponentMetricsTableManagement.KEY_COMPONENT_METRIC_FK()
         ]
 
-    @staticmethod
-    def _get_foreign_keys() -> list:
+    @classmethod
+    def _get_foreign_keys(cls) -> list:
         return [
             GeneralTableManagement._build_foreign_key(
                 [

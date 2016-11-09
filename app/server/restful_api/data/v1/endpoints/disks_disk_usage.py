@@ -2,14 +2,14 @@ from .disks_disk__general_child import DisksDiskGeneralChildEndpoint
 
 
 class DisksDiskUsageEndpoint(DisksDiskGeneralChildEndpoint):
-    @staticmethod
-    def get_paths():
+    @classmethod
+    def get_paths(cls):
         return [
             "/disks/<string:disk>/usage"
         ]
 
-    @staticmethod
-    def get_name():
+    @classmethod
+    def get_name(cls):
         return "disk usage measurement"
 
     def _get_component_metric(self) -> str:

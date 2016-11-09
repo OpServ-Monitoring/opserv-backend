@@ -31,16 +31,16 @@ class ApiRootEndpoint(Endpoint):
         # no post processing needed
         return self.KEEP_PROCESSING()
 
-    @staticmethod
-    def get_paths():
+    @classmethod
+    def get_paths(cls):
         return [""]
 
-    @staticmethod
-    def get_name():
+    @classmethod
+    def get_name(cls):
         return "api entry"
 
-    @staticmethod
-    def _get_parent():
+    @classmethod
+    def _get_parent(cls):
         return None
 
     @classmethod

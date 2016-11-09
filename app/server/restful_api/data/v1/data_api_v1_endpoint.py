@@ -3,20 +3,20 @@ from ..data_api_versions_endpoint import DataApiVersionsEndpoint
 
 
 class DataApiV1Endpoint(GeneralEndpointDataV1):
-    @staticmethod
-    def _get_parent():
+    @classmethod
+    def _get_parent(cls):
         return DataApiVersionsEndpoint
 
     def _get(self) -> bool:
         # no data section available
         return self.KEEP_PROCESSING()
 
-    @staticmethod
-    def get_paths():
+    @classmethod
+    def get_paths(cls):
         return [""]
 
-    @staticmethod
-    def get_name():
+    @classmethod
+    def get_name(cls):
         return "data API v1 entry"
 
     @classmethod

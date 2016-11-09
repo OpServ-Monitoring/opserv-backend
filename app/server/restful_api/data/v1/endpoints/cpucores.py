@@ -3,22 +3,22 @@ from ....general.endpoint import Endpoint
 
 
 class CpucoresEndpoint(RootGeneralChildEndpoint):
-    @staticmethod
-    def get_paths():
+    @classmethod
+    def get_paths(cls):
         return [
             "/cpu-cores"
         ]
 
-    @staticmethod
-    def get_name():
+    @classmethod
+    def get_name(cls):
         return "cpu core entities"
 
-    @staticmethod
-    def _get_children_endpoint_type() -> Endpoint:
+    @classmethod
+    def _get_children_endpoint_type(cls) -> Endpoint:
         from .cpucores_cpucore import CpucoresCpucoreEndpoint
 
         return CpucoresCpucoreEndpoint
 
-    @staticmethod
-    def _get_hardware_value_type() -> str:
+    @classmethod
+    def _get_hardware_value_type(cls) -> str:
         return "cores"

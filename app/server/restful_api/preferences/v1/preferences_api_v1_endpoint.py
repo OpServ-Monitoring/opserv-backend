@@ -42,20 +42,20 @@ class PreferencesApiV1Endpoint(Endpoint):
     def _post_process(self) -> bool:
         return True
 
-    @staticmethod
-    def _get_parent():
+    @classmethod
+    def _get_parent(cls):
         return PreferencesApiVersionsEndpoint
 
     def _get(self) -> bool:
         # no data section available
         return self.KEEP_PROCESSING()
 
-    @staticmethod
-    def get_paths():
+    @classmethod
+    def get_paths(cls):
         return [""]
 
-    @staticmethod
-    def get_name():
+    @classmethod
+    def get_name(cls):
         return "preferences API v1 entry"
 
     @classmethod

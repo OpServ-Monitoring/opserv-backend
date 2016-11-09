@@ -63,8 +63,8 @@ class PreferenceEndpoint(Endpoint):
     def _get_children(cls) -> Iterable:
         return []
 
-    @staticmethod
-    def get_paths():
+    @classmethod
+    def get_paths(cls):
         return [
             "/<string:pref_key>"
         ]
@@ -72,10 +72,10 @@ class PreferenceEndpoint(Endpoint):
     def _post_process(self) -> bool:
         return True
 
-    @staticmethod
-    def _get_parent():
+    @classmethod
+    def _get_parent(cls):
         return PreferencesApiV1Endpoint
 
-    @staticmethod
-    def get_name():
+    @classmethod
+    def get_name(cls):
         return "preference"

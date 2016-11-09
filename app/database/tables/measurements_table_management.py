@@ -13,28 +13,28 @@ class MeasurementsTableManagement(GeneralTableManagement):
     def TABLE_NAME(cls) -> str:
         return "measurements_table"
 
-    @staticmethod
-    def KEY_COMPONENT_ARG_FK():
+    @classmethod
+    def KEY_COMPONENT_ARG_FK(cls):
         return MeasurementsTableManagement.__KEY_COMPONENT_ARG_FK
 
-    @staticmethod
-    def KEY_COMPONENT_TYPE_FK():
+    @classmethod
+    def KEY_COMPONENT_TYPE_FK(cls):
         return MeasurementsTableManagement.__KEY_COMPONENT_TYPE_FK
 
-    @staticmethod
-    def KEY_METRIC_FK():
+    @classmethod
+    def KEY_METRIC_FK(cls):
         return MeasurementsTableManagement.__KEY_METRIC_FK
 
-    @staticmethod
-    def KEY_TIMESTAMP():
+    @classmethod
+    def KEY_TIMESTAMP(cls):
         return MeasurementsTableManagement.__KEY_TIMESTAMP
 
-    @staticmethod
-    def KEY_VALUE():
+    @classmethod
+    def KEY_VALUE(cls):
         return MeasurementsTableManagement.__KEY_VALUE
 
-    @staticmethod
-    def _get_columns() -> list:
+    @classmethod
+    def _get_columns(cls) -> list:
         return [
             (MeasurementsTableManagement.KEY_COMPONENT_ARG_FK(), GeneralTableManagement._type_text_not_null),
             (MeasurementsTableManagement.KEY_COMPONENT_TYPE_FK(), GeneralTableManagement._type_text_not_null),
@@ -43,8 +43,8 @@ class MeasurementsTableManagement(GeneralTableManagement):
             (MeasurementsTableManagement.KEY_VALUE(), GeneralTableManagement._type_text_not_null)
         ]
 
-    @staticmethod
-    def _get_primary_key() -> list:
+    @classmethod
+    def _get_primary_key(cls) -> list:
         return [
             MeasurementsTableManagement.KEY_COMPONENT_TYPE_FK(),
             MeasurementsTableManagement.KEY_COMPONENT_ARG_FK(),
@@ -52,8 +52,8 @@ class MeasurementsTableManagement(GeneralTableManagement):
             MeasurementsTableManagement.KEY_TIMESTAMP()
         ]
 
-    @staticmethod
-    def _get_foreign_keys() -> list:
+    @classmethod
+    def _get_foreign_keys(cls) -> list:
         return [
             GeneralTableManagement._build_foreign_key(
                 [

@@ -2,14 +2,14 @@ from .cpus_cpu__general_child import CpusCpuGeneralChildEndpoint
 
 
 class CpusCpuUsageEndpoint(CpusCpuGeneralChildEndpoint):
-    @staticmethod
-    def get_paths():
+    @classmethod
+    def get_paths(cls):
         return [
             "/cpus/<string:cpu>/usage"
         ]
 
-    @staticmethod
-    def get_name():
+    @classmethod
+    def get_name(cls):
         return "cpu usage measurement"
 
     def _get_component_metric(self) -> str:

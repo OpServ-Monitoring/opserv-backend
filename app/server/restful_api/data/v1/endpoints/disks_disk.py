@@ -15,18 +15,18 @@ class DisksDiskEndpoint(GeneralEndpointDataV1):
 
         return True
 
-    @staticmethod
-    def get_paths():
+    @classmethod
+    def get_paths(cls):
         return [
             "/disks/<string:disk>"
         ]
 
-    @staticmethod
-    def get_name():
+    @classmethod
+    def get_name(cls):
         return "disk entity"
 
-    @staticmethod
-    def _get_parent():
+    @classmethod
+    def _get_parent(cls):
         from .disks import DisksEndpoint
 
         return DisksEndpoint
@@ -43,8 +43,8 @@ class DisksDiskEndpoint(GeneralEndpointDataV1):
             ("/temperature", DisksDiskTemperatureEndpoint)
         ]
 
-    @staticmethod
-    def _get_mandatory_parameters():
+    @classmethod
+    def _get_mandatory_parameters(cls):
         return [
             DisksDiskEndpoint.get_disk_id_validator()
         ]

@@ -5,8 +5,8 @@ from ....general.endpoint import Endpoint
 
 
 class RootGeneralChildEndpoint(GeneralEndpointDataV1, metaclass=ABCMeta):
-    @staticmethod
-    def _get_parent():
+    @classmethod
+    def _get_parent(cls):
         from ...data_api_versions_endpoint import DataApiVersionsEndpoint
 
         return DataApiVersionsEndpoint
@@ -27,14 +27,14 @@ class RootGeneralChildEndpoint(GeneralEndpointDataV1, metaclass=ABCMeta):
 
         return children
 
-    @staticmethod
+    @classmethod
     @abstractmethod
-    def _get_hardware_value_type() -> str:
+    def _get_hardware_value_type(cls) -> str:
         pass
 
-    @staticmethod
+    @classmethod
     @abstractmethod
-    def _get_children_endpoint_type() -> Endpoint:
+    def _get_children_endpoint_type(cls) -> Endpoint:
         pass
 
     @classmethod

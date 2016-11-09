@@ -31,8 +31,8 @@ class DataApiVersionsEndpoint(Endpoint):
         # no post processing needed
         return self.KEEP_PROCESSING()
 
-    @staticmethod
-    def get_paths():
+    @classmethod
+    def get_paths(cls):
         return [""]
 
     @classmethod
@@ -44,12 +44,12 @@ class DataApiVersionsEndpoint(Endpoint):
             ("/v1", DataApiV1Endpoint)
         ]
 
-    @staticmethod
-    def get_name():
+    @classmethod
+    def get_name(cls):
         return "data API versions entry"
 
-    @staticmethod
-    def _get_parent():
+    @classmethod
+    def _get_parent(cls):
         from ..api_root.endpoint_api_root import ApiRootEndpoint
 
         return ApiRootEndpoint

@@ -8,22 +8,22 @@ class ComponentTypesTableManagement(GeneralTableManagement):
     def TABLE_NAME(cls) -> str:
         return "component_types_table"
 
-    @staticmethod
-    def KEY_NAME():
+    @classmethod
+    def KEY_NAME(cls):
         return ComponentTypesTableManagement.__KEY_NAME
 
-    @staticmethod
-    def _get_columns() -> list:
+    @classmethod
+    def _get_columns(cls) -> list:
         return [
             (ComponentTypesTableManagement.KEY_NAME(), GeneralTableManagement._type_text_not_null)
         ]
 
-    @staticmethod
-    def _get_primary_key() -> list:
+    @classmethod
+    def _get_primary_key(cls) -> list:
         return [
             ComponentTypesTableManagement.KEY_NAME()
         ]
 
-    @staticmethod
-    def _get_foreign_keys() -> list:
+    @classmethod
+    def _get_foreign_keys(cls) -> list:
         return []

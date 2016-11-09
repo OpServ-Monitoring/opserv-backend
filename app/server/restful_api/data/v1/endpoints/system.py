@@ -1,3 +1,5 @@
+from collections import Iterable
+
 from ....general.endpoint import Endpoint
 
 
@@ -12,8 +14,8 @@ class SystemEndpoint(Endpoint):
     def _post(self) -> bool:
         pass
 
-    @staticmethod
-    def get_paths():
+    @classmethod
+    def get_paths(cls):
         return [
             "/system"
         ]
@@ -38,8 +40,8 @@ class SystemEndpoint(Endpoint):
             ("/processes", SystemProcessesEndpoint)
         ]
 
-    @staticmethod
-    def _get_parent():
+    @classmethod
+    def _get_parent(cls):
         from ..data_api_v1_endpoint import DataApiV1Endpoint
 
         return DataApiV1Endpoint
@@ -50,6 +52,6 @@ class SystemEndpoint(Endpoint):
     def _get(self) -> bool:
         pass
 
-    @staticmethod
-    def get_name():
+    @classmethod
+    def get_name(cls):
         return "system components"

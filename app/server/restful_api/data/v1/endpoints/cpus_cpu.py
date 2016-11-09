@@ -15,18 +15,18 @@ class CpusCpuEndpoint(GeneralEndpointDataV1):
 
         return True
 
-    @staticmethod
-    def get_paths():
+    @classmethod
+    def get_paths(cls):
         return [
             "/cpus/<string:cpu>"
         ]
 
-    @staticmethod
-    def get_name():
+    @classmethod
+    def get_name(cls):
         return "cpu entity"
 
-    @staticmethod
-    def _get_parent():
+    @classmethod
+    def _get_parent(cls):
         from .cpus import CpusEndpoint
 
         return CpusEndpoint
@@ -43,8 +43,8 @@ class CpusCpuEndpoint(GeneralEndpointDataV1):
             ("/usage", CpusCpuUsageEndpoint)
         ]
 
-    @staticmethod
-    def _get_mandatory_parameters():
+    @classmethod
+    def _get_mandatory_parameters(cls):
         return [
             CpusCpuEndpoint.get_cpu_id_validator()
         ]

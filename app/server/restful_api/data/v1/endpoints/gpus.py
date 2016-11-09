@@ -3,22 +3,22 @@ from ....general.endpoint import Endpoint
 
 
 class GpusEndpoint(RootGeneralChildEndpoint):
-    @staticmethod
-    def get_paths():
+    @classmethod
+    def get_paths(cls):
         return [
             "/gpus"
         ]
 
-    @staticmethod
-    def get_name():
+    @classmethod
+    def get_name(cls):
         return "gpu entities"
 
-    @staticmethod
-    def _get_hardware_value_type() -> str:
+    @classmethod
+    def _get_hardware_value_type(cls) -> str:
         return "gpus"
 
-    @staticmethod
-    def _get_children_endpoint_type() -> Endpoint:
+    @classmethod
+    def _get_children_endpoint_type(cls) -> Endpoint:
         from .gpus_gpu import GpusGpuEndpoint
 
         return GpusGpuEndpoint

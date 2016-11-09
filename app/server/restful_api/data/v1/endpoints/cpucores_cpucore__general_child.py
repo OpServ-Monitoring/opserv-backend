@@ -4,14 +4,14 @@ from .__general_realtime_historical import GeneralEndpointRealtimeHistorical
 
 
 class CpucoresCpucoreGeneralChildEndpoint(GeneralEndpointRealtimeHistorical, metaclass=ABCMeta):
-    @staticmethod
-    def _get_parent():
+    @classmethod
+    def _get_parent(cls):
         from .cpucores_cpucore import CpucoresCpucoreEndpoint
 
         return CpucoresCpucoreEndpoint
 
-    @staticmethod
-    def _get_mandatory_parameters():
+    @classmethod
+    def _get_mandatory_parameters(cls):
         from .cpucores_cpucore import CpucoresCpucoreEndpoint
 
         return [

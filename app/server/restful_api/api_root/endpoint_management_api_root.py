@@ -3,12 +3,12 @@ from ..general.endpoint_management import EndpointManagement
 
 
 class EndpointManagementRoot(EndpointManagement):
-    @staticmethod
-    def get_prefix():
+    @classmethod
+    def get_prefix(cls):
         return ""
 
-    @staticmethod
-    def get_endpoints():
+    @classmethod
+    def get_endpoints(cls):
         return [
             ApiRootEndpoint
         ]

@@ -11,30 +11,30 @@ class ComponentTypeMetricsTableManagement(GeneralTableManagement):
     def TABLE_NAME(cls) -> str:
         return "component_type_metrics_table"
 
-    @staticmethod
-    def KEY_COMPONENT_TYPE_FK():
+    @classmethod
+    def KEY_COMPONENT_TYPE_FK(cls):
         return ComponentTypeMetricsTableManagement.__KEY_COMPONENT_TYPE_FK
 
-    @staticmethod
-    def KEY_METRIC_FK():
+    @classmethod
+    def KEY_METRIC_FK(cls):
         return ComponentTypeMetricsTableManagement.__KEY_METRIC_FK
 
-    @staticmethod
-    def _get_columns() -> list:
+    @classmethod
+    def _get_columns(cls) -> list:
         return [
             (ComponentTypeMetricsTableManagement.KEY_COMPONENT_TYPE_FK(), GeneralTableManagement._type_text_not_null),
             (ComponentTypeMetricsTableManagement.KEY_METRIC_FK(), GeneralTableManagement._type_text_not_null)
         ]
 
-    @staticmethod
-    def _get_primary_key() -> list:
+    @classmethod
+    def _get_primary_key(cls) -> list:
         return [
             ComponentTypeMetricsTableManagement.KEY_COMPONENT_TYPE_FK(),
             ComponentTypeMetricsTableManagement.KEY_METRIC_FK()
         ]
 
-    @staticmethod
-    def _get_foreign_keys() -> list:
+    @classmethod
+    def _get_foreign_keys(cls) -> list:
         return [
             GeneralTableManagement._build_foreign_key(
                 [ComponentTypeMetricsTableManagement.KEY_COMPONENT_TYPE_FK()],

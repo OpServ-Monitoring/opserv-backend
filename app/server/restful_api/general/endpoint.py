@@ -105,9 +105,9 @@ class Endpoint(metaclass=ABCMeta):
         :return: A boolean indicating whether to carry on processing the request or not
         """
 
-    @staticmethod
+    @classmethod
     @abstractmethod
-    def get_paths():
+    def get_paths(cls):
         """
         Override this method in any subclass of Endpoint to set the paths this endpoint should operate on
         :return: A tupel of paths this endpoint should operate on
@@ -140,17 +140,17 @@ class Endpoint(metaclass=ABCMeta):
         if children is not None and isinstance(children, list) and len(children) > 0:
             links['children'] = children
 
-    @staticmethod
+    @classmethod
     @abstractmethod
-    def get_name():
+    def get_name(cls):
         """
         Each type of endpoint should have a name which is displayed in the api as part of the links section
         :return: A string indicating the type of resource this endpoint represents
         """
 
-    @staticmethod
+    @classmethod
     @abstractmethod
-    def _get_parent():
+    def _get_parent(cls):
         """
         To support HATEOAS each type of endpoint should define a parent endpoint.
         :return: A (subclass of) endpoint that is the direct api-parent of this endpoint or None
@@ -214,8 +214,8 @@ class Endpoint(metaclass=ABCMeta):
 
         return self.__match_uri_with_regex(regex)
 
-    @staticmethod
-    def _get_link_element(uri, name):
+    @classmethod
+    def _get_link_element(cls, uri, name):
         """
         Static helper that returns a reference dictionary object to use in the links section of the response
         :param uri: The uri of the referenced endpoint
@@ -259,10 +259,10 @@ class Endpoint(metaclass=ABCMeta):
         """
         self.__set_fault_response(500, "Internal server error")
 
-    @staticmethod
-    def KEEP_PROCESSING():
+    @classmethod
+    def KEEP_PROCESSING(cls):
         return True
 
-    @staticmethod
-    def STOP_PROCESSING():
+    @classmethod
+    def STOP_PROCESSING(cls):
         return False

@@ -6,8 +6,8 @@ from .preferences.v1.endpoint_management_preferences_v1 import EndpointManagemen
 
 
 class RestApiManagement:
-    @staticmethod
-    def get_endpoint_managements():
+    @classmethod
+    def get_endpoint_managements(cls):
         """
         This method returns an array of each implemented endpoint managements represented as tupels. Each tupel consists
         of a path prefix, the management class and an optional boolean indicating whether the managed endpoints are
