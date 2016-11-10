@@ -27,7 +27,7 @@ class DefaultDataGate(OutboundGateInterface):
 
         return list(
             map(
-                cls.encode_argument,
+                cls.double_encode_argument,
                 all_arguments
             )
         )
@@ -37,7 +37,14 @@ class DefaultDataGate(OutboundGateInterface):
         if argument is None or component is None:
             return False
 
-        return argument in cls.get_valid_arguments(component)
+        # For some reason, python decodes the url already once, which results in error in cases of an encoded slash '/'
+        # thus arguments have to be double encoded to prevent this. They have to be decoded once back to original input.
+        valid_arguments = map(
+            cls.decode_argument,
+            cls.get_valid_arguments(component)
+        )
+
+        return argument in valid_arguments
 
     @classmethod
     def get_measurements(cls, component: str, metric: str, argument: str = None, start_time: int = 0,
@@ -73,7 +80,6 @@ class DefaultDataGate(OutboundGateInterface):
 
     @classmethod
     def get_gathering_rate(cls, component: str, metric: str, argument: str = None) -> int:
-        # TODO arg None <-> default?
         component = cls.decode_argument(component)
         metric = cls.decode_argument(metric)
         argument = cls.decode_argument(argument)
@@ -135,13 +141,15 @@ class DefaultDataGate(OutboundGateInterface):
         return first_list + list(set(second_list) - set(first_list))
 
     @classmethod
-    def encode_argument(cls, argument) -> str:
+    def double_encode_argument(cls, argument) -> str:
         if argument is None:
             return None
-        return quote_plus(argument)
+
+        return quote_plus(quote_plus(argument))
 
     @classmethod
     def decode_argument(cls, argument) -> str:
         if argument is None:
             return None
+
         return unquote_plus(argument)

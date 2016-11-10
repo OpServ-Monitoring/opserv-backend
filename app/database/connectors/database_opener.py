@@ -10,14 +10,7 @@ from database.unified_database_interface import UnifiedDatabaseInterface
 
 class DatabaseOpener(DatabaseConnector):
     @classmethod
-    def on_create(cls):
-        cls.create_tables()
-        cls.create_triggers()
-        cls.insert_supported_component_metrics()
-        cls.set_gathering_rates()
-
-    @classmethod  # Only used for testing
-    def mock_on_create(cls):
+    def create_database(cls):
         cls.create_tables()
         cls.create_triggers()
         cls.insert_supported_component_metrics()
@@ -111,6 +104,7 @@ class DatabaseOpener(DatabaseConnector):
         connection.commit()
         connection.close()
 
+    # TODO Remove this from here
     @classmethod
     def set_gathering_rates(cls):
         from misc import queue_manager
@@ -139,6 +133,7 @@ class DatabaseOpener(DatabaseConnector):
                 pass
                 # TODO LOG ERROR - Tried to set gathering rate for component type gathering_rate[0] which is undefined
 
+    # TODO Remove this from here
     @classmethod
     def __insert_default_gathering_rates(cls):
         from misc import constants

@@ -19,7 +19,8 @@ def init_database():
     """
         Initiates the database
     """
-    UnifiedDatabaseInterface.get_database_opener().on_create()
+    UnifiedDatabaseInterface.get_database_opener().create_database()
+    UnifiedDatabaseInterface.get_database_opener().set_gathering_rates()
 
 
 def start_gather_thread():

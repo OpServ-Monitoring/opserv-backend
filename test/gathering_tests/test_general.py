@@ -28,5 +28,5 @@ def start_gather_thread():
 
 
 def mock_db_open():
-    UnifiedDatabaseInterface.get_database_opener().mock_on_create()
+    UnifiedDatabaseInterface.get_database_opener().create_database()
     return
