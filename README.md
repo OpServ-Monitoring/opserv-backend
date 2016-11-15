@@ -8,12 +8,40 @@ The software is currently developed thus versions are likely to be unstable.
 
 [![Code Climate](https://codeclimate.com/github/OpServ-Monitoring/opserv-backend/badges/gpa.svg)](https://codeclimate.com/github/OpServ-Monitoring/opserv-backend)  [![Codacy Badge](https://api.codacy.com/project/badge/Grade/ad9c86466d164cc7a432df119e7b7c99)](https://www.codacy.com/app/alex22212/opserv-backend?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=OpServ-Monitoring/opserv-backend&amp;utm_campaign=Badge_Grade)
 
-| OS | Windows | Linux | Mac OS X |
-| --- | --- | --- | --- |
-| Build Status | [![Build status - Windows - AppVeyor](https://ci.appveyor.com/api/projects/status/7gkd53ag5isi1cyu/branch/master?svg=true)](https://ci.appveyor.com/project/OpServ-Monitoring/opserv-backend/branch/master) | [![Build Status - Linux - Semaphore CI](https://semaphoreci.com/api/v1/opserv-monitoring-admin/opserv-backend/branches/master/shields_badge.svg)](https://semaphoreci.com/opserv-monitoring-admin/opserv-backend) | [![Build Status - OS X - Travis CI](https://travis-ci.org/OpServ-Monitoring/opserv-backend.svg?branch=master)](https://travis-ci.org/OpServ-Monitoring/opserv-backend) |
-| Coverage | [![Test Coverage - Windows - Codeclimate](https://codeclimate.com/github/OpServ-Monitoring/opserv-backend/badges/coverage.svg)](https://codeclimate.com/github/OpServ-Monitoring/opserv-backend/coverage) | [![Test Coverage - Linux - Codacy](https://api.codacy.com/project/badge/Coverage/ad9c86466d164cc7a432df119e7b7c99)](https://www.codacy.com/app/OpServ-Monitoring/opserv-backend?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=OpServ-Monitoring/opserv-backend&amp;utm_campaign=Badge_Coverage) | [![Test Coverage - OS X - Travis CI](https://coveralls.io/repos/github/OpServ-Monitoring/opserv-backend/badge.svg?branch=master)](https://coveralls.io/github/OpServ-Monitoring/opserv-backend?branch=master) |
-
-
+<table>
+  <tr>
+    <th>OS</th>
+    <th>Windows</th> 
+    <th>Linux</th>
+    <th>Mac OS X</th>
+  </tr>
+  <tr>
+    <td>build status</td>
+    <td>
+        <img src="https://ci.appveyor.com/api/projects/status/7gkd53ag5isi1cyu/branch/master?svg=true"
+        alt="Build Status - Windows - AppVeyor">
+    </td> 
+    <td colspan="2">
+        <img src="https://travis-ci.org/OpServ-Monitoring/opserv-backend.svg?branch=master"
+        alt="Build Status - Linux & Mac OS X - Travis CI">
+    </td> 
+  </tr>
+  <tr>
+    <td>test coverage</td>
+    <td>
+        <img src="https://codeclimate.com/github/OpServ-Monitoring/opserv-backend/badges/coverage.svg"
+        alt="Test Coverage - Windows - Codeclimate over AppVeyor">
+    </td>  
+    <td align="center" valign="middle">
+        <img src="https://api.codacy.com/project/badge/Coverage/ad9c86466d164cc7a432df119e7b7c99"
+        alt="Test Coverage - Linux - Codacy over Travis CI">
+    </td>
+    <td>
+        <img src="https://coveralls.io/repos/github/OpServ-Monitoring/opserv-backend/badge.svg?branch=master"
+        alt="Test Coverage - OS X - Coveralls over Travis CI">
+    </td>
+  </tr>
+</table>
 
 This repository contains the backend of the OpServ-Monitoring software.
 Generally it should be used with together with the frontend so please use a bundled release for your OS.
