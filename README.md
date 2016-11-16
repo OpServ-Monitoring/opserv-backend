@@ -21,7 +21,7 @@ The software is currently developed thus versions are likely to be unstable.
         <img src="https://ci.appveyor.com/api/projects/status/7gkd53ag5isi1cyu/branch/master?svg=true"
         alt="Build Status - Windows - AppVeyor">
     </td> 
-    <td colspan="2">
+    <td colspan="2" align="center">
         <img src="https://travis-ci.org/OpServ-Monitoring/opserv-backend.svg?branch=master"
         alt="Build Status - Linux & Mac OS X - Travis CI">
     </td> 
