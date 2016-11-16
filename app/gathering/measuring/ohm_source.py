@@ -286,6 +286,23 @@ class OHMSource(MeasuringSource):
         """
             Sub-Handler to process newly found disks in the system
         """
+
+        # Currently Deactivated since there is no easy way to uniquely identify disks
+        return
+
+        self.add_supported_metric("disk", "info")
+        self.add_supported_metric("system", "disks")
+        log.info(hardware)
+        log.info(hardware.name)
+        log.info(hardware.GetReport())
+        for smart in hardware.SmartAttributes:
+            log.info(smart.Name)
+        for sensor in hardware.Sensors:
+            if str(sensor.Name) == "Used Space":
+                self.add_supported_metric("disk", "usage")
+            log.info(sensor)
+            log.info(sensor.Name)
+            log.info(sensor.SensorType)
         pass
 
     def get_cpu_measurement(self, metric, args):

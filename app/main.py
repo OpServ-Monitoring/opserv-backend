@@ -6,6 +6,8 @@
  Usage: Simply launch this file
 """
 
+import ctypes, os
+
 import application_settings.settings_management as app_settings
 import misc.data_manager as data_manager
 import misc.queue_manager as queue_manager
@@ -45,8 +47,25 @@ def manage_runtime_settings():
     # TODO Document this function
     app_settings.init()
 
+def check_admin_privileges():
+    '''
+        Checks for elevated privileges/admin rights and warns the user if they couldn't
+        be detected
+    '''
+    is_admin = False
+    try:
+        is_admin = os.getuid() == 0
+    except AttributeError:
+        is_admin = ctypes.windll.shell32.IsUserAnAdmin() != 0
+
+    if not is_admin:
+        print("WARNING: ELEVATED PRIVILEGES COULDN'T BE DETECTED")
+
 
 if __name__ == '__main__':
+
+    check_admin_privileges()
+
     manage_runtime_settings()
 
     setup_argparse_logger()

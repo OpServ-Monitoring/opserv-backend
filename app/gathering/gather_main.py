@@ -152,6 +152,11 @@ def get_measurement_and_send(component, metric, args):
     """
     # Get the data
     new_data = get_measurement(component, metric, args)
+
+    #TODO More elaborate validation
+    if new_data == "0":
+        return
+
     # Put that data into the queue
     queue_manager.put_measurement_into_queue(component, metric, new_data, args)
 
