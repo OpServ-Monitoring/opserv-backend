@@ -30,7 +30,8 @@ class ComponentMetricsTableManagement(GeneralTableManagement):
 
     @classmethod
     def _get_columns(cls) -> list:
-        type_integer_gr_or_eq_500 = "INTEGER CHECK({0} IS NULL OR (typeof({0}) = 'integer' and {0} >= 500))".format(
+        type_integer_gr_or_eq_500 = \
+            "INTEGER CHECK({0} IS NULL OR (typeof({0}) = 'integer' and ({0} == 0 or {0} >= 500)))".format(
             ComponentMetricsTableManagement.KEY_COMPONENT_GATHERING_RATE()
         )
 

@@ -159,9 +159,11 @@ def get_measurement_and_send(component, metric, args):
     data_manager.set_measurement(component, metric, new_data, args)
 
     # Save data to the Database
-    transaction.insert_measurement(metric, new_data["timestamp"],
-                                   str(new_data["value"]), component, args)
-    transaction.commit_transaction()
+    # TODO Find a permanent solution for this
+    if new_data != "0":
+        transaction.insert_measurement(metric, new_data["timestamp"],
+                                       str(new_data["value"]), component, args)
+        transaction.commit_transaction()
 
     log.debug("Gathered {0} from {1},{2},{3}".format(
         new_data, component, metric, args))
