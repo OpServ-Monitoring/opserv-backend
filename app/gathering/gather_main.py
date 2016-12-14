@@ -83,6 +83,7 @@ class GatherThread(threading.Thread):
             if rate_update_valid(new_rate):
                 # Before even setting up a new gatherer, send an immediate data
                 # update
+                log.debug("Creating new Gatherer with the following rate obj: %s", str(new_rate))
                 get_measurement_and_send(new_rate["component"], new_rate["metric"],
                                          new_rate["args"])
 
@@ -119,9 +120,10 @@ class GatherThread(threading.Thread):
             Updates the given gathering task to the new rate (or deletes it)
         """
         # Remove old scheduled event
+        log.debug("Updating new Gatherer with the following request obj: %s", str(new_rate))
         self.s.cancel(
-            self.gatherers[(new_rate["component"], new_rate["metric"])])
-        self.gatherers.pop((new_rate["component"], new_rate["metric"]))
+            self.gatherers[(new_rate["component"], new_rate["metric"], new_rate["args"])])
+        self.gatherers.pop((new_rate["component"], new_rate["metric"], new_rate["args"]))
         if new_rate["delayms"] > 0:
             self.create_gatherer(new_rate)
 
@@ -129,10 +131,9 @@ class GatherThread(threading.Thread):
         """
             Creates a new gathering task by entering it as a event for the scheduler
         """
-        log.debug("Creating new Gatherer with the following rate obj: %s", str(new_rate))
         if new_rate["delayms"] > 0:
             self.gatherers[(new_rate["component"],
-                            new_rate["metric"])] = self.s.enter(new_rate["delayms"] / 1000, 1,
+                            new_rate["metric"], new_rate["args"])] = self.s.enter(new_rate["delayms"] / 1000, 1,
                                                                 self.gather_task,
                                                                 kwargs={"gatherData": new_rate})
         else:
@@ -143,7 +144,7 @@ class GatherThread(threading.Thread):
             Checks for a given component and metric combination whether it is already been monitored
             Return True if it is already in the gatherers list
         """
-        if (rate_to_check["component"], rate_to_check["metric"]) in self.gatherers:
+        if (rate_to_check["component"], rate_to_check["metric"], rate_to_check["args"]) in self.gatherers:
             return True
         return False
 
