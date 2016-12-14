@@ -119,7 +119,7 @@ class PsUtilWrap(MeasuringSource):
 
         elif component == "core":
             if metric == "usage":
-                result = self.psutil.cpu_percent(percpu=True)[args]
+                result = self.psutil.cpu_percent(percpu=True)[int(args)]
 
         elif component == "memory":
             result = self.measure_memory(metric)

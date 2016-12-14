@@ -36,7 +36,7 @@ def start():
     if port is None:
         port = 31337
 
-    app.run(host='127.0.0.1', port=port, ssl_context=context, debug=False, threaded=True)
+    app.run(host='127.0.0.1', port=port, debug=False, threaded=True)
     # to do: Generate certificate
 
     # This point shouldn't be reached

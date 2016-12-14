@@ -94,6 +94,7 @@ class GatherThread(threading.Thread):
         # Check the request_data_queue for any new messages
         while not queue_manager.request_data_queue.empty():
             newRequest = queue_manager.request_data_queue.get(False)
+            log.debug("Creating new Gatherer with the following request obj: %s", str(newRequest))
             if request_valid(newRequest):
                 get_measurement_and_send(newRequest["component"], newRequest["metric"],
                                          newRequest["args"])
@@ -128,6 +129,7 @@ class GatherThread(threading.Thread):
         """
             Creates a new gathering task by entering it as a event for the scheduler
         """
+        log.debug("Creating new Gatherer with the following rate obj: %s", str(new_rate))
         if new_rate["delayms"] > 0:
             self.gatherers[(new_rate["component"],
                             new_rate["metric"])] = self.s.enter(new_rate["delayms"] / 1000, 1,
