@@ -75,13 +75,13 @@ class GeneralEndpointDataV1(Endpoint, metaclass=ABCMeta):
         return False
 
     def _post_process(self):
-        response_headers = self._response_holder.get_response_headers()
-
-        response_headers['Access-Control-Allow-Origin'] = '*'
-        response_headers['Access-Control-Allow-Headers'] = 'Content-Type,Authorization'
-        response_headers['Access-Control-Allow-Methods'] = 'GET'
-
-        self._response_holder.set_response_headers(response_headers)
+        # response_headers = self._response_holder.get_response_headers()
+        #
+        # response_headers['Access-Control-Allow-Origin'] = '*'
+        # response_headers['Access-Control-Allow-Headers'] = 'Content-Type,Authorization'
+        # response_headers['Access-Control-Allow-Methods'] = 'GET'
+        #
+        # self._response_holder.set_response_headers(response_headers)
 
         return True
 

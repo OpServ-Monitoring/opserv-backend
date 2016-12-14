@@ -43,6 +43,7 @@ class GeneralEndpointRealtimeHistorical(GeneralGatheringMetricEndpoint, metaclas
 
         realtime_data = self._outbound_gate.get_last_measurement(component_type, component_metric, component_arg)
 
+        # TODO FIX ERROR - realtime_data could be NONE!
         realtime_data.update({
             "unit": None
         })
