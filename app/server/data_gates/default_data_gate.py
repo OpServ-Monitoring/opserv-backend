@@ -122,7 +122,6 @@ class DefaultDataGate(OutboundGateInterface):
     @classmethod
     def set_user_preference(cls, key: str, value: str) -> None:
         key = cls.decode_argument(key)
-        value = cls.decode_argument(value)
 
         if key is not None:
             UnifiedDatabaseInterface.get_user_preferences_writer_reader().set_user_preference(key, value)
