@@ -1,3 +1,4 @@
+import json
 from collections import Iterable
 
 from database.unified_database_interface import UnifiedDatabaseInterface  # TODO Exchange with data gate
@@ -14,7 +15,7 @@ class PreferenceEndpoint(Endpoint):
 
         user_pref_value = None
         if user_pref is not None:
-            user_pref_value = user_pref[1]
+            user_pref_value = json.loads(user_pref[1])
 
         self._response_holder.set_body_data({
             "key": pref_key,
@@ -28,7 +29,10 @@ class PreferenceEndpoint(Endpoint):
 
         pref_value = self._request_holder.get_body()["value"]
 
-        self._outbound_gate.set_user_preference(pref_key, pref_value)
+        self._outbound_gate.set_user_preference(
+            pref_key,
+            json.dumps(pref_value)
+        )
 
         self._response_holder.set_body_data({
             "key": pref_key,
@@ -50,8 +54,7 @@ class PreferenceEndpoint(Endpoint):
     def _delete(self) -> bool:
         pref_key = self._request_holder.get_params()["pref_key"]
 
-        UnifiedDatabaseInterface.get_user_preferences_writer_reader().delete_user_preference(
-            pref_key)  # TODO Exchange with data gate
+        self._outbound_gate.set_user_preference(pref_key, None)  # TODO Exchange with actual data gate deletion
 
         self._response_holder.set_body_data({
             "message": "preference " + pref_key + " deleted."
