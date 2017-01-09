@@ -5,21 +5,13 @@ layout: default
 
     <div class="row">
         <div class="3u">
-            <div>
-                {% include overview.html %}
-            </div>
-            <div>
-                Test 123
-                <!--{% include rest-api-data-v1-overview.html %}-->
-            </div>
+            {% include overview.html %}
+
+            {% include rest-api-data-v1-overview.html %}
         </div>
 
         <div class="9u">
-            <section class="style4 wrapper container">
-                <h1>{{ page.title }}</h1>
-                <br>
-                {{ content }}
-            </section>
+            {% include doc-entry-content.html %}
         </div>
     </div>
 </article>
