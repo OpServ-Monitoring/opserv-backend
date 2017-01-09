@@ -1,5 +1,5 @@
 ---
-layout: api-rest-data-v1-entry
+layout: doc-entry-rest-data-v1
 title:  "Work in progress"
 ---
 
