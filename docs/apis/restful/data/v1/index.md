@@ -5,9 +5,6 @@ title:  "RESTful API reference: data v1"
   		  
 Please note: This page needs further improvment and is subject of change
 
-   		
-# Introduction		
-	
 ## General response structure		
 	
 data, links, refs etc.		
@@ -36,8 +33,9 @@ json only
 ___		
 ### /		
 	
-___		
-### cpus		
+___
+
+### cpus
 Represents a collection of all cpus connected to the system at the moment.		
 	
 ___		
