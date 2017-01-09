@@ -37,11 +37,11 @@ ___
 ### /		
 	
 ___		
-### /cpus		
+### cpus		
 Represents a collection of all cpus connected to the system at the moment.		
 	
 ___		
-### /cpus/{ID} ###		
+### /cpus/{ID}		
 Represents a cpu having the specified ID.		
 	
 ___		
