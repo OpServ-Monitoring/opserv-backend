@@ -44,9 +44,9 @@ class GatherThread(threading.Thread):
 
         # Get all the available Measuring Sources
         measuring_sources.append(PsUtilWrap())
+        measuring_sources.append(OHMSource())
         measuring_sources.append(PyCpuInfoSource())
         measuring_sources.append(PySpectatorSource())
-        measuring_sources.append(OHMSource())
         measuring_sources.append(RaspiTempSource())
         measuring_sources.append(NullSource())
         if not measuring_sources[0].init():

@@ -1,9 +1,33 @@
-from argparse import ArgumentParser, Namespace, FileType
+"""
+    Contains the description and control of argparses related to logging
+    Namely logtc, logtf, logf and logl
+"""
+
+from argparse import ArgumentParser, Namespace, FileType, Action
+import logging
 
 from ._settings_base import SettingsBase
-
-
+class StringToLogLevel(Action):
+    """
+        Custom action for argparse arguments
+        Maps the specified logging choices onto the correct logging level variables
+    """
+    def __call__(self, parser, args, values, option_string=None):
+        switcher = {
+            "error" : logging.ERROR,
+            "warning" : logging.WARNING,
+            "debug" : logging.DEBUG,
+            "info" : logging.INFO
+        }
+        if values in switcher:
+            setattr(args, self.dest, switcher.get(values))
+        else:
+            raise ValueError("Unrecognized Logging Level")
 class LoggingSettings(SettingsBase):
+    """
+        Inherits SettingsBase and implements functionality for applying settings onto
+        the logging setup
+    """
     KEY_LOG_TO_CONSOLE = "log_to_console"
     KEY_LOG_TO_FILE = "log_to_file"
     KEY_LOG_LEVEL = "log_level"
@@ -30,8 +54,10 @@ class LoggingSettings(SettingsBase):
         parser.add_argument(
             "-logl",
             "--log-level",
-            help="Specify the level of messages to log, higher levels included. Defaults to error level.",
-            choices=["none", "error", "warning", "info", "debug"],
+            help="""Specify the level of messages to log,
+                  higher levels included. Defaults to error level.""",
+            choices=["error", "warning", "info", "debug"],
+            action=StringToLogLevel,
             default="error"
         )
 

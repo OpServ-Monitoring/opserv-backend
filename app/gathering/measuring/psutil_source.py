@@ -114,17 +114,20 @@ class PsUtilWrap(MeasuringSource):
 
         result = None
         if component == "cpu":
+            args = int(args)
             if metric == "usage":
                 result = self.psutil.cpu_percent(percpu=False)
 
         elif component == "core":
+            args = int(args)
             if metric == "usage":
-                result = self.psutil.cpu_percent(percpu=True)[int(args)]
+                result = self.psutil.cpu_percent(percpu=True)[args]
 
         elif component == "memory":
             result = self.measure_memory(metric)
 
         elif component == "process":
+            args = int(args)
             result = self.measure_process(metric, args)
 
         elif component == "partition":

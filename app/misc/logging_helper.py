@@ -5,14 +5,12 @@ from application_settings.logging_settings import LoggingSettings
 
 
 def setup_argparse_logger():
-    # TODO Use LoggingSettings.get_setting(LoggingSettings.KEY_LOG_LEVEL)
     # TODO Transform to  logging  package values
-    logging_level = logging.DEBUG
 
     setup_logger(
         LoggingSettings.get_setting(LoggingSettings.KEY_LOG_TO_CONSOLE),
         LoggingSettings.get_setting(LoggingSettings.KEY_LOG_TO_FILE),
-        logging_level,
+        LoggingSettings.get_setting(LoggingSettings.KEY_LOG_LEVEL),
         True,
         True
     )
