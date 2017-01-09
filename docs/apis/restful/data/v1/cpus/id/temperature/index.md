@@ -1,25 +1,25 @@
 ---
 layout: doc-entry
-title:  "Work in progress"
+title:  "cpu temperature endpoint"
 ---
 
 Represents the temperature of a cpu having the specified ID.		
 	
 The dataset can either depending on the submitted request headers include the newest data or a number of datapoints in a given timespan. Historical data is limited 		
 	
-#### Request		
+## Request		
 	
-##### Methods		
+### Methods		
 	
 Only GET requests are supported by this endpoint.		
 	
-##### Parameter		
+### Parameter		
 	
 |key|description|possible values|mandatory|		
 |:---:|:-----:|---|---|		
 |id|The ID assigned to the cpu by the OpServ system. A list of all ids present at the moment can be retrieved with [this request](#cpus)|dynamic|yes|		
 	
-##### Request Header		
+### Request Header		
 	
 |key|description|possible values|mandatory|default value|		
 |:---:|:-----:|---|---|---|		
@@ -29,11 +29,11 @@ Only GET requests are supported by this endpoint.
 |limit|The maximum number of datapoints to return|any positive integer greater 0, passing anything greater than 5000 will result in a limit of 5000|no|50|		
 |unit|A string indicating whether the temperature should be expressed as celsius or fahrenheit|"c" or "celsius"; "f" or "fahrenheit"|no|"c"|		
 	
-##### Request Body		
+### Request Body		
 	
 \- none -		
 	
-##### Example		
+### Example		
 	
    GET http://example.com/cpus/0/temperature?		
 		   realtime=0&start=1472680800000&end=1475186400000&limit=35&unit=fahrenheit		
@@ -42,7 +42,7 @@ This returns **non-realtime**, historical data, split up to **35 data points** b
    		
 Passing no additional headers results in the usage of all default values. Thus 50 historical datapoints over all gathered data in degree celsius will be returned.		
 	
-#### Response		
+## Response		
 
 All response follow the ::standard-scheme:: defined for this version.		
 Thus, the actual response data is included in the data section of the response.		
@@ -75,7 +75,7 @@ Aswell as one for historical data:
 	   }		
    }		
 	
-#### error codes		
+## error codes		
 	
 - TODO Invalid cpu id		
 - TODO unsupported method		
