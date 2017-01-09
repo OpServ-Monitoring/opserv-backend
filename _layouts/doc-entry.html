@@ -1,24 +1,23 @@
 ---
 layout: default
 ---
+<article id="main" class="markdown-body">
 
-    <article id="main" class="markdown-body">
- <!-- <header class="special container">
-    <h2 class="post-title">{{ page.title }}</h2>
-    <p class="post-meta">{{ page.date | date: "%b %-d, %Y" }}{% if page.author %} • {{ page.author }}{% endif %}{% if page.meta %} • {{ page.meta }}{% endif %}</p>
-  </header>-->
-  
-  <section class="style4 wrapper container">
-	  <h1>{{ page.title }}</h1>
-	  <br>
-	  {{ content }}
-  </section>
-    
-    <footer>
-        {% if page.previous %}
-        <a href="{{ page.previous.url }}" class="post-prev">&larr; Previous post</a> {% endif %}
-        {% if page.next %}
-        <a href="{{ page.next.url }}" class="post-next">Next post &rarr;</a> {% endif %}
-    </footer>
+<div class="row">
+    <div class="3u">
+        <div>
+            {% include overview.html %}
+        </div>
+    </div>
+
+    <div class="9u">
+        <section class="style4 wrapper container">
+            <h1>{{ page.title }}</h1>
+            <br>
+            {{ content }}
+        </section>
+    </div>
+</div>
+
 </article>
 
