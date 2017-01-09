@@ -1,5 +1,5 @@
 ---
-layout: doc-entry
+layout: article
 title:  "Downloads"
 ---
 
