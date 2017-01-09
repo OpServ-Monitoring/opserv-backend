@@ -1,5 +1,5 @@
 ---		  
-layout: doc-entry		  
+layout: api-rest-data-v1-entry
 title:  "RESTful API reference: data v1"
 ---		 
   		  
