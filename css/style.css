@@ -1106,6 +1106,6 @@
 		/*
 			Custom css
 		 */
-	.endpointHighlight {
+	.api-endpoint-list span {
 		color: yellow;
 	}
