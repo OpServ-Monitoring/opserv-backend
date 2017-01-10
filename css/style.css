@@ -1106,15 +1106,24 @@
 	/*
 		Custom css
 	*/
+	#home-ref {
+		display: flex;
+		align-items: center;
+	}
+
+		#home-ref span {
+			margin-left: 8px
+		}
+
 	#api-endpoint-list {
 		padding: 0;
 	}
 
-	#api-endpoint-list li a {
-		color: #1a3963;
-	}
+		#api-endpoint-list li a {
+			color: #1a3963;
+		}
 
-	#api-endpoint-list li a span {
-		font-weight: 400;
-		color: #4f87d0;
-	}
+		#api-endpoint-list li a span {
+			font-weight: 400;
+			color: #4f87d0;
+		}
