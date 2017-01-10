@@ -1102,3 +1102,10 @@
 			display: inline-block;
 			width: 5em;
 		}
+
+		/*
+			Custom css
+		 */
+	.endpointHighlight {
+		color: yellow;
+	}
