@@ -20,7 +20,7 @@ class StringToLogLevel(Action):
             "info" : logging.INFO
         }
         if values in switcher:
-            setattr(args, self.dest, switcher.get(values))
+            setattr(args, self.dest, switcher[values])
         else:
             raise ValueError("Unrecognized Logging Level")
 class LoggingSettings(SettingsBase):
@@ -58,7 +58,7 @@ class LoggingSettings(SettingsBase):
                   higher levels included. Defaults to error level.""",
             choices=["error", "warning", "info", "debug"],
             action=StringToLogLevel,
-            default="error"
+            default=logging.ERROR
         )
 
         parser.add_argument(

@@ -81,8 +81,6 @@ class OHMSource(MeasuringSource):
     disk_list = []
 
     def __init__(self):
-        self.init()
-
         self.clr = None
         self.hardware = []
         self._init_complete = False
@@ -326,6 +324,7 @@ class OHMSource(MeasuringSource):
             Updates the hardware of the given cpu core to get a measurement
             for the specified metric
         """
+        args = int(args)
         for core in self.core_list:
             if core["id"] == args:
                 if metric in TYPE_MAP_REVERSE:
