@@ -1,11 +1,12 @@
 ### UNDER ACTIVE DEVELOPMENT ###
 
 The software is in an alpha stage thus versions are likely to be unstable.
-
-------------
-
-
-
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 # opserv-backend
 
 [![Code Climate](https://codeclimate.com/github/OpServ-Monitoring/opserv-backend/badges/gpa.svg)](https://codeclimate.com/github/OpServ-Monitoring/opserv-backend)  [![Codacy Badge](https://api.codacy.com/project/badge/Grade/ad9c86466d164cc7a432df119e7b7c99)](https://www.codacy.com/app/alex22212/opserv-backend?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=OpServ-Monitoring/opserv-backend&amp;utm_campaign=Badge_Grade)
@@ -57,7 +58,7 @@ Generally it should be used with together with the frontend so please use a bund
     </td>
   </tr>
 </table>
-
+<br>
 
 Get started
 ------------
