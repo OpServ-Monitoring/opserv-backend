@@ -317,6 +317,8 @@ class OHMSource(MeasuringSource):
                     log.info("Taking measurement, Type: %s, Value: %f",
                              metric, cpu[sens_type][1].Value)
                     return cpu[sens_type][1].Value
+                elif metric == "info":
+                    return cpu["info"]
         raise ValueError("CPU given in args not found! {}".format(args))
 
     def get_core_measurement(self, metric, args):

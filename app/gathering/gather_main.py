@@ -224,7 +224,8 @@ def get_measurement(component, metric, args):
         if src.can_measure(component, metric):
             try:
                 measured_value = src.get_measurement(component, metric, args)
-                break  # Just use the first src that is able to measure
+                if measured_value is not None:
+                    break  # Just use the first src that is able to measure
             except Exception as err:
                 log.error(err)
                 log.error("Measuring failed here %s, %s, %s, %s",
