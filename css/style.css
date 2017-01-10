@@ -1111,5 +1111,6 @@
 	}
 
 	.api-endpoint-list a span {
+		font-weight: 500;
 		color: #4f87d0;
 	}
