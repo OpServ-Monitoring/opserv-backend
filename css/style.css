@@ -1111,6 +1111,13 @@
 		align-items: center;
 	}
 
+		#home-ref img {
+			height: auto;
+			width: auto;
+			max-width: 300px;
+			max-height: 300px;
+		}
+
 		#home-ref span {
 			margin-left: 8px
 		}
