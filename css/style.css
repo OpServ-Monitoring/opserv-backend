@@ -1103,9 +1103,13 @@
 			width: 5em;
 		}
 
-		/*
-			Custom css
-		 */
-	.api-endpoint-list span {
-		color: yellow;
+	/*
+		Custom css
+	*/
+	.api-endpoint-list a {
+		color: #1a3963;
+	}
+
+	.api-endpoint-list a span {
+		color: #4f87d0;
 	}
