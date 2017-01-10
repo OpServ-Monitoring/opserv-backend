@@ -330,8 +330,8 @@ class OHMSource(MeasuringSource):
                 if metric in TYPE_MAP_REVERSE:
                     sens_type = TYPE_MAP_REVERSE[metric][1]
                     core[sens_type][0].Update()
-                    log.info("Taking measurement, Type: %s, Value: %f",
-                             metric, core[sens_type][1].Value)
+                    log.info("Taking measurement, Type: %s, Value: %s",
+                             metric, str(core[sens_type][1].Value))
                     return core[sens_type][1].Value
         raise ValueError("Core given in args not found! {}".format(args))
 

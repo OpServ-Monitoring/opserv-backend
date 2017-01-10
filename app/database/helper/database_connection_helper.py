@@ -9,6 +9,7 @@ class DatabaseConnectionHelper:
         connection = sqlite3.connect(cls._location)
 
         connection.execute("PRAGMA JOURNAL_MODE=WAL")
+        connection.commit()
         connection.execute("PRAGMA FOREIGN_KEYS=ON")
         connection.commit()
 
