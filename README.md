@@ -18,27 +18,37 @@ The software is currently developed thus versions are likely to be unstable.
   <tr>
     <td>build status</td>
     <td>
-        <img src="https://ci.appveyor.com/api/projects/status/7gkd53ag5isi1cyu/branch/master?svg=true"
-        alt="Build Status - Windows - AppVeyor">
+        <a href="https://ci.appveyor.com/project/OpServ-Monitoring/opserv-backend" target="_blank">
+          <img src="https://ci.appveyor.com/api/projects/status/7gkd53ag5isi1cyu/branch/master?svg=true"
+          alt="Build Status - Windows - AppVeyor">
+        </a>
     </td> 
     <td colspan="2" align="center">
-        <img src="https://travis-ci.org/OpServ-Monitoring/opserv-backend.svg?branch=master"
-        alt="Build Status - Linux & Mac OS X - Travis CI">
+        <a href="https://travis-ci.org/OpServ-Monitoring/opserv-backend" target="_blank">
+          <img src="https://travis-ci.org/OpServ-Monitoring/opserv-backend.svg?branch=master"
+          alt="Build Status - Linux & Mac OS X - Travis CI">
+        </a>
     </td> 
   </tr>
   <tr>
     <td>test coverage</td>
     <td>
-        <img src="https://codeclimate.com/github/OpServ-Monitoring/opserv-backend/badges/coverage.svg"
-        alt="Test Coverage - Windows - Codeclimate over AppVeyor">
+        <a href="https://codeclimate.com/github/OpServ-Monitoring/opserv-backend/coverage" target="_blank">
+          <img src="https://codeclimate.com/github/OpServ-Monitoring/opserv-backend/badges/coverage.svg"
+          alt="Test Coverage - Windows - Codeclimate over AppVeyor">
+        </a>
     </td>  
     <td align="center" valign="middle">
-        <img src="https://api.codacy.com/project/badge/Coverage/ad9c86466d164cc7a432df119e7b7c99"
-        alt="Test Coverage - Linux - Codacy over Travis CI">
+        <a href="https://www.codacy.com/app/OpServ-Monitoring/opserv-backend/dashboard" target="_blank">
+          <img src="https://api.codacy.com/project/badge/Coverage/ad9c86466d164cc7a432df119e7b7c99"
+          alt="Test Coverage - Linux - Codacy over Travis CI">
+        </a>
     </td>
     <td>
-        <img src="https://coveralls.io/repos/github/OpServ-Monitoring/opserv-backend/badge.svg?branch=master"
-        alt="Test Coverage - OS X - Coveralls over Travis CI">
+        <a href="https://coveralls.io/github/OpServ-Monitoring/opserv-backend" target="_blank">
+          <img src="https://coveralls.io/repos/github/OpServ-Monitoring/opserv-backend/badge.svg?branch=master"
+          alt="Test Coverage - OS X - Coveralls over Travis CI">
+        </a>
     </td>
   </tr>
 </table>
