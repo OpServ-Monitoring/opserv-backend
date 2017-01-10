@@ -1,6 +1,6 @@
 ---
 layout: article
-title:  "Opserv monitoring - Contribute"
+title:  "Contribute"
 ---
 
 WORK IN PROGRESS
