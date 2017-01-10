@@ -14,13 +14,11 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 title: OpServ monitoring
-email: your-email@domain.com
+email: info@opserv.org
 description: > # this means to ignore newlines until "baseurl:"
-  Write an awesome description for your new site here. You can edit this
-  line in _config.yml. It will appear in your document head meta (for
-  Google search results) and in your feed.xml site description.
-baseurl: "/opserv-backend" # the subpath of your site, e.g. /blog
-url: "http://localhost:4000" # the base hostname & protocol for your site
+  Opserv monitoring, a free cross-plattform monitoring solution.
+baseurl: "/" # the subpath of your site, e.g. /blog
+url: "http://opserv.org" # the base hostname & protocol for your site
 twitter_username: jekyllrb
 github_username:  OpServ-Monitoring
 
