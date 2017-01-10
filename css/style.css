@@ -1114,8 +1114,8 @@
 		#home-ref img {
 			height: auto;
 			width: auto;
-			max-width: 300px;
-			max-height: 300px;
+			max-width: 16px;
+			max-height: 16px;
 		}
 
 		#home-ref span {
