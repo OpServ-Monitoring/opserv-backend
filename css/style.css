@@ -1106,11 +1106,11 @@
 	/*
 		Custom css
 	*/
-	.api-endpoint-list a {
+	#api-endpoint-list a {
 		color: #1a3963;
 	}
 
-	.api-endpoint-list a span {
+	#api-endpoint-list a span {
 		font-weight: 500;
 		color: #4f87d0;
 	}
