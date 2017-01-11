@@ -1,5 +1,5 @@
 cpu-cores:
-  name: /cpu-cores
+  name: /cpu-cores2
   description: Some description
   requests:
     - method: get
