@@ -2,20 +2,20 @@
 layout: default
 ---
 <article id="main" class="markdown-body">
-
     <div class="style4 wrapper container">
-        <div class="row" style="display: flex;">
-            <div class="3u" style="border-right: 1px solid #E0E0E0; align-items: stretch;">
-                <div>
-                    {% include overview-docs.html %}
+        <section>
+            <div class="row" style="display: flex;">
+                <div class="3u" style="border-right: 1px solid #E0E0E0; align-items: stretch;">
+                    <div>
+                        {% include overview-docs.html %}
+                    </div>
+                </div>
+
+                <div class="9u" style="align-items: stretch;">
+                    {% include article-content.html %}
                 </div>
             </div>
-
-            <div class="9u" style="align-items: stretch;">
-                {% include article-content.html %}
-            </div>
-        </div>
+        </section>
     </div>
-
 </article>
 

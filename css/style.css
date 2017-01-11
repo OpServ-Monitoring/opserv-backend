@@ -43,7 +43,6 @@
 		transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out, background-color 0.2s ease-in-out;
 		color: #3fb1a3;
 		text-decoration: none;
-		border-bottom: dotted 1px;
 	}
 
 		a:hover {
@@ -1128,7 +1127,6 @@
 
 		#api-endpoint-list li a {
 			color: #1a3963;
-			border-bottom: none;
 			font-size: 90%;
 		}
 
