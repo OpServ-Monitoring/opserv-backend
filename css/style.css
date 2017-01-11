@@ -1128,6 +1128,8 @@
 
 		#api-endpoint-list li a {
 			color: #1a3963;
+			border-bottom: none;
+			font-size: 90%;
 		}
 
 		#api-endpoint-list li a span {
