@@ -5,8 +5,6 @@ layout: doc-entry-rest-data-v1
 {% assign endpoint = site.data.apis-rest-data-v1-endpoints[page.endpoint] %}
 
 {% if endpoint %}
-    <h2>{{ endpoint.name }}</h2>
-
     {{ endpoint.description }}
 
     <h3>Requests</h3>
@@ -15,7 +13,7 @@ layout: doc-entry-rest-data-v1
         {% for request in endpoint.requests %}
             <h4>{{ request.method }}</h4>
 
-            {% if requests.params %}
+            {% if request.params %}
                 <h5>Parameter</h5>
 
                 <table>
