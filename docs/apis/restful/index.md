@@ -3,6 +3,11 @@ layout: doc-entry
 title:  "RESTful API"
 ---
 
+<!---
+    TODO Add actualize content
+-->
+
+
 The frontend utilizes a RESTful-API to retrieve historical and real-time data from the backend as well as to persist the users preferences.
 
 All endpoints are available under subpaths of `/api`

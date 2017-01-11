@@ -3,5 +3,8 @@ layout: article
 title:  "Get started"
 ---
 
-WORK IN PROGRESS
-Get started 
+Work in progress...
+
+<!---
+    TODO Add content
+-->
