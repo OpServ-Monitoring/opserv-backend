@@ -17,6 +17,8 @@ In case you want to contribute to the project or are just curious about how the 
 Dont like the included web interface? Build your own interface using one of the offered apis. 
 We recommend you to get started [learning about one of the apis](/docs/apis) by reading its reference.
 
+Also [feel free to contribute](/contribute) to the project!
+
 ## The name _opserv_ <a name="naming"></a>
 
 As [stated below](#history) opserv started out as a university project.
@@ -34,7 +36,7 @@ Its a combination of words, abbreviation and a letter variation, as it's stand f
 - open
   - build from ground up as an open source project, all of its code is published under the GNU GPL 3.0 and can be viewed [on Github](https://github.com/OpServ-Monitoring)
 
-## Short history <a name="history"></a>
+## brief history <a name="history"></a>
 
 - months before august 2016
   - collecting ideas for the scope and wording of the paper for the university project
