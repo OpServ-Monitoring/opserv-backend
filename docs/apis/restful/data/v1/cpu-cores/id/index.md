@@ -1,10 +1,5 @@
 ---
-layout: doc-entry-rest-data-v1
-title:  "Work in progress"
+layout: doc-entry-rest-data-v1-endpoint
+title:  "/cpu-cores/{ID}"
+endpoint: "cpu-cores_id"
 ---
-
-Work in progress...
-
-<!---
-	TODO Add content
--->

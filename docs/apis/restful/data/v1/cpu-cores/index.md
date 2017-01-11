@@ -1,5 +1,5 @@
 ---
 layout: test
-title:  "Work in progress"
+title:  "/cpu-cores"
 endpoint: "cpu-cores"
 ---
