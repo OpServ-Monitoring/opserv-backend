@@ -23,12 +23,12 @@ Also [feel free to contribute](/contribute) to the project!
 
 As [stated below](#history) opserv started out as a university project.
 In need of a name to better promote the build solution we came of with opserv.
-Its a combination of words, abbreviation and a letter variation, as it's stand for:
+Its a combination of words, an abbreviation and a letter variation, as it's stand for:
 
 - observe
   - A monitoring tool opserves the system it's running on.
 - Ops
-  - as in Operations, a term commonly used in it for staff that e.g. maintains server which may be one of the possible user groups.
+  - as in Operations, a term commonly used in IT for staff that e.g. maintains server which may be one of the possible user groups.
 - serve
   - like a servant, opserv should help you by making system monitoring easier and will operate as you desire.
 - server
