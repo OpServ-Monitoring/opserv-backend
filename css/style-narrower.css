@@ -119,3 +119,18 @@
 	#footer {
 		padding: 4em 1.5em;
 	}
+
+	/*
+	Custom css
+	*/
+	.doc-sidebar {
+		border-right: none;
+	}
+
+	.doc-sidebar .api-reference {
+		display: none;
+	}
+
+	.api-reference {
+		display: block;
+	}

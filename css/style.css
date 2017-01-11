@@ -1134,3 +1134,11 @@
 			font-weight: 400;
 			color: #4f87d0;
 		}
+
+	.doc-sidebar {
+		border-right: 1px solid #E0E0E0;
+	}
+
+	.api-reference {
+		margin-top: 36px
+	}

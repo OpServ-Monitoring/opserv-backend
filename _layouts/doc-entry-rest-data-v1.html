@@ -5,17 +5,23 @@ layout: default
 
     <div class="style4 wrapper container">
         <div class="row">
-                <div class="3u 0u$(mobile)" style="border-right: 1px solid #E0E0E0;">
-                    <section>
-                    {% include overview-docs.html %}
+            <div class="3u 12u$(mobile) doc-sidebar">
+                <section>
+                {% include overview-docs.html %}
 
-                    {% include overview-rest-data-v1.html %}
-                    </section>
-                </div>
+                {% include overview-rest-data-v1.html %}
+                </section>
+            </div>
 
-            <div class="9u 12u$(mobile) important(mobile)">
+            <div class="9u 12u$(mobile)">
                 <section>
                 {% include article-content.html %}
+                </section>
+            </div>
+
+            <div class="12u">
+                <section>
+                    {% include overview-rest-data-v1.html %}
                 </section>
             </div>
         </div>
