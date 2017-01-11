@@ -1,6 +1,54 @@
 cpu-cores:
-  intro: lorem ipsum
-  tada: memo
-cpus:
-  intro: lorem findum
-  tada: test
+  name: /cpu-cores
+  description: Some description
+  requests:
+    - method: get
+      params: null
+      request_header: null
+      request_body: null
+      examples:
+        - uri: GET /cpu-cores
+          explanation: Some explanation
+      response: null
+      error_codes: null
+
+cpu-cores_id:
+  name: /cpu-cores/id
+  description: Some description 2
+  requests:
+    - method: get
+      params:
+        - key: id
+          description: The id of the cpu-core to fetch
+          possible_values: depends on the system
+          mandatory: yes
+      request_header: null
+      request_body: null
+      examples:
+        - uri: GET /cpu-cores/0
+          explanation: Some explanation 2
+      response: null
+      error_codes: null
+
+cpu-cores_id_usage:
+  name: /cpu-cores/id/usage
+  description: Some description 3
+  requests:
+    - method: get
+      params:
+        - key: id
+          description: The id of the cpu-core to fetch
+          possible_values: depends on the system
+          mandatory: yes
+      request_header:
+        - key: starttime
+          description: start descr
+          possible_values: 0 - 1
+          mandatory: no
+          default_value: 0
+      request_body: null
+      examples:
+        - uri: GET /cpu-cores/0/usage?
+          explanation: Some explanation 3
+      response: null
+      error_codes: null
