@@ -1,10 +1,6 @@
 ---
-layout: doc-entry-rest-data-v1
+layout: test
 title:  "Work in progress"
 ---
 
-Work in progress...
-
-<!---
-	TODO Add content
--->
+test
