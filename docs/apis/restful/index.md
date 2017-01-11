@@ -50,11 +50,13 @@ Each reference consists of a hyperlink and a name identifying the resource type.
 All endpoints to the data api are available under subpaths of `/api` followed by `/data` and the api version, e.g. `/api/data/v1`. To always use the last version exchange the version code with the keyword _current_ as such `/api/data/current`
 
 See the belonging references for more details to each version:
-- [data - version 1](/docs/apis/restful/data/v1)
+
+⋅⋅⋅[data - version 1](/docs/apis/restful/data/v1)
 
 ## User preferences
 
 Similar to the data api, all endpoints to the preferences api are available under subpaths of `/api` followed by `/preferences` and the api version, e.g. `/api/preferences/v1`. To always use the last version exchange the version code with the keyword _current_ as such `/api/preferences/current`
 
 See the belonging references for more details to each version:
-- [preferences - version 1](/docs/apis/restful/preferences/v1)
+
+⋅⋅⋅[preferences - version 1](/docs/apis/restful/preferences/v1)
