@@ -51,7 +51,7 @@ All endpoints to the data api are available under subpaths of `/api` followed by
 
 See the belonging references for more details to each version:
 
-⋅⋅⋅[data - version 1](/docs/apis/restful/data/v1)
+   [data - version 1](/docs/apis/restful/data/v1)
 
 ## User preferences
 
@@ -59,4 +59,4 @@ Similar to the data api, all endpoints to the preferences api are available unde
 
 See the belonging references for more details to each version:
 
-⋅⋅⋅[preferences - version 1](/docs/apis/restful/preferences/v1)
+   [preferences - version 1](/docs/apis/restful/preferences/v1)
