@@ -2,6 +2,9 @@
 layout: doc-entry-rest-data-v1
 ---
 
-{{ site.data.apis-rest-data-v1-endpoints }}
+{% assign raw = site.data.apis-rest-data-v1-endpoints | jsonify %}
+{% assign data = raw[page.endpoint] %}
 
-{{ page.endpoint }}
+{{ raw }}
+
+{{ data }}
