@@ -15,56 +15,29 @@ class TestLoggingSettings(TestCase):
         LoggingSettings.add_settings_arguments(self.parser)
 
         try:
-            self.parser.parse_args("-logtc".split())
-            self.parser.parse_args("--log-to-console".split())
+            self.parser.parse_args("-cl".split())
+            self.parser.parse_args("--consolelog".split())
         except SystemExit:
             self.fail("validate_settings_arguments() raised SystemExit unexpectedly!")
 
         try:
-            self.parser.parse_args("-logtf".split())
-            self.parser.parse_args("--log-to-file".split())
+            self.parser.parse_args("-fl".split())
+            self.parser.parse_args("--filelog".split())
         except SystemExit:
             self.fail("validate_settings_arguments() raised SystemExit unexpectedly!")
 
         try:
-            self.parser.parse_args("-logl debug".split())
-            self.parser.parse_args("--log-level debug".split())
+            self.parser.parse_args("-cl debug".split())
+            self.parser.parse_args("--consolelog debug".split())
         except SystemExit:
             self.fail("validate_settings_arguments() raised SystemExit unexpectedly!")
 
         try:
-            self.parser.parse_args("-logf test.log".split())
-            self.parser.parse_args("--logging-file test.log".split())
+            self.parser.parse_args("-fl test.log".split())
+            self.parser.parse_args("--filelog test.log".split())
         except SystemExit:
             self.fail("validate_settings_arguments() raised SystemExit unexpectedly!")
-
-    def test_validate_settings_arguments(self):
-        args = Namespace()
-
-        args.log_to_file = None
-        args.logging_file = None
-        try:
-            LoggingSettings.validate_settings_arguments(self.parser, args)
-        except SystemExit:
-            self.fail("validate_settings_arguments() raised SystemExit unexpectedly!")
-
-        args.log_to_file = True
-        with self.assertRaises(SystemExit) as cm:
-            LoggingSettings.validate_settings_arguments(self.parser, args)
-        self.assertEqual(cm.exception.code, 2)
-
-        with open("test.log", "r") as file:
-            args.logging_file = file
-            try:
-                LoggingSettings.validate_settings_arguments(self.parser, args)
-            except SystemExit:
-                self.fail("validate_settings_arguments() raised SystemExit unexpectedly!")
-
-            args.log_to_file = None
-            try:
-                LoggingSettings.validate_settings_arguments(self.parser, args)
-            except SystemExit:
-                self.fail("validate_settings_arguments() raised SystemExit unexpectedly!")
+            
 
     def tearDown(self):
         # TODO Use more stable approach

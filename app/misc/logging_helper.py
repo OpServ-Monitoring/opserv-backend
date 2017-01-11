@@ -3,20 +3,26 @@ import sys
 
 from application_settings.logging_settings import LoggingSettings
 
+DEFAULT_FILE_LOGLEVEL = logging.DEBUG
 
 def setup_argparse_logger():
     # TODO Transform to  logging  package values
+    console_log_enabled = LoggingSettings.get_setting(LoggingSettings.KEY_CONSOLE_LOG) is not None
+    file_log_enabled = LoggingSettings.get_setting(LoggingSettings.KEY_FILE_LOG) is not None
+    file_log_path = LoggingSettings.get_setting(LoggingSettings.KEY_FILE_LOG)
+    console_loglevel = LoggingSettings.get_setting(LoggingSettings.KEY_CONSOLE_LOG)
 
     setup_logger(
-        LoggingSettings.get_setting(LoggingSettings.KEY_LOG_TO_CONSOLE),
-        LoggingSettings.get_setting(LoggingSettings.KEY_LOG_TO_FILE),
-        LoggingSettings.get_setting(LoggingSettings.KEY_LOG_LEVEL),
+        console_log_enabled,
+        file_log_enabled,
+        console_loglevel,
+        file_log_path,
         True,
         True
     )
 
 
-def setup_logger(log_to_console, log_to_file, logging_level, log_server, log_gathering):
+def setup_logger(log_to_console, log_to_file, console_loglevel, file_log_path, log_server, log_gathering):
     # SETUP LOGGER
     mainLog = logging.getLogger("opserv")
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -24,17 +30,16 @@ def setup_logger(log_to_console, log_to_file, logging_level, log_server, log_gat
     # create file handler, set the formatting to it and add it as an handler
     if log_to_file:
         # TODO Use runtime arg - maybe as a param to prevent dependencies
-        # logging_file = LoggingSettings.get_setting(LoggingSettings.KEY_LOGGING_FILE)
 
-        fh = logging.FileHandler('opserv.log')
-        fh.setLevel(logging_level)
+        fh = logging.FileHandler(file_log_path)
+        fh.setLevel(DEFAULT_FILE_LOGLEVEL)
         fh.setFormatter(formatter)
         mainLog.addHandler(fh)
 
     # Create Console logging handler, if activated
     if log_to_console:
         ch = logging.StreamHandler(sys.stdout)
-        ch.setLevel(logging_level)
+        ch.setLevel(console_loglevel)
         # create formatter and add it to the handlers
         ch.setFormatter(formatter)
 

@@ -107,3 +107,6 @@ app/opserv.log
 
 # Sys file from OHMLib if it hasn't been deleted
 app/extern_dependency/OpenHardwareMonitorLib.sys
+
+# OpServ Frontend if it included in the dev environment
+app/server/public/*

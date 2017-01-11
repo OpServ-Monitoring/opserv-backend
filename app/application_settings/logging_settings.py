@@ -1,12 +1,17 @@
 """
     Contains the description and control of argparses related to logging
-    Namely logtc, logtf, logf and logl
+    Namely consolelog and filelog
 """
 
 from argparse import ArgumentParser, Namespace, FileType, Action
 import logging
+import os
 
 from ._settings_base import SettingsBase
+from misc.helper import get_path_to_app
+
+DEFAULT_FILE_LOG_PATH = os.path.join(get_path_to_app(), "opserv.log")
+
 class StringToLogLevel(Action):
     """
         Custom action for argparse arguments
@@ -17,58 +22,52 @@ class StringToLogLevel(Action):
             "error" : logging.ERROR,
             "warning" : logging.WARNING,
             "debug" : logging.DEBUG,
-            "info" : logging.INFO
+            "info" : logging.INFO,
+            None : args.consolelog #Contains default value
         }
         if values in switcher:
             setattr(args, self.dest, switcher[values])
         else:
             raise ValueError("Unrecognized Logging Level")
+
+
 class LoggingSettings(SettingsBase):
     """
         Inherits SettingsBase and implements functionality for applying settings onto
         the logging setup
     """
-    KEY_LOG_TO_CONSOLE = "log_to_console"
-    KEY_LOG_TO_FILE = "log_to_file"
-    KEY_LOG_LEVEL = "log_level"
-    KEY_LOGGING_FILE = "logging_file"
+    KEY_LOG_USAGE = "log_usage"
+    KEY_FILE_LOG = "filelog"
+    KEY_CONSOLE_LOG = "consolelog"
 
     @classmethod
     def add_settings_arguments(cls, parser: ArgumentParser) -> None:
         parser.add_argument(
-            "-logtc",
-            "--log-to-console",
-            help="Outputs the log on the python console. Defaults to false",
-            action="store_true",
-            default=False
-        )
-
-        parser.add_argument(
-            "-logtf",
-            "--log-to-file",
-            help="Outputs the log into the file at the specified path. Defaults to false",
-            action="store_true",
-            default=False
-        )
-
-        parser.add_argument(
-            "-logl",
-            "--log-level",
-            help="""Specify the level of messages to log,
-                  higher levels included. Defaults to error level.""",
+            "-cl",
+            "--consolelog",
+            help="Enables console logging and what level should be logged",
             choices=["error", "warning", "info", "debug"],
             action=StringToLogLevel,
+            nargs='?',
             default=logging.ERROR
         )
-
         parser.add_argument(
-            "-logf",
-            "--logging-file",
-            help="The path to the file the log should be written to",
-            type=FileType('w')
+            "-fl",
+            "--filelog",
+            help="Specified whether file logging should be enabled and where the log file will be",
+            nargs="?",
+            default=DEFAULT_FILE_LOG_PATH
         )
+        parser.add_argument(
+            "-usage",
+            "--log_usage",
+            help="Logs the usage and performance metrics of \
+                     OpServ itself to identify performance issues",
+            action="store_true",
+            default=False
+        )
+
 
     @classmethod
     def validate_settings_arguments(cls, parser: ArgumentParser, args: Namespace) -> None:
-        if args.log_to_file and args.logging_file is None:
-            parser.error("-logtf, --log-to-file requires -logf")
+        pass
