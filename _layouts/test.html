@@ -2,7 +2,7 @@
 layout: doc-entry-rest-data-v1
 ---
 
-{% if content == "test" %}
+{% if content.match(".*test.*") %}
     Hallo
 {% else %}
     Welt
