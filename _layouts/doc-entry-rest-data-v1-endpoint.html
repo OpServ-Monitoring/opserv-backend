@@ -75,7 +75,7 @@ layout: doc-entry-rest-data-v1
             <h5>Examples</h5>
             {% if request.examples %}
                 {% for example in request.examples %}
-                    {{ request.examples.uri }} <br> {{ request.examples.explanation }}
+                    {{ example.uri }} <br> {{ example.explanation }}
                 {% endfor %}
             {% else %}
                 - none -
