@@ -1137,6 +1137,7 @@
 
 	.doc-sidebar {
 		border-right: 1px solid #E0E0E0;
+		padding-right: 12px;
 	}
 
 	.api-reference {
