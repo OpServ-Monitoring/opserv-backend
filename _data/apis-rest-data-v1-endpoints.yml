@@ -1,5 +1,4 @@
 cpu-cores:
-  name: /cpu-cores2
   description: Some description
   requests:
     - method: get
@@ -13,7 +12,6 @@ cpu-cores:
       error_codes: null
 
 cpu-cores_id:
-  name: /cpu-cores/id
   description: Some description 2
   requests:
     - method: get
@@ -31,7 +29,6 @@ cpu-cores_id:
       error_codes: null
 
 cpu-cores_id_usage:
-  name: /cpu-cores/id/usage
   description: Some description 3
   requests:
     - method: get
