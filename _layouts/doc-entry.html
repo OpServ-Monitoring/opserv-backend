@@ -4,6 +4,13 @@ layout: default
 <article id="main" class="markdown-body">
     <div class="style4 wrapper container">
         <div class="row" style="display: flex;">
+            <script>
+                if(skel.vars.isMobile) {
+                    document.write("1")
+                } else {
+                    document.write("2")
+                }
+            </script>
             <div class="3u 12u(mobile)" style="border-right: 1px solid #E0E0E0; align-items: stretch;">
                 <div>
                     {% include overview-docs.html %}
