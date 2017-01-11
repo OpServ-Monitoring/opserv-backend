@@ -3,18 +3,13 @@ layout: doc-entry
 title:  "RESTful API"
 ---
 
-<!---
-    TODO Add actualize content
--->
-
-
 The frontend utilizes a RESTful-API to retrieve historical and real-time data from the backend as well as to persist the users preferences.
 
 All endpoints are available under subpaths of `/api`
 
 To separate user data from the gathered data there are distinct endpoints for both of them, each defining their own versions as well. 
 
-#General response structure
+# General response structure
 
 In general each response from the RESTful api consists of a data and a links section. The data section varies depending on the requested resource. To get more details about the data section read the documentation of the specific endpoint. The links section includes different references based on the requested endpoint, namely a self-reference and if possible a reference to the direct parent and references to any child resources. 
 
@@ -50,7 +45,7 @@ Each reference consists of a hyperlink and a name identifying the resource type.
         }
     }
 
-#Gathered data
+# Gathered data
 
 All endpoints to the data api are available under subpaths of `/api` followed by `/data` and the api version, e.g. `/api/data/v1`. To always use the last version exchange the version code with the keyword _current_ as such `/api/data/current`
 
