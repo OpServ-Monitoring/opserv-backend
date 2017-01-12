@@ -325,7 +325,9 @@ class PsUtilWrap(MeasuringSource):
         '''
         result = []
         try:
-            result = self.psutil.pids()
+            for p in self.psutil.process_iter():
+                # p.pid has a weird type that cannot be converted directly to str
+                result.append(str(int(p.pid)) + ":" + str(p.name()))
         except Exception as err:
             log.error("Couldn't get processlist")
             log.error(err)

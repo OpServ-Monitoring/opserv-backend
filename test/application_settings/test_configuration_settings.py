@@ -16,7 +16,7 @@ class TestConfigurationSettings(TestCase):
 
         try:
             self.parser.parse_args("-cf test.conf".split())
-            self.parser.parse_args("--conf-file test.conf".split())
+            self.parser.parse_args("--conffile test.conf".split())
         except SystemExit:
             self.fail("validate_settings_arguments() raised SystemExit unexpectedly!")
 

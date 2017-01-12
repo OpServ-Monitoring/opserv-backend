@@ -17,16 +17,28 @@ def init():
     console_args = validate_runtime_args(parser)
     console_args_as_dict = vars(console_args)
 
-    # Read arguments passed in a file
-    '''    file_args = {}
-    if console_args_as_dict["conf_file"] is not None:
-        file_args = json.loads(
-            console_args.conf_file.read()
-        )
+    application_settings_store.settings = console_args_as_dict
+
+    # Now validate the integrity of the config file
+    config_file_path = ConfigurationSettings.get_setting(ConfigurationSettings.KEY_CONF_FILE)
+    if ConfigurationSettings.config_is_missing():
+        # If there is no config file, create a new one
+        ConfigurationSettings.create_empty_config()
+
+    if not ConfigurationSettings.config_file_is_valid():
+        raise ValueError("Configuration file is invalid")
+
+    # Load the config file into runtime
+    config_dict = ConfigurationSettings.get_config_as_dict()
 
     # Globally save the runtime args
-    application_settings_store.settings = file_args.copy()'''
-    application_settings_store.settings.update(console_args_as_dict)
+    application_settings_store.settings = config_dict
+    for arg in console_args_as_dict:
+        if arg in application_settings_store.settings:
+            if console_args_as_dict[arg] is not None:
+                application_settings_store.settings[arg] = console_args_as_dict[arg]
+        else:
+                application_settings_store.settings[arg] = console_args_as_dict[arg]
 
 
 def configure_runtime_arg_parser() -> argparse.ArgumentParser:

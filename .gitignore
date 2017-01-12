@@ -110,3 +110,4 @@ app/extern_dependency/OpenHardwareMonitorLib.sys
 
 # OpServ Frontend if it included in the dev environment
 app/server/public/*
+app/opserv_config.json
