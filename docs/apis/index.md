@@ -3,8 +3,6 @@ layout: doc-entry
 title:  "Supported APIs"
 ---
 
-Work in progress...
+As of now, OpServ offers a [RESTful API](/docs/apis/restful) to supply any data measured.
 
-<!---
-    TODO Add content
--->
+A [websocket interface](/docs/apis/websockets) is scheduled for the next major release.

@@ -49,3 +49,25 @@ cpu-cores_id_usage:
           explanation: Some explanation 3
       response: null
       error_codes: null
+      
+cpus_id_temperature:
+  description: The dataset depending on the submitted request headers can either include the newest data or a number of datapoints in a given timespan. However the number of historical datapoints is limited.
+  requests:
+    - method: get
+      params:
+        - key: id
+          description: The ID assigned to the cpu by the OpServ system. A list of all ids present at the moment can be retrieved with this request
+          possible_values: depends on the system
+          mandatory: yes
+      request_header:
+        - key: realtime
+          description: A boolean indicating whether realtime data is wanted or not
+          possible_values: “false” or 0 to retrieve historical data; “true” or 1 to retrieve realtime data
+          mandatory: no
+          default_value: 0
+      request_body: null
+      examples:
+        - uri: GET http://example.com/cpus/0/temperature?	realtime=0&start=1472680800000&end=1475186400000&limit=35&unit=fahrenheit
+          explanation: This returns <strong>non-realtime</strong>, historical data, split up to <strong>35 data points</strong> between the <strong>1st and 30th of September 2016</strong> including the min, max and average temperature in degree <strong>fahrenheit</strong> for the cpu with the <strong>id 0</strong>.<br><br>Passing no additional headers results in the usage of all default values. Thus 50 historical datapoints over all gathered data in degree celsius will be returned.
+      response: "All response follow the ::standard-scheme:: defined for this version. Thus, the actual response data is included in the data section of the response. There are two response structures depending on the requested data, one for realtime data: { ‘data’: { ‘value’: 15.3, ‘unit’: ‘c’ } ‘links’: { … } } Aswell as one for historical data: { ‘data’: { ‘values’: [ { ‘timestamp’: 1472680800000, ‘min’: 13.4, ‘max’: 32.6, ‘avg’: 17.3}, … { ‘timestamp’: 1475186400000, ‘min’: 7.9, ‘max’: 22.7, ‘avg’: 15.5} ], ‘unit’: ‘f’ } ‘links’: { … } }"
+      error_codes: null
