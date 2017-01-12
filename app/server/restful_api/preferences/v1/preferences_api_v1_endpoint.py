@@ -68,7 +68,7 @@ class PreferencesApiV1Endpoint(Endpoint):
         children = []
         for key in keys_in_use:
             children.append(
-                (key, PreferenceEndpoint)
+                ("/" + key, PreferenceEndpoint)
             )
 
         return children
