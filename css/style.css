@@ -1140,6 +1140,11 @@
 		padding-right: 12px;
 	}
 
+		.doc-sidebar .api-reference {
+			display: block;
+		}
+
 	.api-reference {
-		margin-top: 36px
+		margin-top: 36px;
+		display: none;
 	}
