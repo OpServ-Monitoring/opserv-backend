@@ -1,3 +1,0 @@
-[submodule "docs/guide/demo"]
-	path = docs/guide/demo
-	url = https://github.com/OpServ-Monitoring/opserv-frontend
