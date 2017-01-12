@@ -9,32 +9,16 @@ class MeasurementDataReader(DatabaseConnector):
         connection = cls._connection_helper.retrieve_database_connection()
 
         result = connection.execute(
-            """SELECT
-                 {1}, {2}, {3},
-                 avg({4}) AS measurement_timestamp,
-                 min({5} * 1.0) AS minimum,
-                 avg({5} * 1.0) AS average,
-                 max({5} * 1.0) AS maximum
-               FROM (
-                 SELECT
-                   (SELECT COUNT(*)
-                    FROM {0}
-                    WHERE {4} > ? AND {4} < ? AND {1} = ? AND {2} = ? AND {3} = ?
-                    ) AS row_count,
-
-                   (SELECT COUNT(0)
-                    FROM {0} t1
-                    WHERE t1.{4} < t2.{4} AND t1.{4} > ? AND t1.{4} < ?
-                      AND t1.{1} = ? AND t1.{2} = ?  AND t1.{3} = ?
-                    ORDER BY {4} ASC
-                    ) AS row_number,
-
-                    *
-                    FROM {0} t2
-                    WHERE t2.{4} > ? AND t2.{4} < ?
-                      AND t2.{1} = ? AND t2.{2} = ? AND t2.{3} = ?
-                    ORDER BY {4} ASC)
-               GROUP BY CAST((row_number / (row_count / ?)) AS INT)""".format(
+            """SELECT measurement_component_type_fk, measurement_component_arg_fk, measurement_metric_fk,
+                   avg(measurement_timestamp) AS measurement_timestamp,
+                   min(measurement_value * 1.0) AS minimum,
+                   avg(measurement_value * 1.0) AS average,
+                   max(measurement_value * 1.0) AS maximum
+                FROM measurements_table
+                WHERE measurement_timestamp > ? AND measurement_timestamp < ?
+                      AND measurement_component_type_fk = ? AND measurement_component_arg_fk = ? AND measurement_metric_fk = ?
+                GROUP BY CAST((measurement_timestamp - ?) / ((? - ?) / CAST(? as float)) as int)
+                """.format(
                 MeasurementsTableManagement.TABLE_NAME(),
                 MeasurementsTableManagement.KEY_COMPONENT_TYPE_FK(),
                 MeasurementsTableManagement.KEY_COMPONENT_ARG_FK(),
@@ -44,9 +28,7 @@ class MeasurementDataReader(DatabaseConnector):
             ),
             (
                 start_time, end_time, component_type, component_arg, metric_name,
-                start_time, end_time, component_type, component_arg, metric_name,
-                start_time, end_time, component_type, component_arg, metric_name,
-                float(limit)
+                start_time, end_time, start_time, float(limit)
             )
         ).fetchall()
 
