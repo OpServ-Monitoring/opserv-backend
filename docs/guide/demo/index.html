@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" ng-cloak="" ng-app="app" >
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>OpServ</title>
+    <!--<link rel="stylesheet" href="css/application.css">-->
+
+    <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <link rel="stylesheet" href="bower_components/angular-gridster/dist/angular-gridster.min.css"/>
+
+    <link rel="stylesheet" href="css/own.css">
+
+</head>
+<body >
+<main  layout-fill="" layout="column" ng-view="">
+
+</main>
+<script src="bower_components/angular/angular.js" ></script>
+<script src="bower_components/angular-aria/angular-aria.js"></script>
+<script src="bower_components/angular-animate/angular-animate.js"></script>
+<script src="bower_components/angular-material/angular-material.js"></script>
+<script src="bower_components/scrollMonitor/scrollMonitor.js"></script>
+<script src="bower_components/angular-viewport-watch/angular-viewport-watch.js"></script>
+
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="bower_components/javascript-detect-element-resize/jquery.resize.js"></script>
+<script src="bower_components/angular-gridster/dist/angular-gridster.min.js"></script>
+
+<script src="bower_components/angular-route/angular-route.min.js"></script>
+
+<script src="bower_components/highcharts/highstock.src.js"></script>
+<script src="bower_components/highcharts/modules/exporting.js"></script>
+<script src="bower_components/highcharts-ng/dist/highcharts-ng.js"></script>
+
+<!--app-->
+<script src="app.js"></script>
+<!--controller-->
+<script src="modules/controller/dashboards_controller.js"></script>
+<!--directive-->
+<script src="modules/directives/widgets/kt_dashboard_widget.js"></script>
+<script src="modules/directives/watch_size.js"></script>
+<script src="modules/directives/toolbars/kt_dashboards_toolbar.js"></script>
+<script src="modules/directives/side_navs/kt_dashboard_edit_side_nav.js"></script>
+<!--Services-->
+<script src="modules/services/data_servcie.js"></script>
+<script src="modules/services/pref_service.js"></script>
+<script src="modules/services/toast_service.js"></script>
+<script src="modules/services/dialog_service.js"></script>
+
+</body>
+
+</html>

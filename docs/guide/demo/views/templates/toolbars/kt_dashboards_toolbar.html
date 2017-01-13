@@ -1,0 +1,47 @@
+<!--toolbar for small screens-->
+<md-toolbar md-scroll-shrink="false"  class="md-tall" hide-gt-xs="">
+    <div layout="row" >
+        <h3>OpServ</h3>
+        <span flex=""></span>
+        <span>
+
+             <md-button style="margin-top: 5px" class="md-icon-button" ng-click="openOpservSettingsDialog()">
+                    <md-icon class="material-icons">settings</md-icon>
+             </md-button>
+            <!--<md-menu md-position-mode="target-right target" md-offset="-20 40">-->
+               <!---->
+            <!--</md-menu>-->
+        </span>
+    </div>
+    <div layout-align="center" class="md-toolbar-tools">
+        <div flex="90">
+            <md-tabs class="no-body" md-selected="selectedDashboard" md-center-tabs>
+                <md-tab  ng-repeat="dashboard in dashboards" label="{{dashboard.title}}">
+                </md-tab>
+            </md-tabs>
+        </div>
+    </div>
+</md-toolbar>
+<!--toolbar for large screens-->
+<md-toolbar md-scroll-shrink="false" layout="row"  hide-xs="">
+    <h3>OpServ</h3>
+    <span flex=""></span>
+        <div flex="80">
+            <md-tabs class="no-body" md-selected="selectedDashboard" md-center-tabs>
+                <md-tab  ng-repeat="dashboard in dashboards" label="{{dashboard.title}}">
+                </md-tab>
+            </md-tabs>
+        </div>
+    <span flex=""></span>
+        <span>
+
+                         <md-button style="margin-top: 5px" class="md-icon-button" ng-click="openOpservSettingsDialog()">
+                    <md-icon class="material-icons">settings</md-icon>
+             </md-button>
+            <!--<md-menu  md-position-mode="target-right target" md-offset="-20 40">-->
+                <!--<md-button style="margin-top: 5px" class="md-icon-button" ng-click="openOpservSettingsDialog()">-->
+                    <!--<md-icon class="material-icons">settings</md-icon>-->
+                <!--</md-button>-->
+            <!--</md-menu>-->
+        </span>
+</md-toolbar>

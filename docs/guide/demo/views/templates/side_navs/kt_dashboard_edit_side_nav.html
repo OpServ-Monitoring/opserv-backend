@@ -1,0 +1,59 @@
+<md-sidenav class="md-sidenav-left" md-component-id="left"
+            md-disable-backdrop md-whiteframe="4">
+    <md-toolbar >
+        <h3>OpServ</h3>
+    </md-toolbar>
+    <md-tabs class="no-tab-panel" md-dynamic-height md-selected="selectedSideNavIndex" style="min-height: 50px">
+        <md-tab label="General">
+            <md-content layout="column" layout-align="center center" >
+                <md-button class="md-button" ng-repeat="generalOption in generalOptions" ng-click="generalOption.action(generalOption)">
+                    {{generalOption.label}}
+                    <!--<md-icon class="material-icons" >ci.name</md-icon>-->
+                </md-button>
+            </md-content>
+        </md-tab>
+        <md-tab label="CIs">
+            <md-content layout="column" layout-align="center center" >
+                <md-progress-circular ng-if="cisLoading" style="margin: 10px" class="md-accent" md-diameter="30px"></md-progress-circular>
+                <md-button class="md-button" ng-repeat="ci in cis" ng-click="ci.action(ci)">
+                    {{ci.label}}
+                    <!--<md-icon class="material-icons" >ci.name</md-icon>-->
+                </md-button>
+            </md-content>
+        </md-tab>
+        <md-tab label="Ids">
+            <md-content layout="column" layout-align="center center" >
+                <md-progress-circular ng-if="idsLoading" style="margin: 10px" class="md-accent" md-diameter="30px"></md-progress-circular>
+                <md-button class="md-button" ng-repeat="id in ids" ng-click="id.action(id)">
+                    {{id.label}}
+                    <!--<md-icon class="material-icons" >ci.name</md-icon>-->
+                </md-button>
+            </md-content>
+        </md-tab>
+        <md-tab label="categories">
+            <md-content layout="column" layout-align="center center" >
+                <md-progress-circular ng-if="catsLoading" style="margin: 10px" class="md-accent" md-diameter="30px"></md-progress-circular>
+                <md-button class="md-button" ng-repeat="cat in categories" ng-click="cat.action(cat)">
+                    {{cat.label}}
+                    <!--<md-icon class="material-icons" >ci.name</md-icon>-->
+                </md-button>
+            </md-content>
+        </md-tab>
+    </md-tabs>
+    <footer>
+        <md-divider ng-if="!(selectedSideNavIndex == 0)" ></md-divider>
+        <md-content ng-if="!(selectedSideNavIndex == 0)" layout="column" layout-align="center center">
+            <md-button  class="md-mini md-icon-button" ng-click="scrollBack()">
+                <md-icon class="material-icons" >arrow_back</md-icon>
+            </md-button>
+        </md-content>
+        <md-divider ></md-divider>
+        <md-content layout="column" layout-align="center center">
+            <md-button  class="md-mini md-icon-button" ng-click="toggleEditMode()">
+                <md-icon class="material-icons" >exit_to_app</md-icon>
+            </md-button>
+        </md-content>
+    </footer>
+
+
+</md-sidenav>

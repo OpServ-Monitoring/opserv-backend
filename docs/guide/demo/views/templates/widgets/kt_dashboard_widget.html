@@ -1,0 +1,15 @@
+<!--<kt-cpu-usage ng-if="category=='cpu_usage'" options="options" baseurl="baseurl" display="display" widgetindex="widgetindex" dashboardindex="dashboardindex" ></kt-cpu-usage>-->
+
+<!--<kt-chart ng-if="category=='cpu_usage'"></kt-chart>-->
+<!--<kt-text></kt-text>-->
+
+<highchart ng-if="displayAsChart" layout-fill="" config="config"></highchart>
+
+<span ng-show="isEditing" class="top-right">
+    <md-button  class=" md-icon-button " ng-click="openSettings()">
+        <md-icon class="material-icons" >edit</md-icon>
+    </md-button>
+    <md-button  class=" md-icon-button " ng-click="delete()">
+        <md-icon class="material-icons" >delete</md-icon>
+    </md-button>
+</span>

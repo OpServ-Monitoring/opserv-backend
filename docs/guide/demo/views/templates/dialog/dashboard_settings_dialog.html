@@ -1,0 +1,36 @@
+<md-dialog class="blackground" flex="66">
+    <form ng-cloak>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Settings</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <md-icon>close</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <md-dialog-content class="blackground-light">
+            <div class="md-dialog-content">
+                <md-input-container>
+                    <label>Title</label>
+                    <input ng-model="title" >
+                </md-input-container>
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>URL</label>
+                    <input ng-model="baseUrl" >
+                </md-input-container>
+            </div>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row" class="blackground">
+            <span flex></span>
+            <md-button class="md-raised md-warn" ng-click="cancel()">
+                Abbrechen
+            </md-button>
+            <md-button class="md-raised md-accent" ng-click="submit()">
+                Speichern
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

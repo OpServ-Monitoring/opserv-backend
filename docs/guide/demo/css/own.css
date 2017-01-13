@@ -1,0 +1,173 @@
+.my_grid_item{
+    background-color: #4e4e4e;
+    color: #00b8d4;
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    background: #000000 url("../images/Dark_background_1920x1080.png") no-repeat center top;
+    background-size: cover;
+}
+
+md-tabs.on-top md-tabs-content-wrapper{
+     top:1px;
+}
+
+h3{
+    margin: 10px;
+}
+
+md-toolbar{
+    min-height: 40px;
+}
+
+md-tabs.no-body:not(.md-no-tab-content):not(.md-dynamic-height){
+    min-height: 30px;
+}
+
+md-tabs.no-body md-tabs-content-wrapper{
+    display:none;
+}
+
+md-tabs.no-body md-tab-content{
+    display:none;
+
+}
+
+md-tabs.md-default-theme .md-tab, md-tabs .md-tab{
+    color: rgba(255,255,255,0.87);
+}
+
+md-tabs.md-default-theme .md-tab.md-active, md-tabs .md-tab.md-active, md-tabs.md-default-theme .md-tab.md-active md-icon, md-tabs .md-tab.md-active md-icon, md-tabs.md-default-theme .md-tab.md-focused, md-tabs .md-tab.md-focused, md-tabs.md-default-theme .md-tab.md-focused md-icon, md-tabs .md-tab.md-focused md-icon{
+    color: #00b8d4;
+}
+
+md-tabs.no-tab-panel md-tabs-wrapper{
+    display:none
+}
+
+md-toolbar.md-tall {
+    height: 100px;
+    min-height: 100px;
+    max-height: 100px;
+}
+
+.vertical-divider {
+    border-top-width: 0;
+    border-right-width: 1px;
+    border-right-style: solid;
+    height: 60%;
+}
+
+md-sidenav,
+md-sidenav.md-locked-open,
+md-sidenav.md-closed.md-locked-open-add-active,
+md-sidenav md-content{
+    min-width: 100px !important;
+    /*width: 85vw !important;*/
+    max-width: 150px !important;
+    background-color: #444444 !important;
+}
+
+md-sidenav md-content button md-icon{
+    color: rgba(255,255,255,0.87);
+}
+
+md-sidenav md-content button{
+    color: rgba(255,255,255,0.87) !important;
+}
+
+md-divider{
+    background-color: rgba(255,255,255,0.87);
+}
+
+md-select-menu md-content{
+    background-color: #242424;
+    color: rgba(255,255,255,0.87);
+}
+
+md-select-menu md-content md-option:hover{
+    background-color: #444444 !important;
+}
+
+md-select-menu md-content md-option:focus{
+    background-color: #444444 !important;
+}
+
+md-select-menu md-content md-option[selected]:focus {
+    color: #00b8d4;
+}
+
+md-input-container:not(.md-input-invalid).md-input-focused .md-input {
+    border-color: #00b8d4;
+}
+md-input-container:not(.md-input-invalid).md-input-focused label {
+    color: #00b8d4;
+}
+
+md-select:not([disabeled]):focus .md-select-value {
+    border-bottom-color: #00b8d4;
+    color: #00b8d4 !important;
+}
+
+md-input-container.md-input-focused:not(.md-input-has-value) md-select .md-select-value.md-select-placeholder {
+    color: #00b8d4 !important;
+    border-bottom-color: #00b8d4;
+}
+
+.md-select-value span div.md-text{
+    color: rgba(255,255,255,0.87) !important;
+}
+
+
+/*.md-fab md-icon:hover{*/
+    /*color: #242424 !important;*/
+/*}*/
+
+/*button md-icon:hover{*/
+    /*color: #00b8d4 !important;*/
+/*}*/
+
+/*button:hover{*/
+    /*color: #00b8d4 !important;*/
+/*}*/
+
+.blackground {
+    background-color: #242424;
+}
+
+.blackground-light{
+    background-color: #444444 !important;
+    color: rgba(255,255,255,0.87);
+}
+
+*, body, button, input, textarea, select {
+    text-rendering: optimizeLegibility;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+
+#vericalToolBar {
+    height: 100%;
+    background-color: #444444 !important;
+    width: 50px;
+}
+
+#vericalToolBar md-icon {
+    color: rgba(255,255,255,0.87);
+}
+
+#toolBarTitle {
+    writing-mode: tb-rl;
+    color: rgba(255,255,255,0.87);
+}
+
+
+.top-right{
+    top: 20px;
+    right: 20px;
+    bottom: auto;
+    left: auto;
+    position: absolute;
+}

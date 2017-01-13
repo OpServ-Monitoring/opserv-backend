@@ -1,0 +1,19 @@
+<md-fab-speed-dial md-open="isFabOpen" md-direction="up" class="md-scale md-fab-bottom-right ">
+    <md-fab-trigger>
+        <md-button aria-label="menu" class="md-fab ">
+            <md-icon class="material-icons" >settings</md-icon>
+        </md-button>
+    </md-fab-trigger>
+
+    <md-fab-actions >
+        <md-button class="md-fab md-mini" ng-click="toggleEditMode()">
+            <md-icon class="material-icons" >edit</md-icon>
+        </md-button>
+        <md-button class="md-fab md-mini" ng-click="deleteCurrentDashboard(selectedDashboard)">
+            <md-icon class="material-icons" >delete forever</md-icon>
+        </md-button>
+        <md-button class="md-fab md-mini" ng-click="addDashboard()">
+            <md-icon class="material-icons" >add</md-icon>
+        </md-button>
+    </md-fab-actions>
+</md-fab-speed-dial>
