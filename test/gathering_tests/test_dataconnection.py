@@ -150,7 +150,7 @@ def start_datamanager():
         if newData != startData:
             dataIsTheSame = False
             endTime = time.time()
-        time.sleep(0.1)  # Small sleep to not kill the cpu
+        time.sleep(0.1)  # Small sleep to avoid killing the cpu
 
     # Raise exception when the data hasn't changed
     if dataIsTheSame:

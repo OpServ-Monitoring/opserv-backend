@@ -34,7 +34,7 @@ class SettingsBase(metaclass=ABCMeta):
 
     @classmethod
     def get_setting(cls, key):
-        if key in settings:
-            return settings[key]
-
+        if settings is not None:
+            if key in settings:
+                return settings[key]
         return None

@@ -143,10 +143,18 @@ HARDWARE_DEFAULTS = {
     "network": (True, None)
 }
 
-Operating_System = Enum("Operating_System", "windows linux macos freebsd")
-GraphicsVendor = Enum("GraphicsVendor", "intel nvidia amd")
-CpuVendor = Enum("CpuVendor", "intel amd")
+# Enums are basically classes and not constats, the pylint warning is unnecessary
+Operating_System = Enum("Operating_System", "windows linux macos freebsd") # pylint: disable=C0103
+GraphicsVendor = Enum("GraphicsVendor", "intel nvidia amd") # pylint: disable=C0103
+CpuVendor = Enum("CpuVendor", "intel amd") # pylint: disable=C0103
 
-GATHERING_QUEUELISTENER_DELAY = 0.05  # Delay between the queueListener calls in the gathering thread (in seconds)
+GATHERING_QUEUELISTENER_DELAY = 0.05  # Delay between the queueListener
+                                      # calls in the gathering thread (in seconds)
 
-QUEUEMANAGER_DEFAULT_TIMEOUT = 2
+QUEUEMANAGER_DEFAULT_TIMEOUT = 2 # seconds
+
+MINIMUM_GATHERING_RATE = 500 #milliseconds
+
+GATHERING_PERFORMANCE_LOG_DELAY = 2 #seconds
+
+GATHERING_LOOP_SLEEP = 0.001 # seconds

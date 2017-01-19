@@ -39,8 +39,9 @@ class MeasurementInsertTransaction(DatabaseConnector):
             )
             connection.commit()
         except IntegrityError as err:
-            log.error("Error during commit of transaction, probably multiple measurements per millisecond")
+            log.error(" commit of transaction, probably multiple measurements per millisecond")
             log.error(err) 
+            log.error("Happened with these inserts: %s", str(self.__insertions))
         self.__reset_variables()
 
     def rollback(self):

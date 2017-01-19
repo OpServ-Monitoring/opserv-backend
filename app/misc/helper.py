@@ -2,13 +2,14 @@
     Helper Module to help you through the ups and down of the project
 """
 
-import os, sys, errno
+import os
+import sys
+import errno
 from importlib import import_module
 
 from misc.constants import HARDWARE_DEFAULTS, Operating_System
 
 APP_FOLDER_NAME = "app"
-
 
 def import_if_exists(module):
     """ Loads and returns the handle for the given module if it available on the system"""
@@ -58,7 +59,7 @@ def assert_is_dict(dict_to_test):
         Returns true if the argument is a dictionary and
         raises typeerror if it is not
     """
-    if type(dict_to_test) == type(dict()):
+    if isinstance(dict_to_test, dict):
         return True
     else:
         raise TypeError("This should be a dict" + str(dict_to_test))
@@ -137,10 +138,10 @@ def is_pathname_valid(pathname: str) -> bool:
     '''
     `True` if the passed pathname is a valid pathname for the current OS;
     `False` otherwise.
-    SRC: http://stackoverflow.com/questions/9532499/check-whether-a-path-is-valid-in-python-without-creating-a-file-at-the-paths-ta
+    SRC: http://stackoverflow.com/questions/9532499
     '''
     # Sadly, Python fails to provide the following magic number for us.
-    ERROR_INVALID_NAME = 123    
+    ERROR_INVALID_NAME = 123
 
     # If this pathname is either not a string or is but is empty, this pathname
     # is invalid.
