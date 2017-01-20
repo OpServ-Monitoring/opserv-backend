@@ -2,7 +2,7 @@
     <form ng-cloak>
         <md-toolbar>
             <div class="md-toolbar-tools">
-                <h2>Settings</h2>
+                <h2>{{ 'OPSERV_SETTINGS_TEXT' | translate }}</h2>
                 <span flex></span>
                 <md-button class="md-icon-button" ng-click="cancel()">
                     <md-icon>close</md-icon>
@@ -10,28 +10,42 @@
             </div>
         </md-toolbar>
 
-        <md-dialog-content class="blackground-light">
-            <md-input-container>
-                <md-select ng-model="selectedYear" aria-label="Select a Year">
-                    <md-option ng-value="$index" ng-repeat="year in years">{{ year }}</md-option>
-                </md-select>
-            </md-input-container>
+        <md-dialog-content style="min-width: 400px" class="blackground-light">
+           <md-grid-list
+                   md-cols="2" md-cols-sm="1"md-cols-xs="1" md-cols-md="2" md-cols-gt-md="2"
+                   md-row-height-gt-md="4:3" md-row-height="200px"
+                   md-gutter="8px" md-gutter-gt-sm="8px" style="margin: 8px">
 
-            <md-virtual-repeat-container id="vertical-container" md-top-index="topIndex">
-                <div md-virtual-repeat="item in items"
-                     class="repeated-item" ng-class="{header: header}" flex>
-                    {{item.text}}
-                </div>
-            </md-virtual-repeat-container>
+               <md-grid-tile ng-repeat="tile in tiles"
+                             md-rowspan="{{tile.span.row}}"
+                             md-colspan="{{tile.span.col}}"
+                             md-colspan-sm="1"
+                             md-colspan-xs="1">
+                   <md-grid-tile-header>
+                       <h3>{{tile.title}}</h3>
+                   </md-grid-tile-header>
+                   <div layout="column" >
+                       <label>{{ 'GATHERING_RATE_TEXT' | translate }}</label>
+                       <md-slider-container>
+                           <md-slider flex min="500" max="10000" ng-model="tile.samplingRate" aria-label="sampling-rate" id="sampling-rate-slider">
+                           </md-slider>
+                       </md-slider-container>
+                       <md-input-container style="max-height: 20px; max-width: 60px; margin: 0">
+                           <input flex type="number" ng-model="tile.samplingRate" aria-label="sampling-rate" aria-controls="sampling-rate-slider">
+                       </md-input-container>
+                   </div>
+                   <md-divider ></md-divider>
+               </md-grid-tile>
+           </md-grid-list>
         </md-dialog-content>
 
         <md-dialog-actions layout="row" class="blackground">
             <span flex></span>
             <md-button class="md-raised md-warn" ng-click="cancel()">
-                Abbrechen
+                {{ 'CANCEL_TEXT' | translate }}
             </md-button>
             <md-button class="md-raised md-accent" ng-click="submit()">
-                Speichern
+                {{ 'SAVE_TEXT' | translate }}
             </md-button>
         </md-dialog-actions>
     </form>

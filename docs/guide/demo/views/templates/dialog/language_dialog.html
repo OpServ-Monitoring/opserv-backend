@@ -2,7 +2,7 @@
     <form ng-cloak>
         <md-toolbar>
             <div class="md-toolbar-tools">
-                <h2>{{ 'DASHBOARD_SETTINGS_TEXT' | translate }}</h2>
+                <h2>{{ 'LANGUAGE_TEXT' | translate }}</h2>
                 <span flex></span>
                 <md-button class="md-icon-button" ng-click="cancel()">
                     <md-icon>close</md-icon>
@@ -12,14 +12,12 @@
 
         <md-dialog-content class="blackground-light">
             <div class="md-dialog-content">
-                <md-input-container>
-                    <label>{{ 'TITLE_TEXT' | translate }}</label>
-                    <input ng-model="title" >
-                </md-input-container>
-                <md-input-container class="md-block" flex-gt-sm>
-                    <label>{{ 'URL_TEXT' | translate }}</label>
-                    <input ng-model="baseUrl" >
-                </md-input-container>
+                <md-radio-group ng-model="selectedLanguageKey" ng-change="submit()">
+                    <md-radio-button ng-repeat="language in languages"
+                                     ng-value="language.key">
+                        {{language.label}}<br/>
+                    </md-radio-button>
+                </md-radio-group>
             </div>
         </md-dialog-content>
 
@@ -27,9 +25,6 @@
             <span flex></span>
             <md-button class="md-raised md-warn" ng-click="cancel()">
                 {{ 'CANCEL_TEXT' | translate }}
-            </md-button>
-            <md-button class="md-raised md-accent" ng-click="submit()">
-                {{ 'SAVE_TEXT' | translate }}
             </md-button>
         </md-dialog-actions>
     </form>

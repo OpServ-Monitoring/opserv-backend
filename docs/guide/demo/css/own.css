@@ -32,7 +32,6 @@ md-tabs.no-body md-tabs-content-wrapper{
 
 md-tabs.no-body md-tab-content{
     display:none;
-
 }
 
 md-tabs.md-default-theme .md-tab, md-tabs .md-tab{
@@ -147,7 +146,6 @@ md-input-container.md-input-focused:not(.md-input-has-value) md-select .md-selec
     -moz-osx-font-smoothing: grayscale;
 }
 
-
 #vericalToolBar {
     height: 100%;
     background-color: #444444 !important;
@@ -163,7 +161,6 @@ md-input-container.md-input-focused:not(.md-input-has-value) md-select .md-selec
     color: rgba(255,255,255,0.87);
 }
 
-
 .top-right{
     top: 20px;
     right: 20px;
@@ -171,3 +168,20 @@ md-input-container.md-input-focused:not(.md-input-has-value) md-select .md-selec
     left: auto;
     position: absolute;
 }
+
+.sidenav-error-button{
+    color: #000000 !important;
+    background-color: #c0c0c0 !important;
+    opacity: 0.5;
+    font-weight: bolder;
+}
+
+md-list-item._md-button-wrap > div.md-button:first-child{
+    line-height: 1.0;
+}
+
+md-list-item{
+    min-width: 150px;
+}
+
+

@@ -8,23 +8,15 @@ app.directive('ktDashboardEditSideNav',[ 'dataService','toastService', 'dialogSe
         templateUrl: 'views/templates/side_navs/kt_dashboard_edit_side_nav.html',
 
         restrict: 'E',
-        controller: ['$scope','$rootScope','$timeout', function MyTabsController($scope,$rootScope,$timeout) {
+        controller: ['$scope','$rootScope', function MyTabsController($scope,$rootScope) {
 
             const CI_MEMORY = "memory";
             const CI_SYSTEM = "system";
-
-            const OPTION_DASHBOARD_SETTINGS = "edit dashboard Settings";
-            const OPTION_ADD_WIDGET = "add widget";
 
             var scope = $scope;
             var rootScope = $rootScope;
 
             scope.lastTabs = [];
-
-            scope.generalOptions=[
-                {label:OPTION_DASHBOARD_SETTINGS,action:selectOption},
-                {label:OPTION_ADD_WIDGET,action:selectOption}
-            ];
 
             scope.cis =[];
 
@@ -32,21 +24,36 @@ app.directive('ktDashboardEditSideNav',[ 'dataService','toastService', 'dialogSe
 
             scope.categories = [];
 
+            scope.isError = false;
+            scope.catsLoading = false;
+            scope.catsLoading= false;
+            scope.idsLoading= false;
+
             function loadCis() {
+                scope.cisLoading= true;
+                scope.isError = false;
                 dataService.getCIs(rootScope.dashboards[scope.selectedDashboard].baseUrl);
             }
 
             function loadIds(ci) {
+                scope.idsLoading= true;
+                scope.isError = false;
                 dataService.getCiIds(ci.label,rootScope.dashboards[scope.selectedDashboard].baseUrl);
             }
 
             function loadCats(id) {
+                scope.catsLoading= true;
+                scope.isError = false;
                 dataService.getCiCats(scope.selectedCi.label,id,rootScope.dashboards[scope.selectedDashboard].baseUrl);
             }
 
             function loadMemoryCats() {
+                scope.catsLoading = true;
+                scope.isError = false;
                 dataService.getMemoryCats(scope.selectedCi.label,rootScope.dashboards[scope.selectedDashboard].baseUrl);
             }
+
+            //TODO cats übersetzen
 
             scope.$on(EVENT_CIS_RECEIVED, function (event, status, cis) {
                 if(status){
@@ -69,6 +76,8 @@ app.directive('ktDashboardEditSideNav',[ 'dataService','toastService', 'dialogSe
                     scope.cisLoading = false;
                 }else{
                     toastService.showErrorToast("Laden der Ci's fehlgeschlagen");
+                    scope.cisLoading = false;
+                    scope.isError = true;
                 }
             });
 
@@ -88,6 +97,8 @@ app.directive('ktDashboardEditSideNav',[ 'dataService','toastService', 'dialogSe
                     }
                 }else{
                     toastService.showErrorToast("Laden der Id's fehlgeschlagen");
+                    scope.isError = true;
+                    scope.idsLoading = false;
                 }
             });
 
@@ -102,6 +113,8 @@ app.directive('ktDashboardEditSideNav',[ 'dataService','toastService', 'dialogSe
                     }
                 }else{
                     toastService.showErrorToast("Laden der Kategorien fehlgeschlagen");
+                    scope.isError = true;
+                    scope.catsLoading = false;
                 }
             });
 
@@ -116,36 +129,33 @@ app.directive('ktDashboardEditSideNav',[ 'dataService','toastService', 'dialogSe
                     }
                 }else{
                     toastService.showErrorToast("Laden der Kategorien fehlgeschlagen");
+                    scope.isError = true;
+                    scope.catsLoading = false;
                 }
             });
 
-            function selectOption(option) {
-                if (option.label == OPTION_ADD_WIDGET){
-                    scope.selectedSideNavIndex = 1;//Ci Auswahl
-                    scope.lastTabs.push(0);
-                    scope.cisLoading= true;
-                    loadCis();
-                }
-                if (option.label == OPTION_DASHBOARD_SETTINGS){
-                    var currentSettings = {};
-                    currentSettings.baseUrl = rootScope.dashboards[scope.selectedDashboard].baseUrl;
-                    currentSettings.title = rootScope.dashboards[scope.selectedDashboard].title;
-                    dialogService.showDashboardSettings(currentSettings,function (newSettings) {
-                        console.log("neue Settings", newSettings);
-                        dataService.updateAllBaseUrlRelatedIntervals(rootScope.dashboards[scope.selectedDashboard].baseUrl,newSettings.newBaseUrl,rootScope.dashboards[scope.selectedDashboard].widgets);
-                        rootScope.dashboards[scope.selectedDashboard].title = newSettings.newTitle;
-                        rootScope.dashboards[scope.selectedDashboard].baseUrl = newSettings.newBaseUrl;
-                        scope.$emit(EVENT_SAVE);
-                    })
-                }
-            }
+            scope.openDashboardSettings = function () {
+                var currentSettings = {};
+                currentSettings.baseUrl = rootScope.dashboards[scope.selectedDashboard].baseUrl;
+                currentSettings.title = rootScope.dashboards[scope.selectedDashboard].title;
+                dialogService.showDashboardSettings(currentSettings,function (newSettings) {
+                    dataService.updateAllBaseUrlRelatedIntervals(rootScope.dashboards[scope.selectedDashboard].baseUrl,newSettings.newBaseUrl,rootScope.dashboards[scope.selectedDashboard].widgets);
+                    rootScope.dashboards[scope.selectedDashboard].title = newSettings.newTitle;
+                    rootScope.dashboards[scope.selectedDashboard].baseUrl = newSettings.newBaseUrl;
+                    scope.$emit(EVENT_SAVE);
+                })
+            };
+
+            scope.navigateAddWidget = function () {
+                scope.selectedSideNavIndex = 1;//Ci Auswahl
+                scope.lastTabs.push(0);
+                loadCis();
+            };
 
             function selectCi (ci) {
                 scope.selectedSideNavIndex = 2;//ID Auswahl
                 scope.lastTabs.push(1);
-                scope.idsLoading= true;
                 loadIds(ci);
-                scope.catsLoading= true;
                 scope.selectedCi = ci;
             }
 
@@ -163,7 +173,6 @@ app.directive('ktDashboardEditSideNav',[ 'dataService','toastService', 'dialogSe
             function selectMemoryCi(ci){
                 scope.selectedSideNavIndex = 3;//Kategorie Auswahl
                 scope.lastTabs.push(1);
-                scope.catsLoading = true;
                 scope.selectedCi = ci;
                 scope.selectedId = undefined;
                 loadMemoryCats();

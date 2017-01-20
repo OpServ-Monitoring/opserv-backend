@@ -1,16 +1,26 @@
 <!--toolbar for small screens-->
-<md-toolbar md-scroll-shrink="false"  class="md-tall" hide-gt-xs="">
+<md-toolbar md-scroll-shrink="false" class="md-tall" hide-gt-xs="">
     <div layout="row" >
-        <h3>OpServ</h3>
+        <h3>{{ 'APP_HEADLINE' | translate }}</h3>
         <span flex=""></span>
         <span>
-
-             <md-button style="margin-top: 5px" class="md-icon-button" ng-click="openOpservSettingsDialog()">
-                    <md-icon class="material-icons">settings</md-icon>
-             </md-button>
-            <!--<md-menu md-position-mode="target-right target" md-offset="-20 40">-->
-               <!---->
-            <!--</md-menu>-->
+            <md-menu  md-position-mode="target-right target" md-offset="-20 40">
+                <md-button style="margin-top: 5px" class="md-icon-button" ng-click="$mdOpenMenu()">
+                    <md-icon class="material-icons">more_vert</md-icon>
+                </md-button>
+                <md-menu-content width="3" class="blackground">
+                    <md-menu-item >
+                        <md-button ng-click="openSettingsOpservDialog()">
+                            {{ 'OPSERV_SETTINGS_TEXT' | translate }}
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item >
+                        <md-button style="margin-top: 5px" ng-click="openLanguageDialog()">
+                            {{ 'LANGUAGE_TEXT' | translate }}
+                        </md-button>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
         </span>
     </div>
     <div layout-align="center" class="md-toolbar-tools">
@@ -23,8 +33,8 @@
     </div>
 </md-toolbar>
 <!--toolbar for large screens-->
-<md-toolbar md-scroll-shrink="false" layout="row"  hide-xs="">
-    <h3>OpServ</h3>
+<md-toolbar md-scroll-shrink="false" layout="row" hide-xs="">
+    <h3>{{ 'APP_HEADLINE' | translate }}</h3>
     <span flex=""></span>
         <div flex="80">
             <md-tabs class="no-body" md-selected="selectedDashboard" md-center-tabs>
@@ -34,14 +44,22 @@
         </div>
     <span flex=""></span>
         <span>
-
-                         <md-button style="margin-top: 5px" class="md-icon-button" ng-click="openOpservSettingsDialog()">
-                    <md-icon class="material-icons">settings</md-icon>
-             </md-button>
-            <!--<md-menu  md-position-mode="target-right target" md-offset="-20 40">-->
-                <!--<md-button style="margin-top: 5px" class="md-icon-button" ng-click="openOpservSettingsDialog()">-->
-                    <!--<md-icon class="material-icons">settings</md-icon>-->
-                <!--</md-button>-->
-            <!--</md-menu>-->
+            <md-menu  md-position-mode="target-right target" md-offset="-20 40">
+                <md-button style="margin-top: 5px" class="md-icon-button" ng-click="$mdOpenMenu()">
+                    <md-icon class="material-icons">more_vert</md-icon>
+                </md-button>
+                <md-menu-content width="3" class="blackground">
+                    <md-menu-item >
+                        <md-button ng-click="openSettingsOpservDialog()">
+                            {{ 'OPSERV_SETTINGS_TEXT' | translate }}
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item >
+                        <md-button style="margin-top: 5px" ng-click="openLanguageDialog()">
+                            {{ 'LANGUAGE_TEXT' | translate }}
+                        </md-button>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
         </span>
 </md-toolbar>

@@ -1,4 +1,4 @@
-app.factory('dialogService',function($mdDialog){
+app.factory('dialogService',function($mdDialog, prefService, toastService, authService){
 
     var service = {};
 
@@ -75,45 +75,124 @@ app.factory('dialogService',function($mdDialog){
         function opservSettingsController($scope, $mdDialog){
             var scope = $scope;
 
-            scope.selectedYear = 0;
-            scope.years = [];
-            scope.items = [];
-            var currentYear = new Date().getFullYear();
-            var monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
-                'July', 'August', 'September', 'October', 'November', 'December'];
-            // Build a list of months over 20 years
-            for (var y = currentYear; y >= (currentYear-20); y--) {
-                scope.years.push(y);
-                scope.items.push({year: y, text: y, header: true});
-                for (var m = 11; m >= 0; m--) {
-                    scope.items.push({year: y, month: m, text: monthNames[m]});
+
+
+            scope.tiles = buildGridModel();
+
+            function buildGridModel() {
+                var results = [];
+                for (var i=0;i<3;i++){
+                    var it={};
+                    it.title='title'+i;
+                    it.span={row:1,col:1};
+                    it.samplingRate = 1000+(1000*i);
+                    results.push(it);
                 }
+                return results;
             }
-            // Whenever a different year is selected, scroll to that year
-            $scope.$watch('ctrl.selectedYear', angular.bind(this, function(yearIndex) {
-                var scrollYear = Math.floor(scope.topIndex / 13);
-                if(scrollYear !== yearIndex) {
-                    scope.topIndex = yearIndex * 13;
-                }
-            }));
-            // The selected year should follow the year that is at the top of the scroll container
-            $scope.$watch('ctrl.topIndex', angular.bind(this, function(topIndex) {
-                var scrollYear = Math.floor(topIndex / 13);
-                scope.selectedYear = scrollYear;
-            }));
 
+            scope.cancel = function() {
+                $mdDialog.cancel();
+            };
 
-            $scope.title = 'TEST';
-            $scope.baseUrl = 'BLA';
+            scope.submit = function() {
+                var answer = {};
+                $mdDialog.hide(answer);
+            };
+        }
+    };
+
+    service.showLanguageDialog = function (currentLanguageKey,callback) {
+        $mdDialog.show({
+            controller: languageController,
+            templateUrl: 'views/templates/dialog/language_dialog.html',
+            parent: angular.element(document.body),
+            clickOutsideToClose: true
+        }).then(function(answer) {
+            callback(answer)
+        }, function() {});
+
+        function languageController($rootScope, $scope, $mdDialog){
+            $scope.languages = $rootScope.languages;
+            $scope.selectedLanguageKey = currentLanguageKey;
+            console.log($scope.selectedLanguageKey);
 
             $scope.cancel = function() {
                 $mdDialog.cancel();
             };
 
             $scope.submit = function() {
-                var answer = {};
-                $mdDialog.hide(answer);
+                $mdDialog.hide($scope.selectedLanguageKey);
             };
+        }
+    };
+
+    service.showLoginDialog = function (callback) {
+        $mdDialog.show({
+            controller: loginController,
+            templateUrl: 'views/templates/dialog/login_dialog.html',
+            parent: angular.element(document.body)
+        }).then(function(answer) {
+            callback(answer)
+        }, function() {});
+
+        function loginController($scope, $mdDialog){
+
+            $scope.isLoading = false;
+            $scope.failedValidation = false;
+            $scope.loginDisabeled = true;
+            $scope.form = {
+                loginSecret: undefined
+            };
+
+            //autologing when secret is already set
+            var secret = localStorage.getItem('secret');
+            if (secret){
+                $scope.isLoading = true;
+                submit(secret);
+            }
+
+            $scope.cancel = function() {
+                $mdDialog.cancel();
+            };
+
+            $scope.submit = function() {
+                submit($scope.form.loginSecret);
+            };
+
+            function submit(secret) {
+                if(secret!= ""){
+                    prefService.validateUser(secret);
+                    $scope.isLoading = true;
+                }else{
+                    $scope.failedValidation = true;
+                }
+            }
+
+            $scope.$on(EVENT_USER_VALIDATED,function (event, status) {
+                if (status){
+                    if ($scope.form.loginSecret){
+                        //set secret in local storage, when it is set in $scope.form.loginSecret (by manual login)
+                        localStorage.setItem('secret',$scope.form.loginSecret);
+                    }
+                    authService.setLogin(status);
+                    $mdDialog.hide(status);
+                }else{
+                    $scope.failedValidation = true;
+                    toastService.showErrorToast("Uservalidierung Fehlgeschlagen");
+                    $scope.isLoading = false;
+
+                }
+            });
+
+            $scope.$watch('form.loginSecret',function (newVal, oldVal) {
+                if(newVal != undefined){
+                    $scope.loginDisabeled = false;
+                }
+                if(newVal == undefined){
+                    $scope.loginDisabeled = true;
+                }
+            })
         }
     };
 

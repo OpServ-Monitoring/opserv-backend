@@ -1,7 +1,7 @@
 /**
  * Created by Snare on 24.08.16.
  */
-app.controller('DashboardCtrl',function($scope, $rootScope, prefService, $mdSidenav, toastService, dialogService, $timeout){
+app.controller('DashboardCtrl',function($scope, $rootScope, prefService, $mdSidenav, toastService, dialogService, $filter, $translate){
     var scope = $scope;
     var rootScope = $rootScope;
 
@@ -38,11 +38,11 @@ app.controller('DashboardCtrl',function($scope, $rootScope, prefService, $mdSide
             //stop: function(event, $element, widget) {} // optional callback fired when item is finished resizing
         },
         draggable: {
-            enabled: false // whether dragging items is supported
+            enabled: false, // whether dragging items is supported
             //handle: '.my-class' // optional selector for drag handle
             //start: function(event, $element, widget) {}, // optional callback fired when drag is started,
             //drag: function(event, $element, widget) {}, // optional callback fired when item is moved,
-            //stop: function(event, $element, widget) {} // optional callback fired when item is finished dragging
+            stop: function(event, $element, widget) { save(); } // optional callback fired when item is finished dragging
         }
     };
 
@@ -73,10 +73,18 @@ app.controller('DashboardCtrl',function($scope, $rootScope, prefService, $mdSide
         save();
     });
 
-    scope.openOpservSettingsDialog = function() {
+    scope.openSettingsOpservDialog = function () {
         dialogService.showOpservSettings(function (newSettings) {
 
-        })
+        });
+    };
+
+    scope.openLanguageDialog = function () {
+        dialogService.showLanguageDialog($rootScope.selectedLanguageKey,function (newLanguageKey) {
+            $rootScope.selectedLanguageKey = newLanguageKey;
+            $translate.use(newLanguageKey);
+            localStorage.setItem('language',newLanguageKey);
+        });
     };
 
     scope.addDashboard = function(){
@@ -156,4 +164,5 @@ app.controller('DashboardCtrl',function($scope, $rootScope, prefService, $mdSide
     function save() {
         prefService.saveDashboards(scope.dashboards);
     }
+
 });

@@ -3,6 +3,7 @@
  */
 
 const EVENT_DASHBOARDS_RECEIVED = "dashboards_received";
+const EVENT_DASHBOARDS_SAVED = "dashboards-saved";
 const EVENT_CI_LIVE_DATA_RECEIVED = "ci_live_data_received";
 const EVENT_CI_HISTORY_DATA_RECEIVED = "ci_history_data_received";
 const EVENT_CIS_RECEIVED = "cis_received";
@@ -13,6 +14,7 @@ const EVENT_DELETE_WIDGET = "delete_widget";
 const EVENT_ITEM_RESIZE = "item_resize";
 const EVENT_TOGGLE_EDIT_MODE = "toggle_edit_mode";
 const EVENT_SAVE = "save";
+const EVENT_USER_VALIDATED = "user-validated";
 
 
 
@@ -21,7 +23,8 @@ var app = angular.module('app',[
     'gridster',
     'ngMaterial',
     'highcharts-ng',
-    'angularViewportWatch'
+    'angularViewportWatch',
+    'pascalprecht.translate'
 ]);
 
 app.config(function($mdThemingProvider) {
@@ -84,8 +87,9 @@ app.config(function($mdThemingProvider) {
         .dark();
 });
 
+//HIGHCHARTS OPTIONS
 app.config(function(){
-    //HIGHCHARTS OPTIONS:
+
 
     /**
      * Dark theme for Highcharts JS
@@ -302,11 +306,90 @@ app.config(function(){
     Highcharts.setOptions(Highcharts.theme);
 });
 
-app.run(function($rootScope) {
+app.config(function ($translateProvider) {
+    // $translateProvider.useStaticFilesLoader({
+    //     prefix: 'lang-',
+    //     suffix: '.json'
+    // });
+    //
+    // $translateProvider.preferredLanguage('de_DE')
 
-    // Admin Rolle in Root Scope laden, damit sie in HTML zugreifbar ist
-    //$rootScope.CHART_CPU_LIVE = CPU_USAGE;
+    // bower install angular-translate-loader-static-files --save
+
+
+    $translateProvider.translations('en_EN', {
+        APP_HEADLINE:                       'OpServ',
+        SIDENAV_OPTION_DASHBOARD_SETTINGS:  'edit Settings',
+        SIDENAV_OPTION_ADD_WIDGET:          'add Widget',
+        LOGIN_TEXT:                         'Login',
+        LOGIN_SECRET_TEXT:                  'Secret (opserv)',
+        ERROR_LOGIN_SECRET_TEXT:            'Wrong Secret',
+        OPSERV_SETTINGS_TEXT:               'OpServ Settings',
+        DASHBOARD_SETTINGS_TEXT:            'Dashboard Settings',
+        WIDGET_SETTINGS_TEXT:               'Widget Settings',
+        GATHERING_RATE_TEXT:                'Gathering Rate',
+        CANCEL_TEXT:                        'Cancel',
+        SAVE_TEXT:                          'Save',
+        TITLE_TEXT:                         'Title',
+        URL_TEXT:                           'URL',
+        LANGUAGE_TEXT:                      'Language',
+        TYPE_TEXT:                          'Type'
+    });
+
+    $translateProvider.translations('de_DE', {
+        APP_HEADLINE:                       'OpServ',
+        SIDENAV_OPTION_DASHBOARD_SETTINGS:  'Einstellungen ändern',
+        SIDENAV_OPTION_ADD_WIDGET:          'Widget hinzufügen',
+        LOGIN_TEXT:                         'Login',
+        LOGIN_SECRET_TEXT:                  'Passwort (opserv)',
+        ERROR_LOGIN_SECRET_TEXT:            'falsches Passwort',
+        OPSERV_SETTINGS_TEXT:               'OpServ Einstellungen',
+        DASHBOARD_SETTINGS_TEXT:            'Dashboard Einstellungen',
+        WIDGET_SETTINGS_TEXT:               'Widget Einstellungen',
+        GATHERING_RATE_TEXT:                'Abtastrate',
+        CANCEL_TEXT:                        'Abbrechen',
+        SAVE_TEXT:                          'Speichern',
+        TITLE_TEXT:                         'Titel',
+        URL_TEXT:                           'URL',
+        LANGUAGE_TEXT:                      'Sprache',
+        TYPE_TEXT:                          'Typ'
+    });
+
+    $translateProvider.useSanitizeValueStrategy('escapeParameters');
+    $translateProvider.preferredLanguage('en_EN')
 });
+
+app.run(function($rootScope, $location, authService, $translate) {
+
+    $rootScope.languages = [
+        {label:"Deutsch", key:'de_DE'},
+        {label:"English", key:'en_EN'}
+    ];
+
+    var languageKey = localStorage.getItem('language');
+    if(languageKey){
+        $rootScope.selectedLanguageKey = languageKey;
+    }else{
+        languageKey = 'en_EN';
+        $rootScope.selectedLanguageKey = 'en_EN';
+    }
+    $translate.use(languageKey);
+
+    // wird beim refresh oder wechsel einer URL aufgerunfen
+    $rootScope.$on('$locationChangeStart', function() {
+        var secret = localStorage.getItem('secret');
+        if (secret) {
+            if (!authService.isLoggedIn()) {
+                $location.path('/login'); // relocate for Login
+            } else {
+                $location.path('/'); // secret und LoggedIn also alles gut
+            }
+        }else{
+            $location.path('/login');
+        }
+    });
+});
+
 
 app.config(function ($routeProvider) {
     //TODO enable authentification
@@ -314,17 +397,35 @@ app.config(function ($routeProvider) {
         templateUrl: "views/dashboards.html",
         name: "Dashboards",
         controller: 'DashboardCtrl'
+    }).when("/login",{
+        templateUrl: "views/login.html",
+        name: "Login",
+        controller: 'LoginCtrl'
     }).otherwise({
         redirectTo: "/"
     });
 });
 
-app.config(['$httpProvider', function($httpProvider) {
+app.config(['$httpProvider', function($httpProvider, authService) {
+
+    var secret = localStorage.getItem('secret');
+    console.log(secret);
+    var encodedString = base64Encoding(secret);
+
+    $httpProvider.defaults.headers.common ={
+        'Authorization':'Basic '+secret
+    };
 
     $httpProvider.defaults.useXDomain = true;
 
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
 
+
+    function base64Encoding(str) {
+        return btoa(encodeURIComponent('dgfchvmb').replace(/%([0-9A-F]{2})/g,function (match, p1) {
+            return String.fromCharCode('0x'+p1);
+        }))
+    }
 }
 
 ]);

@@ -1,42 +1,50 @@
 <md-sidenav class="md-sidenav-left" md-component-id="left"
             md-disable-backdrop md-whiteframe="4">
     <md-toolbar >
-        <h3>OpServ</h3>
+        <h3>{{ 'APP_HEADLINE' | translate }}</h3>
     </md-toolbar>
     <md-tabs class="no-tab-panel" md-dynamic-height md-selected="selectedSideNavIndex" style="min-height: 50px">
         <md-tab label="General">
             <md-content layout="column" layout-align="center center" >
-                <md-button class="md-button" ng-repeat="generalOption in generalOptions" ng-click="generalOption.action(generalOption)">
-                    {{generalOption.label}}
-                    <!--<md-icon class="material-icons" >ci.name</md-icon>-->
-                </md-button>
+                <md-list>
+                    <md-list-item ng-click="openDashboardSettings()">
+                        <span>{{ 'SIDENAV_OPTION_DASHBOARD_SETTINGS' | translate }}</span>
+                    </md-list-item>
+                    <md-list-item ng-click="navigateAddWidget()">
+                        <span>{{ 'SIDENAV_OPTION_ADD_WIDGET' | translate }}</span>
+                    </md-list-item>
+                </md-list>
             </md-content>
         </md-tab>
         <md-tab label="CIs">
             <md-content layout="column" layout-align="center center" >
+                <md-button ng-if="isError" ng-disabled="true" class="sidenav-error-button">Error</md-button>
                 <md-progress-circular ng-if="cisLoading" style="margin: 10px" class="md-accent" md-diameter="30px"></md-progress-circular>
-                <md-button class="md-button" ng-repeat="ci in cis" ng-click="ci.action(ci)">
-                    {{ci.label}}
-                    <!--<md-icon class="material-icons" >ci.name</md-icon>-->
-                </md-button>
+                <md-list>
+                    <md-list-item ng-repeat="ci in cis" ng-click="ci.action(ci)">
+                        <span>{{ci.label}}</span>
+                    </md-list-item>
+                </md-list>
             </md-content>
         </md-tab>
         <md-tab label="Ids">
             <md-content layout="column" layout-align="center center" >
                 <md-progress-circular ng-if="idsLoading" style="margin: 10px" class="md-accent" md-diameter="30px"></md-progress-circular>
-                <md-button class="md-button" ng-repeat="id in ids" ng-click="id.action(id)">
-                    {{id.label}}
-                    <!--<md-icon class="material-icons" >ci.name</md-icon>-->
-                </md-button>
+                <md-list>
+                    <md-list-item ng-repeat="id in ids" ng-click="id.action(id)">
+                        <span>{{id.label}}</span>
+                    </md-list-item>
+                </md-list>
             </md-content>
         </md-tab>
         <md-tab label="categories">
             <md-content layout="column" layout-align="center center" >
                 <md-progress-circular ng-if="catsLoading" style="margin: 10px" class="md-accent" md-diameter="30px"></md-progress-circular>
-                <md-button class="md-button" ng-repeat="cat in categories" ng-click="cat.action(cat)">
-                    {{cat.label}}
-                    <!--<md-icon class="material-icons" >ci.name</md-icon>-->
-                </md-button>
+                <md-list>
+                    <md-list-item ng-repeat="cat in categories" ng-click="cat.action(cat)">
+                        <span>{{cat.label}}</span>
+                    </md-list-item>
+                </md-list>
             </md-content>
         </md-tab>
     </md-tabs>

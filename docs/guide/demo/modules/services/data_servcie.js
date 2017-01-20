@@ -4,8 +4,6 @@
 
 app.factory('dataService',function($http, $rootScope, toastService,$timeout){
 
-    const CPU_LIVE_USAGE_TIMER = "cpu_live_usage_timer";
-
 //------------------------------------------------ Variablen --------------------------------------------------------------------------------------------------------------------------------------//
     var service = {
         dashboards: [],

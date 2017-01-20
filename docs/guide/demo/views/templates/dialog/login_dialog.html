@@ -1,0 +1,30 @@
+<md-dialog class="blackground" flex="66">
+    <form ng-cloak ng-submit="submit()" name="loginForm">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>{{ 'LOGIN_TEXT' | translate }}</h2>
+                <span flex></span>
+            </div>
+        </md-toolbar>
+
+        <md-dialog-content class="blackground-light">
+            <div class="md-dialog-content" layout="column" layout-align="center center">
+                <md-input-container name="secretContainer" ng-show="!isLoading" md-is-error="failedValidation || (loginForm.secret.$touched && loginForm.secret.$invalid)">
+                    <label>{{ 'LOGIN_SECRET_TEXT' | translate }}</label>
+                    <input autocomplete="off" type="password" name="secret" required ng-model="form.loginSecret">
+                    <div ng-messages="loginForm.secret.$error" >
+                        <div ng-message="required" ng-show="failedValidation">{{ 'ERROR_LOGIN_SECRET_TEXT' | translate }}</div>
+                    </div>
+                </md-input-container>
+                <md-progress-circular ng-if="isLoading" style="margin: 10px" class="md-accent" md-diameter="45px"></md-progress-circular>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row" class="blackground">
+            <span flex></span>
+            <md-button ng-disabled="loginDisabeled" class="md-raised md-accent" type="submit">
+                {{ 'LOGIN_TEXT' | translate }}
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>
+
