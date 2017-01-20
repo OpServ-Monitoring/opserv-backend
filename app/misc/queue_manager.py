@@ -27,7 +27,7 @@ def init():
 
     realtime_queues = {
         "cpu": {},
-        "core": {},
+        "cpucore": {},
         "gpu": {},
         "memory": {},
         "disk": {},

@@ -150,7 +150,7 @@ class OHMSource(MeasuringSource):
         result = None
         if component == "cpu":
             result = self.get_cpu_measurement(metric, args)
-        if component == "core":
+        if component == "cpucore":
             result = self.get_core_measurement(metric, args)
         elif component == "gpu":
             result = self.get_gpu_measurement(metric, args)
@@ -224,24 +224,24 @@ class OHMSource(MeasuringSource):
         new_cpu["id"] = int(hardware.processorIndex)
         # Get CPU Cores
         log.info("Core Count: %d", hardware.coreCount)
-        new_cpu["cores"] = int(hardware.coreCount)
+        new_cpu["cpucores"] = int(hardware.coreCount)
         # Get CPU Name
         new_cpu["info"] = hardware.name
 
         new_cores = []
-        for i in range(new_cpu["cores"]):
+        for i in range(new_cpu["cpucores"]):
             new_cores.append({
                 # Assumes all CPUs have the same corecount
-                "id": i + (new_cpu["id"] * new_cpu["cores"]),
+                "id": i + (new_cpu["id"] * new_cpu["cpucores"]),
                 "info": "CPU #{0} Core #{1}".format(new_cpu["id"], i)
             })
 
         # Update the supported_comps dict
 
         self.add_supported_metric("cpu", "info")
-        self.add_supported_metric("core", "info")
+        self.add_supported_metric("cpucore", "info")
         self.add_supported_metric("system", "cpus")
-        self.add_supported_metric("system", "cores")
+        self.add_supported_metric("system", "cpucores")
 
         for sensor in hardware.Sensors:
             sens_type = SENSORTYPES[sensor.SensorType]
@@ -257,7 +257,7 @@ class OHMSource(MeasuringSource):
                     self.add_supported_metric("cpu", TYPE_MAP[sens_type][0])
                     new_cpu[TYPE_MAP[sens_type][1]] = (hardware, sensor)
                 else:
-                    self.add_supported_metric("core", TYPE_MAP[sens_type][0])
+                    self.add_supported_metric("cpucore", TYPE_MAP[sens_type][0])
                     new_cores[sensor_id][TYPE_MAP[sens_type][1]] = (hardware, sensor)
 
         # Add the newly found CPU and its cores into the lists
@@ -371,7 +371,7 @@ class OHMSource(MeasuringSource):
         """
         if metric == "cpus":
             return list(range(len(self.cpu_list)))
-        elif metric == "cores":
+        elif metric == "cpucores":
             return list(range(len(self.core_list)))
 
 

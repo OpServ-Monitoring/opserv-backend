@@ -32,12 +32,12 @@ class PyCpuInfoSource(MeasuringSource):
             "info",
             "frequency"
         },
-        "core": {
+        "cpucore": {
             "info",
             "frequency"
         },
         "system": {
-            "cores"
+            "cpucores"
         }
     }
 
@@ -73,11 +73,11 @@ class PyCpuInfoSource(MeasuringSource):
                 return self.cpuinfo.get_cpu_info()["brand"]
             elif metric == "frequency":
                 return self.cpuinfo.get_cpu_info()["hz_actual_raw"][0]
-        elif component == "core":
+        elif component == "cpucore":
             if metric == "info":
                 return self.cpuinfo.get_cpu_info()["brand"] + " Core #" + str(args)
             elif metric == "frequency":
                 return self.cpuinfo.get_cpu_info()["hz_actual_raw"][0]
         elif component == "system":
-            if metric == "cores":
+            if metric == "cpucores":
                 return self.cpuinfo.get_cpu_info()["count"]

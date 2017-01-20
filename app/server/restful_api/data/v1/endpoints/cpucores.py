@@ -21,4 +21,4 @@ class CpucoresEndpoint(RootGeneralChildEndpoint):
 
     @classmethod
     def _get_hardware_value_type(cls) -> str:
-        return "cores"
+        return "cpucores"

@@ -3,7 +3,7 @@ from .system__general_child import SystemGeneralChildEndpoint
 
 class SystemCpucoresEndpoint(SystemGeneralChildEndpoint):
     def _get_component_metric(self) -> str:
-        return "cores"
+        return "cpucores"
 
     @classmethod
     def get_name(cls):

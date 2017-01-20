@@ -28,7 +28,7 @@ class PsUtilWrap(MeasuringSource):
         "cpu": {
             "usage"
         },
-        "core": {
+        "cpucore": {
             "usage"
         },
         "memory": {
@@ -52,7 +52,7 @@ class PsUtilWrap(MeasuringSource):
             "transmitpersec"
         },
         "system": {
-            "cores",
+            "cpucores",
             "partitions",
             "processes",
             "networks"
@@ -118,7 +118,7 @@ class PsUtilWrap(MeasuringSource):
             if metric == "usage":
                 result = self.psutil.cpu_percent(percpu=False)
 
-        elif component == "core":
+        elif component == "cpucore":
             args = int(args)
             if metric == "usage":
                 result = self.psutil.cpu_percent(percpu=True)[args]
@@ -187,14 +187,14 @@ class PsUtilWrap(MeasuringSource):
                 network_info = ""
                 try:
                     network_info += str(self.psutil.net_if_stats()[args])
-                except KeyError as err: # Error can be catched, 
+                except KeyError as err:
                     log.error(err)
                     log.error("Network Info couldnt be fetched with net_if_stats")
                 try:
                     network_info += str(self.psutil.net_if_addrs()[args])
                 except KeyError as err:
                     log.error(err)
-                    log.error("Network Info couldnt be fetched with net_if_stats")
+                    log.error("Network Info couldnt be fetched with net_if_addrs")
                 return network_info
             elif metric == "receivepersec":
                 # Check if there is already an entry for this netif
@@ -207,6 +207,7 @@ class PsUtilWrap(MeasuringSource):
             log.error(err)
             log.error(
                 "The following network interface couldnt be found %s", str(args))
+
 
     def net_calc_bytesper_sec(self, received, name):
         '''
@@ -263,7 +264,7 @@ class PsUtilWrap(MeasuringSource):
         '''
             Returns a measurement of the specified basic system metric
         '''
-        if metric == "cores":
+        if metric == "cpucores":
             return self.get_core_list()
         if metric == "partitions":
             return self.get_partition_list()

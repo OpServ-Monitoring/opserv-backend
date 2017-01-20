@@ -21,7 +21,7 @@ def init():
 
     realtime_data = {
         "cpu": {},
-        "core": {},
+        "cpucore": {},
         "gpu": {},
         "memory": {},
         "disk": {},

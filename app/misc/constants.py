@@ -67,9 +67,8 @@ network_metrics = {
 
 system_metrics = {
     "cpus",
-    "cores",
+    "cpucores",
     "gpus",
-    "cores",  # TODO double entry?
     "partitions",
     "processes",
     "networks",
@@ -78,7 +77,7 @@ system_metrics = {
 
 implemented_hardware = {
     "cpu": cpu_metrics,
-    "core": core_metrics,
+    "cpucore": core_metrics,
     "gpu": gpu_metrics,
     "memory": memory_metrics,
     "disk": disk_metrics,
@@ -91,7 +90,7 @@ implemented_hardware = {
 # Map System metrics onto the regular components
 SYSTEM_METRICS_TO_COMPS = {
     "cpus": "cpu",
-    "cores": "core",
+    "cpucores": "cpucore",
     "gpus": "gpu",
     "partitions": "partition",
     "processes": "process",
@@ -105,7 +104,7 @@ default_gathering_rates = {
             # every 5 minutes
             ("cpus", 300000),
             ("gpus", 300000),
-            ("cores", 300000),
+            ("cpucores", 300000),
             ("partitions", 300000),
             ("processes", 300000),  # TODO Increase rate
             ("networks", 300000),  # TODO Increase rate
@@ -134,7 +133,7 @@ default_gathering_rates = {
 HARDWARE_DEFAULTS = {
     "cpu": (True, 0),
     "gpu": (True, 0),
-    "core": (True, 0),
+    "cpucore": (True, 0),
     "memory": (False, None),
     "disk": (True, None),
     "partition": (True, None),

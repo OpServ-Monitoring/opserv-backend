@@ -21,7 +21,7 @@ class RaspiTempSource(MeasuringSource):
         "cpu": {
             "temperature"
         },
-        "core": {
+        "cpucore": {
             "frequency"
         }
     }
@@ -53,7 +53,7 @@ class RaspiTempSource(MeasuringSource):
                 file_handle.close()
                 temp = float(temp) / 1000.0
                 return temp
-        if component == "core":
+        if component == "cpucore":
             if metric == "frequency":
                 file_handle = open(RASPI_FREQ_PATH.format(args), 'r')
                 frequency = file_handle.read()

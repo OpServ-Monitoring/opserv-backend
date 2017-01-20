@@ -5,7 +5,7 @@ class CpucoresCpucoreEndpoint(GeneralEndpointDataV1):
     def _get(self) -> bool:
         cpu_core_id = self._request_holder.get_params()["cpu_core"]
 
-        persisted_info = self._outbound_gate.get_last_measurement("core", "info", cpu_core_id)
+        persisted_info = self._outbound_gate.get_last_measurement("cpucore", "info", cpu_core_id)
         if persisted_info is not None:
             self._response_holder.set_body_data({
                 "timestamp": persisted_info["timestamp"],
@@ -50,4 +50,4 @@ class CpucoresCpucoreEndpoint(GeneralEndpointDataV1):
 
     @classmethod
     def get_cpucore_id_validator(cls):
-        return "cpu_core", lambda x: cls._outbound_gate.is_argument_valid(x, "cores")
+        return "cpu_core", lambda x: cls._outbound_gate.is_argument_valid(x, "cpucores")
