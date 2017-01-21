@@ -1,6 +1,7 @@
-import os
-from pynvml import nvmlInit, NVMLError, nvmlSy  mGetDriverVersion, \
-                   nvmlDeviceGetName, nvmlDeviceGetCount, nvmlDeviceGetHandleByIndex
+from pynvml import nvmlInit, NVMLError
+
+mGetDriverVersion, \
+nvmlDeviceGetName, nvmlDeviceGetCount, nvmlDeviceGetHandleByIndex
 
 try:
     nvmlInit()

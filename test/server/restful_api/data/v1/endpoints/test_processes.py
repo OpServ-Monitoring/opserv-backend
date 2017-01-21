@@ -1,8 +1,9 @@
 from unittest import TestCase
 
+from base_mock_outbound_gate import BaseMockOutboundGate
+
 from server.restful_api.data.v1.endpoints.processes import ProcessesEndpoint
 from server.restful_api.general.requestholder import RequestHolder
-from base_mock_outbound_gate import BaseMockOutboundGate
 
 
 class TestProcessesEndpoint(TestCase):

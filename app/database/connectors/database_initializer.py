@@ -8,7 +8,7 @@ from database.tables.user_preferences_table_management import UserPreferencesTab
 from database.unified_database_interface import UnifiedDatabaseInterface
 
 
-class DatabaseOpener(DatabaseConnector):
+class DatabaseInitializer(DatabaseConnector):
     @classmethod
     def create_database(cls):
         cls.create_tables()

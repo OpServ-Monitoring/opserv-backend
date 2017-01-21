@@ -73,7 +73,6 @@ class ComponentMetricsWriterReader(DatabaseConnector):
         connection.commit()
         connection.close()
 
-
     @classmethod
     def insert_component_metrics(cls, component_metrics):
         # TODO Change param to receive each param one by one, make None -> "default" for args

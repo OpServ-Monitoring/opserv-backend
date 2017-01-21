@@ -1,7 +1,4 @@
 import json
-from collections import Iterable
-
-from database.unified_database_interface import UnifiedDatabaseInterface  # TODO Exchange with data gate
 
 from .preferences_api_v1_endpoint import PreferencesApiV1Endpoint
 from ...general.endpoint import Endpoint
@@ -63,7 +60,7 @@ class PreferenceEndpoint(Endpoint):
         return True
 
     @classmethod
-    def _get_children(cls) -> Iterable:
+    def _get_children(cls) -> list:
         return []
 
     @classmethod

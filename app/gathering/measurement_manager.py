@@ -8,23 +8,22 @@
 import logging
 import time
 
-from gathering.measuring.cpuinfo_source import PyCpuInfoSource
-from gathering.measuring.null_source import NullSource
-from gathering.measuring.ohm_source import OHMSource
-from gathering.measuring.raspi_temp_source import RaspiTempSource
-from gathering.measuring.psutil_source import PsUtilWrap
-from gathering.measuring.pyspectator_source import PySpectatorSource
-
 import misc.data_manager as data_manager
 import misc.queue_manager as queue_manager
 from database.unified_database_interface import UnifiedDatabaseInterface
+from gathering.measuring.cpuinfo_source import PyCpuInfoSource
+from gathering.measuring.null_source import NullSource
+from gathering.measuring.ohm_source import OHMSource
+from gathering.measuring.psutil_source import PsUtilWrap
+from gathering.measuring.pyspectator_source import PySpectatorSource
+from gathering.measuring.raspi_temp_source import RaspiTempSource
 
 log = logging.getLogger("opserv." + __name__)
 
 transaction = UnifiedDatabaseInterface.get_measurement_insertion_transaction()
 
 
-class MeasurementManager(): 
+class MeasurementManager():
     measuring_sources = []
 
     @classmethod
@@ -66,7 +65,6 @@ class MeasurementManager():
         # And lastly add it to the commitlist for the database TODO
         cls.save_to_database(new_measurement, component, metric, args)
 
-
     @classmethod
     def save_to_database(cls, measurement, component, metric, args):
         '''
@@ -77,18 +75,15 @@ class MeasurementManager():
                                        str(measurement["value"]), component, args)
         transaction.commit_transaction()
 
-
-
     @classmethod
     def measurement_is_valid(cls, measure_to_check):
         '''
             Checks the given measurement for validity
         '''
-        #TODO add more elaborate validaiton
+        # TODO add more elaborate validaiton
         if measure_to_check is None:
             return False
         return True
-
 
     @classmethod
     def get_measurement(cls, component, metric, args):

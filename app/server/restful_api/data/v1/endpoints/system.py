@@ -1,5 +1,3 @@
-from collections import Iterable
-
 from server.restful_api.data.v1.endpoints.__general_data_v1 import GeneralEndpointDataV1
 
 
@@ -11,7 +9,7 @@ class SystemEndpoint(GeneralEndpointDataV1):
         ]
 
     @classmethod
-    def _get_children(cls) -> Iterable:
+    def _get_children(cls) -> list:
         from .system_cpucores import SystemCpucoresEndpoint
         from .system_cpus import SystemCpusEndpoint
         from .system_disks import SystemDisksEndpoint

@@ -6,25 +6,28 @@
  Usage: Simply launch this file
 """
 
-import os, ctypes, sys
+import ctypes
+import os
+import sys
 
 import application_settings.settings_management as app_settings
 import misc.data_manager as data_manager
 import misc.queue_manager as queue_manager
 import server.__management as server
-from database.unified_database_interface import UnifiedDatabaseInterface
-from gathering.gather_main import GatherThread
-from misc.logging_helper import setup_argparse_logger
 from application_settings.app_settings import AppSettings
 from application_settings.configuration_settings import ConfigurationSettings
+from database.unified_database_interface import UnifiedDatabaseInterface
+from gathering.gather_main import GatherThread
 from misc.helper import get_operating_system
+from misc.logging_helper import setup_argparse_logger
+
 
 def init_database():
     """
         Initiates the database
     """
-    UnifiedDatabaseInterface.get_database_opener().create_database()
-    UnifiedDatabaseInterface.get_database_opener().set_gathering_rates()
+    UnifiedDatabaseInterface.get_database_initializer().create_database()
+    UnifiedDatabaseInterface.get_database_initializer().set_gathering_rates()
 
 
 def start_gather_thread():
@@ -49,6 +52,7 @@ def manage_runtime_settings():
     # TODO Document this function
     app_settings.init()
 
+
 def has_elevated_privileges():
     '''
         Checks for elevated privileges/admin rights and warns the user if they couldn't
@@ -62,6 +66,7 @@ def has_elevated_privileges():
 
     return is_admin
 
+
 def start_app():
     queue_manager.init()
     data_manager.init()
@@ -70,6 +75,7 @@ def start_app():
 
     start_gather_thread()
     start_server()
+
 
 def skip_welcome():
     """
@@ -86,15 +92,17 @@ def skip_info_checks():
     """
     return False
 
+
 def skip_config():
     """
         Skip configuration to avoid human interaction
         Important for automation etc.
     """
     if AppSettings.get_setting(AppSettings.KEY_SKIP_CONFIG) or \
-        ConfigurationSettings.config_file_is_valid():
+            ConfigurationSettings.config_file_is_valid():
         return True
     return False
+
 
 def show_welcome_screen():
     print(r"""
@@ -110,13 +118,14 @@ def show_welcome_screen():
         Monitoring made easy
           """)
 
+
 def show_opserv_info():
     print("Elevated Permissions: " + str(has_elevated_privileges()))
     print("Reported Platform Value: " + sys.platform)
     print("DetectedOperating System: " + str(get_operating_system()))
-    print("Python Version: " + "{0}.{1}.{2}.{3}".format(sys.version_info.major, 
-                                                        sys.version_info.minor, 
-                                                        sys.version_info.micro, 
+    print("Python Version: " + "{0}.{1}.{2}.{3}".format(sys.version_info.major,
+                                                        sys.version_info.minor,
+                                                        sys.version_info.micro,
                                                         sys.version_info.releaselevel))
 
 
@@ -148,5 +157,3 @@ if __name__ == '__main__':
         config_setup()
 
     start_app()
-
-

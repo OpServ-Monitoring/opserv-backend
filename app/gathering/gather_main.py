@@ -8,12 +8,11 @@ import logging
 import threading
 import time
 
-
-from misc.constants import GATHERING_QUEUELISTENER_DELAY, GATHERING_PERFORMANCE_LOG_DELAY, \
-                           GATHERING_LOOP_SLEEP
 import misc.queue_manager as queue_manager
-from gathering.gatherer_manager import GathererManager
 from application_settings.logging_settings import LoggingSettings
+from gathering.gatherer_manager import GathererManager
+from misc.constants import GATHERING_QUEUELISTENER_DELAY, GATHERING_PERFORMANCE_LOG_DELAY, \
+    GATHERING_LOOP_SLEEP
 
 log = logging.getLogger("opserv.gathering")
 log.setLevel(logging.DEBUG)
@@ -31,7 +30,6 @@ class GatherThread(threading.Thread):
         GathererManager.init_manager()
 
         self.running = True
-
 
     def run(self):
         """

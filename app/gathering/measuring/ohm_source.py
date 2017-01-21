@@ -364,7 +364,6 @@ class OHMSource(MeasuringSource):
             return (self.memory_data.usedMemory.Value
                     + self.memory_data.availableMemory.Value) * byte_multiplier
 
-
     def get_system_measurement(self, metric):
         """
             Gets the measurement from specified metric for the system component

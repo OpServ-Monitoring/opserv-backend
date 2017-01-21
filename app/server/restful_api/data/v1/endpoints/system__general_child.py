@@ -1,7 +1,6 @@
 from abc import ABCMeta
 
 from server.restful_api.data.v1.endpoints.__general_gathering_metric import GeneralGatheringMetricEndpoint
-from .__general_realtime_historical import GeneralEndpointRealtimeHistorical
 
 
 class SystemGeneralChildEndpoint(GeneralGatheringMetricEndpoint, metaclass=ABCMeta):

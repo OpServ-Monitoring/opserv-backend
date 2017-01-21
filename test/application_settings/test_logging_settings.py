@@ -1,5 +1,5 @@
 import os
-from argparse import ArgumentParser, Namespace
+from argparse import ArgumentParser
 from unittest import TestCase
 
 from application_settings.logging_settings import LoggingSettings
@@ -37,7 +37,6 @@ class TestLoggingSettings(TestCase):
             self.parser.parse_args("--filelog test.log".split())
         except SystemExit:
             self.fail("validate_settings_arguments() raised SystemExit unexpectedly!")
-            
 
     def tearDown(self):
         # TODO Use more stable approach

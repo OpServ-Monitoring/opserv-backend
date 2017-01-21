@@ -10,12 +10,14 @@ from gathering.measurement_manager import MeasurementManager
 log = logging.getLogger("opserv." + __name__)
 GatherPerformanceTuple = namedtuple("GatherPerformanceTuple", ["key", "time"])
 
+
 class Gatherer():
     '''
         Contains information about a gathering rate
         Each gathering rate gets its own gatherer to keep track of its properties and
         lifecycle.
     '''
+
     def __init__(self, component, metric, args, delayms, event=None):
         log.debug("New Gatherer created with: %s,%s,%s,%d", component, metric, args, delayms)
         self.component = component
@@ -25,7 +27,6 @@ class Gatherer():
         self.event = event
         self.last_measure_time = 0
 
-
     def set_rate(self, delayms):
         '''
             Setter for the gathering rate of the gatherer e.g.
@@ -33,7 +34,6 @@ class Gatherer():
             Note, that this does not reset the current event in the scheduler
         '''
         self.delayms = delayms
-
 
     def measure(self):
         '''
@@ -50,7 +50,6 @@ class Gatherer():
             update in the scheduler. The event has to be cancelled there too.
         '''
         self.event = event
-
 
     def get_key(self):
         '''

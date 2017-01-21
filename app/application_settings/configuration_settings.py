@@ -1,11 +1,12 @@
 import json
-from argparse import ArgumentParser, Namespace, FileType
+from argparse import ArgumentParser, Namespace
+from os.path import isfile, join
 
 from misc.helper import get_path_to_app, is_pathname_valid
 from ._settings_base import SettingsBase
-from os.path import isfile, join
 
 DEFAULT_CONFIG_FILE = join(get_path_to_app(), "opserv_config.json")
+
 
 class ConfigurationSettings(SettingsBase):
     KEY_CONF_FILE = "conffile"
@@ -16,7 +17,7 @@ class ConfigurationSettings(SettingsBase):
             "-cf",
             "--conffile",
             help="The path to a configuration file to read args from. Runtime args override these."
-                 "Must be a valid JSON object",                 
+                 "Must be a valid JSON object",
             default=DEFAULT_CONFIG_FILE
         )
 
@@ -31,6 +32,7 @@ class ConfigurationSettings(SettingsBase):
         if isfile(cls.get_setting(cls.KEY_CONF_FILE)):
             return False
         return True
+
     @classmethod
     def create_empty_config(cls):
         file_handle = open(cls.get_setting(cls.KEY_CONF_FILE), "w")
@@ -51,7 +53,6 @@ class ConfigurationSettings(SettingsBase):
             return False
         except FileNotFoundError:
             return False
-
 
     @classmethod
     def get_config_as_dict(cls):

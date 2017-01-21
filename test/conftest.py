@@ -1,9 +1,8 @@
 import logging
-import appendApp
 
-from misc.logging_helper import setup_logger
 import misc.data_manager as data_manager
 import misc.queue_manager as queue_manager
+from misc.logging_helper import setup_logger
 
 LOGGINGLEVEL = logging.DEBUG
 
@@ -16,7 +15,7 @@ LOG_SERVER = True
 
 def pytest_configure():
     print("PyTest conftest was loaded")
-    setup_logger(LOG_TO_CONSOLE, LOG_TO_FILE, LOGGINGLEVEL,"opserv.log", LOG_SERVER, LOG_GATHERING)
+    setup_logger(LOG_TO_CONSOLE, LOG_TO_FILE, LOGGINGLEVEL, "opserv.log", LOG_SERVER, LOG_GATHERING)
     print("Logger Started")
 
 

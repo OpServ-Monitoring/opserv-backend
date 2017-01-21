@@ -24,7 +24,7 @@ class UnifiedDatabaseInterface:
         return ComponentMetricsWriterReader()
 
     @classmethod
-    def get_database_opener(cls):
-        from .connectors.database_opener import DatabaseOpener
+    def get_database_initializer(cls):
+        from .connectors.database_initializer import DatabaseInitializer
 
-        return DatabaseOpener()
+        return DatabaseInitializer()

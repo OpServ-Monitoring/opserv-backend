@@ -1,9 +1,7 @@
 import re
 from abc import ABCMeta, abstractmethod
-from collections import Iterable
 
 from server.data_gates.default_data_gate import DefaultDataGate
-from server.data_gates.outbound_gate_interface import OutboundGateInterface
 from .requestholder import RequestHolder
 from .responseholder import ResponseHolder
 
@@ -196,7 +194,7 @@ class Endpoint(metaclass=ABCMeta):
 
     @classmethod
     @abstractmethod
-    def _get_children(cls) -> Iterable:
+    def _get_children(cls) -> list:
         pass
 
     def __match_uri_with_regex(self, regex):

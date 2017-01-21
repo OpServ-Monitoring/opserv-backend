@@ -2,14 +2,15 @@
     Helper Module to help you through the ups and down of the project
 """
 
+import errno
 import os
 import sys
-import errno
 from importlib import import_module
 
 from misc.constants import HARDWARE_DEFAULTS, Operating_System
 
 APP_FOLDER_NAME = "app"
+
 
 def import_if_exists(module):
     """ Loads and returns the handle for the given module if it available on the system"""
@@ -160,7 +161,7 @@ def is_pathname_valid(pathname: str) -> bool:
         # environment variable); else, the typical root directory.
         root_dirname = os.environ.get('HOMEDRIVE', 'C:') \
             if sys.platform == 'win32' else os.path.sep
-        assert os.path.isdir(root_dirname)   # ...Murphy and her ironclad Law
+        assert os.path.isdir(root_dirname)  # ...Murphy and her ironclad Law
 
         # Append a path separator to this directory if needed.
         root_dirname = root_dirname.rstrip(os.path.sep) + os.path.sep
@@ -202,7 +203,7 @@ def is_pathname_valid(pathname: str) -> bool:
     # pathname itself are valid. (Praise be to the curmudgeonly python.)
     else:
         return True
-    # If any other exception was raised, this is an unrelated fatal issue
-    # (e.g., a bug). Permit this exception to unwind the call stack.
-    #
-    # Did we mention this should be shipped with Python already?
+        # If any other exception was raised, this is an unrelated fatal issue
+        # (e.g., a bug). Permit this exception to unwind the call stack.
+        #
+        # Did we mention this should be shipped with Python already?
