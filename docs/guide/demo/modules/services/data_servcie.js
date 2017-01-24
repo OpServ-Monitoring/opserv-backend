@@ -42,14 +42,15 @@ app.factory('dataService',function($http, $rootScope, toastService,$timeout){
         }
     };
 
-    service.getCiHistoryData = function(baseUrl, ci, id, category){
-        var urls = buildUrls(baseUrl,ci,id,category, false, 1484000000000, new Date().getTime());
+    service.getCiHistoryData = function(baseUrl, ci, id, category, start, end){
+
+        var urls = buildUrls(baseUrl,ci,id,category, false, start, end);
         console.log("url: ",urls.forData);
         $http.get(urls.forData).then(function successCallback(response) {
             var parsed_values = parseHistoryValues(response.data.data.values);
-            $rootScope.$broadcast(EVENT_CI_HISTORY_DATA_RECEIVED, true, baseUrl, ci, id, category, parsed_values);
+            $rootScope.$broadcast(EVENT_CI_HISTORY_DATA_RECEIVED, true, baseUrl, ci, id, category, start, end, parsed_values);
         }, function errorCallback(response) {
-            $rootScope.$broadcast(EVENT_CI_HISTORY_DATA_RECEIVED, false, baseUrl, ci, id, category, response.data.data.values);
+            $rootScope.$broadcast(EVENT_CI_HISTORY_DATA_RECEIVED, false, baseUrl, ci, id, category, start, end, null);
         });
     };
 

@@ -1,6 +1,6 @@
 {
   "name": "scrollMonitor",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "main": "./scrollMonitor.js",
   "dependencies": {},
   "devDependencies": {},
@@ -25,11 +25,11 @@
     "testling.js"
   ],
   "homepage": "https://github.com/stutrek/scrollMonitor",
-  "_release": "1.2.2",
+  "_release": "1.2.3",
   "_resolution": {
     "type": "version",
-    "tag": "v1.2.2",
-    "commit": "9dda8e9cfb42b6ed8459d1cc19c07deb8b254be4"
+    "tag": "v1.2.3",
+    "commit": "f40936fee55862d875af4cb26cd9e2025b02582a"
   },
   "_source": "https://github.com/stutrek/scrollMonitor.git",
   "_target": "*",
