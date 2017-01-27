@@ -2,13 +2,13 @@ from sqlite3 import OperationalError
 from unittest import TestCase
 from unittest.mock import MagicMock
 
-from database.connectors.database_opener import DatabaseOpener
+from database.connectors.database_initializer import DatabaseInitializer
 from database.helper.database_connection_helper import DatabaseConnectionHelper
 
 
 class TestDatabaseOpener(TestCase):
     def test_create_database(self):
-        class DatabaseOpenerMock(DatabaseOpener):
+        class DatabaseOpenerMock(DatabaseInitializer):
             create_tables = MagicMock()
             create_triggers = MagicMock()
             insert_supported_component_metrics = MagicMock()
@@ -62,7 +62,7 @@ class TestDatabaseOpener(TestCase):
         class ModifiedConnectionHelper(DatabaseConnectionHelper):
             _location = location
 
-        class ModifiedDatabaseOpener(DatabaseOpener):
+        class ModifiedDatabaseOpener(DatabaseInitializer):
             _connection_helper = ModifiedConnectionHelper
 
         return ModifiedDatabaseOpener()

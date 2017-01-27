@@ -1,5 +1,6 @@
 import logging
 
+import appendApp
 import misc.data_manager as data_manager
 import misc.queue_manager as queue_manager
 from misc.logging_helper import setup_logger
