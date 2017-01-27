@@ -1,8 +1,8 @@
 from unittest import TestCase
 
-from server.restful_api.data.v1.endpoints.networks_network import NetworksNetworkEndpoint
 from base_mock_outbound_gate import BaseMockOutboundGate
 
+from server.restful_api.data.v1.endpoints.networks_network import NetworksNetworkEndpoint
 from server.restful_api.general.requestholder import RequestHolder
 
 

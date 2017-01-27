@@ -148,22 +148,30 @@ HARDWARE_DEFAULTS = {
     "network": (True, None)
 }
 
+
+def component_needs_arg(component_type):
+    if component_type not in HARDWARE_DEFAULTS:
+        # TODO Log error, component not found
+        return False
+
+    return HARDWARE_DEFAULTS[component_type][0]
+
+
 # Enums are basically classes and not constats, the pylint warning is unnecessary
-Operating_System = Enum("Operating_System", "windows linux macos freebsd") # pylint: disable=C0103
-GraphicsVendor = Enum("GraphicsVendor", "intel nvidia amd") # pylint: disable=C0103
-CpuVendor = Enum("CpuVendor", "intel amd") # pylint: disable=C0103
+Operating_System = Enum("Operating_System", "windows linux macos freebsd")  # pylint: disable=C0103
+GraphicsVendor = Enum("GraphicsVendor", "intel nvidia amd")  # pylint: disable=C0103
+CpuVendor = Enum("CpuVendor", "intel amd")  # pylint: disable=C0103
 
 GATHERING_QUEUELISTENER_DELAY = 0.05  # Delay between the queueListener
-                                      # calls in the gathering thread (in seconds)
+# calls in the gathering thread (in seconds)
 
-QUEUEMANAGER_DEFAULT_TIMEOUT = 2 # seconds
+QUEUEMANAGER_DEFAULT_TIMEOUT = 2  # seconds
 
-MINIMUM_GATHERING_RATE = 500 #milliseconds
+MINIMUM_GATHERING_RATE = 500  # milliseconds
 
-GATHERING_PERFORMANCE_LOG_DELAY = 2 #seconds
+GATHERING_PERFORMANCE_LOG_DELAY = 2  # seconds
 
 GATHERING_LOOP_SLEEP = 0.001 # seconds
-
 
 DEFAULT_APP_CONFIG = {
     "port" : "31337",
@@ -171,6 +179,5 @@ DEFAULT_APP_CONFIG = {
     "filelog" : join(get_path_to_app(), "opserv.log"),
     "log_usage" : False,
 }
-
 
 YES_PHRASES = ["y", "yes"] 

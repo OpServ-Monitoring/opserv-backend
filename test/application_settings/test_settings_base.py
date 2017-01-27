@@ -1,6 +1,7 @@
+from unittest import TestCase
+
 from application_settings import _settings_base as application_settings
 from application_settings._settings_base import SettingsBase
-from unittest import TestCase
 
 
 class TestSettingsBase(TestCase):

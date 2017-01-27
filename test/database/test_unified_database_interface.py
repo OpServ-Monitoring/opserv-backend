@@ -40,7 +40,6 @@ class TestUnifiedDatabaseInterface(TestCase):
         from database.connectors.database_opener import DatabaseOpener
 
         self.assertIsInstance(
-            UnifiedDatabaseInterface().get_database_opener(),
+            UnifiedDatabaseInterface().get_database_initializer(),
             DatabaseOpener
         )
-

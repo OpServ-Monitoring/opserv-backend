@@ -1,11 +1,32 @@
+from .data_api_v1_endpoint import DataApiV1Endpoint
+from .endpoints.cpucores import CpucoresEndpoint
+from .endpoints.cpucores_cpucore import CpucoresCpucoreEndpoint
+from .endpoints.cpucores_cpucore_frequency import CpucoresCpucoreFrequencyEndpoint
+from .endpoints.cpucores_cpucore_temperature import CpucoresCpucoreTemperatureEndpoint
+from .endpoints.cpucores_cpucore_usage import CpucoresCpucoreUsageEndpoint
+from .endpoints.cpus import CpusEndpoint
+from .endpoints.cpus_cpu import CpusCpuEndpoint
+from .endpoints.cpus_cpu_frequency import CpusCpuFrequencyEndpoint
+from .endpoints.cpus_cpu_temperature import CpusCpuTemperatureEndpoint
+from .endpoints.cpus_cpu_usage import CpusCpuUsageEndpoint
+from .endpoints.disks import DisksEndpoint
 from .endpoints.disks_disk import DisksDiskEndpoint
 from .endpoints.disks_disk_status import DisksDiskStatusEndpoint
 from .endpoints.disks_disk_temperature import DisksDiskTemperatureEndpoint
 from .endpoints.disks_disk_usage import DisksDiskUsageEndpoint
+from .endpoints.gatheringrates import GatheringRatesEndpoint
+from .endpoints.gpus import GpusEndpoint
+from .endpoints.gpus_gpu import GpusGpuEndpoint
+from .endpoints.gpus_gpu_gpuclock import GpusGpuGpuclockEndpoint
+from .endpoints.gpus_gpu_memclock import GpusGpuMemclockEndpoint
+from .endpoints.gpus_gpu_temperature import GpusGpuTemperatureEndpoint
+from .endpoints.gpus_gpu_usage import GpusGpuUsageEndpoint
+from .endpoints.gpus_gpu_vramusage import GpusGpuVramusageEndpoint
 from .endpoints.memory import MemoryEndpoint
-from .endpoints.memory_used import MemoryUsedEndpoint
 from .endpoints.memory_free import MemoryFreeEndpoint
 from .endpoints.memory_total import MemoryTotalEndpoint
+from .endpoints.memory_used import MemoryUsedEndpoint
+from .endpoints.networks import NetworksEndpoint
 from .endpoints.networks_network import NetworksNetworkEndpoint
 from .endpoints.networks_network_receivepersec import NetworksNetworkReceivepersecEndpoint
 from .endpoints.networks_network_transmitpersec import \
@@ -28,26 +49,6 @@ from .endpoints.system_gpus import SystemGpusEndpoint
 from .endpoints.system_networks import SystemNetworksEndpoint
 from .endpoints.system_partitions import SystemPartitionsEndpoint
 from .endpoints.system_processes import SystemProcessesEndpoint
-from .data_api_v1_endpoint import DataApiV1Endpoint
-from .endpoints.cpucores import CpucoresEndpoint
-from .endpoints.cpucores_cpucore import CpucoresCpucoreEndpoint
-from .endpoints.cpucores_cpucore_frequency import CpucoresCpucoreFrequencyEndpoint
-from .endpoints.cpucores_cpucore_temperature import CpucoresCpucoreTemperatureEndpoint
-from .endpoints.cpucores_cpucore_usage import CpucoresCpucoreUsageEndpoint
-from .endpoints.cpus import CpusEndpoint
-from .endpoints.cpus_cpu import CpusCpuEndpoint
-from .endpoints.cpus_cpu_frequency import CpusCpuFrequencyEndpoint
-from .endpoints.cpus_cpu_temperature import CpusCpuTemperatureEndpoint
-from .endpoints.cpus_cpu_usage import CpusCpuUsageEndpoint
-from .endpoints.disks import DisksEndpoint
-from .endpoints.gpus import GpusEndpoint
-from .endpoints.gpus_gpu import GpusGpuEndpoint
-from .endpoints.gpus_gpu_gpuclock import GpusGpuGpuclockEndpoint
-from .endpoints.gpus_gpu_memclock import GpusGpuMemclockEndpoint
-from .endpoints.gpus_gpu_temperature import GpusGpuTemperatureEndpoint
-from .endpoints.gpus_gpu_usage import GpusGpuUsageEndpoint
-from .endpoints.gpus_gpu_vramusage import GpusGpuVramusageEndpoint
-from .endpoints.networks import NetworksEndpoint
 from ...general.endpoint_management import EndpointManagement
 
 
@@ -129,5 +130,8 @@ class EndpointManagementDataV1(EndpointManagement):
             SystemGpusEndpoint,  # v1/system/gpus
             SystemNetworksEndpoint,  # v1/system/networks
             SystemPartitionsEndpoint,  # v1/system/partitions
-            SystemProcessesEndpoint  # v1/system/processes
+            SystemProcessesEndpoint,  # v1/system/processes
+
+            # # - - - GATHERING RATES - - - #
+            GatheringRatesEndpoint
         ]

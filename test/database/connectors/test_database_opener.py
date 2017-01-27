@@ -29,7 +29,7 @@ class TestDatabaseOpener(TestCase):
         except OperationalError:
             self.fail("create_tables() raised OperationalError unexpectedly!")
 
-        # TODO Check if all tables exists
+            # TODO Check if all tables exists
 
     def test_create_triggers(self):
         database_opener = self.__build_modified_database_opener(
@@ -41,7 +41,7 @@ class TestDatabaseOpener(TestCase):
         except OperationalError:
             self.fail("create_triggers() raised OperationalError unexpectedly!")
 
-        # TODO Check if trigger exists
+            # TODO Check if trigger exists
 
     def test_insert_supported_component_metrics(self):
         database_opener = self.__build_modified_database_opener(
@@ -53,7 +53,7 @@ class TestDatabaseOpener(TestCase):
         except OperationalError:
             self.fail("insert_supported_component_metrics() raised OperationalError unexpectedly!")
 
-        # TODO Check if metrics are set
+            # TODO Check if metrics are set
 
     @classmethod
     def __build_modified_database_opener(cls, location):

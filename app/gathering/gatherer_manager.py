@@ -1,12 +1,12 @@
 """
     Main module for gathering manager class
 """
+import logging
 import sched
 import time
-import logging
 
-from gathering.measurement_manager import MeasurementManager
 from gathering.gatherer import Gatherer
+from gathering.measurement_manager import MeasurementManager
 from misc.constants import MINIMUM_GATHERING_RATE
 
 GATHERING_EVENT_PRIORITY = 1
@@ -57,7 +57,6 @@ class GathererManager():
             log.info("Gathering rate will be clamped to minimum delayms")
             delayms = max(MINIMUM_GATHERING_RATE, delayms)
 
-
         if cls.gatherer_exists(comp, metric, args):
             cls.update_gatherer(comp, metric, args, delayms)
         else:
@@ -95,8 +94,6 @@ class GathererManager():
 
         cls.handle_gathering_event(gather_obj=new_gatherer)
 
-
-
     @classmethod
     def handle_gathering_event(cls, gather_obj):
         '''
@@ -110,7 +107,7 @@ class GathererManager():
         new_gather_event = cls.scheduler.enter(delay_in_sec, GATHERING_EVENT_PRIORITY,
                                                cls.handle_gathering_event,
                                                kwargs={
-                                                   "gather_obj" : gather_obj
+                                                   "gather_obj": gather_obj
                                                })
 
         gather_obj.set_event(new_gather_event)
@@ -176,7 +173,6 @@ class GathererManager():
             Returns the current number of the gatherers that are active
         '''
         return len(cls.gatherers)
-
 
     @classmethod
     def get_measuring_times(cls):

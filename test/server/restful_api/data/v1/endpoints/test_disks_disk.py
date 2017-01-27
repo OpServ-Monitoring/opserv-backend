@@ -1,8 +1,8 @@
 from unittest import TestCase
 
-from server.restful_api.data.v1.endpoints.disks_disk import DisksDiskEndpoint
 from base_mock_outbound_gate import BaseMockOutboundGate
 
+from server.restful_api.data.v1.endpoints.disks_disk import DisksDiskEndpoint
 from server.restful_api.general.requestholder import RequestHolder
 
 

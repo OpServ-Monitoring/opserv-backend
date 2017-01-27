@@ -1,8 +1,7 @@
 import time
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
 
 from server.restful_api.data.v1.endpoints.__general_gathering_metric import GeneralGatheringMetricEndpoint
-from .__general_data_v1 import GeneralEndpointDataV1
 
 
 class GeneralEndpointRealtimeHistorical(GeneralGatheringMetricEndpoint, metaclass=ABCMeta):
@@ -10,9 +9,9 @@ class GeneralEndpointRealtimeHistorical(GeneralGatheringMetricEndpoint, metaclas
         super(GeneralEndpointRealtimeHistorical, self).__init__()
 
         self._is_realtime = False
-        self._start = 0
-        self._end = int(time.time() * 1000)
-        self._limit = 50
+        self._start = None
+        self._end = None
+        self._limit = None
 
     def _pre_process(self):
         # Check for mandatory parameters
@@ -54,12 +53,12 @@ class GeneralEndpointRealtimeHistorical(GeneralGatheringMetricEndpoint, metaclas
 
     def _get_historical_data(self):
         historical_data = self._outbound_gate.get_measurements(
-                self._get_component_type(),
-                self._get_component_metric(),
-                self._get_component_arg(),
-                self._start,
-                self._end,
-                self._limit
+            self._get_component_type(),
+            self._get_component_arg(),
+            self._get_component_metric(),
+            self._start,
+            self._end,
+            self._limit
         )
 
         self._response_holder.set_body_data({

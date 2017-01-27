@@ -24,8 +24,6 @@ class GeneralGatheringMetricEndpoint(GeneralEndpointDataV1, metaclass=ABCMeta):
             "gathering_rate": gathering_rate
         })
 
-        print(gathering_rate)
-
         return self.KEEP_PROCESSING()
 
     def _put(self) -> bool:

@@ -5,6 +5,7 @@ from application_settings.logging_settings import LoggingSettings
 
 DEFAULT_FILE_LOGLEVEL = logging.DEBUG
 
+
 def setup_argparse_logger():
     # TODO Transform to  logging  package values
     console_log_enabled = LoggingSettings.get_setting(LoggingSettings.KEY_CONSOLE_LOG) is not None

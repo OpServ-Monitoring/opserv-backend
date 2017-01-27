@@ -1,8 +1,9 @@
 from unittest import TestCase
 
+from base_mock_outbound_gate import BaseMockOutboundGate
+
 from server.restful_api.data.v1.endpoints.gpus import GpusEndpoint
 from server.restful_api.general.requestholder import RequestHolder
-from base_mock_outbound_gate import BaseMockOutboundGate
 
 
 class TestGpusEndpoint(TestCase):

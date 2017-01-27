@@ -1,5 +1,6 @@
 from argparse import ArgumentParser
 from unittest import TestCase
+
 from application_settings import settings_management
 
 

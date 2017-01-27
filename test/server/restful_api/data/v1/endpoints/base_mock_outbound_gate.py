@@ -1,13 +1,12 @@
-from collections import Iterable
-
 import time
+from collections import Iterable
 
 from server.data_gates.outbound_gate_interface import OutboundGateInterface
 
 
 class BaseMockOutboundGate(OutboundGateInterface):
     @classmethod
-    def get_last_measurement(cls, component: str, metric: str, argument: str = None) -> dict:
+    def get_last_measurement(cls, component_type: str, metric: str, component_arg: str = None) -> dict:
         return {
             "value": "75 percent",
             "timestamp": 1234567
@@ -31,7 +30,7 @@ class BaseMockOutboundGate(OutboundGateInterface):
         pass
 
     @classmethod
-    def get_measurements(cls, component: str, metric: str, argument: str = None, start_time: int = 0,
+    def get_measurements(cls, component_type: str, component_arg: str, metric: str, start_time: int = 0,
                          end_time: int = time.time() * 1000, limit: int = 5000) -> Iterable:
         return [
             {

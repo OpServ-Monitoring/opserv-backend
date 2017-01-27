@@ -1,8 +1,8 @@
 from unittest import TestCase
 
-from server.restful_api.data.v1.endpoints.cpucores_cpucore import CpucoresCpucoreEndpoint
 from base_mock_outbound_gate import BaseMockOutboundGate
 
+from server.restful_api.data.v1.endpoints.cpucores_cpucore import CpucoresCpucoreEndpoint
 from server.restful_api.general.requestholder import RequestHolder
 
 

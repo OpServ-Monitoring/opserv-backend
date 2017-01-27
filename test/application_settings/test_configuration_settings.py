@@ -1,5 +1,5 @@
 import os
-from argparse import ArgumentParser, Namespace
+from argparse import ArgumentParser
 from unittest import TestCase
 
 from application_settings.configuration_settings import ConfigurationSettings
@@ -27,8 +27,8 @@ class TestConfigurationSettings(TestCase):
         except PermissionError:
             print("Could not delete file: test.conf")
 
-            
-#TODO REWEITE TESTS FOR CONF PATH SOLUTION
+
+# TODO REWEITE TESTS FOR CONF PATH SOLUTION
 '''    def test_validate_settings_arguments(self):
         args = Namespace()
 

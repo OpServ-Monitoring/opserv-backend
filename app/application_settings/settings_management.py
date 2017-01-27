@@ -1,11 +1,10 @@
 import argparse
-import json
 
 from . import _settings_base as application_settings_store
+from .app_settings import AppSettings
+from .configuration_settings import ConfigurationSettings
 from .logging_settings import LoggingSettings
 from .server_settings import ServerSettings
-from .configuration_settings import ConfigurationSettings
-from .app_settings import AppSettings
 
 
 # TODO Fix this! - as of now as everything defaults to None file args will not affect the settings
@@ -38,7 +37,7 @@ def init():
             if console_args_as_dict[arg] is not None:
                 application_settings_store.settings[arg] = console_args_as_dict[arg]
         else:
-                application_settings_store.settings[arg] = console_args_as_dict[arg]
+            application_settings_store.settings[arg] = console_args_as_dict[arg]
 
 
 def configure_runtime_arg_parser() -> argparse.ArgumentParser:

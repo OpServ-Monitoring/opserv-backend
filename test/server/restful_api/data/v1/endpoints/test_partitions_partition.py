@@ -1,8 +1,8 @@
 from unittest import TestCase
 
-from server.restful_api.data.v1.endpoints.partitions_partition import PartitionsPartitionEndpoint
 from base_mock_outbound_gate import BaseMockOutboundGate
 
+from server.restful_api.data.v1.endpoints.partitions_partition import PartitionsPartitionEndpoint
 from server.restful_api.general.requestholder import RequestHolder
 
 

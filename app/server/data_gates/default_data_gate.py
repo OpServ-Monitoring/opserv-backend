@@ -1,6 +1,6 @@
 import time
-from collections import Iterable
 from urllib.parse import unquote_plus, quote_plus
+
 from database.unified_database_interface import UnifiedDatabaseInterface
 from misc import data_manager
 from misc import queue_manager
@@ -9,16 +9,16 @@ from server.data_gates.outbound_gate_interface import OutboundGateInterface
 
 class DefaultDataGate(OutboundGateInterface):
     @classmethod
-    def get_valid_arguments(cls, component: str) -> Iterable:
+    def get_valid_arguments(cls, component_type: str) -> list:
         # TODO Improve readability
-        last_saved_measurement = data_manager.get_measurement(component="system", metric=component)
+        last_saved_measurement = data_manager.get_measurement(component="system", metric=component_type)
 
         present_arguments = []
         if last_saved_measurement is not None and 'value' in last_saved_measurement:
             present_arguments = last_saved_measurement['value']
 
         persisted_arguments = UnifiedDatabaseInterface.get_component_metrics_writer_reader().get_component_args(
-            component)
+            component_type)
 
         all_arguments = cls.__merge_two_lists(
             present_arguments,
@@ -47,14 +47,29 @@ class DefaultDataGate(OutboundGateInterface):
         return argument in valid_arguments
 
     @classmethod
-    def get_measurements(cls, component: str, metric: str, argument: str = None, start_time: int = 0,
-                         end_time: int = time.time() * 1000, limit: int = 5000) -> Iterable:
-        component = cls.decode_argument(component)
-        metric = cls.decode_argument(metric)
-        argument = cls.decode_argument(argument)
+    def get_measurements(cls, component_type: str, component_arg: str, metric: str, start_time: int,
+                         end_time: int, limit: int) -> list:
+        measurement_data_reader = UnifiedDatabaseInterface.get_measurement_data_reader()
 
-        raw_measurements = UnifiedDatabaseInterface.get_measurement_data_reader().get_min_avg_max(
-            component, argument, metric, start_time, end_time, limit
+        component_type = cls.decode_argument(component_type)
+        metric = cls.decode_argument(metric)
+        component_arg = cls.decode_argument(component_arg)
+
+        if component_type is None or metric is None:
+            raise TypeError("Both component_type and metric have to be valid string objects.")
+
+        if start_time is None:
+            start_time = measurement_data_reader.get_timestamp_of_first_measurement(component_type, component_arg,
+                                                                                    metric)
+
+        if end_time is None:
+            end_time = int(time.time() * 1000)
+
+        if limit is None:
+            limit = 100
+
+        raw_measurements = measurement_data_reader.get_min_avg_max(
+            component_type, component_arg, metric, start_time, end_time, limit
         )
 
         return list(
@@ -68,15 +83,15 @@ class DefaultDataGate(OutboundGateInterface):
         )
 
     @classmethod
-    def get_last_measurement(cls, component: str, metric: str, argument: str = None) -> dict:
-        component = cls.decode_argument(component)
+    def get_last_measurement(cls, component_type: str, metric: str, component_arg: str = None) -> dict:
+        component_type = cls.decode_argument(component_type)
         metric = cls.decode_argument(metric)
-        argument = cls.decode_argument(argument)
+        component_arg = cls.decode_argument(component_arg)
 
-        if component is None or metric is None:
-            return None
+        if component_type is None or metric is None:
+            raise TypeError("Both component_type and metric have to be valid string objects.")
 
-        return data_manager.get_measurement(component, metric, argument)
+        return data_manager.get_measurement(component_type, metric, component_arg)
 
     @classmethod
     def get_gathering_rate(cls, component: str, metric: str, argument: str = None) -> int:

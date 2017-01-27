@@ -208,7 +208,6 @@ class PsUtilWrap(MeasuringSource):
             log.error(
                 "The following network interface couldnt be found %s", str(args))
 
-
     def net_calc_bytesper_sec(self, received, name):
         '''
            Uses the last received data fields to calculate either the receive or sent

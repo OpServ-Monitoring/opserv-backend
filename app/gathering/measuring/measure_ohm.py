@@ -10,9 +10,8 @@
 # Usage: 
 #
 
-import logging
-
 import clr
+import logging
 
 log = logging.getLogger("opserv.gathering.measure.ohm")
 log.setLevel(logging.DEBUG)

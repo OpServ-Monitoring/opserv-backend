@@ -1,7 +1,6 @@
+import atexit
 import sys
 import time
-import os
-import atexit
 
 # sys.path.append("C:/Users/Alex/Dropbox/Schule/Semester 5/Studienarbeit 2/Source/opserv-backend/app/gathering/testing-sources")
 sys.path.append("C:/Users/Lucas/PycharmProjects/opserv-backend/app/extern_dependency")

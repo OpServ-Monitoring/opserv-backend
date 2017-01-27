@@ -1,13 +1,12 @@
 import logging
-import threading
-import time
 import sys
+import time
+
+import pytest
 from test_general import start_gather_thread, mock_db_open
 
 import misc.queue_manager as queue_manager
-import misc.data_manager as data_manager
 from misc.constants import implemented_hardware, HARDWARE_DEFAULTS, SYSTEM_METRICS_TO_COMPS
-import pytest
 
 DATA_TEST_TIMEOUT = 5
 

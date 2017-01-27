@@ -1,9 +1,5 @@
 from abc import ABCMeta, abstractmethod
 
-from collections import Iterable
-
-import time
-
 
 # TODO Documentation needed
 
@@ -11,7 +7,7 @@ import time
 class OutboundGateInterface(metaclass=ABCMeta):
     @classmethod
     @abstractmethod
-    def get_valid_arguments(cls, component: str) -> Iterable:
+    def get_valid_arguments(cls, component: str) -> list:
         """
         Retrieves all valid arguments to the given component
         :param component: A string ???
@@ -31,17 +27,17 @@ class OutboundGateInterface(metaclass=ABCMeta):
     @classmethod
     @abstractmethod
     def get_measurements(cls,
-                         component: str,
+                         component_type: str,
+                         component_arg: str,
                          metric: str,
-                         argument: str = None,
-                         start_time: int = 0,
-                         end_time: int = time.time() * 1000,
-                         limit: int = 5000) -> Iterable:
+                         start_time: int,
+                         end_time: int,
+                         limit: int) -> list:
         """
         ???
-        :param component: A String ???
+        :param component_type: A String ???
         :param metric: A string ???
-        :param argument: A string ???, default is None
+        :param component_arg: A string ???, default is None
         :param start_time:
         :param end_time:
         :param limit:
@@ -50,12 +46,12 @@ class OutboundGateInterface(metaclass=ABCMeta):
 
     @classmethod
     @abstractmethod
-    def get_last_measurement(cls, component: str, metric: str, argument: str = None) -> dict:
+    def get_last_measurement(cls, component_type: str, metric: str, component_arg: str = None) -> dict:
         """
         ???
-        :param component: A String ???
+        :param component_type: A String ???
         :param metric: A string ???
-        :param argument: A string ???, default is None
+        :param component_arg: A string ???, default is None
         :return: A string representation ??? or None
         """
 

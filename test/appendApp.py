@@ -6,8 +6,8 @@
 # Usage: pytest main_test.py
 #
 
-import sys
 import os
+import sys
 
 already_appended = False
 

@@ -30,6 +30,7 @@ class DataApiV1Endpoint(GeneralEndpointDataV1):
         from .endpoints.partitions import PartitionsEndpoint
         from .endpoints.processes import ProcessesEndpoint
         from .endpoints.system import SystemEndpoint
+        from .endpoints.gatheringrates import GatheringRatesEndpoint
 
         return [
             ("/cpus", CpusEndpoint),
@@ -40,5 +41,6 @@ class DataApiV1Endpoint(GeneralEndpointDataV1):
             ("/networks", NetworksEndpoint),
             ("/partitions", PartitionsEndpoint),
             ("/processes", ProcessesEndpoint),
-            ("/system", SystemEndpoint)
+            ("/system", SystemEndpoint),
+            ("/gathering-rates", GatheringRatesEndpoint)
         ]

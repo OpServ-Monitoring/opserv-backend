@@ -4,8 +4,8 @@
     Author: Georg Rose, 2016
 '''
 
-from misc.constants import Operating_System
 from gathering.measuring.MeasuringSource import MeasuringSource
+from misc.constants import Operating_System
 
 RASPI_TEMP_FILE = '/sys/class/thermal/thermal_zone0/temp'
 RASPI_FREQ_PATH = '/sys/devices/system/cpu/cpu{}/cpufreq/scaling_cur_freq'

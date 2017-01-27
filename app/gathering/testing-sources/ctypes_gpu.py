@@ -1,7 +1,7 @@
 from ctypes import *
 
-
 D3DKMT_HANDLE = c_ulong
+
 
 class D3DKMT_QUERYRESOURCEINFO(Structure):
     _fields_ = [
@@ -21,6 +21,7 @@ class LUID(Structure):
         ("HighPart", c_long)
     ]
 
+
 class D3DKMT_ADAPTERINFO(Structure):
     _fields_ = [
         ("hAdapter", D3DKMT_HANDLE),
@@ -35,6 +36,7 @@ class D3DKMT_ENUMADAPTERS(Structure):
         ("NumAdapters", c_ulong),
         ("Adapters", D3DKMT_ADAPTERINFO * 16)
     ]
+
 
 adapter_array = D3DKMT_ENUMADAPTERS()
 
