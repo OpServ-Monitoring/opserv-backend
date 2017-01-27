@@ -6,7 +6,7 @@
 from queue import Queue
 
 from misc.constants import QUEUEMANAGER_DEFAULT_TIMEOUT
-from misc.helper import check_comp_args
+from misc.opserv_helper import check_comp_args
 
 request_data_queue = None
 set_gathering_rate_queue = None

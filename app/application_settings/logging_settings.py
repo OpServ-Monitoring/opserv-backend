@@ -8,7 +8,7 @@ import logging
 import os
 
 from ._settings_base import SettingsBase
-from misc.helper import get_path_to_app
+from misc.standalone_helper import get_path_to_app
 
 DEFAULT_FILE_LOG_PATH = os.path.join(get_path_to_app(), "opserv.log")
 
@@ -48,23 +48,20 @@ class LoggingSettings(SettingsBase):
             help="Enables console logging and what level should be logged",
             choices=["error", "warning", "info", "debug"],
             action=StringToLogLevel,
-            nargs='?',
-            default=logging.ERROR
+            nargs='?'
         )
         parser.add_argument(
             "-fl",
             "--filelog",
             help="Specified whether file logging should be enabled and where the log file will be",
-            nargs="?",
-            default=DEFAULT_FILE_LOG_PATH
+            nargs="?"
         )
         parser.add_argument(
             "-usage",
             "--log_usage",
             help="Logs the usage and performance metrics of \
                      OpServ itself to identify performance issues",
-            action="store_true",
-            default=False
+            action="store_true"
         )
 
 

@@ -7,7 +7,7 @@ import time
 
 from gathering.measuring.MeasuringSource import MeasuringSource
 from misc.constants import Operating_System
-from misc.helper import import_if_exists
+from misc.standalone_helper import import_if_exists
 
 log = logging.getLogger("opserv.gathering.psutil")
 log.setLevel(logging.DEBUG)

@@ -8,7 +8,7 @@ Example usage:
 import data_manager
 data_manager.get_measurement("cpu", "usage")
 '''
-from misc.helper import check_comp_args
+from misc.opserv_helper import check_comp_args
 
 realtime_data = None
 

@@ -13,6 +13,7 @@ class AppSettings(SettingsBase):
         Currently only adds skipping arguments for the startup sequence
     """
     KEY_SKIP_CONFIG = "skipconfig"
+    KEY_PASSWORD = "password"
 
     @classmethod
     def add_settings_arguments(cls, parser: ArgumentParser) -> None:
@@ -21,6 +22,12 @@ class AppSettings(SettingsBase):
             "--skipconfig",
             help="Skips the configuration setup and uses default values",
             action="store_true"
+        )
+
+        parser.add_argument(
+            "-pw",
+            "--password",
+            help="Simple password to have atleast some protection against unwanted clients"
         )
 
     @classmethod

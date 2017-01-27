@@ -11,6 +11,12 @@
 #
 """
 from enum import Enum
+import logging
+from os.path import join
+
+from misc.standalone_helper import get_path_to_app
+
+
 
 cpu_metrics = {
     "usage",
@@ -157,3 +163,14 @@ MINIMUM_GATHERING_RATE = 500 #milliseconds
 GATHERING_PERFORMANCE_LOG_DELAY = 2 #seconds
 
 GATHERING_LOOP_SLEEP = 0.001 # seconds
+
+
+DEFAULT_APP_CONFIG = {
+    "port" : "31337",
+    "cl" : logging.ERROR,
+    "filelog" : join(get_path_to_app(), "opserv.log"),
+    "log_usage" : False,
+}
+
+
+YES_PHRASES = ["y", "yes"] 

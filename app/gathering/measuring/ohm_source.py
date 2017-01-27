@@ -14,7 +14,7 @@ import sys
 
 from gathering.measuring.MeasuringSource import MeasuringSource
 from misc.constants import Operating_System
-from misc.helper import import_if_exists, get_path_to_app
+from misc.standalone_helper import import_if_exists, get_path_to_app
 
 log = logging.getLogger("opserv.gathering.ohm")
 log.setLevel(logging.DEBUG)

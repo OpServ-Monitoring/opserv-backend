@@ -23,7 +23,7 @@ def init():
     config_file_path = ConfigurationSettings.get_setting(ConfigurationSettings.KEY_CONF_FILE)
     if ConfigurationSettings.config_is_missing():
         # If there is no config file, create a new one
-        ConfigurationSettings.create_empty_config()
+        ConfigurationSettings.create_default_config()
 
     if not ConfigurationSettings.config_file_is_valid():
         raise ValueError("Configuration file is invalid")

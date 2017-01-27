@@ -1,5 +1,5 @@
 import os
-from pynvml import nvmlInit, NVMLError, nvmlSy  mGetDriverVersion, \
+from pynvml import nvmlInit, NVMLError, nvmlSystemGetDriverVersion, \
                    nvmlDeviceGetName, nvmlDeviceGetCount, nvmlDeviceGetHandleByIndex
 
 try:
