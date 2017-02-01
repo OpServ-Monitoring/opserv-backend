@@ -17,7 +17,7 @@ In case you want to contribute to the project or are just curious about how the 
 Dont like the included web interface? Build your own interface using one of the offered apis. 
 We recommend you to get started [learning about one of the apis](/docs/apis) by reading its reference.
 
-Also [feel free to contribute](/contribute) to the project!
+Also [feel free to contribute](/docs/contribute) to the project!
 
 ## The name _opserv_ <a name="naming"></a>
 
