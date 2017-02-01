@@ -3,8 +3,6 @@ layout: article
 title:  "Get started"
 ---
 
-Work in progress...
+Currently they isn't any user friendly way to install the software.
 
-<!---
-    TODO Add content
--->
+While this will very likely change in the near future, feel free to install the software using [the guide in the contribution section](/contribute/installation)
