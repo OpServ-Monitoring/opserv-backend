@@ -2,16 +2,16 @@
 layout: landing-page
 ---
 <style>
-	#crossfeature span h3 {
+	#crossfeature {
 		color: #9c9a0f;
 	}
-	#easyfeature span h3{
+	#easyfeature {
 		color: #26782f;
 	}
-	#datafeature span h3 {
+	#datafeature {
 		color: #b42121;
 	}
-	#openfeature span h3{
+	#openfeature {
 		color: #0c0cae;
 	}
 </style>
@@ -43,13 +43,15 @@ layout: landing-page
 		</header>
 
 		<div class="row">
-			<div class="6u" id="crossfeature">
+			<div class="6u">
 
 				<section>
-					<span class="icon featured fa-check"></span>
-					<header>
-						<h3>cross-plattform</h3>
-					</header>
+					<div id="crossfeature">
+						<span class="icon featured fa-check"></span>
+						<header>
+							<h3>cross-plattform</h3>
+						</header>
+					</div>
 					<p>
 						The OpServ monitoring project was build to run across different plattforms.
 						Build with python 3 we currently support Windows, Mac OS X, Linux and Free BSD.
@@ -58,13 +60,15 @@ layout: landing-page
 				</section>
 
 			</div>
-			<div class="6u" id="easyfeature">
+			<div class="6u">
 
 				<section>
-					<span class="icon featured fa-car"></span>
-					<header>
-						<h3>easy to use</h3>
-					</header>
+					<div id="easyfeature">
+						<span class="icon featured fa-car"></span>
+						<header>
+							<h3>easy to use</h3>
+						</header>
+					</div>
 					<p>
 						Despite downloading and running the source code yourself you can download
 						one of our pre-build packages, optimized for your plattform which ensures
@@ -75,15 +79,17 @@ layout: landing-page
 			</div>
 		</div>
 		<div class="row">
-			<div class="6u" id="datafeature">
+			<div class="6u">
 
 				<section>
-					<span class="icon featured fa-clock"></span>
-					<header>
-						<h3>
-							historical and live data
-						</h3>
-					</header>
+					<div id="datafeature">
+						<span class="icon featured fa-clock-o"></span>
+						<header>
+							<h3>
+								historical and live data
+							</h3>
+						</header>
+					</div>
 					<p>
 						The project gathers different metrics at changeable rates. In addition to
 						retrieving live data through one of the apis you've full access to all measured data
@@ -92,13 +98,15 @@ layout: landing-page
 				</section>
 
 			</div>
-			<div class="6u" id="openfeature">
+			<div class="6u">
 
 				<section>
-					<span class="icon featured fa-power-off"></span>
-					<header>
-						<h3>open source</h3>
-					</header>
+					<div id="openfeature">
+						<span class="icon featured fa-power-off"></span>
+						<header>
+							<h3>open source</h3>
+						</header>
+					</div>
 					<p>
 						The project and it's source code is published under the GPL 3.0 license.
 						Feel free to share, use or modify the code as you desire.
