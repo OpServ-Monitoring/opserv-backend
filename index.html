@@ -1,6 +1,21 @@
 ---
 layout: landing-page
----		
+---
+<style>
+	#crossfeature span h3 {
+		color: #9c9a0f;
+	}
+	#easyfeature span h3{
+		color: #26782f;
+	}
+	#datafeature span h3 {
+		color: #b42121;
+	}
+	#openfeature span h3{
+		color: #0c0cae;
+	}
+</style>
+
 <article id="main">
 	<header class="special container">
 		<span class="icon fa-bolt"></span>
@@ -28,14 +43,13 @@ layout: landing-page
 		</header>
 
 		<div class="row">
-			<div class="6u">
+			<div class="6u" id="crossfeature">
 
 				<section>
 					<span class="icon featured fa-check"></span>
 					<header>
 						<h3>cross-plattform</h3>
 					</header>
-					</br>
 					<p>
 						The OpServ monitoring project was build to run across different plattforms.
 						Build with python 3 we currently support Windows, Mac OS X, Linux and Free BSD.
@@ -44,14 +58,13 @@ layout: landing-page
 				</section>
 
 			</div>
-			<div class="6u">
+			<div class="6u" id="easyfeature">
 
 				<section>
-					<span class="icon featured fa-check"></span>
+					<span class="icon featured fa-car"></span>
 					<header>
 						<h3>easy to use</h3>
 					</header>
-					</br>
 					<p>
 						Despite downloading and running the source code yourself you can download
 						one of our pre-build packages, optimized for your plattform which ensures
@@ -62,15 +75,13 @@ layout: landing-page
 			</div>
 		</div>
 		<div class="row">
-			<div class="6u">
+			<div class="6u" id="datafeature">
 
 				<section>
-					<span class="icon featured fa-check"></span>
+					<span class="icon featured fa-clock"></span>
 					<header>
 						<h3>
-							historical and
-							</br>
-							live data
+							historical and live data
 						</h3>
 					</header>
 					<p>
@@ -81,14 +92,13 @@ layout: landing-page
 				</section>
 
 			</div>
-			<div class="6u">
+			<div class="6u" id="openfeature">
 
 				<section>
-					<span class="icon featured fa-check"></span>
+					<span class="icon featured fa-power-off"></span>
 					<header>
 						<h3>open source</h3>
 					</header>
-					</br>
 					<p>
 						The project and it's source code is published under the GPL 3.0 license.
 						Feel free to share, use or modify the code as you desire.
