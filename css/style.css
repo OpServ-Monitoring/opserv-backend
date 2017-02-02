@@ -1152,6 +1152,9 @@
 	.special.container .icon.fa-heartbeat {
 		-webkit-animation: animateHeart 2.5s infinite;
 		animation: animateHeart 2.5s infinite;
+    		display: inline-block;
+    		vertical-align: middle;
+    		position: initial;
 	}
 	
 	@-webkit-keyframes animateHeart {
