@@ -28,7 +28,7 @@
 					hidden: true,
 					animation: 'pushY',
 					width: '100%',
-					height: '395px',
+					height: '435px',
 					html: '<nav data-action="navList" data-args="nav"></nav>',
 					clickToHide: true,
 					swipeToHide: false,
