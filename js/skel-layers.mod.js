@@ -1409,8 +1409,7 @@ skel.registerPlugin('layers', (function($) {
 							//OpServ Home item hack
 							var indent = 0
 							var href = "/"
-							var opserv_imagetag = '<img id="opservlogonarrow" src="/favicon/favicon-196x196.png">'
-							var text = opserv_imagetag + "OpServ"
+							var text = "Home"
 							b.push(
 								'<a class="link depth-' + indent + '"' + ( (typeof href !== 'undefined' && href != '') ? ' href="' + href + '"' : '') + '><span class="indent-' + indent + '"></span>' + text + '</a>'
 							);
