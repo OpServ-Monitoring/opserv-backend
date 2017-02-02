@@ -1405,7 +1405,16 @@ skel.registerPlugin('layers', (function($) {
 							
 							a = arg1.find('a');
 							b = [];
-							
+
+							//OpServ Home item hack
+							var indent = 0
+							var href = "/"
+							var opserv_imagetag = '<img id="opservlogonarrow" src="/favicon/favicon-196x196.png">'
+							var text = opserv_imagetag + "OpServ"
+							b.push(
+								'<a class="link depth-' + indent + '"' + ( (typeof href !== 'undefined' && href != '') ? ' href="' + href + '"' : '') + '><span class="indent-' + indent + '"></span>' + text + '</a>'
+							);
+
 							a.each(function() {
 								
 								var	t = $(this),

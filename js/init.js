@@ -28,8 +28,8 @@
 					hidden: true,
 					animation: 'pushY',
 					width: '100%',
-					height: '435px',
-					html: '<nav data-action="navList" data-args="nav"></nav>',
+					height: '475px',
+					html: '<div data-action="navList" data-args="nav"></div>',
 					clickToHide: true,
 					swipeToHide: false,
 					orientation: 'vertical'
