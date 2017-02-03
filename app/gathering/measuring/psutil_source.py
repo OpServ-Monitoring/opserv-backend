@@ -127,7 +127,7 @@ class PsUtilWrap(MeasuringSource):
             result = self.measure_memory(metric)
 
         elif component == "process":
-            args = int(args)
+            args = int(args.split(":")[0])
             result = self.measure_process(metric, args)
 
         elif component == "partition":

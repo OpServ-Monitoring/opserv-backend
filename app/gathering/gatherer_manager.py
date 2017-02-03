@@ -132,7 +132,8 @@ class GathererManager():
         '''
         log.debug("Updating existing Gatherer with the following specifications: %s, %s, %s, %d",
                   comp, metric, args, delayms)
-        changed_gatherer = cls.get_gatherer(comp, metric, args).update_rate(delayms)
+        changed_gatherer = cls.get_gatherer(comp, metric, args)
+        changed_gatherer.set_rate(delayms)
         cls.scheduler.cancel(changed_gatherer.event)
         cls.handle_gathering_event(changed_gatherer)
 
