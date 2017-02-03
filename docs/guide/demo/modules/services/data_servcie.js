@@ -100,7 +100,7 @@ app.factory('dataService',function($http, $rootScope, toastService,$timeout){
     };
 
     service.getCiCats = function(ciName, ciId, baseUrl){
-        return $http.get(baseUrl+CURRENT_API_PATH+'/'+ciName+'/'+encodeURI(ciId)).then(function successCallback(response) {
+        return $http.get(baseUrl+CURRENT_API_PATH+'/'+ciName+'/'+encodeURIComponent(ciId)).then(function successCallback(response) {
             var cats = getValuesFromChildrenLinks(response.data.links.children);
             $rootScope.$broadcast(EVENT_CI_CATS_RECEIVED, true, ciName, cats);
         }, function errorCallback(response) {
@@ -265,6 +265,9 @@ app.factory('dataService',function($http, $rootScope, toastService,$timeout){
     }
 
     function buildUrls(baseUrl, ci, id, cat, isLive, historyStartTime, historyEndTime) {
+        console.log(id);
+        console.log(ci);
+        console.log(cat);
         var urls = {forSamplingRate:'',forData:''};
         urls.forSamplingRate = baseUrl+CURRENT_API_PATH+'/'+ci+'/'+id+'/'+cat;
         if(id != undefined){
@@ -293,7 +296,7 @@ app.factory('dataService',function($http, $rootScope, toastService,$timeout){
                 var childrenAdress = link.href;
                 var cutInArray = childrenAdress.split("/");
                 var lastItem = cutInArray[cutInArray.length-1];
-                ids.push(decodeURI(lastItem));
+                ids.push(decodeURIComponent(lastItem));
             });
             return ids;
         }else{

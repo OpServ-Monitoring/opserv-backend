@@ -5,6 +5,8 @@ app.controller('DashboardCtrl',function($scope, $rootScope, prefService, $mdSide
     var scope = $scope;
     var rootScope = $rootScope;
 
+    console.log(decodeURIComponent("964%3Aputty.exe"));
+
     scope.isFabOpen = false;
     rootScope.isEditMode = false;
 

@@ -196,7 +196,6 @@ app.directive('ktDashboardWidget',[ 'dataService',function (dataService) {
 
             }
 
-
             //-------------------------- Listener -------------------------------------------------------------------------
 
             scope.$watch('currentMode',function(newMode, oldMode){
