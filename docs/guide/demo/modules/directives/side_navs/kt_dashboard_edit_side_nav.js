@@ -12,6 +12,7 @@ app.directive('ktDashboardEditSideNav',[ 'dataService','toastService', 'dialogSe
 
             const CI_MEMORY = "memory";
             const CI_SYSTEM = "system";
+            const CI_GATHERING_RATES = "gathering-rates";
 
             var scope = $scope;
             var rootScope = $rootScope;
@@ -65,6 +66,9 @@ app.directive('ktDashboardEditSideNav',[ 'dataService','toastService', 'dialogSe
                                 break;
                             case CI_SYSTEM:
                                 // exclude System access from user
+                                break;
+                            case CI_GATHERING_RATES:
+                                // exclude Gathering_Rates access from user
                                 break;
                             default:
                                 scope.cis.push({label:ci,action:selectCi})
