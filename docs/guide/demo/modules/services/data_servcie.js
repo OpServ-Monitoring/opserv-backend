@@ -184,7 +184,6 @@ app.factory('dataService',function($http, $rootScope, toastService,$timeout){
                         updateIntervalUsedBy(intervalName,usedBy);
                     }
                 }catch (error) {
-                    console.log(error);
                     $rootScope.$broadcast(EVENT_CI_LIVE_DATA_RECEIVED, false, baseUrl, ci, id, category, null);
                 }
             }else{
@@ -271,12 +270,9 @@ app.factory('dataService',function($http, $rootScope, toastService,$timeout){
     }
 
     function buildUrls(baseUrl, ci, id, cat, isLive, historyStartTime, historyEndTime) {
-        console.log(id);
-        console.log(ci);
-        console.log(cat);
         var urls = {forSamplingRate:'',forData:''};
-        urls.forSamplingRate = baseUrl+CURRENT_API_PATH+'/'+ci+'/'+id+'/'+cat;
         if(id != undefined){
+            urls.forSamplingRate = baseUrl+CURRENT_API_PATH+'/'+ci+'/'+id+'/'+cat;
             if(isLive){
                 urls.forData = baseUrl+CURRENT_API_PATH+'/'+ci+'/'+id+'/'+cat+REALTIME_QUERY_STRING;
                 return urls;
@@ -285,6 +281,7 @@ app.factory('dataService',function($http, $rootScope, toastService,$timeout){
                 return urls;
             }
         }else{
+            urls.forSamplingRate = baseUrl+CURRENT_API_PATH+'/'+ci+'/'+cat;
             if(isLive){
                 urls.forData = baseUrl+CURRENT_API_PATH+'/'+ci+'/'+cat+REALTIME_QUERY_STRING;
                 return urls;
