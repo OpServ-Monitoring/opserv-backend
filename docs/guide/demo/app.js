@@ -409,11 +409,10 @@ app.config(function ($routeProvider) {
 app.config(['$httpProvider', function($httpProvider, authService) {
 
     var secret = localStorage.getItem('secret');
-    console.log(secret);
     var encodedString = base64Encoding(secret);
 
     $httpProvider.defaults.headers.common ={
-        'Authorization':'Basic '+secret
+        'Authorization':'Basic '+encodedString
     };
 
     $httpProvider.defaults.useXDomain = true;

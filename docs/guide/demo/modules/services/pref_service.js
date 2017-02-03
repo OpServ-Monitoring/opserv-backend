@@ -12,7 +12,6 @@ app.factory('prefService',function($http, $rootScope, $timeout){
      */
     service.getDashboards = function(){
         return $http.get('/api/preferences/v1/dashboards').then(function successCallback(response) {
-
             var dashboards= [];
             if(response.data.data.value){
                 dashboards = response.data.data.value;
@@ -26,13 +25,8 @@ app.factory('prefService',function($http, $rootScope, $timeout){
             }
             $rootScope.$broadcast(EVENT_DASHBOARDS_RECEIVED, true, dashboards);
         }, function errorCallback(response) {
-            var defaultWidgets = [
-                { id: 0, sizeX: 15, sizeY: 10, row: 0, col: 0, displayItem: {ci: 'cpus', id: 0, category: 'usage', title:"CPUS 0 USAGE ", displayAsChart:true, realtime:true, samplingRate:1000}}
-            ];
-            var dashboards=[
-                { title: 'Default Monitor',widgets:defaultWidgets, baseUrl: 'http://localhost:31337'} // https://397b6935.ngrok.io
-            ];
-            $rootScope.$broadcast(EVENT_DASHBOARDS_RECEIVED, false, dashboards);
+            //TODO beim Error trotzdem default mitgeben oder alle funktionen ausblenden?
+            $rootScope.$broadcast(EVENT_DASHBOARDS_RECEIVED, false, undefined);
         });
     };
 

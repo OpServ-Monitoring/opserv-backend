@@ -24,12 +24,12 @@ app.controller('DashboardCtrl',function($scope, $rootScope, prefService, $mdSide
         minColumns: 1, // the minimum columns the grid must have
         minRows: 2, // the minimum height of the grid, in rows
         maxRows: 100,
-        defaultSizeX: 2, // the default width of a gridster item, if not specifed
-        defaultSizeY: 1, // the default height of a gridster item, if not specified
-        //minSizeX: 20, // minimum column width of an item
-        //maxSizeX: 40, // maximum column width of an item
-        //minSizeY: 10, // minumum row height of an item
-        //maxSizeY: 40 // maximum row height of an item
+        defaultSizeX: 15, // the default width of a gridster item, if not specifed
+        defaultSizeY: 10, // the default height of a gridster item, if not specified
+        // minSizeX: 20, // minimum column width of an item
+        // maxSizeX: 40, // maximum column width of an item
+        // minSizeY: 10, // minumum row height of an item
+        // maxSizeY: 40, // maximum row height of an item
         resizable: {
             enabled: false,
             handles: ['n', 'e', 's', 'w', 'ne', 'se', 'sw', 'nw']
@@ -51,6 +51,7 @@ app.controller('DashboardCtrl',function($scope, $rootScope, prefService, $mdSide
     scope.$on(EVENT_DASHBOARDS_RECEIVED,function(event,success,dashboards){
         if (success){
             rootScope.dashboards=dashboards;
+            scope.selectedDashboard = 0;
         }else{
             toastService.showErrorToast("Laden der Dashboards fehlgeschlagen!")
         }
