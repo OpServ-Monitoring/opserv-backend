@@ -54,11 +54,11 @@ layout: doc-entry-rest-data-v1
                     <tbody>
                     {% for param in request.params %}
                         <tr>
-                            <td style="text-align: center">param.key</td>
-                            <td style="text-align: center">param.description</td>
-                            <td>param.possible_values</td>
-                            <td>param.mandatory</td>
-                            <td>params.default_value</td>
+                            <td style="text-align: center">{{ param.key }}</td>
+                            <td style="text-align: center">{{ param.description }}</td>
+                            <td>{{ param.possible_values }}</td>
+                            <td>{{ param.mandatory }}</td>
+                            <td>{{ params.default_value }}</td>
                         </tr>
                     {% endfor %}
                     </tbody>
