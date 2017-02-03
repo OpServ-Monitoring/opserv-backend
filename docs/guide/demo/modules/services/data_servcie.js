@@ -100,12 +100,18 @@ app.factory('dataService',function($http, $rootScope, toastService,$timeout){
     };
 
     service.getCiCats = function(ciName, ciId, baseUrl){
-        return $http.get(baseUrl+CURRENT_API_PATH+'/'+ciName+'/'+encodeURIComponent(ciId)).then(function successCallback(response) {
+        return $http.get(baseUrl+CURRENT_API_PATH+'/'+ciName+'/'+ciId).then(function successCallback(response) {
             var cats = getValuesFromChildrenLinks(response.data.links.children);
             $rootScope.$broadcast(EVENT_CI_CATS_RECEIVED, true, ciName, cats);
         }, function errorCallback(response) {
             $rootScope.$broadcast(EVENT_CI_CATS_RECEIVED, false, response);
         });
+        // return $http.get(baseUrl+CURRENT_API_PATH+'/'+ciName+'/'+encodeURIComponent(ciId)).then(function successCallback(response) {
+        //     var cats = getValuesFromChildrenLinks(response.data.links.children);
+        //     $rootScope.$broadcast(EVENT_CI_CATS_RECEIVED, true, ciName, cats);
+        // }, function errorCallback(response) {
+        //     $rootScope.$broadcast(EVENT_CI_CATS_RECEIVED, false, response);
+        // });
     };
 
     service.getMemoryCats = function (ciName, baseUrl) {
@@ -296,12 +302,24 @@ app.factory('dataService',function($http, $rootScope, toastService,$timeout){
                 var childrenAdress = link.href;
                 var cutInArray = childrenAdress.split("/");
                 var lastItem = cutInArray[cutInArray.length-1];
-                ids.push(decodeURIComponent(lastItem));
+                ids.push(lastItem);
             });
             return ids;
         }else{
             return [];
         }
+        // var ids =[];
+        // if (childrenLinks){
+        //     angular.forEach(childrenLinks,function (link) {
+        //         var childrenAdress = link.href;
+        //         var cutInArray = childrenAdress.split("/");
+        //         var lastItem = cutInArray[cutInArray.length-1];
+        //         ids.push(decodeURIComponent(lastItem));
+        //     });
+        //     return ids;
+        // }else{
+        //     return [];
+        // }
     }
 
     return service;

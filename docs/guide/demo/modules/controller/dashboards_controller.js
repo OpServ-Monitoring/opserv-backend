@@ -5,7 +5,7 @@ app.controller('DashboardCtrl',function($scope, $rootScope, prefService, $mdSide
     var scope = $scope;
     var rootScope = $rootScope;
 
-    console.log(decodeURIComponent("964%3Aputty.exe"));
+    console.log(decodeURIComponent("LAN-Verbindung%252A%2B1"));
 
     scope.isFabOpen = false;
     rootScope.isEditMode = false;
