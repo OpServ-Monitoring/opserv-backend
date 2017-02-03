@@ -243,32 +243,38 @@
 
 .markdown-body h1 {
   font-size: 32px;
-  font-weight: 600;
+  /* Original value removed:
+  font-weight: 600; */
 }
 
 .markdown-body h2 {
   font-size: 24px;
-  font-weight: 600;
+  /* Original value removed:
+  font-weight: 600; */
 }
 
 .markdown-body h3 {
   font-size: 20px;
-  font-weight: 600;
+  /* Original value removed:
+  font-weight: 600; */
 }
 
 .markdown-body h4 {
   font-size: 16px;
-  font-weight: 600;
+  /* Original value removed:
+  font-weight: 600; */
 }
 
 .markdown-body h5 {
   font-size: 14px;
-  font-weight: 600;
+  /* Original value removed:
+  font-weight: 600; */
 }
 
 .markdown-body h6 {
   font-size: 12px;
-  font-weight: 600;
+  /* Original value removed:
+  font-weight: 600; */
 }
 
 .markdown-body p {
@@ -413,7 +419,9 @@
 .markdown-body h6 {
   margin-top: 24px;
   margin-bottom: 16px;
-  font-weight: 600;
+  /* Original value:
+  font-weight: 600; */
+  font-weight: normal;
   line-height: 1.25;
 }
 
