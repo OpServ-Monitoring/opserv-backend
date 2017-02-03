@@ -1154,6 +1154,7 @@
 		animation: animateHeart 2.5s infinite;
     		display: inline-block;
     		vertical-align: middle;
+			position: relative;
 	}
 	
 	@-webkit-keyframes animateHeart {
@@ -1199,7 +1200,4 @@
 	}
 	.markdown-body .doc-sidebar ol {
 		list-style-type: none
-	}
-	body {
-		overflow-x: hidden;
 	}
