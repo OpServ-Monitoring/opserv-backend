@@ -15,7 +15,11 @@ class DatabaseConnectionHelper:
             log.error("Could not connect to the database.")
             raise err
 
-        connection.execute("PRAGMA JOURNAL_MODE=WAL")
+        connection.commit()
+        with connection:
+            connection.execute("PRAGMA JOURNAL_MODE=WAL")
+
+        # connection.execute("PRAGMA JOURNAL_MODE=WAL")
         connection.commit()
         connection.execute("PRAGMA FOREIGN_KEYS=ON")
         connection.commit()
