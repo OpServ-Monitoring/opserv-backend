@@ -72,4 +72,4 @@ Feature requests & contribution
 
 Do you have a feature request? You found a bug? Don't hesitate to [open an issue](https://github.com/OpServ-Monitoring/opserv-backend/issues/new) on GitHub.
 
-Interested in contributing to the development? Read the wiki article on [how to contribute](http://opserv.org/contribute).
+Interested in contributing to the development? Read the wiki article on [how to contribute](http://opserv.org/docs/contribute).
