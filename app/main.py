@@ -129,7 +129,7 @@ def show_opserv_info():
                                                         sys.version_info.minor, 
                                                         sys.version_info.micro, 
                                                         sys.version_info.releaselevel))
-    print("Internet Access: {0}({1})".format(str(has_internet_access()), get_external_ip()))
+    #print("Internet Access: {0}({1})".format(str(has_internet_access()), get_external_ip()))
 
 def config_setup():
     print("Which port would you like to run the sofware on?")
