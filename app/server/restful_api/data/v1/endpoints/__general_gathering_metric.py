@@ -9,16 +9,14 @@ class GeneralGatheringMetricEndpoint(GeneralEndpointDataV1, metaclass=ABCMeta):
         component_arg = self._get_component_arg()
         component_metric = self._get_component_metric()
 
-        gathering_rate_data = self._outbound_gate.get_gathering_rate(
+        gathering_rate = self._outbound_gate.get_gathering_rate(
             component_type,
             component_metric,
             component_arg
         )
 
-        gathering_rate = 0
-        if gathering_rate_data is not None:
-            # TODO Change this in case the gathering_rate sturcture changes
-            gathering_rate = gathering_rate_data[3]
+        if gathering_rate is None:
+            gathering_rate = 0
 
         self._response_holder.set_body_data({
             "gathering_rate": gathering_rate

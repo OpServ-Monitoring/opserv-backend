@@ -15,22 +15,7 @@ class MeasurementInsertTransaction(DatabaseConnector):
     def __reset_variables(self):
         self.__insertions = []
 
-    def insert_measurement(self, metric_name, timestamp, value, component_type, component_arg="default"):
-        if metric_name is None:
-            raise TypeError("The metric_name has to be a valid string.")
-
-        if timestamp is None:
-            raise TypeError("The timestamp has to be a valid integer.")
-
-        if value is None:
-            raise TypeError("The value has to be a valid object.")
-
-        if component_type is None:
-            raise TypeError("The component_type has to be a valid string.")
-
-        if component_arg is None:
-            component_arg = "default"
-
+    def insert_measurement(self, component_type, component_arg, metric_name, timestamp, value):
         self.__insertions.append((component_type, component_arg, metric_name, timestamp, value))
 
     def commit_transaction(self):
@@ -38,7 +23,8 @@ class MeasurementInsertTransaction(DatabaseConnector):
 
         try:
             connection.executemany(
-                "INSERT INTO {0} ({1}, {2}, {3}, {4}, {5}) VALUES (?, ? ,? ,?, ?)".format(
+                """INSERT INTO {0} ({1}, {2}, {3}, {4}, {5}) VALUES (?, IFNULL(?, "default") ,? ,?, ?)
+                """.format(
                     MeasurementsTableManagement.TABLE_NAME(),
                     MeasurementsTableManagement.KEY_COMPONENT_TYPE_FK(),
                     MeasurementsTableManagement.KEY_COMPONENT_ARG_FK(),
@@ -50,12 +36,12 @@ class MeasurementInsertTransaction(DatabaseConnector):
             )
             connection.commit()
             connection.close()
-            
+
         except IntegrityError as err:
             log.error(" commit of transaction, probably multiple measurements per millisecond")
             log.error(err)
             log.error("Happened with these inserts: %s", str(self.__insertions))
-            
+
         self.__reset_variables()
 
     def rollback(self):

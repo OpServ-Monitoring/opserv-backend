@@ -71,8 +71,8 @@ class MeasurementManager():
             Saves the given measurement to the database or enqueues it to be saved
             at a later time to avoid too much commits and DB hogging
         '''
-        transaction.insert_measurement(metric, measurement["timestamp"],
-                                       str(measurement["value"]), component, args)
+        transaction.insert_measurement(component, args, metric, measurement["timestamp"],
+                                       str(measurement["value"]))
         transaction.commit_transaction()
 
     @classmethod

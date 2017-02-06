@@ -17,8 +17,8 @@ matrix:
         - os: linux
           sudo: required
           python: '3.6'
-        - os: osx
-          language: generic
+#        - os: osx
+#          language: generic
          
 # Perform the manual steps on osx to install python3 and activate venv
 before_install:

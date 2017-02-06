@@ -68,17 +68,17 @@ class DefaultDataGate(OutboundGateInterface):
         if limit is None:
             limit = 100
 
-        raw_measurements = measurement_data_reader.get_min_avg_max(
+        raw_measurements = measurement_data_reader.get_condensed_data(
             component_type, component_arg, metric, start_time, end_time, limit
         )
 
         return list(
             map(
                 lambda item: {
-                    "min": item[4],
-                    "avg": item[5],
-                    "max": item[6],
-                    "timestamp": item[3]
+                    "min": item[1],
+                    "avg": item[2],
+                    "max": item[3],
+                    "timestamp": item[0]
                 }, raw_measurements)
         )
 

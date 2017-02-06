@@ -3,26 +3,20 @@ from database.helper.base_database_connector import DatabaseConnector
 from database.tables.user_preferences_table_management import UserPreferencesTableManagement
 
 
-# TODO Improve methods and write tests
-
-
 class UserPreferencesWriterReader(DatabaseConnector):
     @classmethod
     def get_user_preference(cls, key):
-        if key is None:
-            return None
-
         connection = cls._connection_helper.retrieve_database_connection()
 
         user_preference = connection.execute(
             """
-              SELECT {0}, {1}
-              FROM {2}
-              WHERE {0} = ?
+              SELECT {1}, {2}
+              FROM {0}
+              WHERE {1} = ?
             """.format(
+                UserPreferencesTableManagement.TABLE_NAME(),
                 UserPreferencesTableManagement.KEY_KEY(),
                 UserPreferencesTableManagement.KEY_VALUE(),
-                UserPreferencesTableManagement.TABLE_NAME()
             ),
             (
                 (key,)
@@ -35,9 +29,6 @@ class UserPreferencesWriterReader(DatabaseConnector):
 
     @classmethod
     def set_user_preference(cls, key, value):
-        if key is None:
-            return None
-
         connection = cls._connection_helper.retrieve_database_connection()
 
         connection.execute(
@@ -57,9 +48,6 @@ class UserPreferencesWriterReader(DatabaseConnector):
 
     @classmethod
     def delete_user_preference(cls, key):
-        if key is None:
-            return None
-
         connection = cls._connection_helper.retrieve_database_connection()
 
         connection.execute(
@@ -80,7 +68,7 @@ class UserPreferencesWriterReader(DatabaseConnector):
         connection.close()
 
     @classmethod
-    def get_used_user_preference_keys(cls) -> map:
+    def get_used_user_preference_keys(cls) -> list:
         connection = cls._connection_helper.retrieve_database_connection()
 
         user_preference = connection.execute(
@@ -95,11 +83,6 @@ class UserPreferencesWriterReader(DatabaseConnector):
 
         connection.close()
 
-        return map(lambda row: row[0], user_preference)
-
-    # TODO embed into db or api call
-    @classmethod
-    def is_valid_json(cls, value):
-        import json
-
-        return json.loads(value) is not None
+        # TODO Change accordingly after helper extraction
+        from database.connectors.component_metrics_writer_reader import ComponentMetricsWriterReader
+        return ComponentMetricsWriterReader.unpack_single_element_tuples(user_preference)
