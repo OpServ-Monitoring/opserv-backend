@@ -4,8 +4,7 @@ from sqlite3 import IntegrityError
 from database.helper.base_database_connector import DatabaseConnector
 from database.tables.measurements_table_management import MeasurementsTableManagement
 
-log = logging.getLogger("database.transaction")
-log.setLevel(logging.DEBUG)
+log = logging.getLogger("opserv." + __name__)
 
 
 class MeasurementInsertTransaction(DatabaseConnector):
@@ -38,9 +37,8 @@ class MeasurementInsertTransaction(DatabaseConnector):
             connection.close()
 
         except IntegrityError as err:
-            log.error(" commit of transaction, probably multiple measurements per millisecond")
-            log.error(err)
-            log.error("Happened with these inserts: %s", str(self.__insertions))
+            log.error("Error during commit of bulk transaction. Most likely triggered by a duplicate timestamp.", err)
+            log.error("Tried to commit these values: %s", str(self.__insertions))
 
         self.__reset_variables()
 
