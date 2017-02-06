@@ -111,3 +111,9 @@ app/extern_dependency/OpenHardwareMonitorLib.sys
 # OpServ Frontend if it included in the dev environment
 app/server/static_hosting/public/*
 app/opserv_config.json
+
+# TLS certificates
+tls.cert
+tls.key
+ssl.cert
+ssl.key
