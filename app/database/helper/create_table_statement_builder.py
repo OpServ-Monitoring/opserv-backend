@@ -1,5 +1,4 @@
-# TODO Rename the class as it only builds CREATE TABLE statements
-class SqlStatementBuilder:
+class CreateTableStatementBuilder:
     @classmethod
     def __parse_columns(cls, columns):
         assert len(columns) > 0

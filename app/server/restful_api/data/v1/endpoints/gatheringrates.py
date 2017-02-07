@@ -13,36 +13,45 @@ class GatheringRatesEndpoint(GeneralEndpointDataV1):
         return []
 
     def _get(self) -> bool:
-        from misc.constants import implemented_hardware, component_needs_arg
+        from misc.constants import implemented_hardware, component_needs_arg, COMPS_TO_SYSTEM_METRICS
 
-        components = []
+        values = {}
+
         for component_type in implemented_hardware:
-            base_entry = {
-                "component_type": component_type,
-                "gathering_rate": 0
-            }
+            values[component_type] = {}
 
             if component_needs_arg(component_type):
-                for component_arg in self._outbound_gate.get_valid_arguments(component_type):
-                    component = base_entry.copy()
-                    component["component_arg"] = component_arg
+                component_type_as_system_metric = COMPS_TO_SYSTEM_METRICS(component_type)
 
-                    components.append(component)
+                for component_arg in self._outbound_gate.get_valid_arguments(component_type_as_system_metric):
+                    values[component_type][component_arg] = {}
             else:
-                components.append(base_entry)
+                values[component_type][None] = {}
 
-        gathering_rates = []
-        for component in components:
-            component_type = component["component_type"]
+            for component_arg in values[component_type]:
+                for metric in implemented_hardware[component_type]:
+                    values[component_type][component_arg][metric] = 0
 
-            for metric in implemented_hardware[component_type]:
-                gathering_rate = component.copy()
-                gathering_rate["metric"] = metric
+        from database.unified_database_interface import UnifiedDatabaseInterface
+        rdr = UnifiedDatabaseInterface.get_component_metrics_writer_reader()
 
-                gathering_rates.append(gathering_rate)
+        rates = rdr.get_gathering_rates()
+        for tupl in rates:
+            values[tupl[0]][tupl[1]][tupl[2]] = tupl[3]
+
+        result = []
+        for component_type in values:
+            for component_arg in values[component_type]:
+                for metric in values[component_type][component_arg]:
+                    result.append({
+                        "component_type": component_type,
+                        "component_arg": component_arg,
+                        "metric": metric,
+                        "gathering_rate": values[component_type][component_arg][metric]
+                    })
 
         self._response_holder.set_body_data({
-            "values": gathering_rates
+            "values": result
         })
 
         return self.KEEP_PROCESSING()

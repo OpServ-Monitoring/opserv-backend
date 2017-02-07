@@ -104,6 +104,12 @@ SYSTEM_METRICS_TO_COMPS = {
     "disks": "disk"
 }
 
+def COMPS_TO_SYSTEM_METRICS(comp):
+    for key, value in SYSTEM_METRICS_TO_COMPS.items():
+        if value == comp:
+            return key
+    return None
+
 default_gathering_rates = {
     "system": {
         None: {

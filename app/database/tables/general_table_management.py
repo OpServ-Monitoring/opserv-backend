@@ -1,6 +1,6 @@
 from abc import ABCMeta, abstractmethod
 
-from database.helper.sql_statement_builder import SqlStatementBuilder
+from database.helper.create_table_statement_builder import CreateTableStatementBuilder
 
 
 class GeneralTableManagement(metaclass=ABCMeta):
@@ -8,7 +8,7 @@ class GeneralTableManagement(metaclass=ABCMeta):
 
     @classmethod
     def CREATE_TABLE_STATEMENT(cls):
-        return SqlStatementBuilder.build_create_table_statement(
+        return CreateTableStatementBuilder.build_create_table_statement(
             cls.TABLE_NAME(),
             cls._get_columns(),
             cls._get_foreign_keys(),
