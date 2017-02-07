@@ -283,13 +283,19 @@ app.directive('ktDashboardWidget',[ 'dataService',function (dataService) {
             scope.$on(EVENT_GATHERING_RATE_RECEIVED, function (event, status, baseUrl, ci, id, category, samplingRate) {
                 if (isforMe(baseUrl, ci, id, category)){
                     if(status){
-                        scope.samplingRate = samplingRate;
-                        console.log("rate is set");
+                        if(samplingRate > 500 && samplingRate < 10001){
+                            scope.samplingRate = samplingRate;
+                            console.log("rate is set");
+                        }else{
+                            scope.samplingRate = 1000;
+                            console.log("rate is set");
+                        }
                         if(scope.displayitem.realtime == true){
                             scope.currentMode = scope.modes[0]
                         }else{
                             scope.currentMode = scope.modes[1]
                         }
+
                     }else{
                         toastService.showErrorToast("Laden der Gathering Rate ist fehlgeschlagen");
                         scope.config.loading = 'ERROR'; // display Error in Highchart

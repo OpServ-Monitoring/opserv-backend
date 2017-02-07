@@ -81,7 +81,12 @@ app.factory('dataService',function($http, $rootScope, toastService,$timeout){
     };
 
     service.getSamplingRateForCi = function (baseUrl, ci, id, cat) {
-        var url = baseUrl+CURRENT_API_PATH+'/'+ci+'/'+id+'/'+cat;
+        var url="";
+        if (id){
+            url = baseUrl+CURRENT_API_PATH+'/'+ci+'/'+id+'/'+cat;
+        }else{
+            url = baseUrl+CURRENT_API_PATH+'/'+ci+'/'+cat;
+        }
         $http.get(url).then(function successCallback(response) {
             $rootScope.$broadcast(EVENT_GATHERING_RATE_RECEIVED, true, baseUrl, ci, id, cat, response.data.data.gathering_rate);
         }, function errorCallback(response) {
@@ -252,6 +257,7 @@ app.factory('dataService',function($http, $rootScope, toastService,$timeout){
 
     function buildUrls(baseUrl, ci, id, cat, isLive, historyStartTime, historyEndTime) {
         var urls = {forSamplingRate:'',forData:''};
+        console.log("id: ",id);
         if(id != undefined){
             urls.forSamplingRate = baseUrl+CURRENT_API_PATH+'/'+ci+'/'+id+'/'+cat;
             if(isLive){
