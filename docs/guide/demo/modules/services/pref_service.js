@@ -11,7 +11,13 @@ app.factory('prefService',function($http, $rootScope, $timeout){
      * @returns {*}
      */
     service.getDashboards = function(){
-        return $http.get('/api/preferences/v1/dashboards').then(function successCallback(response) {
+        var url = "";
+        if ($rootScope.isMock){
+            url = "/mock/api/dashboards"
+        }else{
+            url = '/api/preferences/v1/dashboards'
+        }
+        return $http.get(url).then(function successCallback(response) {
             var dashboards= [];
             if(response.data.data.value){
                 dashboards = response.data.data.value;
@@ -36,15 +42,22 @@ app.factory('prefService',function($http, $rootScope, $timeout){
      * @returns {*}
      */
     service.saveDashboards = function(dashboards){
-        return $http.put('/api/preferences/v1/dashboards',{value:dashboards}).then(function successCallback(response) {
+        if ($rootScope.isMock){
+            // emulate save is successfull
             $rootScope.$broadcast(EVENT_DASHBOARDS_SAVED, true);
-        }, function errorCallback(response) {
-            $rootScope.$broadcast(EVENT_DASHBOARDS_SAVED, false);
-        });
+        }else{
+            var url = '/api/preferences/v1/dashboards';
+            return $http.put(url,{value:dashboards}).then(function successCallback(response) {
+                $rootScope.$broadcast(EVENT_DASHBOARDS_SAVED, true);
+            }, function errorCallback(response) {
+                $rootScope.$broadcast(EVENT_DASHBOARDS_SAVED, false);
+            });
+        }
+
     };
 
-    service.validateUser = function (loginSecret) {
-        if (loginSecret == 'opserv'){
+    service.validateUser = function (userName, password) {
+        if (userName == 'opserv' && password=="test"){
             $timeout(function() {
                 $rootScope.$broadcast(EVENT_USER_VALIDATED, true);
             }, 500);

@@ -17,7 +17,7 @@ app.factory('dialogService',function($mdDialog, prefService, toastService, authS
             $scope.currentMode = currentSettings.currentMode;
             $scope.title = currentSettings.title;
             $scope.modes = currentSettings.modes;
-            $scope.samplingRateLive = currentSettings.samplingRateLive;
+            $scope.samplingRate = currentSettings.samplingRate;
 
             $scope.cancel = function() {
                 $mdDialog.cancel();
@@ -27,7 +27,7 @@ app.factory('dialogService',function($mdDialog, prefService, toastService, authS
                 var answer = {};
                 answer['newTitle'] = $scope.title;
                 answer['newMode'] = $scope.currentMode;
-                answer['newSamplingRateLive'] = $scope.samplingRateLive;
+                answer['newSamplingRate'] = $scope.samplingRate;
                 $mdDialog.hide(answer);
             };
         }
@@ -44,9 +44,10 @@ app.factory('dialogService',function($mdDialog, prefService, toastService, authS
             callback(answer)
         }, function() {});
 
-        function dashboardSettingsController($scope, $mdDialog){
+        function dashboardSettingsController($scope, $rootScope, $mdDialog){
             $scope.title = currentSettings.title;
             $scope.baseUrl = currentSettings.baseUrl;
+            $scope.isMock = $rootScope.isMock;
 
             $scope.cancel = function() {
                 $mdDialog.cancel();
@@ -75,21 +76,14 @@ app.factory('dialogService',function($mdDialog, prefService, toastService, authS
         function opservSettingsController($scope, $mdDialog){
             var scope = $scope;
 
-
-
-            scope.tiles = buildGridModel();
-
-            function buildGridModel() {
-                var results = [];
-                for (var i=0;i<3;i++){
-                    var it={};
-                    it.title='title'+i;
-                    it.span={row:1,col:1};
-                    it.samplingRate = 1000+(1000*i);
-                    results.push(it);
-                }
-                return results;
-            }
+            scope.rates = [
+                {title:"CPU-0-USAGE",samplingRate:2000},
+                {title:"NETWORK-NETWORKNAME-TRANSMITTPERSEC",samplingRate:4000},
+                {title:"NETWORK-NETWORKNAME-TRANSMITTPERSEC",samplingRate:4000},
+                {title:"NETWORK-NETWORKNAME-TRANSMITTPERSEC",samplingRate:4000},
+                {title:"NETWORK-NETWORKNAME-TRANSMITTPERSEC",samplingRate:4000},
+                {title:"NETWORK-NETWORKNAME-TRANSMITTPERSEC",samplingRate:4000}
+            ];
 
             scope.cancel = function() {
                 $mdDialog.cancel();
@@ -142,14 +136,16 @@ app.factory('dialogService',function($mdDialog, prefService, toastService, authS
             $scope.failedValidation = false;
             $scope.loginDisabeled = true;
             $scope.form = {
-                loginSecret: undefined
+                password: undefined,
+                userName: undefined
             };
 
             //autologing when secret is already set
-            var secret = localStorage.getItem('secret');
-            if (secret){
+            var password = localStorage.getItem('password');
+            var userName = localStorage.getItem('userName');
+            if (password && userName){
                 $scope.isLoading = true;
-                submit(secret);
+                submit(userName,password);
             }
 
             $scope.cancel = function() {
@@ -157,12 +153,12 @@ app.factory('dialogService',function($mdDialog, prefService, toastService, authS
             };
 
             $scope.submit = function() {
-                submit($scope.form.loginSecret);
+                submit($scope.form.userName,$scope.form.password);
             };
 
-            function submit(secret) {
-                if(secret!= ""){
-                    prefService.validateUser(secret);
+            function submit(userName,password) {
+                if(password!= "" && userName != ""){
+                    prefService.validateUser(userName,password);
                     $scope.isLoading = true;
                 }else{
                     $scope.failedValidation = true;
@@ -171,9 +167,10 @@ app.factory('dialogService',function($mdDialog, prefService, toastService, authS
 
             $scope.$on(EVENT_USER_VALIDATED,function (event, status) {
                 if (status){
-                    if ($scope.form.loginSecret){
+                    if ($scope.form.password && $scope.form.userName){
                         //set secret in local storage, when it is set in $scope.form.loginSecret (by manual login)
-                        localStorage.setItem('secret',$scope.form.loginSecret);
+                        localStorage.setItem('password',$scope.form.password);
+                        localStorage.setItem('userName',$scope.form.userName);
                     }
                     authService.setLogin(status);
                     $mdDialog.hide(status);
@@ -185,8 +182,17 @@ app.factory('dialogService',function($mdDialog, prefService, toastService, authS
                 }
             });
 
-            $scope.$watch('form.loginSecret',function (newVal, oldVal) {
-                if(newVal != undefined){
+            $scope.$watch('form.password',function (newVal, oldVal) {
+                if(newVal != undefined && $scope.form.userName != undefined){
+                    $scope.loginDisabeled = false;
+                }
+                if(newVal == undefined){
+                    $scope.loginDisabeled = true;
+                }
+            });
+
+            $scope.$watch('form.userName',function (newVal, oldVal) {
+                if(newVal != undefined && $scope.form.password != undefined){
                     $scope.loginDisabeled = false;
                 }
                 if(newVal == undefined){

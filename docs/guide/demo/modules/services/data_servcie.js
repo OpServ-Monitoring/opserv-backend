@@ -37,13 +37,19 @@ app.factory('dataService',function($http, $rootScope, toastService,$timeout){
         if(intervalExists(intervalName)){
             var currentUsedBy = service.intervalMap[intervalName].usedBy;
             stopAndDeleteInterval(intervalName);
-            createCiLiveInterval(baseUrl, ci, id, category, newSamplingRate, intervalName);
-            updateIntervalUsedBy(intervalName,currentUsedBy);
+            createCiLiveInterval(baseUrl, ci, id, category, newSamplingRate, intervalName, function (success, response) {
+                if (success){
+                    updateIntervalUsedBy(intervalName,currentUsedBy);
+
+                }else{
+                    toastService.showErrorToast("Fehler beim Samplingrate setzten")// todo sprache anpassen
+                }
+            });
+
         }
     };
 
     service.getCiHistoryData = function(baseUrl, ci, id, category, start, end){
-
         var urls = buildUrls(baseUrl,ci,id,category, false, start, end);
         console.log("url: ",urls.forData);
         $http.get(urls.forData).then(function successCallback(response) {
@@ -72,6 +78,16 @@ app.factory('dataService',function($http, $rootScope, toastService,$timeout){
         if (count != widgets.length){
             createIntervalsForWidgets(widgets, newBaseUrl)
         }
+    };
+
+    service.getSamplingRateForCi = function (baseUrl, ci, id, cat) {
+        var url = baseUrl+CURRENT_API_PATH+'/'+ci+'/'+id+'/'+cat;
+        $http.get(url).then(function successCallback(response) {
+            $rootScope.$broadcast(EVENT_GATHERING_RATE_RECEIVED, true, baseUrl, ci, id, cat, response.data.data.gathering_rate);
+        }, function errorCallback(response) {
+            $rootScope.$broadcast(EVENT_GATHERING_RATE_RECEIVED, false, baseUrl, ci, id, cat, undefined);
+        });
+
     };
 
 //------------------------------------------------ CI Info --------------------------------------------------------------------------------------------------------------------------------------//
@@ -123,51 +139,9 @@ app.factory('dataService',function($http, $rootScope, toastService,$timeout){
         });
     };
 
-    /**
-     * alle Cpus über children objekte
-     * String hinter letzer "/" ist die Bezeichnung der CPU
-    /**
-     * {
-        links:{
-            self:{
-                href:"aktuelle URl"
-                name:"beschreibung"
-            },
-            parent:{
-                href:"parent URl"
-                name:"beschreibung"
-            }
-            children:[
-                {
-                    href:"URl",
-                    name:"beschreibung"
-                },
-                ...
-            ]
-        },
-            data:{
-                unit:"",
-                value: Wert
-                timestamp: millies
-                (oder :
-                values:
-                [
-                    {
-                     avg:shflkh,
-                     min:ljksbfdkj,
-                     max:kjshdfkjlh,
-                     timestamp:jksdbflj
-                    }
-                ]
-                )
-
-            }
-        }
-      */
-
 //------------------------------------------------ Helper --------------------------------------------------------------------------------------------------------------------------------------//
 
-    function createCiLiveInterval(baseUrl, ci, id, category, samplingRate, intervalName, usedBy){
+    function createCiLiveInterval(baseUrl, ci, id, category, samplingRate, intervalName, callback){
         var urls = buildUrls(baseUrl, ci, id, category,true);
         setSamplingRate(urls.forSamplingRate,samplingRate,function (success) {
             if (success){
@@ -176,19 +150,26 @@ app.factory('dataService',function($http, $rootScope, toastService,$timeout){
                         $http.get(urls.forData).then(function successCallback(response) {
                             $rootScope.$broadcast(EVENT_CI_LIVE_DATA_RECEIVED, true, baseUrl, ci, id, category, response.data.data);
                         }, function errorCallback(response) {
-                            $rootScope.$broadcast(EVENT_CI_LIVE_DATA_RECEIVED, false, baseUrl, ci, id, category, response.data.data);
+                            $rootScope.$broadcast(EVENT_CI_LIVE_DATA_RECEIVED, false, baseUrl, ci, id, category, undefined);
                         });
                     }, samplingRate);
                     addIntervalToMap(intervalName, liveInterval, baseUrl, ci, id, category, samplingRate);
-                    if (usedBy){
-                        updateIntervalUsedBy(intervalName,usedBy);
+                    if (callback && typeof callback == "function"){
+                        callback(true)
                     }
                 }catch (error) {
-                    $rootScope.$broadcast(EVENT_CI_LIVE_DATA_RECEIVED, false, baseUrl, ci, id, category, null);
+                    if (callback && typeof callback == "function"){
+                        callback(false);
+                    }
+                    $rootScope.$broadcast(EVENT_CI_LIVE_DATA_RECEIVED, false, baseUrl, ci, id, category, undefined);
                 }
             }else{
-                $rootScope.$broadcast(EVENT_CI_LIVE_DATA_RECEIVED, false, baseUrl, ci, id, category, null);
+                if (callback && typeof callback == "function"){
+                    callback(false);
+                }
+                $rootScope.$broadcast(EVENT_CI_LIVE_DATA_RECEIVED, false, baseUrl, ci, id, category, undefined);
             }
+
         });
     }
 
@@ -277,7 +258,9 @@ app.factory('dataService',function($http, $rootScope, toastService,$timeout){
                 urls.forData = baseUrl+CURRENT_API_PATH+'/'+ci+'/'+id+'/'+cat+REALTIME_QUERY_STRING;
                 return urls;
             }else{
-                urls.forData = baseUrl+CURRENT_API_PATH+'/'+ci+'/'+id+'/'+cat+HISTORY_START_STRING+historyStartTime+HISTORY_END_STRING_MUST_BE_LAST+historyEndTime;
+                // urls.forData = baseUrl+CURRENT_API_PATH+'/'+ci+'/'+id+'/'+cat+HISTORY_START_STRING+historyStartTime+HISTORY_END_STRING_MUST_BE_LAST+historyEndTime;
+                // return urls;
+                urls.forData = baseUrl+CURRENT_API_PATH+'/'+ci+'/'+id+'/'+cat;
                 return urls;
             }
         }else{
@@ -286,7 +269,9 @@ app.factory('dataService',function($http, $rootScope, toastService,$timeout){
                 urls.forData = baseUrl+CURRENT_API_PATH+'/'+ci+'/'+cat+REALTIME_QUERY_STRING;
                 return urls;
             }else{
-                urls.forData = baseUrl+CURRENT_API_PATH+'/'+ci+'/'+cat+HISTORY_START_STRING+historyStartTime+HISTORY_END_STRING_MUST_BE_LAST+historyEndTime;
+                // urls.forData = baseUrl+CURRENT_API_PATH+'/'+ci+'/'+cat+HISTORY_START_STRING+historyStartTime+HISTORY_END_STRING_MUST_BE_LAST+historyEndTime;
+                // return urls;
+                urls.forData = baseUrl+CURRENT_API_PATH+'/'+ci+'/'+cat;
                 return urls;
             }
         }

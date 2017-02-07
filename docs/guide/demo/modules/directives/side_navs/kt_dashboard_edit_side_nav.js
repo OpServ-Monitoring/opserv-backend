@@ -147,6 +147,7 @@ app.directive('ktDashboardEditSideNav',[ 'dataService','toastService', 'dialogSe
                     rootScope.dashboards[scope.selectedDashboard].title = newSettings.newTitle;
                     rootScope.dashboards[scope.selectedDashboard].baseUrl = newSettings.newBaseUrl;
                     scope.$emit(EVENT_SAVE);
+                    //TODO refresh historie Diagramme und auch livedaten falls sie noch nicht vorhanden waren
                 })
             };
 
@@ -154,6 +155,14 @@ app.directive('ktDashboardEditSideNav',[ 'dataService','toastService', 'dialogSe
                 scope.selectedSideNavIndex = 1;//Ci Auswahl
                 scope.lastTabs.push(0);
                 loadCis();
+            };
+
+            scope.formatText = function (text) {
+                if (text.length > 30){
+                    return text.slice(0,30)+"..."
+                }else{
+                    return text
+                }
             };
 
             function selectCi (ci) {

@@ -9,11 +9,18 @@
 
         <md-dialog-content class="blackground-light">
             <div class="md-dialog-content" layout="column" layout-align="center center">
-                <md-input-container name="secretContainer" ng-show="!isLoading" md-is-error="failedValidation || (loginForm.secret.$touched && loginForm.secret.$invalid)">
-                    <label>{{ 'LOGIN_SECRET_TEXT' | translate }}</label>
-                    <input autocomplete="off" type="password" name="secret" required ng-model="form.loginSecret">
-                    <div ng-messages="loginForm.secret.$error" >
-                        <div ng-message="required" ng-show="failedValidation">{{ 'ERROR_LOGIN_SECRET_TEXT' | translate }}</div>
+                <md-input-container name="userNameContainer" ng-show="!isLoading" md-is-error="failedValidation || (loginForm.userName.$touched && loginForm.userName.$invalid)">
+                    <label>{{ 'LOGIN_USERNAME_TEXT' | translate }}</label>
+                    <input autocomplete="off" type="password" name="userName" required ng-model="form.userName">
+                    <div ng-messages="loginForm.userName.$error" >
+                        <div ng-message="required" ng-show="failedValidation">{{ 'ERROR_LOGIN_USERNAME_TEXT' | translate }}</div>
+                    </div>
+                </md-input-container>
+                <md-input-container name="passwordContainer" ng-show="!isLoading" md-is-error="failedValidation || (loginForm.password.$touched && loginForm.password.$invalid)">
+                    <label>{{ 'LOGIN_PASSWORD_TEXT' | translate }}</label>
+                    <input autocomplete="off" type="password" name="password" required ng-model="form.password">
+                    <div ng-messages="loginForm.password.$error" >
+                        <div ng-message="required" ng-show="failedValidation">{{ 'ERROR_LOGIN_PASSWORD_TEXT' | translate }}</div>
                     </div>
                 </md-input-container>
                 <md-progress-circular ng-if="isLoading" style="margin: 10px" class="md-accent" md-diameter="45px"></md-progress-circular>

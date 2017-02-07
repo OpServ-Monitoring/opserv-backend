@@ -22,7 +22,8 @@
                 <md-progress-circular ng-if="cisLoading" style="margin: 10px" class="md-accent" md-diameter="30px"></md-progress-circular>
                 <md-list>
                     <md-list-item ng-repeat="ci in cis" ng-click="ci.action(ci)">
-                        <span>{{ci.label}}</span>
+                        <md-tooltip md-direction="right" md-delay="1000">{{ci.label}}</md-tooltip>
+                        <span>{{formatText(ci.label)}}</span>
                     </md-list-item>
                 </md-list>
             </md-content>
@@ -32,7 +33,7 @@
                 <md-progress-circular ng-if="idsLoading" style="margin: 10px" class="md-accent" md-diameter="30px"></md-progress-circular>
                 <md-list>
                     <md-list-item ng-repeat="id in ids" ng-click="id.action(id)">
-                        <span>{{id.label}}</span>
+                        <span>{{formatText(id.label)}}</span>
                     </md-list-item>
                 </md-list>
             </md-content>
@@ -42,7 +43,7 @@
                 <md-progress-circular ng-if="catsLoading" style="margin: 10px" class="md-accent" md-diameter="30px"></md-progress-circular>
                 <md-list>
                     <md-list-item ng-repeat="cat in categories" ng-click="cat.action(cat)">
-                        <span>{{cat.label}}</span>
+                        <span>{{formatText(cat.label)}}</span>
                     </md-list-item>
                 </md-list>
             </md-content>
@@ -52,12 +53,14 @@
         <md-divider ng-if="!(selectedSideNavIndex == 0)" ></md-divider>
         <md-content ng-if="!(selectedSideNavIndex == 0)" layout="column" layout-align="center center">
             <md-button  class="md-mini md-icon-button" ng-click="scrollBack()">
+                <md-tooltip md-direction="right" md-delay="1000">{{ 'BACK_TEXT' | translate}}</md-tooltip>
                 <md-icon class="material-icons" >arrow_back</md-icon>
             </md-button>
         </md-content>
         <md-divider ></md-divider>
         <md-content layout="column" layout-align="center center">
             <md-button  class="md-mini md-icon-button" ng-click="toggleEditMode()">
+                <md-tooltip md-direction="right" md-delay="1000">{{ 'EXIT_TEXT' | translate}}</md-tooltip>
                 <md-icon class="material-icons" >exit_to_app</md-icon>
             </md-button>
         </md-content>

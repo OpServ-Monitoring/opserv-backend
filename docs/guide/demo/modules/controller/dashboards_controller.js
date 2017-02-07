@@ -5,7 +5,15 @@ app.controller('DashboardCtrl',function($scope, $rootScope, prefService, $mdSide
     var scope = $scope;
     var rootScope = $rootScope;
 
-    console.log(decodeURIComponent("LAN-Verbindung%252A%2B1"));
+
+    // define if need Mockup
+    console.log(window.location.host);
+    console.log(window.location.pathname);
+    if(window.location.host == "opserv.org" && window.location.pathname == "docs/guide/demo"){
+        rootScope.isMock = true
+    }else{
+        rootScope.isMock = false;
+    }
 
     scope.isFabOpen = false;
     rootScope.isEditMode = false;
@@ -54,6 +62,7 @@ app.controller('DashboardCtrl',function($scope, $rootScope, prefService, $mdSide
         if (success){
             rootScope.dashboards=dashboards;
             scope.selectedDashboard = 0;
+            console.log(rootScope.dashboards);
         }else{
             toastService.showErrorToast("Laden der Dashboards fehlgeschlagen!")
         }
@@ -121,7 +130,7 @@ app.controller('DashboardCtrl',function($scope, $rootScope, prefService, $mdSide
                 ci: ci.label,
                 category: cat.label,
                 realtime: true,
-                samplingRate: 1000,
+                samplingRate: 0,
                 displayAsChart:true
             }
         };

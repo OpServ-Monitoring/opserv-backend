@@ -17,45 +17,17 @@ app.directive('ktDashboardWidget',[ 'dataService',function (dataService) {
             var scope = $scope;
             var rootScope = $rootScope;
 
-            scope.openSettings = function () {
-                var currentSettings = {};
-                currentSettings.currentMode = scope.currentMode;
-                currentSettings.title = scope.displayitem.title;
-                currentSettings.modes = scope.modes;
-                currentSettings.samplingRateLive = scope.samplingRateLive;
-                dialogService.showWidgetSettings(currentSettings,function (newSettings) {
-                    scope.currentMode = newSettings.newMode;
-                    updateTitle(newSettings.newTitle);
+            scope.samplingRate = 0;
+            scope.currentMode = {};
 
-                    // catch wrong user input
-                    if( newSettings.newSamplingRateLive >= 500 && newSettings.newSamplingRateLive <= 10000){
-                        scope.samplingRateLive = newSettings.newSamplingRateLive;
-                    }else{
-                        scope.samplingRateLive = 1000;
-                    }
-
-                });
-            };
-
-            scope.delete = function () {
-                scope.$emit(EVENT_DELETE_WIDGET,scope.dashboardindex,scope.widgetindex);
-            };
+            getSamplingRateForCi(scope.baseurl,scope.displayitem.ci, scope.displayitem.id, scope.displayitem.category);
 
             scope.modes =[
                 {text:"Live"},
                 {text:"History"}
             ];
 
-            if(scope.displayitem.realtime == true){
-                scope.currentMode = scope.modes[0]
-            }else{
-                scope.currentMode = scope.modes[1]
-            }
-
             scope.displayAsChart = scope.displayitem.displayAsChart;
-
-            scope.samplingRateLive = scope.displayitem.samplingRate; //TODO änderung der Smaplingrate muss noch in widget abgespeichert werden
-            scope.samplingRateHistorie = 86400000; // 1 Tag TODO schauen ob das wirklich gebraucht wird
 
             scope.defaultHistorieStartValue=0;
             scope.defaultHistorieEndValue=0;
@@ -73,7 +45,6 @@ app.directive('ktDashboardWidget',[ 'dataService',function (dataService) {
                             }
                         }
                     },
-
                     rangeSelector: {
                         labelStyle: {
                             display: 'none'
@@ -167,6 +138,13 @@ app.directive('ktDashboardWidget',[ 'dataService',function (dataService) {
                             afterSetExtremes: afterSetExtremes
                         },
                         minRange: 500
+                    },
+                    exporting:{
+                        buttons:{
+                            contextButton:{
+                                symbol:"menu"
+                            }
+                        }
                     }
                 },
                 title : {
@@ -181,28 +159,64 @@ app.directive('ktDashboardWidget',[ 'dataService',function (dataService) {
             };
 
             function afterSetExtremes(e) {
-                if (scope.currentMode.text == scope.modes[1].text){
-                    if(e.trigger){
-                        var start = Math.round(e.min);
-                        var end = Math.round(e.max);
-                        dataService.getCiHistoryData(scope.baseurl,scope.displayitem.ci, scope.displayitem.id, scope.displayitem.category, start, end);
-                    }
-                    console.log(e);
-                    console.log("start: ", new Date(e.min));
-                    console.log("end: ", new Date(e.max));
-                    console.log(scope.config.options.navigator.series);
-                    // todo load new data;
-                }
+                // if (scope.currentMode.text == scope.modes[1].text){
+                //     if(e.trigger){
+                //         var start = Math.round(e.min);
+                //         var end = Math.round(e.max);
+                //         dataService.getCiHistoryData(scope.baseurl,scope.displayitem.ci, scope.displayitem.id, scope.displayitem.category, start, end);
+                //     }
+                //     console.log(e);
+                //     console.log("start: ", new Date(e.min));
+                //     console.log("end: ", new Date(e.max));
+                //     console.log(scope.config.options.navigator.series);
+                //     // todo load new data;
+                // }
 
             }
+
+            scope.delete = function () {
+                scope.$emit(EVENT_DELETE_WIDGET,scope.dashboardindex,scope.widgetindex);
+            };
+
+            scope.openSettings = function () {
+                var currentSettings = {};
+                currentSettings.currentMode = scope.currentMode;
+                currentSettings.title = scope.displayitem.title;
+                currentSettings.modes = scope.modes;
+                currentSettings.samplingRate = scope.samplingRate;
+                dialogService.showWidgetSettings(currentSettings,function (newSettings) {
+                    scope.currentMode = newSettings.newMode;
+                    scope.displayitem.title = newSettings.newTitle;
+                    scope.samplingRate = newSettings.newSamplingRate;
+                });
+            };
 
             //-------------------------- Listener -------------------------------------------------------------------------
 
             scope.$watch('currentMode',function(newMode, oldMode){
-                clearData();
-                toggleLoading(true);
-                configureHowToLoadNewData(newMode,oldMode);
-                setChartTitle();
+                if(oldMode != newMode){
+                    console.log("mode changes");
+                    clearData();
+                    toggleLoading(true);
+                    configureHowToLoadNewData(newMode,oldMode);
+                    setChartTitle();
+                    scope.$emit("save");
+                }
+            });
+
+            scope.$watch('samplingRate',function (newSamplingRate, oldSamplingRate) {
+                if (oldSamplingRate != newSamplingRate) {
+                    updateSamplingRate(newSamplingRate);
+                    scope.$emit("save");
+                }
+
+            });
+
+            scope.$watch('displayitem.title',function (newTitle, oldTitle) {
+                if (newTitle != oldTitle) {
+                    setChartTitle();
+                    scope.$emit("save");
+                }
             });
 
             scope.$on(EVENT_ITEM_RESIZE,function(event,container){
@@ -217,11 +231,7 @@ app.directive('ktDashboardWidget',[ 'dataService',function (dataService) {
             });
 
             scope.$on(EVENT_CI_LIVE_DATA_RECEIVED,function(event, status, baseUrl, ci, id, category, data){
-                if (baseUrl == scope.baseurl &&
-                    scope.currentMode.text == scope.modes[0].text &&
-                    ci == scope.displayitem.ci &&
-                    id == scope.displayitem.id &&
-                    category == scope.displayitem.category){
+                if (isforMe(baseUrl, ci, id, category) && scope.currentMode.text == scope.modes[0].text){
                     if(status){
                         if (!scope.config.series){
                             // create Series
@@ -229,7 +239,7 @@ app.directive('ktDashboardWidget',[ 'dataService',function (dataService) {
                             //little dirty hack für die editbuttons wenn ein neues diagramm hinzugefügt wird
                         }
                         toggleLoading(false);
-                        if (scope.config.series[0].data.length < 60) { // TODO anpassen, vielleicht abhängig von abtastrate machen
+                        if (scope.config.series[0].data.length < 60) {
                             scope.config.series[0].data.push([data.timestamp, data.value]);
                         } else {
                             scope.config.series[0].data.push([data.timestamp, data.value]);
@@ -237,7 +247,7 @@ app.directive('ktDashboardWidget',[ 'dataService',function (dataService) {
                         }
                     }else{
                         toastService.showErrorToast("Laden der Livedaten ist fehlgeschlagen");
-                        scope.config.loading = 'ERROR' // display Error in Highchart
+                        scope.config.loading = 'ERROR'; // display Error in Highchart
                     }
                 }else{
                     // data for other diagram, do nothing
@@ -245,11 +255,7 @@ app.directive('ktDashboardWidget',[ 'dataService',function (dataService) {
             });
 
             scope.$on(EVENT_CI_HISTORY_DATA_RECEIVED,function(event, status, baseUrl, ci, id, category, start, end, data){
-                if (baseUrl == scope.baseurl &&
-                    scope.currentMode.text == scope.modes[1].text &&
-                    ci == scope.displayitem.ci &&
-                    id == scope.displayitem.id &&
-                    category == scope.displayitem.category){
+                if (isforMe(baseUrl, ci, id, category) && scope.currentMode.text == scope.modes[1].text){
                     if(status){
                         if(start == scope.defaultHistorieStartValue && end == scope.defaultHistorieEndValue){
                             console.log("set navigator");
@@ -274,7 +280,34 @@ app.directive('ktDashboardWidget',[ 'dataService',function (dataService) {
                 }
             });
 
+            scope.$on(EVENT_GATHERING_RATE_RECEIVED, function (event, status, baseUrl, ci, id, category, samplingRate) {
+                if (isforMe(baseUrl, ci, id, category)){
+                    if(status){
+                        scope.samplingRate = samplingRate;
+                        console.log("rate is set");
+                        if(scope.displayitem.realtime == true){
+                            scope.currentMode = scope.modes[0]
+                        }else{
+                            scope.currentMode = scope.modes[1]
+                        }
+                    }else{
+                        toastService.showErrorToast("Laden der Gathering Rate ist fehlgeschlagen");
+                        scope.config.loading = 'ERROR'; // display Error in Highchart
+                    }
+                }else{
+                    // data for other diagram, do nothing
+                }
+            });
+
             //-------------------------- Helper ----------------------------------------------------------------------------
+
+            function isforMe(baseUrl, ci, id, category) {
+                return baseUrl == scope.baseurl && ci == scope.displayitem.ci && id == scope.displayitem.id && category == scope.displayitem.category
+            }
+
+            function getSamplingRateForCi(baseurl, ci, id, category) {
+                dataService.getSamplingRateForCi(baseurl, ci, id, category)
+            }
 
             function toggleVisibilityHighchartsButtons(isEditing) {
                 // hide or show all highcharts buttons
@@ -305,14 +338,17 @@ app.directive('ktDashboardWidget',[ 'dataService',function (dataService) {
                 if (newMode.text == scope.modes[0].text){
 
                     toggleAnimation(false);
-                    dataService.enableCILiveTimer(scope.baseurl, scope.displayitem.ci, scope.displayitem.id, scope.displayitem.category, scope.samplingRateLive);
+                    scope.displayitem.realtime = true;
+                    dataService.enableCILiveTimer(scope.baseurl, scope.displayitem.ci, scope.displayitem.id, scope.displayitem.category, scope.samplingRate);
                 }
                 if (newMode.text == scope.modes[1].text){
 
+
                     toggleAnimation(true);
+                    scope.displayitem.realtime = false;
                     //define defaults
                     scope.defaultHistorieEndValue = new Date().getTime();
-                    scope.defaultHistorieStartValue = scope.defaultHistorieEndValue-7884000000; // start 3 months ago
+                    scope.defaultHistorieStartValue = scope.defaultHistorieEndValue-(1000*60*60*3); // start 3 hours ago
                     dataService.getCiHistoryData(scope.baseurl,scope.displayitem.ci, scope.displayitem.id, scope.displayitem.category, scope.defaultHistorieStartValue, scope.defaultHistorieEndValue)
                 }
                 if (newMode.text == scope.modes[1].text && oldMode.text == scope.modes[0].text){
@@ -321,16 +357,14 @@ app.directive('ktDashboardWidget',[ 'dataService',function (dataService) {
                 }
             }
 
+            function updateSamplingRate(newSamplingRate) {
+                dataService.updateSamplingRateOfCiLiveTimer(scope.baseurl, scope.displayitem.ci, scope.displayitem.id, scope.displayitem.category, newSamplingRate)
+            }
+
             function setChartTitle() {
                 //wird immer als letztes bei einer Änderung aufgerufen, daher kann hiernach gespeichert werden
                 delete scope.config.title.text;
                 scope.config.title.text = scope.displayitem.title+ " - " +scope.currentMode.text;
-                scope.$emit("save");
-            }
-
-            function updateTitle(newTitle) {
-                scope.displayitem.title = newTitle;
-                setChartTitle()
             }
 
         }],

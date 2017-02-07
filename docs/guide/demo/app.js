@@ -14,7 +14,8 @@ const EVENT_DELETE_WIDGET = "delete_widget";
 const EVENT_ITEM_RESIZE = "item_resize";
 const EVENT_TOGGLE_EDIT_MODE = "toggle_edit_mode";
 const EVENT_SAVE = "save";
-const EVENT_USER_VALIDATED = "user-validated";
+const EVENT_USER_VALIDATED = "user_validated";
+const EVENT_GATHERING_RATE_RECEIVED = "gathering_rate_recieved";
 
 
 
@@ -322,9 +323,11 @@ app.config(function ($translateProvider) {
         SIDENAV_OPTION_DASHBOARD_SETTINGS:  'edit Settings',
         SIDENAV_OPTION_ADD_WIDGET:          'add Widget',
         LOGIN_TEXT:                         'Login',
-        LOGIN_SECRET_TEXT:                  'Secret (opserv)',
-        ERROR_LOGIN_SECRET_TEXT:            'Wrong Secret',
-        OPSERV_SETTINGS_TEXT:               'OpServ Settings',
+        LOGIN_PASSWORD_TEXT:                'Password',
+        LOGIN_USERNAME_TEXT:                'Username (opserv)',
+        ERROR_LOGIN_PASSWORD_TEXT:          'Wrong Password',
+        ERROR_LOGIN_USERNAME_TEXT:          'Wrong Username',
+        GATHERING_SETTINGS_TEXT:            'Gathering Settings',
         DASHBOARD_SETTINGS_TEXT:            'Dashboard Settings',
         WIDGET_SETTINGS_TEXT:               'Widget Settings',
         GATHERING_RATE_TEXT:                'Gathering Rate',
@@ -333,7 +336,10 @@ app.config(function ($translateProvider) {
         TITLE_TEXT:                         'Title',
         URL_TEXT:                           'URL',
         LANGUAGE_TEXT:                      'Language',
-        TYPE_TEXT:                          'Type'
+        TYPE_TEXT:                          'Type',
+        EXIT_TEXT:                          'Exit',
+        BACK_TEXT:                          'Back'
+
     });
 
     $translateProvider.translations('de_DE', {
@@ -341,9 +347,11 @@ app.config(function ($translateProvider) {
         SIDENAV_OPTION_DASHBOARD_SETTINGS:  'Einstellungen ändern',
         SIDENAV_OPTION_ADD_WIDGET:          'Widget hinzufügen',
         LOGIN_TEXT:                         'Login',
-        LOGIN_SECRET_TEXT:                  'Passwort (opserv)',
-        ERROR_LOGIN_SECRET_TEXT:            'falsches Passwort',
-        OPSERV_SETTINGS_TEXT:               'OpServ Einstellungen',
+        LOGIN_PASSWORD_TEXT:                'Passwort',
+        LOGIN_USERNAME_TEXT:                'Benutzername (opserv)',
+        ERROR_LOGIN_PASSWORD_TEXT:          'falsches Passwort',
+        ERROR_LOGIN_USERNAME_TEXT:          'falscher Benutzername',
+        GATHERING_SETTINGS_TEXT:            'Abtastraten einstellen',
         DASHBOARD_SETTINGS_TEXT:            'Dashboard Einstellungen',
         WIDGET_SETTINGS_TEXT:               'Widget Einstellungen',
         GATHERING_RATE_TEXT:                'Abtastrate',
@@ -352,7 +360,9 @@ app.config(function ($translateProvider) {
         TITLE_TEXT:                         'Titel',
         URL_TEXT:                           'URL',
         LANGUAGE_TEXT:                      'Sprache',
-        TYPE_TEXT:                          'Typ'
+        TYPE_TEXT:                          'Typ',
+        EXIT_TEXT:                          'Schließen',
+        BACK_TEXT:                          'Zurück'
     });
 
     $translateProvider.useSanitizeValueStrategy('escapeParameters');
@@ -377,8 +387,9 @@ app.run(function($rootScope, $location, authService, $translate) {
 
     // wird beim refresh oder wechsel einer URL aufgerunfen
     $rootScope.$on('$locationChangeStart', function() {
-        var secret = localStorage.getItem('secret');
-        if (secret) {
+        var password = localStorage.getItem('password');
+        var userName = localStorage.getItem('userName');
+        if (userName && password) {
             if (!authService.isLoggedIn()) {
                 $location.path('/login'); // relocate for Login
             } else {
@@ -389,7 +400,6 @@ app.run(function($rootScope, $location, authService, $translate) {
         }
     });
 });
-
 
 app.config(function ($routeProvider) {
     //TODO enable authentification
@@ -408,8 +418,9 @@ app.config(function ($routeProvider) {
 
 app.config(['$httpProvider', function($httpProvider, authService) {
 
-    var secret = localStorage.getItem('secret');
-    var encodedString = base64Encoding(secret);
+    var password = localStorage.getItem('password');
+    var userName = localStorage.getItem('userName');
+    var encodedString = base64Encoding(userName+":"+password);
 
     $httpProvider.defaults.headers.common ={
         'Authorization':'Basic '+encodedString
@@ -421,9 +432,7 @@ app.config(['$httpProvider', function($httpProvider, authService) {
 
 
     function base64Encoding(str) {
-        return btoa(encodeURIComponent('dgfchvmb').replace(/%([0-9A-F]{2})/g,function (match, p1) {
-            return String.fromCharCode('0x'+p1);
-        }))
+        return btoa(str)
     }
 }
 

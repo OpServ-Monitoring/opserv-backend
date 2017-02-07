@@ -16,7 +16,7 @@
                     <label>{{ 'TITLE_TEXT' | translate }}</label>
                     <input ng-model="title" >
                 </md-input-container>
-                <md-input-container class="md-block" flex-gt-sm>
+                <md-input-container ng-show="!isMock" class="md-block" flex-gt-sm>
                     <label>{{ 'URL_TEXT' | translate }}</label>
                     <input ng-model="baseUrl" >
                 </md-input-container>

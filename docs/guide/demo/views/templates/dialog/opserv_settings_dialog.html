@@ -2,7 +2,7 @@
     <form ng-cloak>
         <md-toolbar>
             <div class="md-toolbar-tools">
-                <h2>{{ 'OPSERV_SETTINGS_TEXT' | translate }}</h2>
+                <h2>{{ 'GATHERING_SETTINGS_TEXT' | translate }}</h2>
                 <span flex></span>
                 <md-button class="md-icon-button" ng-click="cancel()">
                     <md-icon>close</md-icon>
@@ -10,33 +10,25 @@
             </div>
         </md-toolbar>
 
-        <md-dialog-content style="min-width: 400px" class="blackground-light">
-           <md-grid-list
-                   md-cols="2" md-cols-sm="1"md-cols-xs="1" md-cols-md="2" md-cols-gt-md="2"
-                   md-row-height-gt-md="4:3" md-row-height="200px"
-                   md-gutter="8px" md-gutter-gt-sm="8px" style="margin: 8px">
+        <md-dialog-content style="min-width: 350px; " class="blackground-light">
 
-               <md-grid-tile ng-repeat="tile in tiles"
-                             md-rowspan="{{tile.span.row}}"
-                             md-colspan="{{tile.span.col}}"
-                             md-colspan-sm="1"
-                             md-colspan-xs="1">
-                   <md-grid-tile-header>
-                       <h3>{{tile.title}}</h3>
-                   </md-grid-tile-header>
-                   <div layout="column" >
-                       <label>{{ 'GATHERING_RATE_TEXT' | translate }}</label>
-                       <md-slider-container>
-                           <md-slider flex min="500" max="10000" ng-model="tile.samplingRate" aria-label="sampling-rate" id="sampling-rate-slider">
-                           </md-slider>
-                       </md-slider-container>
-                       <md-input-container style="max-height: 20px; max-width: 60px; margin: 0">
-                           <input flex type="number" ng-model="tile.samplingRate" aria-label="sampling-rate" aria-controls="sampling-rate-slider">
-                       </md-input-container>
-                   </div>
-                   <md-divider ></md-divider>
-               </md-grid-tile>
-           </md-grid-list>
+            <md-list>
+                <md-list-item style="min-width: 350px; min-height: 60px" ng-repeat="rate in rates">
+                    <label flex>{{rate.title}} </label>
+                    <md-slider  style="max-width: 90px;"  min="500" max="10000" ng-model="rate.samplingRate" aria-label="sampling-rate" id="sampling-rate-slider">
+                    </md-slider>
+                    <md-input-container  style="max-height: 44px; max-width: 60px; margin: 0">
+                        <input type="number" ng-model="rate.samplingRate" aria-label="sampling-rate" aria-controls="sampling-rate-slider">
+                        <label>ms</label>
+                    </md-input-container>
+                    <button class="md-secondary md-button">delete</button>
+                </md-list-item>
+                <md-list-item layout="center center">
+                    <span flex></span>
+                    <button class="md-button">ADD</button>
+                    <span flex></span>
+                </md-list-item>
+            </md-list>
         </md-dialog-content>
 
         <md-dialog-actions layout="row" class="blackground">
