@@ -1,5 +1,5 @@
 import time
-from urllib.parse import unquote_plus, quote_plus
+from urllib.parse import quote, unquote
 
 from database.unified_database_interface import UnifiedDatabaseInterface
 from misc import data_manager
@@ -176,7 +176,7 @@ class DefaultDataGate(OutboundGateInterface):
         if argument is None:
             return None
 
-        return quote_plus(quote_plus(argument))
+        return quote(quote(argument))
 
     # TODO Extract this somewhere, encoding should not be part of the data gate but the HTTP API instead
     @classmethod
@@ -184,4 +184,4 @@ class DefaultDataGate(OutboundGateInterface):
         if argument is None:
             return None
 
-        return unquote_plus(argument)
+        return unquote(argument)

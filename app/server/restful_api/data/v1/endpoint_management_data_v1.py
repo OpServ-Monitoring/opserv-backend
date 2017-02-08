@@ -40,7 +40,6 @@ from .endpoints.processes import ProcessesEndpoint
 from .endpoints.processes_process import ProcessesProcessEndpoint
 from .endpoints.processes_process_cpuusage import ProcessesProcessCpuusageEndpoint
 from .endpoints.processes_process_memusage import ProcessesProcessMemusageEndpoint
-from .endpoints.processes_process_name import ProcessesProcessNameEndpoint
 from .endpoints.system import SystemEndpoint
 from .endpoints.system_cpucores import SystemCpucoresEndpoint
 from .endpoints.system_cpus import SystemCpusEndpoint
@@ -120,7 +119,6 @@ class EndpointManagementDataV1(EndpointManagement):
             ProcessesProcessEndpoint,  # v1/processes/<string:process>
             ProcessesProcessCpuusageEndpoint,  # v1/processes/<string:process>/cpuusage
             ProcessesProcessMemusageEndpoint,  # v1/processes/<string:process>/memusage
-            ProcessesProcessNameEndpoint,  # v1/processes/<string:process>/name
 
             # # - - - SYSTEM - - - #
             SystemEndpoint,  # v1/system

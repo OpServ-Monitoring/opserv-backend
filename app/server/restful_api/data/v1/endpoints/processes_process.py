@@ -7,11 +7,33 @@ class ProcessesProcessEndpoint(GeneralEndpointDataV1):
 
         persisted_info = self._outbound_gate.get_last_measurement("process", "info", process_id)
 
+        general_information = {}
         if persisted_info is not None:
-            self._response_holder.set_body_data({
+            general_information = {
                 "timestamp": persisted_info["timestamp"],
                 "general-info": persisted_info["value"]
-            })
+            }
+
+        pid = None
+        process_name = None
+
+        # TODO Improve the pid/name extraction
+        # EXTRACTION START
+        from urllib.parse import unquote
+        raw_process_information = unquote(process_id)
+
+        import re
+        matches = re.match("([^:]+):(.+)", raw_process_information)
+        if matches is not None:
+            pid = matches.group(1)
+            process_name = matches.group(2)
+        # EXTRACTION END
+
+        self._response_holder.set_body_data({
+            "information": general_information,
+            "pid": pid,
+            "process_name": process_name
+        })
 
         return True
 
@@ -35,12 +57,10 @@ class ProcessesProcessEndpoint(GeneralEndpointDataV1):
     def _get_children(cls):
         from .processes_process_cpuusage import ProcessesProcessCpuusageEndpoint
         from .processes_process_memusage import ProcessesProcessMemusageEndpoint
-        from .processes_process_name import ProcessesProcessNameEndpoint
 
         return [
             ("/cpuusage", ProcessesProcessCpuusageEndpoint),
-            ("/memusage", ProcessesProcessMemusageEndpoint),
-            ("/name", ProcessesProcessNameEndpoint)
+            ("/memusage", ProcessesProcessMemusageEndpoint)
         ]
 
     @classmethod
