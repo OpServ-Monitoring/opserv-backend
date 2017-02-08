@@ -1,3 +1,16 @@
+cpus:
+  description: Some description2
+  requests:
+    - method: get
+      params: null
+      request_header: null
+      request_body: null
+      examples:
+        - uri: GET /cpus
+          explanation: Some explanation2
+      response: null
+      error_codes: null
+
 cpu-cores:
   description: Some description
   requests:
