@@ -1,4 +1,4 @@
 ---
 layout: doc-entry-rest-data-v1-endpoint
-title: cpu/{ID}/temperature
+title: /cpu/{ID}/temperature
 ---
