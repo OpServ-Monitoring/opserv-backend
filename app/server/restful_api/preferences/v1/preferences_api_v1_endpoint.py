@@ -2,39 +2,26 @@ from misc.standalone_helper import double_encode_string
 from ..preferences_api_versions_endpoint import PreferencesApiVersionsEndpoint
 from ...general.endpoint import Endpoint
 
-
-# TODO fix all docs for http methods, return type is no longer the ResponseHolder
+# TODO Future version: Add doc strings for the http methods
 
 
 class PreferencesApiV1Endpoint(Endpoint):
     def _put(self) -> bool:
-        """
-        The PUT-method is not supported by this api version, thus an response indicating a bad request is returned
-        :return: A ResponseHolder holding a response with the bad request code
-        """
-        self._set_bad_request_response(
+        self._response_holder.set_bad_request_response(
             'HTTP method PUT is not supported by this resource'
         )
 
         return False
 
     def _post(self) -> bool:
-        """
-        The POST-method is not supported by this api version, thus an response indicating a bad request is returned
-        :return: A ResponseHolder holding a response with the bad request code
-        """
-        self._set_bad_request_response(
+        self._response_holder.set_bad_request_response(
             'HTTP method POST is not supported by this resource'
         )
 
         return False
 
     def _delete(self) -> bool:
-        """
-        The DELETE-method is not supported by this api version, thus an response indicating a bad request is returned
-        :return: A ResponseHolder holding a response with the bad request code
-        """
-        self._set_bad_request_response(
+        self._response_holder.set_bad_request_response(
             'HTTP method DELETE is not supported by this resource'
         )
 
@@ -61,10 +48,8 @@ class PreferencesApiV1Endpoint(Endpoint):
 
     @classmethod
     def _get_children(cls):
-        from database.unified_database_interface import UnifiedDatabaseInterface  # TODO Exchange with data gate
         from server.restful_api.preferences.v1.preference import PreferenceEndpoint
-
-        keys_in_use = UnifiedDatabaseInterface.get_user_preferences_writer_reader().get_used_user_preference_keys()  # TODO Exchange with data gate
+        keys_in_use = cls._outbound_gate.get_user_preferences()
 
         children = []
         for key in keys_in_use:

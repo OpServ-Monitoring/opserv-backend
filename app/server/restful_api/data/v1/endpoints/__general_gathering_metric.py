@@ -17,7 +17,7 @@ class GeneralGatheringMetricEndpoint(GeneralEndpointDataV1, metaclass=ABCMeta):
         if gathering_rate is None:
             gathering_rate = 0
 
-        self._response_holder.set_body_data({
+        self._response_holder.update_body_data({
             "gathering_rate": gathering_rate
         })
 
@@ -26,8 +26,12 @@ class GeneralGatheringMetricEndpoint(GeneralEndpointDataV1, metaclass=ABCMeta):
     def _put(self) -> bool:
         request_body = self._request_holder.get_body()
 
-        if "gathering_rate" not in request_body:
-            return self.STOP_PROCESSING()  # TODO error - also check for number and number >= 500
+        if "gathering_rate" not in request_body or \
+                not isinstance(request_body["gathering_rate"], int) or \
+                (request_body["gathering_rate"] < 500 and request_body["gathering_rate"] != 0):
+            # TODO Future version: Log and return error message
+
+            return self.STOP_PROCESSING()
         else:
             component_type = self._get_component_type()
             component_arg = decode_string(self._get_component_arg())
@@ -48,7 +52,7 @@ class GeneralGatheringMetricEndpoint(GeneralEndpointDataV1, metaclass=ABCMeta):
                 gathering_rate
             )
 
-            self._response_holder.set_body_data({
+            self._response_holder.update_body_data({
                 "message": success_message
             })
 

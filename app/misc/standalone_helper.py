@@ -10,6 +10,9 @@ import socket
 from importlib import import_module
 from urllib.request import urlopen
 from urllib.parse import quote, unquote
+import logging
+
+log = logging.getLogger("opserv." + __name__)
 
 APP_FOLDER_NAME = "app"
 
@@ -19,10 +22,10 @@ def import_if_exists(module):
     try:
         new_module = globals()[module] = import_module(module)
     except ImportError:
-        print("{} couldn't be imported'".format(module))  # TODO Exchange with logging
+        log.error("{} couldn't be imported'".format(module))
         return None
     else:
-        print("{} has been successfully imported".format(module))  # TODO Exchange with logging
+        log.debug("{} has been successfully imported".format(module))
         return new_module
 
 
@@ -145,7 +148,7 @@ def get_external_ip():
 
 def merge_n_lists(*lists: list) -> list:
     """
-    Merges the items n lists into a single list. Each item is handled and returned as string.
+    Merges the items of n lists into a single list. Each item is handled and returned as string.
     :param lists: A tuple of lists, to be merged
     :return: A list containing all items once
     """
@@ -158,11 +161,13 @@ def merge_n_lists(*lists: list) -> list:
         merged_items = lists[0]
     else:
         for a_list in lists:
-            a_list = list(map(str, a_list))
+            merged_items += a_list
 
-            merged_items += list(set(a_list) - set(merged_items))
+    merged_items = map(str, merged_items)
 
-    return merged_items
+    return list(
+        set(merged_items)
+    )
 
 
 def encode_string(string: str):

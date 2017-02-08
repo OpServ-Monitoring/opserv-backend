@@ -9,6 +9,7 @@
 import ctypes
 import os
 import sys
+import logging
 
 import application_settings.settings_management as app_settings
 import misc.data_manager as data_manager
@@ -23,20 +24,26 @@ from misc.standalone_helper import get_external_ip, has_internet_access
 from misc.opserv_helper import get_operating_system
 from misc.constants import YES_PHRASES
 
+log = logging.getLogger("opserv." + __name__)
+
+# TODO Future version: Evaluate whether all prints should use the log instead or not
+
 
 def init_database():
     """
         Initiates the database
     """
-    UnifiedDatabaseInterface.get_database_initializer().create_database()
-    UnifiedDatabaseInterface.get_database_initializer().set_gathering_rates()
+    database_initializer = UnifiedDatabaseInterface.get_database_initializer()
+
+    database_initializer.create_database()
+    database_initializer.set_gathering_rates()
 
 
 def start_gather_thread():
     """
         Starts the gathering thread as a daemon
     """
-    print("Starting up the gathering thread.")  # TODO Exchange with logging
+    log.debug("Starting up the gathering thread.")
 
     gather_thread = GatherThread()
     gather_thread.daemon = True
@@ -144,7 +151,7 @@ def config_setup():
     print("Enter a passphrase for your monitoring dashboard!")
     passphrase = input()
     print("Writing settings to config file...")
-    #TODO   
+    # TODO Write settings to config file
 
 
 def start_lets_encrypt_flow():

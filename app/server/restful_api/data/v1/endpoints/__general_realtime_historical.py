@@ -52,7 +52,7 @@ class GeneralEndpointRealtimeHistorical(GeneralGatheringMetricEndpoint, metaclas
         else:
             realtime_data = {}
 
-        self._response_holder.set_body_data(realtime_data)
+        self._response_holder.update_body_data(realtime_data)
 
         return self.KEEP_PROCESSING()
 
@@ -83,7 +83,7 @@ class GeneralEndpointRealtimeHistorical(GeneralGatheringMetricEndpoint, metaclas
                 # "unit": None
             }
 
-        self._response_holder.set_body_data(data_response)
+        self._response_holder.update_body_data(data_response)
 
         return self.KEEP_PROCESSING()
 

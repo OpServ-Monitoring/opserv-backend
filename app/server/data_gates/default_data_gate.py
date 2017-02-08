@@ -9,6 +9,7 @@ from misc.standalone_helper import merge_n_lists
 
 
 class DefaultDataGate(OutboundGateInterface):
+
     @classmethod
     def get_valid_arguments(cls, component_type: str) -> list:
         if component_type is None:
@@ -91,7 +92,7 @@ class DefaultDataGate(OutboundGateInterface):
 
     @classmethod
     def get_gathering_rates(cls) -> list:
-        pass
+        return UnifiedDatabaseInterface.get_component_metrics_writer_reader().get_gathering_rates()
 
     @classmethod
     def set_gathering_rate(cls, component_type: str, component_arg: str, metric: str, gathering_rate: int) -> None:
@@ -119,6 +120,10 @@ class DefaultDataGate(OutboundGateInterface):
             return None
 
         return UnifiedDatabaseInterface.get_user_preferences_writer_reader().get_user_preference(key)
+
+    @classmethod
+    def get_user_preferences(cls) -> list:
+        return UnifiedDatabaseInterface.get_user_preferences_writer_reader().get_used_user_preference_keys()
 
     @classmethod
     def set_user_preference(cls, key: str, value: str) -> None:

@@ -7,6 +7,9 @@ import server.restful_api.flask_restful_wrapper as rest_api
 import server.static_hosting.__management as static_hosting
 from application_settings.server_settings import ServerSettings
 from application_settings.app_settings import AppSettings
+import logging
+
+log = logging.getLogger("opserv." + __name__)
 
 
 # Optional: Exchange Flask with Tornado (to add web socket support)
@@ -14,7 +17,7 @@ def start():
     """
         Starts the web server on the main thread including both the restful-api as well as the static file hosting.
     """
-    print("Initializing the web server")  # TODO Exchange with logging
+    log.debug("Initializing the web server")
 
     app = Flask(__name__, static_url_path="", static_folder="static_hosting/public/")
 
@@ -33,7 +36,7 @@ def start():
 
     Compress(app)
 
-    # TODO Re-enable TLS context = ('server/ssl.cert', 'server/ssl.key')
+    # TODO Future version: Re-enable TLS context = ('server/ssl.cert', 'server/ssl.key')
 
     port = ServerSettings.get_setting(ServerSettings.KEY_PORT)
     if port is None:
@@ -51,7 +54,7 @@ def start():
     # to do: Generate certificate
 
     # This point shouldn't be reached
-    print("An error occurred. Web server shutting down!")  # TODO Exchange with logging
+    log.error("An error occurred. Web server shutting down!")
 
 
 def __init_api_ref_redirect(app):

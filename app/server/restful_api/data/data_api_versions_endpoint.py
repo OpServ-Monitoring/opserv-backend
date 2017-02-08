@@ -7,21 +7,21 @@ class DataApiVersionsEndpoint(Endpoint):
         return self.KEEP_PROCESSING()
 
     def _put(self) -> bool:
-        self._set_bad_request_response(
+        self._response_holder.set_bad_request_response(
             'HTTP method PUT is not supported by this resource'
         )
 
         return False
 
     def _post(self) -> bool:
-        self._set_bad_request_response(
+        self._response_holder.set_bad_request_response(
             'HTTP method POST is not supported by this resource'
         )
 
         return False
 
     def _delete(self) -> bool:
-        self._set_bad_request_response(
+        self._response_holder.set_bad_request_response(
             'HTTP method DELETE is not supported by this resource'
         )
 

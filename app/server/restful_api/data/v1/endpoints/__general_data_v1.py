@@ -27,26 +27,24 @@ class GeneralEndpointDataV1(Endpoint, metaclass=ABCMeta):
         params = self._request_holder.get_params()
 
         if params is None or parameter_name not in params:
-            self._set_bad_request_response("parameter " + parameter_name + " missing.")
+            self._response_holder.set_bad_request_response("parameter " + parameter_name + " missing.")
         else:
             actual_value = params[parameter_name]
 
             if verification_function is None or not callable(verification_function):
-                self._set_internal_server_error_response()
+                self._response_holder.set_internal_server_error_response()
             elif not verification_function(actual_value):
-
-                self._set_bad_request_response("parameter " + parameter_name + " is not properly formatted.")
+                self._response_holder.set_bad_request_response("parameter " + parameter_name + " is not properly formatted.")
             else:
                 return True
         return False
 
-    # TODO Remove this as PUTs are now supported (to set gathering rates) or keep this and simply override the needed endpoints
     def _put(self) -> bool:
         """
         The PUT-method is not supported by this api version, thus an response indicating a bad request is returned
         :return: A ResponseHolder holding a response with the bad request code
         """
-        self._set_bad_request_response(
+        self._response_holder.set_bad_request_response(
             'HTTP method PUT is not supported by this resource'
         )
 
@@ -57,7 +55,7 @@ class GeneralEndpointDataV1(Endpoint, metaclass=ABCMeta):
         The POST-method is not supported by this api version, thus an response indicating a bad request is returned
         :return: A ResponseHolder holding a response with the bad request code
         """
-        self._set_bad_request_response(
+        self._response_holder.set_bad_request_response(
             'HTTP method POST is not supported by this resource'
         )
 
@@ -68,7 +66,7 @@ class GeneralEndpointDataV1(Endpoint, metaclass=ABCMeta):
         The DELETE-method is not supported by this api version, thus an response indicating a bad request is returned
         :return: A ResponseHolder holding a response with the bad request code
         """
-        self._set_bad_request_response(
+        self._response_holder.set_bad_request_response(
             'HTTP method DELETE is not supported by this resource'
         )
 
@@ -85,7 +83,7 @@ class GeneralEndpointDataV1(Endpoint, metaclass=ABCMeta):
 
         return True
 
-    # TODO Simply check if key exists - DataGate
+    # TODO Future version: Exchange "mandatory_parameter" implementation with simple ID validation
     @classmethod
     def _get_mandatory_parameters(cls):
         return []

@@ -57,7 +57,6 @@ class FlaskRestfulWrapper:
                 http_method = self.__get_method_code(request.method)
 
                 # data passed as http headers
-                # TODO Simply use request.values instead, see http://flask.pocoo.org/docs/0.12/api/#flask.Request.values
                 if http_method == RequestHolder.METHOD_GET():
                     headers = request.args
                 elif http_method == RequestHolder.METHOD_POST() or http_method == RequestHolder.METHOD_PUT():

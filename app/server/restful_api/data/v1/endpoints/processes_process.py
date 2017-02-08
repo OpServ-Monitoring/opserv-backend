@@ -19,10 +19,9 @@ class ProcessesProcessEndpoint(GeneralEndpointDataV1):
         pid = None
         process_name = None
 
-        # TODO Improve the pid/name extraction
+        # TODO Future version: Improve the pid/name extraction
         # EXTRACTION START
-        from urllib.parse import unquote
-        raw_process_information = unquote(process_id)
+        raw_process_information = decode_string(process_id)
 
         import re
         matches = re.match("([^:]+):(.+)", raw_process_information)
@@ -31,7 +30,7 @@ class ProcessesProcessEndpoint(GeneralEndpointDataV1):
             process_name = matches.group(2)
         # EXTRACTION END
 
-        self._response_holder.set_body_data({
+        self._response_holder.update_body_data({
             "information": general_information,
             "pid": pid,
             "process_name": process_name

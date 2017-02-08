@@ -10,7 +10,7 @@ class UserPreferencesWriterReader(DatabaseConnector):
 
         user_preference = connection.execute(
             """
-              SELECT {1}, {2}
+              SELECT {2}
               FROM {0}
               WHERE {1} = ?
             """.format(
@@ -24,6 +24,9 @@ class UserPreferencesWriterReader(DatabaseConnector):
         ).fetchone()
 
         connection.close()
+
+        if user_preference is None:
+            return None
 
         # TODO Change accordingly after helper extraction
         from database.connectors.component_metrics_writer_reader import ComponentMetricsWriterReader

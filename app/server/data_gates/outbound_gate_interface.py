@@ -108,6 +108,14 @@ class OutboundGateInterface(metaclass=ABCMeta):
 
     @classmethod
     @abstractmethod
+    def get_user_preferences(cls) -> list:
+        """
+        ???
+        :return: ???
+        """
+
+    @classmethod
+    @abstractmethod
     def set_user_preference(cls, key: str, value: str) -> None:
         """
         ???

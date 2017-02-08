@@ -59,7 +59,7 @@ class Endpoint(metaclass=ABCMeta):
         elif method == RequestHolder.METHOD_DELETE():
             return self._delete()
         else:
-            self._set_bad_request_response(self._response_holder)
+            self._response_holder.set_bad_request_response(self._response_holder)
 
             return False
 
@@ -221,41 +221,6 @@ class Endpoint(metaclass=ABCMeta):
         :return: a dictionary including the passed uri and name
         """
         return {'href': uri, 'name': name}
-
-    # TODO Extract into the ResponseHolder class
-    def __set_fault_response(self, status_code, error_message):
-        """
-        helper method to set an error response
-        :param status_code: The http status code the response should have
-        :param error_message: The error message to display as part of the response
-        :return: None
-        """
-        self._response_holder.set_body(
-            {
-                "error_message": error_message
-            }
-        )
-        self._response_holder.set_status(status_code)
-
-    # TODO Extract into the ResponseHolder class
-    def _set_bad_request_response(self, error_message=None):
-        """
-        helper method to set a bad request response
-        :param error_message: The error_message to display
-        :return: None
-        """
-        if error_message is None:
-            error_message = "Bad Request"
-
-        self.__set_fault_response(400, error_message)
-
-    # TODO Extract into the ResponseHolder class
-    def _set_internal_server_error_response(self):
-        """
-        helper method to set a internal server error response
-        :return: None
-        """
-        self.__set_fault_response(500, "Internal server error")
 
     @classmethod
     def KEEP_PROCESSING(cls):

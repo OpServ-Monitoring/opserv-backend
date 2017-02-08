@@ -16,7 +16,7 @@ class PreferenceEndpoint(Endpoint):
         if user_pref is not None:
             user_pref_value = json.loads(user_pref)
 
-        self._response_holder.set_body_data({
+        self._response_holder.update_body_data({
             "key": pref_key,
             "value": user_pref_value
         })
@@ -34,7 +34,7 @@ class PreferenceEndpoint(Endpoint):
             json.dumps(pref_value)
         )
 
-        self._response_holder.set_body_data({
+        self._response_holder.update_body_data({
             "key": pref_key,
             "value": pref_value
         })
@@ -46,7 +46,7 @@ class PreferenceEndpoint(Endpoint):
                 The POST-method is not supported by this api version, thus an response indicating a bad request is returned
                 :return: A ResponseHolder holding a response with the bad request code
                 """
-        self._set_bad_request_response(
+        self._response_holder.set_bad_request_response(
             'HTTP method POST is not supported by this resource'
         )
         return False
@@ -57,7 +57,7 @@ class PreferenceEndpoint(Endpoint):
 
         self._outbound_gate.delete_user_preference(pref_key)
 
-        self._response_holder.set_body_data({
+        self._response_holder.update_body_data({
             "message": "preference " + pref_key + " deleted."
         })
 

@@ -10,7 +10,7 @@ class GpusGpuEndpoint(GeneralEndpointDataV1):
         persisted_info = self._outbound_gate.get_last_measurement("gpu", gpu_id, "info")
 
         if persisted_info is not None:
-            self._response_holder.set_body_data({
+            self._response_holder.update_body_data({
                 "timestamp": persisted_info["timestamp"],
                 "general-info": persisted_info["value"]
             })

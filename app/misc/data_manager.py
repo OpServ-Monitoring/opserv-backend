@@ -63,6 +63,6 @@ def create_measurement_if_not_exists(component, metric, args):
             realtime_data[component][metric] = None
     else:
         if not args in realtime_data[component]:
-            print("wtf")
+            print("wtf")  # wtf?
         if not metric in realtime_data[component][args]:
             realtime_data[component][args][metric] = None
