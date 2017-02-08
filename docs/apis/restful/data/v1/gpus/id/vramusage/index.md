@@ -1,4 +1,4 @@
 ---
 layout: doc-entry-rest-data-v1-endpoint
-title: /gpus/{ID}/vramusage/
+title: /gpus/{ID}/vramusage
 ---
