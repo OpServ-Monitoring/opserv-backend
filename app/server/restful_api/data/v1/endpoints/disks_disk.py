@@ -1,11 +1,13 @@
+from misc.standalone_helper import decode_string, double_decode_string
 from .__general_data_v1 import GeneralEndpointDataV1
 
 
 class DisksDiskEndpoint(GeneralEndpointDataV1):
     def _get(self) -> bool:
         disk_id = self._request_holder.get_params()["disk"]
+        disk_id = decode_string(disk_id)
 
-        persisted_info = self._outbound_gate.get_last_measurement("disk", "info", disk_id)
+        persisted_info = self._outbound_gate.get_last_measurement("disk", disk_id, "info")
 
         if persisted_info is not None:
             self._response_holder.set_body_data({
@@ -51,6 +53,5 @@ class DisksDiskEndpoint(GeneralEndpointDataV1):
 
     @classmethod
     def get_disk_id_validator(cls):
-        from server.data_gates.default_data_gate import DefaultDataGate
         return "disk", lambda x: cls._outbound_gate.is_argument_valid(
-            DefaultDataGate.decode_argument(DefaultDataGate.decode_argument(x)), "disk")
+            "disk", double_decode_string(x))

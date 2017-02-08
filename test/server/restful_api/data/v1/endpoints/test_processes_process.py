@@ -38,10 +38,6 @@ class TestProcessesProcess(TestCase):
         )
 
         self.assertFalse(
-            validation_func(2)
-        )
-
-        self.assertFalse(
             validation_func("")
         )
 
@@ -144,5 +140,5 @@ class TestProcessesProcess(TestCase):
 
         self.assertEqual(
             len(response_body_links["children"]),
-            3
+            2
         )

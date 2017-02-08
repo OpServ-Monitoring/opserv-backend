@@ -1,6 +1,7 @@
 import time
 from abc import ABCMeta
 
+from misc.standalone_helper import decode_string
 from server.restful_api.data.v1.endpoints.__general_gathering_metric import GeneralGatheringMetricEndpoint
 
 
@@ -34,13 +35,13 @@ class GeneralEndpointRealtimeHistorical(GeneralGatheringMetricEndpoint, metaclas
             return self.STOP_PROCESSING()
 
     def _get_realtime_data(self):
-        # TODO Improve method
+        component_arg = decode_string(self._get_component_arg())
 
-        component_type = self._get_component_type()
-        component_arg = self._get_component_arg()
-        component_metric = self._get_component_metric()
-
-        realtime_data = self._outbound_gate.get_last_measurement(component_type, component_metric, component_arg)
+        realtime_data = self._outbound_gate.get_last_measurement(
+            self._get_component_type(),
+            component_arg,
+            self._get_component_metric()
+        )
 
         if realtime_data is not None:
             # TODO Future version: Add unit information to the response
@@ -56,9 +57,11 @@ class GeneralEndpointRealtimeHistorical(GeneralGatheringMetricEndpoint, metaclas
         return self.KEEP_PROCESSING()
 
     def _get_historical_data(self):
+        component_arg = decode_string(self._get_component_arg())
+
         historical_data = self._outbound_gate.get_measurements(
             self._get_component_type(),
-            self._get_component_arg(),
+            component_arg,
             self._get_component_metric(),
             self._start,
             self._end,

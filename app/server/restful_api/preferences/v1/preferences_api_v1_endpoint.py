@@ -1,3 +1,4 @@
+from misc.standalone_helper import double_encode_string
 from ..preferences_api_versions_endpoint import PreferencesApiVersionsEndpoint
 from ...general.endpoint import Endpoint
 
@@ -67,8 +68,7 @@ class PreferencesApiV1Endpoint(Endpoint):
 
         children = []
         for key in keys_in_use:
-            from server.data_gates.default_data_gate import DefaultDataGate
-            key = DefaultDataGate.double_encode_argument(key)
+            key = double_encode_string(key)
 
             children.append(
                 ("/" + key, PreferenceEndpoint)

@@ -1,11 +1,13 @@
+from misc.standalone_helper import decode_string, double_decode_string
 from .__general_data_v1 import GeneralEndpointDataV1
 
 
 class ProcessesProcessEndpoint(GeneralEndpointDataV1):
     def _get(self) -> bool:
         process_id = self._request_holder.get_params()["process"]
+        process_id = decode_string(process_id)
 
-        persisted_info = self._outbound_gate.get_last_measurement("process", "info", process_id)
+        persisted_info = self._outbound_gate.get_last_measurement("process", process_id, "info")
 
         general_information = {}
         if persisted_info is not None:
@@ -71,6 +73,5 @@ class ProcessesProcessEndpoint(GeneralEndpointDataV1):
 
     @classmethod
     def get_process_id_validator(cls):
-        from server.data_gates.default_data_gate import DefaultDataGate
         return "process", lambda x: cls._outbound_gate.is_argument_valid(
-            DefaultDataGate.decode_argument(DefaultDataGate.decode_argument(x)), "process")
+            "process", double_decode_string(x))

@@ -38,10 +38,6 @@ class TestCpusCpu(TestCase):
         )
 
         self.assertFalse(
-            validation_func(2)
-        )
-
-        self.assertFalse(
             validation_func("")
         )
 

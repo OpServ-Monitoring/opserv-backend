@@ -6,20 +6,18 @@ from server.data_gates.outbound_gate_interface import OutboundGateInterface
 
 class BaseMockOutboundGate(OutboundGateInterface):
     @classmethod
-    def get_last_measurement(cls, component_type: str, metric: str, component_arg: str = None) -> dict:
+    def get_last_measurement(cls, component_type: str, component_arg: str, metric: str) -> dict:
         return {
             "value": "75 percent",
             "timestamp": 1234567
         }
 
     @classmethod
-    def is_argument_valid(cls, argument: str, component: str) -> bool:
-        print("is arg valid", argument in BaseMockOutboundGate.get_valid_arguments(component))
-
-        return argument in BaseMockOutboundGate.get_valid_arguments(component)
+    def is_argument_valid(cls, component_type: str, component_arg: str) -> bool:
+        return component_arg in BaseMockOutboundGate.get_valid_arguments(component_type)
 
     @classmethod
-    def get_valid_arguments(cls, component: str) -> Iterable:
+    def get_valid_arguments(cls, component_type: str) -> Iterable:
         return [
             "id",
             "2"
@@ -92,7 +90,7 @@ class BaseMockOutboundGate(OutboundGateInterface):
         ]
 
     @classmethod
-    def get_gathering_rate(cls, component: str, metric: str, argument: str = None) -> int:
+    def get_gathering_rate(cls, component_type: str, component_arg: str, metric: str) -> int:
         pass
 
     @classmethod
@@ -100,11 +98,11 @@ class BaseMockOutboundGate(OutboundGateInterface):
         pass
 
     @classmethod
-    def set_gathering_rate(cls, component: str, metric: str, gathering_rate: int, argument: str = None) -> None:
+    def set_gathering_rate(cls, component_type: str, component_arg: str, metric: str, gathering_rate: int) -> None:
         pass
 
     @classmethod
-    def delete_gathering_rate(cls, component: str, metric: str, argument: str = None) -> None:
+    def delete_gathering_rate(cls, component_type: str, component_arg: str, metric: str) -> None:
         pass
 
     @classmethod

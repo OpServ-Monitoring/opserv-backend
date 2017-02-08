@@ -1,18 +1,17 @@
 from abc import abstractmethod, ABCMeta
 
+from misc.standalone_helper import decode_string
 from .__general_data_v1 import GeneralEndpointDataV1
 
 
 class GeneralGatheringMetricEndpoint(GeneralEndpointDataV1, metaclass=ABCMeta):
     def _get(self) -> bool:
-        component_type = self._get_component_type()
-        component_arg = self._get_component_arg()
-        component_metric = self._get_component_metric()
+        component_arg = decode_string(self._get_component_arg())
 
         gathering_rate = self._outbound_gate.get_gathering_rate(
-            component_type,
-            component_metric,
-            component_arg
+            self._get_component_type(),
+            component_arg,
+            self._get_component_metric()
         )
 
         if gathering_rate is None:
@@ -31,15 +30,15 @@ class GeneralGatheringMetricEndpoint(GeneralEndpointDataV1, metaclass=ABCMeta):
             return self.STOP_PROCESSING()  # TODO error - also check for number and number >= 500
         else:
             component_type = self._get_component_type()
-            component_arg = self._get_component_arg()
+            component_arg = decode_string(self._get_component_arg())
             component_metric = self._get_component_metric()
             gathering_rate = request_body["gathering_rate"]
 
             self._outbound_gate.set_gathering_rate(
                 component_type,
+                component_arg,
                 component_metric,
-                gathering_rate,
-                component_arg
+                gathering_rate
             )
 
             success_message = "SUCCESS - Set the gathering rate of components {0}-{1} metric {2} to {3}".format(

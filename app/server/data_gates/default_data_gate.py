@@ -1,29 +1,29 @@
 import time
-from urllib.parse import quote, unquote
 
 from database.unified_database_interface import UnifiedDatabaseInterface
 from misc import data_manager
 from misc import queue_manager
 from misc.constants import COMPS_TO_SYSTEM_METRICS
 from server.data_gates.outbound_gate_interface import OutboundGateInterface
+from misc.standalone_helper import merge_n_lists
 
 
 class DefaultDataGate(OutboundGateInterface):
     @classmethod
     def get_valid_arguments(cls, component_type: str) -> list:
+        if component_type is None:
+            raise TypeError("component_type has to be a valid string object.")
+
         cached_arguments = cls.__get_cached_arguments(component_type)
 
         persisted_arguments = UnifiedDatabaseInterface.get_component_metrics_writer_reader().get_component_args(
             component_type
         )
 
-        return cls.__merge_two_lists(
-            cached_arguments,
-            persisted_arguments
-        )
+        return merge_n_lists(cached_arguments, persisted_arguments)
 
     @classmethod
-    def __get_cached_arguments(cls, component_type):
+    def __get_cached_arguments(cls, component_type) -> list:
         system_metric = COMPS_TO_SYSTEM_METRICS(component_type)
 
         if system_metric is not None:
@@ -33,9 +33,8 @@ class DefaultDataGate(OutboundGateInterface):
                 return system_arg_measurement['value']
         return []
 
-    # TODO Make sure every argument passed here is decoded already (on the http api side)
     @classmethod
-    def is_argument_valid(cls, component_arg: str, component_type: str) -> bool:
+    def is_argument_valid(cls, component_type: str, component_arg: str) -> bool:
         if component_arg is None or component_type is None:
             return False
         return component_arg in cls.get_valid_arguments(component_type)
@@ -44,11 +43,6 @@ class DefaultDataGate(OutboundGateInterface):
     def get_measurements(cls, component_type: str, component_arg: str, metric: str, start_time: int,
                          end_time: int, limit: int) -> list:
         measurement_data_reader = UnifiedDatabaseInterface.get_measurement_data_reader()
-
-        # TODO Remove decoding, shouldn't be part of data provisioning (e.g. websocket may not need encoded args)
-        component_type = cls.decode_argument(component_type)
-        metric = cls.decode_argument(metric)
-        component_arg = cls.decode_argument(component_arg)
 
         if component_type is None or metric is None:
             raise TypeError("Both component_type and metric have to be valid string objects.")
@@ -78,28 +72,20 @@ class DefaultDataGate(OutboundGateInterface):
         )
 
     @classmethod
-    def get_last_measurement(cls, component_type: str, metric: str, component_arg: str = None) -> dict:
-        # TODO Remove decoding, shouldn't be part of data provisioning (e.g. websocket may not need encoded args)
-        component_type = cls.decode_argument(component_type)
-        metric = cls.decode_argument(metric)
-        component_arg = cls.decode_argument(component_arg)
-
+    def get_last_measurement(cls, component_type: str, component_arg: str, metric: str) -> dict:
         if component_type is None or metric is None:
             raise TypeError("Both component_type and metric have to be valid string objects.")
 
         return data_manager.get_measurement(component_type, metric, component_arg)
 
     @classmethod
-    def get_gathering_rate(cls, component: str, metric: str, argument: str = None) -> int:
-        # TODO Remove decoding, shouldn't be part of data provisioning (e.g. websocket may not need encoded args)
-
-        component = cls.decode_argument(component)
-        metric = cls.decode_argument(metric)
-        argument = cls.decode_argument(argument)
+    def get_gathering_rate(cls, component_type: str, component_arg: str, metric: str) -> int:
+        if component_type is None or metric is None:
+            raise TypeError("Both component_type and metric have to be valid string objects.")
 
         return UnifiedDatabaseInterface.get_component_metrics_writer_reader().get_gathering_rate(
-            component,
-            argument,
+            component_type,
+            component_arg,
             metric
         )
 
@@ -108,29 +94,23 @@ class DefaultDataGate(OutboundGateInterface):
         pass
 
     @classmethod
-    def set_gathering_rate(cls, component: str, metric: str, gathering_rate: int, argument: str = None) -> None:
-        # TODO Remove decoding, shouldn't be part of data provisioning (e.g. websocket may not need encoded args)
-
-        component = cls.decode_argument(component)
-        metric = cls.decode_argument(metric)
-        argument = cls.decode_argument(argument)
-
+    def set_gathering_rate(cls, component_type: str, component_arg: str, metric: str, gathering_rate: int) -> None:
         UnifiedDatabaseInterface.get_component_metrics_writer_reader().set_gathering_rate(
-            component,
-            argument,
+            component_type,
+            component_arg,
             metric,
             gathering_rate
         )
 
         queue_manager.set_gathering_rate(
-            component,
+            component_type,
             metric,
             gathering_rate,
-            argument
+            component_arg
         )
 
     @classmethod
-    def delete_gathering_rate(cls, component: str, metric: str, argument: str = None) -> None:
+    def delete_gathering_rate(cls, component_type: str, component_arg: str, metric: str) -> None:
         pass
 
     @classmethod
@@ -149,32 +129,3 @@ class DefaultDataGate(OutboundGateInterface):
     def delete_user_preference(cls, key: str) -> None:
         if key is not None:
             UnifiedDatabaseInterface.get_user_preferences_writer_reader().delete_user_preference(key)
-
-    # TODO Extract this to some helper interface
-    @classmethod
-    def __merge_two_lists(cls, first_list, second_list):
-        def __stringify_list(raw_list) -> list:
-            return list(
-                map(str, raw_list)
-            )
-
-        first_list = __stringify_list(first_list)
-        second_list = __stringify_list(second_list)
-
-        return first_list + list(set(second_list) - set(first_list))
-
-    # TODO Extract this somewhere, encoding should not be part of the data gate but the HTTP API instead
-    @classmethod
-    def double_encode_argument(cls, argument) -> str:
-        if argument is None:
-            return None
-
-        return quote(quote(argument, safe=''), safe='')
-
-    # TODO Extract this somewhere, encoding should not be part of the data gate but the HTTP API instead
-    @classmethod
-    def decode_argument(cls, argument) -> str:
-        if argument is None:
-            return None
-
-        return unquote(argument)

@@ -8,7 +8,8 @@ import os
 import sys
 import socket
 from importlib import import_module
-import urllib.request
+from urllib.request import urlopen
+from urllib.parse import quote, unquote
 
 APP_FOLDER_NAME = "app"
 
@@ -23,6 +24,7 @@ def import_if_exists(module):
     else:
         print("{} has been successfully imported".format(module))  # TODO Exchange with logging
         return new_module
+
 
 def get_path_to_app():
     """
@@ -41,7 +43,6 @@ def get_path_to_app():
         current_dir = os.path.dirname(current_dir)  # Get the parent directory of current_dir
 
     return current_dir
-
 
 
 def is_pathname_valid(pathname: str) -> bool:
@@ -112,10 +113,11 @@ def is_pathname_valid(pathname: str) -> bool:
     # pathname itself are valid. (Praise be to the curmudgeonly python.)
     else:
         return True
-    # If any other exception was raised, this is an unrelated fatal issue
-    # (e.g., a bug). Permit this exception to unwind the call stack.
-    #
-    # Did we mention this should be shipped with Python already?
+        # If any other exception was raised, this is an unrelated fatal issue
+        # (e.g., a bug). Permit this exception to unwind the call stack.
+        #
+        # Did we mention this should be shipped with Python already?
+
 
 def has_internet_access(host="8.8.8.8", port=53, timeout=3):
     """
@@ -133,8 +135,53 @@ def has_internet_access(host="8.8.8.8", port=53, timeout=3):
     except Exception:
         return False
 
+
 def get_external_ip():
     '''
         Returns the external i.e. public IP address of this machine as UTF8 string
     '''
-    return str(urllib.request.urlopen("https://api.ipify.org").read().decode("utf-8"))
+    return str(urlopen("https://api.ipify.org").read().decode("utf-8"))
+
+
+def merge_n_lists(*lists: list) -> list:
+    """
+    Merges the items n lists into a single list. Each item is handled and returned as string.
+    :param lists: A tuple of lists, to be merged
+    :return: A list containing all items once
+    """
+    merged_items = []
+
+    if len(lists) < 1:
+        # TODO error handling
+        pass
+    elif len(lists) == 2:
+        merged_items = lists[0]
+    else:
+        for a_list in lists:
+            a_list = list(map(str, a_list))
+
+            merged_items += list(set(a_list) - set(merged_items))
+
+    return merged_items
+
+
+def encode_string(string: str):
+    if string is None:
+        return None
+
+    return quote(string, safe='')
+
+
+def double_encode_string(string: str):
+    return encode_string(encode_string(string))
+
+
+def decode_string(string: str):
+    if string is None:
+        return None
+
+    return unquote(string)
+
+
+def double_decode_string(string: str):
+    return decode_string(decode_string(string))

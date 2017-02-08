@@ -23,11 +23,11 @@ class UserPreferencesWriterReader(DatabaseConnector):
             )
         ).fetchone()
 
-        # TODO "Unzip" tuple before return
-
         connection.close()
 
-        return user_preference
+        # TODO Change accordingly after helper extraction
+        from database.connectors.component_metrics_writer_reader import ComponentMetricsWriterReader
+        return ComponentMetricsWriterReader.unpack_single_element_tuple(user_preference)
 
     @classmethod
     def set_user_preference(cls, key, value):
@@ -73,7 +73,7 @@ class UserPreferencesWriterReader(DatabaseConnector):
     def get_used_user_preference_keys(cls) -> list:
         connection = cls._connection_helper.retrieve_database_connection()
 
-        user_preference = connection.execute(
+        user_preference_keys = connection.execute(
             """
               SELECT {0}
               FROM {1}
@@ -87,4 +87,4 @@ class UserPreferencesWriterReader(DatabaseConnector):
 
         # TODO Change accordingly after helper extraction
         from database.connectors.component_metrics_writer_reader import ComponentMetricsWriterReader
-        return ComponentMetricsWriterReader.unpack_single_element_tuples(user_preference)
+        return ComponentMetricsWriterReader.unpack_single_element_tuples(user_preference_keys)

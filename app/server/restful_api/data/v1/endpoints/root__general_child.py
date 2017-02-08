@@ -1,5 +1,6 @@
 from abc import ABCMeta, abstractmethod
 
+from misc.standalone_helper import double_encode_string
 from .__general_data_v1 import GeneralEndpointDataV1
 from ....general.endpoint import Endpoint
 
@@ -39,11 +40,8 @@ class RootGeneralChildEndpoint(GeneralEndpointDataV1, metaclass=ABCMeta):
 
     @classmethod
     def __get_children_ids(cls) -> list:
-        # TODO Change the import after the method has been extracted
-        from server.data_gates.default_data_gate import DefaultDataGate
-
         encoded_children_ids = map(
-            DefaultDataGate.double_encode_argument,
+            double_encode_string,
             cls._outbound_gate.get_valid_arguments(cls._get_component_type())
         )
 
