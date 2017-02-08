@@ -55,4 +55,5 @@ class GpusGpuEndpoint(GeneralEndpointDataV1):
 
     @classmethod
     def get_gpu_id_validator(cls):
-        return "gpu", lambda x: cls._outbound_gate.is_argument_valid(x, "gpus")
+        from server.data_gates.default_data_gate import DefaultDataGate
+        return "gpu", lambda x: cls._outbound_gate.is_argument_valid(DefaultDataGate.decode_argument(DefaultDataGate.decode_argument(x)), "gpu")

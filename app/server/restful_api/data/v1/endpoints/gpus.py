@@ -14,8 +14,8 @@ class GpusEndpoint(RootGeneralChildEndpoint):
         return "gpu entities"
 
     @classmethod
-    def _get_hardware_value_type(cls) -> str:
-        return "gpus"
+    def _get_component_type(cls) -> str:
+        return "gpu"
 
     @classmethod
     def _get_children_endpoint_type(cls) -> Endpoint:

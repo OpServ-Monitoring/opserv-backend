@@ -14,8 +14,8 @@ class ProcessesEndpoint(RootGeneralChildEndpoint):
         return "process entities"
 
     @classmethod
-    def _get_hardware_value_type(cls) -> str:
-        return "processes"
+    def _get_component_type(cls) -> str:
+        return "process"
 
     @classmethod
     def _get_children_endpoint_type(cls) -> Endpoint:

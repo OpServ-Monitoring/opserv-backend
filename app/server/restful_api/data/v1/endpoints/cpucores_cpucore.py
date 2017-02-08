@@ -50,4 +50,5 @@ class CpucoresCpucoreEndpoint(GeneralEndpointDataV1):
 
     @classmethod
     def get_cpucore_id_validator(cls):
-        return "cpu_core", lambda x: cls._outbound_gate.is_argument_valid(x, "cpucores")
+        from server.data_gates.default_data_gate import DefaultDataGate
+        return "cpu_core", lambda x: cls._outbound_gate.is_argument_valid(DefaultDataGate.decode_argument(DefaultDataGate.decode_argument(x)), "cpucore")

@@ -42,10 +42,14 @@ class GeneralEndpointRealtimeHistorical(GeneralGatheringMetricEndpoint, metaclas
 
         realtime_data = self._outbound_gate.get_last_measurement(component_type, component_metric, component_arg)
 
-        # TODO FIX ERROR - realtime_data could be NONE!
-        realtime_data.update({
-            "unit": None
-        })
+        if realtime_data is not None:
+            # TODO Future version: Add unit information to the response
+            # realtime_data.update({
+            #     "unit": None
+            # })
+            pass
+        else:
+            realtime_data = {}
 
         self._response_holder.set_body_data(realtime_data)
 
@@ -61,10 +65,22 @@ class GeneralEndpointRealtimeHistorical(GeneralGatheringMetricEndpoint, metaclas
             self._limit
         )
 
-        self._response_holder.set_body_data({
-            "values": historical_data,
-            "unit": None
-        })
+        if historical_data is not None:
+            data_response = {
+                "values": historical_data,
+
+                # TODO Future version: Add unit information to the response
+                # "unit": None
+            }
+        else:
+            data_response = {
+                "values": [],
+
+                # TODO Future version: Add unit information to the response
+                # "unit": None
+            }
+
+        self._response_holder.set_body_data(data_response)
 
         return self.KEEP_PROCESSING()
 

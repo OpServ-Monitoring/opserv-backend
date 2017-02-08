@@ -49,4 +49,5 @@ class NetworksNetworkEndpoint(GeneralEndpointDataV1):
 
     @classmethod
     def get_network_id_validator(cls):
-        return "network", lambda x: cls._outbound_gate.is_argument_valid(x, "networks")
+        from server.data_gates.default_data_gate import DefaultDataGate
+        return "network", lambda x: cls._outbound_gate.is_argument_valid(DefaultDataGate.decode_argument(DefaultDataGate.decode_argument(x)), "network")

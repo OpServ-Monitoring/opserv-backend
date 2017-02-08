@@ -14,8 +14,8 @@ class NetworksEndpoint(RootGeneralChildEndpoint):
         return "network entities"
 
     @classmethod
-    def _get_hardware_value_type(cls) -> str:
-        return "networks"
+    def _get_component_type(cls) -> str:
+        return "network"
 
     @classmethod
     def _get_children_endpoint_type(cls) -> Endpoint:

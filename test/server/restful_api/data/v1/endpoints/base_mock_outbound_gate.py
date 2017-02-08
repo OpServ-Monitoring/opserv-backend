@@ -26,10 +26,6 @@ class BaseMockOutboundGate(OutboundGateInterface):
         ]
 
     @classmethod
-    def get_user_preference(cls, key: str) -> str:
-        pass
-
-    @classmethod
     def get_measurements(cls, component_type: str, component_arg: str, metric: str, start_time: int = 0,
                          end_time: int = time.time() * 1000, limit: int = 5000) -> Iterable:
         return [
@@ -96,7 +92,11 @@ class BaseMockOutboundGate(OutboundGateInterface):
         ]
 
     @classmethod
-    def set_user_preference(cls, key: str, value: str) -> None:
+    def get_gathering_rate(cls, component: str, metric: str, argument: str = None) -> int:
+        pass
+
+    @classmethod
+    def get_gathering_rates(cls) -> list:
         pass
 
     @classmethod
@@ -104,5 +104,17 @@ class BaseMockOutboundGate(OutboundGateInterface):
         pass
 
     @classmethod
-    def get_gathering_rate(cls, component: str, metric: str, argument: str = None) -> int:
+    def delete_gathering_rate(cls, component: str, metric: str, argument: str = None) -> None:
+        pass
+
+    @classmethod
+    def get_user_preference(cls, key: str) -> str:
+        pass
+
+    @classmethod
+    def set_user_preference(cls, key: str, value: str) -> None:
+        pass
+
+    @classmethod
+    def delete_user_preference(cls, key: str) -> None:
         pass

@@ -51,4 +51,5 @@ class CpusCpuEndpoint(GeneralEndpointDataV1):
 
     @classmethod
     def get_cpu_id_validator(cls):
-        return "cpu", lambda x: cls._outbound_gate.is_argument_valid(x, "cpus")
+        from server.data_gates.default_data_gate import DefaultDataGate
+        return "cpu", lambda x: cls._outbound_gate.is_argument_valid(DefaultDataGate.decode_argument(DefaultDataGate.decode_argument(x)), "cpu")

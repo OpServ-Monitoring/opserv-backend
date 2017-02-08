@@ -14,8 +14,8 @@ class PartitionsEndpoint(RootGeneralChildEndpoint):
         return "partition entities"
 
     @classmethod
-    def _get_hardware_value_type(cls) -> str:
-        return "partitions"
+    def _get_component_type(cls) -> str:
+        return "partition"
 
     @classmethod
     def _get_children_endpoint_type(cls) -> Endpoint:

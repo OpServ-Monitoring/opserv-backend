@@ -14,8 +14,8 @@ class CpusEndpoint(RootGeneralChildEndpoint):
         return "cpu entities"
 
     @classmethod
-    def _get_hardware_value_type(cls) -> str:
-        return "cpus"
+    def _get_component_type(cls) -> str:
+        return "cpu"
 
     @classmethod
     def _get_children_endpoint_type(cls) -> Endpoint:

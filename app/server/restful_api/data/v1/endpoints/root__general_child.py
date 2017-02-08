@@ -29,7 +29,7 @@ class RootGeneralChildEndpoint(GeneralEndpointDataV1, metaclass=ABCMeta):
 
     @classmethod
     @abstractmethod
-    def _get_hardware_value_type(cls) -> str:
+    def _get_component_type(cls) -> str:
         pass
 
     @classmethod
@@ -39,4 +39,12 @@ class RootGeneralChildEndpoint(GeneralEndpointDataV1, metaclass=ABCMeta):
 
     @classmethod
     def __get_children_ids(cls) -> list:
-        return cls._outbound_gate.get_valid_arguments(cls._get_hardware_value_type())
+        # TODO Change the import after the method has been extracted
+        from server.data_gates.default_data_gate import DefaultDataGate
+
+        encoded_children_ids = map(
+            DefaultDataGate.double_encode_argument,
+            cls._outbound_gate.get_valid_arguments(cls._get_component_type())
+        )
+
+        return list(encoded_children_ids)

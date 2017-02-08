@@ -68,12 +68,31 @@ class OutboundGateInterface(metaclass=ABCMeta):
 
     @classmethod
     @abstractmethod
+    def get_gathering_rates(cls) -> list:
+        """
+        Retrieves all gathering-rates currently persisted in the database
+        :return: A list containing all gathering-rate database entries
+        """
+
+    @classmethod
+    @abstractmethod
     def set_gathering_rate(cls, component: str, metric: str, gathering_rate: int, argument: str = None) -> None:
         """
         Sets the gathering rate of the defined component metric
         :param component: A string ???
         :param metric: A string ???
         :param gathering_rate: A integer ???
+        :param argument: A string ???, default is None
+        :return: None
+        """
+
+    @classmethod
+    @abstractmethod
+    def delete_gathering_rate(cls, component: str, metric: str, argument: str = None) -> None:
+        """
+        Sets the gathering rate of the defined component metric
+        :param component: A string ???
+        :param metric: A string ???
         :param argument: A string ???, default is None
         :return: None
         """
@@ -94,5 +113,14 @@ class OutboundGateInterface(metaclass=ABCMeta):
         ???
         :param key: ???
         :param value: ???
+        :return: ???
+        """
+
+    @classmethod
+    @abstractmethod
+    def delete_user_preference(cls, key: str) -> None:
+        """
+        ???
+        :param key: ???
         :return: ???
         """

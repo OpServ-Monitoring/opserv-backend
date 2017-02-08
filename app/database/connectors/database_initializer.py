@@ -1,3 +1,5 @@
+import logging
+
 from database.helper.base_database_connector import DatabaseConnector
 from database.tables.component_metrics_table_management import ComponentMetricsTableManagement
 from database.tables.component_type_metrics_table_management import ComponentTypeMetricsTableManagement
@@ -6,6 +8,8 @@ from database.tables.measurements_table_management import MeasurementsTableManag
 from database.tables.metrics_table_management import MetricsTableManagement
 from database.tables.user_preferences_table_management import UserPreferencesTableManagement
 from database.unified_database_interface import UnifiedDatabaseInterface
+
+log = logging.getLogger("opserv." + __name__)
 
 
 class DatabaseInitializer(DatabaseConnector):
@@ -131,7 +135,10 @@ class DatabaseInitializer(DatabaseConnector):
                 )
             else:
                 pass
-                # TODO LOG ERROR - Tried to set gathering rate for component type gathering_rate[0] which is undefined
+                log.error(
+                    "Tried to set gathering rate in the queue_manager for the component_type %s which is undefined.",
+                    gathering_rate[0]
+                )
 
     # TODO Remove this from here
     @classmethod

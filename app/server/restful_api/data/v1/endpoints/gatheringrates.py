@@ -13,6 +13,9 @@ class GatheringRatesEndpoint(GeneralEndpointDataV1):
         return []
 
     def _get(self) -> bool:
+        # TODO Improve method - e.g. extract in multiple methods
+        # TODO Migrate all data access to use the data gate
+
         from misc.constants import implemented_hardware, component_needs_arg, COMPS_TO_SYSTEM_METRICS
 
         values = {}
@@ -23,6 +26,7 @@ class GatheringRatesEndpoint(GeneralEndpointDataV1):
             if component_needs_arg(component_type):
                 component_type_as_system_metric = COMPS_TO_SYSTEM_METRICS(component_type)
 
+                # TODO WARNING - These are not encoded anymore! (valid_args)
                 for component_arg in self._outbound_gate.get_valid_arguments(component_type_as_system_metric):
                     values[component_type][component_arg] = {}
             else:
@@ -49,6 +53,8 @@ class GatheringRatesEndpoint(GeneralEndpointDataV1):
                         "metric": metric,
                         "gathering_rate": values[component_type][component_arg][metric]
                     })
+
+        # TODO Encode component_arg?
 
         self._response_holder.set_body_data({
             "values": result

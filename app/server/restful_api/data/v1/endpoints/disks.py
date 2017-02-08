@@ -14,8 +14,8 @@ class DisksEndpoint(RootGeneralChildEndpoint):
         return "disk entities"
 
     @classmethod
-    def _get_hardware_value_type(cls) -> str:
-        return "disks"
+    def _get_component_type(cls) -> str:
+        return "disk"
 
     @classmethod
     def _get_children_endpoint_type(cls) -> Endpoint:
