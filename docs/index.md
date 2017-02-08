@@ -12,7 +12,7 @@ based on the different user groups of the system.
 
 Do you want to know how to use opserv to monitor your system? Or do you need an overview of all features the web-interface offers? Take a look at [the user guide](/docs/guide) to learn more.
 
-In case you want to contribute to the project or are just curious about how the system is set up make yourself familiar with the [system architecure](/docs/architecure).
+In case you want to contribute to the project or are just curious about how the system is set up make yourself familiar with the [system architecure](/docs/architecture).
 
 Dont like the included web interface? Build your own interface using one of the offered apis. 
 We recommend you to get started [learning about one of the apis](/docs/apis) by reading its reference.
