@@ -23,6 +23,8 @@ class UserPreferencesWriterReader(DatabaseConnector):
             )
         ).fetchone()
 
+        # TODO "Unzip" tuple before return
+
         connection.close()
 
         return user_preference

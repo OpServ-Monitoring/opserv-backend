@@ -8,10 +8,15 @@ class PreferenceEndpoint(Endpoint):
     def _get(self) -> bool:
         pref_key = self._request_holder.get_params()["pref_key"]
 
+        # TODO Check if this works
+        from server.data_gates.default_data_gate import DefaultDataGate
+        pref_key = DefaultDataGate.decode_argument(pref_key)
+
         user_pref = self._outbound_gate.get_user_preference(pref_key)
 
         user_pref_value = None
         if user_pref is not None:
+            # TODO Remove [1] after tuple unzip in db has been established
             user_pref_value = json.loads(user_pref[1])
 
         self._response_holder.set_body_data({
@@ -25,6 +30,10 @@ class PreferenceEndpoint(Endpoint):
         pref_key = self._request_holder.get_params()["pref_key"]
 
         pref_value = self._request_holder.get_body()["value"]
+
+        # TODO Check if this works
+        from server.data_gates.default_data_gate import DefaultDataGate
+        pref_key = DefaultDataGate.decode_argument(pref_key)
 
         self._outbound_gate.set_user_preference(
             pref_key,
@@ -51,7 +60,11 @@ class PreferenceEndpoint(Endpoint):
     def _delete(self) -> bool:
         pref_key = self._request_holder.get_params()["pref_key"]
 
-        self._outbound_gate.set_user_preference(pref_key, None)  # TODO Exchange with actual data gate deletion
+        # TODO Check if this works
+        from server.data_gates.default_data_gate import DefaultDataGate
+        pref_key = DefaultDataGate.decode_argument(pref_key)
+
+        self._outbound_gate.delete_user_preference(pref_key)
 
         self._response_holder.set_body_data({
             "message": "preference " + pref_key + " deleted."

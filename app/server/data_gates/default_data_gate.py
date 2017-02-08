@@ -135,10 +135,6 @@ class DefaultDataGate(OutboundGateInterface):
 
     @classmethod
     def get_user_preference(cls, key: str) -> str:
-        # TODO Remove decoding, shouldn't be part of data provisioning (e.g. websocket may not need encoded args)
-
-        key = cls.decode_argument(key)
-
         if key is None:
             return None
 
@@ -146,16 +142,13 @@ class DefaultDataGate(OutboundGateInterface):
 
     @classmethod
     def set_user_preference(cls, key: str, value: str) -> None:
-        # TODO Remove decoding, shouldn't be part of data provisioning (e.g. websocket may not need encoded args)
-
-        key = cls.decode_argument(key)
-
         if key is not None:
             UnifiedDatabaseInterface.get_user_preferences_writer_reader().set_user_preference(key, value)
 
     @classmethod
     def delete_user_preference(cls, key: str) -> None:
-        pass
+        if key is not None:
+            UnifiedDatabaseInterface.get_user_preferences_writer_reader().delete_user_preference(key)
 
     # TODO Extract this to some helper interface
     @classmethod
@@ -176,7 +169,7 @@ class DefaultDataGate(OutboundGateInterface):
         if argument is None:
             return None
 
-        return quote(quote(argument))
+        return quote(quote(argument, safe=''), safe='')
 
     # TODO Extract this somewhere, encoding should not be part of the data gate but the HTTP API instead
     @classmethod

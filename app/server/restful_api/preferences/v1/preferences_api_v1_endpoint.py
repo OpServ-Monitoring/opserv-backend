@@ -67,6 +67,9 @@ class PreferencesApiV1Endpoint(Endpoint):
 
         children = []
         for key in keys_in_use:
+            from server.data_gates.default_data_gate import DefaultDataGate
+            key = DefaultDataGate.double_encode_argument(key)
+
             children.append(
                 ("/" + key, PreferenceEndpoint)
             )
