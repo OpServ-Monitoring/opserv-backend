@@ -52,4 +52,5 @@ class PartitionsPartitionEndpoint(GeneralEndpointDataV1):
     @classmethod
     def get_partition_id_validator(cls):
         from server.data_gates.default_data_gate import DefaultDataGate
-        return "partition", lambda x: cls._outbound_gate.is_argument_valid(DefaultDataGate.decode_argument(DefaultDataGate.decode_argument(x)), "partition")
+        return "partition", lambda x: cls._outbound_gate.is_argument_valid(
+            DefaultDataGate.decode_argument(DefaultDataGate.decode_argument(x)), "partition")

@@ -52,4 +52,5 @@ class ProcessesProcessEndpoint(GeneralEndpointDataV1):
     @classmethod
     def get_process_id_validator(cls):
         from server.data_gates.default_data_gate import DefaultDataGate
-        return "process", lambda x: cls._outbound_gate.is_argument_valid(DefaultDataGate.decode_argument(DefaultDataGate.decode_argument(x)), "process")
+        return "process", lambda x: cls._outbound_gate.is_argument_valid(
+            DefaultDataGate.decode_argument(DefaultDataGate.decode_argument(x)), "process")

@@ -9,7 +9,6 @@ from server.data_gates.outbound_gate_interface import OutboundGateInterface
 
 
 class DefaultDataGate(OutboundGateInterface):
-
     @classmethod
     def get_valid_arguments(cls, component_type: str) -> list:
         cached_arguments = cls.__get_cached_arguments(component_type)
