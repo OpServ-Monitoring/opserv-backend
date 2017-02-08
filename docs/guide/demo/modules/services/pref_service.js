@@ -1,15 +1,11 @@
 
 app.factory('prefService',function($http, $rootScope, $timeout){
 
-//------------------------------------------------Variablen--------------------------------------------------------------------------------------------------------------------------------------//
+//------------------------------------------------ Variables --------------------------------------------------------------------------------------------------------------------------------------//
     var service = {};
 
 //------------------------------------------------ Dashboards --------------------------------------------------------------------------------------------------------------------------------------//
 
-    /**
-     * läd alle Dashobards eines Users
-     * @returns {*}
-     */
     service.getDashboards = function(){
         var url = "";
         if ($rootScope.isMock){
@@ -36,11 +32,6 @@ app.factory('prefService',function($http, $rootScope, $timeout){
         });
     };
 
-    /**
-     * speichert alles dashboards
-     * @param dashboards
-     * @returns {*}
-     */
     service.saveDashboards = function(dashboards){
         if ($rootScope.isMock){
             // emulate save is successfull

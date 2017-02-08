@@ -24,8 +24,8 @@
                         </md-option>
                     </md-select>
                 </md-input-container>
-                <span ng-if="currentMode.text =='Live'">{{ 'GATHERING_RATE_TEXT' | translate }}</span>
-                <md-slider-container ng-if="currentMode.text =='Live'">
+                <span ng-show="currentMode.text =='Live'">{{ 'GATHERING_RATE_TEXT' | translate }}</span>
+                <md-slider-container ng-show="currentMode.text =='Live'">
                     <md-slider flex min="500" max="10000" ng-model="samplingRate" aria-label="sampling-rate" id="sampling-rate-slider">
                     </md-slider>
                     <md-input-container>
@@ -40,7 +40,7 @@
             <md-button class="md-raised md-warn" ng-click="cancel()">
                 {{ 'CANCEL_TEXT' | translate }}
             </md-button>
-            <md-button ng-disabled="saveDisabeled" class="md-raised md-accent" type="submit">
+            <md-button class="md-raised md-accent" type="submit">
                 {{ 'SAVE_TEXT' | translate }}
             </md-button>
         </md-dialog-actions>

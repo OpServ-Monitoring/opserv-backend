@@ -285,10 +285,10 @@ app.directive('ktDashboardWidget',[ 'dataService',function (dataService) {
                     if(status){
                         if(samplingRate > 500 && samplingRate < 10001){
                             scope.samplingRate = samplingRate;
-                            console.log("rate is set");
+                            console.log("rate is set to: ", scope.samplingRate);
                         }else{
                             scope.samplingRate = 1000;
-                            console.log("rate is set");
+                            console.log("rate is set to: ", scope.samplingRate);
                         }
                         if(scope.displayitem.realtime == true){
                             scope.currentMode = scope.modes[0]
