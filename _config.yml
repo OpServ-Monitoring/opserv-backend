@@ -25,3 +25,11 @@ github_username:  OpServ-Monitoring
 # Build settings
 markdown: kramdown
 theme: minima
+
+defaults:
+  -
+    scope:
+      path: "" # an empty string here means all files in the project
+    values:
+      title: "new title everywhere"
+      layout: "default"
