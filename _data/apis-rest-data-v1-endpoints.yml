@@ -10,65 +10,14 @@ cpus:
           explanation: Some explanation2
       response: null
       error_codes: null
-
-cpu-cores:
-  description: Some description
-  requests:
-    - method: get
-      params: null
-      request_header: null
-      request_body: null
-      examples:
-        - uri: GET /cpu-cores
-          explanation: Some explanation
-      response: null
-      error_codes: null
-
-cpu-cores_id:
-  description: Some description 2
-  requests:
-    - method: get
-      params:
-        - key: id
-          description: The id of the cpu-core to fetch
-          possible_values: depends on the system
-          mandatory: yes
-      request_header: null
-      request_body: null
-      examples:
-        - uri: GET /cpu-cores/0
-          explanation: Some explanation 2
-      response: null
-      error_codes: null
-
-cpu-cores_id_usage:
-  description: Some description 3
-  requests:
-    - method: get
-      params:
-        - key: id
-          description: The id of the cpu-core to fetch
-          possible_values: depends on the system
-          mandatory: yes
-      request_header:
-        - key: starttime
-          description: start descr
-          possible_values: 0 - 1
-          mandatory: no
-          default_value: 0
-      request_body: null
-      examples:
-        - uri: GET /cpu-cores/0/usage?
-          explanation: Some explanation 3
-      response: null
-      error_codes: null
       
 cpus_id_temperature:
-  description: | The dataset depending on the submitted request headers can either include the newest data 
-                or a number of datapoints in a given timespan. However the number datasets for historical data is limited. 
-                The wanted intervall is split into equally sized sub-intervalls, 
-                foreach all measurements within such a sub-intervall are averaged 
-                and returned as one datapoint in case atleast one measurement was taken.
+  description: | 
+              The dataset depending on the submitted request headers can either include the newest data 
+              or a number of datapoints in a given timespan. However the number datasets for historical data is limited. 
+              The wanted intervall is split into equally sized sub-intervalls, 
+              foreach all measurements within such a sub-intervall are averaged 
+              and returned as one datapoint in case atleast one measurement was taken.
   requests:
     - method: get
       params:
@@ -132,4 +81,56 @@ cpus_id_temperature:
                     }, 
                     ‘links’: { … } 
                 }
+      error_codes: null
+
+cpu-cores:
+  description: Some description
+  requests:
+    - method: get
+      params: null
+      request_header: null
+      request_body: null
+      examples:
+        - uri: GET /cpu-cores
+          explanation: Some explanation
+      response: null
+      error_codes: null
+
+cpu-cores_id:
+  description: Some description 2
+  requests:
+    - method: get
+      params:
+        - key: id
+          description: The id of the cpu-core to fetch
+          possible_values: depends on the system
+          mandatory: yes
+      request_header: null
+      request_body: null
+      examples:
+        - uri: GET /cpu-cores/0
+          explanation: Some explanation 2
+      response: null
+      error_codes: null
+
+cpu-cores_id_usage:
+  description: Some description 3
+  requests:
+    - method: get
+      params:
+        - key: id
+          description: The id of the cpu-core to fetch
+          possible_values: depends on the system
+          mandatory: yes
+      request_header:
+        - key: starttime
+          description: start descr
+          possible_values: 0 - 1
+          mandatory: no
+          default_value: 0
+      request_body: null
+      examples:
+        - uri: GET /cpu-cores/0/usage?
+          explanation: Some explanation 3
+      response: null
       error_codes: null
