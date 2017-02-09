@@ -64,20 +64,39 @@ cpu-cores_id_usage:
       error_codes: null
       
 cpus_id_temperature:
-  description: The dataset depending on the submitted request headers can either include the newest data or a number of datapoints in a given timespan. However the number of historical datapoints is limited.
+  description: | The dataset depending on the submitted request headers can either include the newest data 
+                or a number of datapoints in a given timespan. However the number datasets for historical data is limited. 
+                The wanted intervall is split into equally sized sub-intervalls, 
+                foreach all measurements within such a sub-intervall are averaged 
+                and returned as one datapoint in case atleast one measurement was taken.
   requests:
     - method: get
       params:
         - key: id
-          description: The ID assigned to the cpu by the OpServ system. A list of all ids present at the moment can be retrieved with this request
+          description: The ID assigned to the cpu by the OpServ system, url-encoded twice. All available, already encoded IDs can be found at /cpus
           possible_values: depends on the system
           mandatory: yes
       request_header:
         - key: realtime
           description: A boolean indicating whether realtime data is wanted or not
-          possible_values: “false” or 0 to retrieve historical data; “true” or 1 to retrieve realtime data
+          possible_values: either “true” to retrieve realtime data; or anything else to retrieve historical data
           mandatory: no
-          default_value: 0
+          default_value: False
+        - key: starttime
+          description: the starttime of the time intervall to retrieve data from
+          possible_values: 0 - ∞
+          mandatory: no
+          default_value: time of the first measurement taken for this component-metric in millis, else 0
+        - key: endtime
+          description: the endtime of the time intervall to retrieve data from
+          possible_values: 0 - ∞
+          mandatory: no
+          default_value: the current time in millis
+        - key: limit
+          description: the number of equally sized sub-intervalls to slice the whole intervall into and thus maximum number of datasets returned
+          possible_values: 1 - 5000
+          mandatory: no
+          default_value: 100
       request_body: null
       examples:
         - uri: GET http://example.com/cpus/0/temperature?	realtime=0&start=1472680800000&end=1475186400000&limit=35&unit=fahrenheit
