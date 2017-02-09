@@ -31,5 +31,5 @@ defaults:
     scope:
       path: "docs/apis/restful/data/v1/" # an empty string here means all files in the project
     values:
-      title: page.path | remove: "docs/apis/restful/data/v1" | remove: "/index.md"
+      title: path
       layout: "doc-entry-rest-data-v1-endpoint"
