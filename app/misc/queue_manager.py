@@ -103,10 +103,7 @@ def read_measurement_from_queue(component, metric, args=None, blocking=False,
 
 
 def real_time_queue_empty(component, metric, args=None):
-    if get_queue(component, metric, args).empty():
-        return True
-    else:
-        return False
+    return get_queue(component, metric, args).empty()
 
 
 def set_gathering_rate(component, metric, delayms, args=None):

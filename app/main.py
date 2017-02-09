@@ -20,11 +20,11 @@ from application_settings.configuration_settings import ConfigurationSettings
 from database.unified_database_interface import UnifiedDatabaseInterface
 from gathering.gather_main import GatherThread
 from misc.logging_helper import setup_argparse_logger
-from misc.standalone_helper import get_external_ip, has_internet_access
 from misc.opserv_helper import get_operating_system
 from misc.constants import YES_PHRASES
 
 log = logging.getLogger("opserv." + __name__)
+
 
 # TODO Future version: Evaluate whether all prints should use the log instead or not
 
@@ -132,11 +132,13 @@ def show_opserv_info():
     print("Elevated Permissions: " + str(has_elevated_privileges()))
     print("Reported Platform Value: " + sys.platform)
     print("Detected Operating System: " + str(get_operating_system()))
-    print("Python Version: " + "{0}.{1}.{2}.{3}".format(sys.version_info.major, 
-                                                        sys.version_info.minor, 
-                                                        sys.version_info.micro, 
+    print("Python Version: " + "{0}.{1}.{2}.{3}".format(sys.version_info.major,
+                                                        sys.version_info.minor,
+                                                        sys.version_info.micro,
                                                         sys.version_info.releaselevel))
-    #print("Internet Access: {0}({1})".format(str(has_internet_access()), get_external_ip()))
+    # TODO Is this needed anymore?
+    # print("Internet Access: {0}({1})".format(str(has_internet_access()), get_external_ip()))
+
 
 def config_setup():
     print("Which port would you like to run the sofware on?")
@@ -151,11 +153,13 @@ def config_setup():
     print("Enter a passphrase for your monitoring dashboard!")
     passphrase = input()
     print("Writing settings to config file...")
-    # TODO Write settings to config file
+
+    # TODO Future version: Write settings to config file
 
 
 def start_lets_encrypt_flow():
     pass
+
 
 if __name__ == '__main__':
     # Get Arg Settings as well as config file

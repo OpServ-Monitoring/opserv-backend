@@ -1,9 +1,10 @@
 class CreateTableStatementBuilder:
     @classmethod
     def __parse_columns(cls, columns):
-        assert len(columns) > 0
+        if len(columns) > 0:
+            return cls.__to_string_list(columns, cls.__parse_column)
 
-        return cls.__to_string_list(columns, cls.__parse_column)
+        return None
 
     @classmethod
     def __parse_column(cls, column):
@@ -14,24 +15,24 @@ class CreateTableStatementBuilder:
         if len(foreign_keys) > 0:
             return cls.__to_string_list(foreign_keys, cls.__parse_foreign_key)
 
-        return None
+        return None  # TODO Log error
 
     @classmethod
     def __parse_foreign_key(cls, foreign_key):
-        assert len(foreign_key[0]) > 0
-        assert len(foreign_key[0]) == len(foreign_key[2])
+        if len(foreign_key[0]) > 0 and len(foreign_key[0]) == len(foreign_key[2]):
+            foreign_key_statement = "FOREIGN KEY ("
+            foreign_key_statement += cls.__to_string_list(foreign_key[0])
 
-        foreign_key_statement = "FOREIGN KEY ("
-        foreign_key_statement += cls.__to_string_list(foreign_key[0])
+            foreign_key_statement += ") REFERENCES "
+            foreign_key_statement += foreign_key[1]
 
-        foreign_key_statement += ") REFERENCES "
-        foreign_key_statement += foreign_key[1]
+            foreign_key_statement += "("
+            foreign_key_statement += cls.__to_string_list(foreign_key[2])
+            foreign_key_statement += ") "
 
-        foreign_key_statement += "("
-        foreign_key_statement += cls.__to_string_list(foreign_key[2])
-        foreign_key_statement += ") "
+            return foreign_key_statement
 
-        return foreign_key_statement
+        return None  # TODO Log error
 
     @classmethod
     def __parse_primary_key(cls, primary_key):

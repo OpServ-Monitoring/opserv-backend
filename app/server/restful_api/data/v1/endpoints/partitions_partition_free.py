@@ -12,5 +12,6 @@ class PartitionsPartitionFreeEndpoint(PartitionsPartitionGeneralChildEndpoint):
     def get_name(cls):
         return "partition free space measurement"
 
-    def _get_component_metric(self) -> str:
+    @classmethod
+    def _get_component_metric(cls) -> str:
         return "free"

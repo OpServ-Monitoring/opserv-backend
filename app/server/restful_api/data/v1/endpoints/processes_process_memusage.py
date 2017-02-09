@@ -12,5 +12,6 @@ class ProcessesProcessMemusageEndpoint(ProcessesProcessGeneralChildEndpoint):
     def get_name(cls):
         return "process memory usage measurement"
 
-    def _get_component_metric(self) -> str:
+    @classmethod
+    def _get_component_metric(cls) -> str:
         return "memusage"

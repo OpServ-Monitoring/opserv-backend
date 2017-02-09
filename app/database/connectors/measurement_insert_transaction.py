@@ -37,7 +37,8 @@ class MeasurementInsertTransaction(DatabaseConnector):
             connection.close()
 
         except IntegrityError as err:
-            log.error("Error during commit of bulk transaction. Most likely triggered by a duplicate timestamp.", err)
+            log.error("Error during commit of bulk transaction. Most likely triggered by a duplicate timestamp.")
+            log.error(err)
             log.error("Tried to commit these values: %s", str(self.__insertions))
 
         self.__reset_variables()

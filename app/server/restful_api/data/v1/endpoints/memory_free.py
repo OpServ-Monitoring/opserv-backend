@@ -2,7 +2,8 @@ from server.restful_api.data.v1.endpoints.memory__general_child import MemoryGen
 
 
 class MemoryFreeEndpoint(MemoryGeneralChildEndpoint):
-    def _get_component_metric(self) -> str:
+    @classmethod
+    def _get_component_metric(cls) -> str:
         return "free"
 
     @classmethod

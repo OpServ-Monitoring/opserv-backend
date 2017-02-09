@@ -134,7 +134,6 @@ class DatabaseInitializer(DatabaseConnector):
                     arg
                 )
             else:
-                pass
                 log.error(
                     "Tried to set gathering rate in the queue_manager for the component_type %s which is undefined.",
                     gathering_rate[0]

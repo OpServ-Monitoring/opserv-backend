@@ -25,5 +25,6 @@ class CpucoresCpucoreGeneralChildEndpoint(GeneralEndpointRealtimeHistorical, met
     def _get_component_arg(self) -> str:
         return self._request_holder.get_params()["cpu_core"]
 
-    def _get_component_type(self) -> str:
+    @classmethod
+    def _get_component_type(cls) -> str:
         return "cpucore"

@@ -12,5 +12,6 @@ class ProcessesProcessCpuusageEndpoint(ProcessesProcessGeneralChildEndpoint):
     def get_name(cls):
         return "process cpu usage measurement"
 
-    def _get_component_metric(self) -> str:
+    @classmethod
+    def _get_component_metric(cls) -> str:
         return "cpuusage"

@@ -62,14 +62,16 @@ class GeneralGatheringMetricEndpoint(GeneralEndpointDataV1, metaclass=ABCMeta):
     def _get_children(cls):
         return []
 
+    @classmethod
     @abstractmethod
-    def _get_component_type(self) -> str:
+    def _get_component_type(cls) -> str:
         pass
 
     @abstractmethod
     def _get_component_arg(self) -> str:
         pass
 
+    @classmethod
     @abstractmethod
-    def _get_component_metric(self) -> str:
+    def _get_component_metric(cls) -> str:
         pass

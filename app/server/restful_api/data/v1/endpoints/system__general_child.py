@@ -4,7 +4,8 @@ from server.restful_api.data.v1.endpoints.__general_gathering_metric import Gene
 
 
 class SystemGeneralChildEndpoint(GeneralGatheringMetricEndpoint, metaclass=ABCMeta):
-    def _get_component_type(self) -> str:
+    @classmethod
+    def _get_component_type(cls) -> str:
         return "system"
 
     def _get_component_arg(self) -> str:

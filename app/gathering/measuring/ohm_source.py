@@ -301,7 +301,6 @@ class OHMSource(MeasuringSource):
             log.info(sensor)
             log.info(sensor.Name)
             log.info(sensor.SensorType)
-        pass
 
     def get_cpu_measurement(self, metric, args):
         """

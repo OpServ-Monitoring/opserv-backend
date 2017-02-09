@@ -22,7 +22,8 @@ class ProcessesProcessGeneralChildEndpoint(GeneralEndpointRealtimeHistorical, me
     def _get_children(cls):
         return []
 
-    def _get_component_type(self) -> str:
+    @classmethod
+    def _get_component_type(cls) -> str:
         return "process"
 
     def _get_component_arg(self) -> str:

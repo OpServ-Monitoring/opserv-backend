@@ -74,7 +74,12 @@ def is_pathname_valid(pathname: str) -> bool:
         # environment variable); else, the typical root directory.
         root_dirname = os.environ.get('HOMEDRIVE', 'C:') \
             if sys.platform == 'win32' else os.path.sep
-        assert os.path.isdir(root_dirname)  # ...Murphy and her ironclad Law
+
+        # original version - don't use asserts in production code
+        # assert os.path.isdir(root_dirname)  # ...Murphy and her ironclad Law
+        # new version
+        if not os.path.isdir(root_dirname):  # ...Murphy and her ironclad Law
+            raise AssertionError
 
         # Append a path separator to this directory if needed.
         root_dirname = root_dirname.rstrip(os.path.sep) + os.path.sep

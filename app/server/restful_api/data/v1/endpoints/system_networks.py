@@ -2,7 +2,8 @@ from .system__general_child import SystemGeneralChildEndpoint
 
 
 class SystemNetworksEndpoint(SystemGeneralChildEndpoint):
-    def _get_component_metric(self) -> str:
+    @classmethod
+    def _get_component_metric(cls) -> str:
         return "networks"
 
     @classmethod

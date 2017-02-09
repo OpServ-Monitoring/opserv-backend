@@ -22,7 +22,8 @@ class DisksDiskGeneralChildEndpoint(GeneralEndpointRealtimeHistorical, metaclass
     def _get_children(cls):
         return []
 
-    def _get_component_type(self) -> str:
+    @classmethod
+    def _get_component_type(cls) -> str:
         return "disk"
 
     def _get_component_arg(self) -> str:

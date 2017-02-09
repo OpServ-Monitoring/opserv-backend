@@ -12,5 +12,6 @@ class CpusCpuUsageEndpoint(CpusCpuGeneralChildEndpoint):
     def get_name(cls):
         return "cpu usage measurement"
 
-    def _get_component_metric(self) -> str:
+    @classmethod
+    def _get_component_metric(cls) -> str:
         return "usage"

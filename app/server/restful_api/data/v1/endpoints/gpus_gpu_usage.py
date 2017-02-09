@@ -12,5 +12,6 @@ class GpusGpuUsageEndpoint(GpusGpuGeneralChildEndpoint):
     def get_name(cls):
         return "gpu usage measurement"
 
-    def _get_component_metric(self) -> str:
+    @classmethod
+    def _get_component_metric(cls) -> str:
         return "usage"

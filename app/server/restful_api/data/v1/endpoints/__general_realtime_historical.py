@@ -1,4 +1,3 @@
-import time
 from abc import ABCMeta
 
 from misc.standalone_helper import decode_string
@@ -16,7 +15,7 @@ class GeneralEndpointRealtimeHistorical(GeneralGatheringMetricEndpoint, metaclas
 
     def _pre_process(self):
         # Check for mandatory parameters
-        keep_processing = super(GeneralGatheringMetricEndpoint, self)._pre_process()
+        keep_processing = super(GeneralEndpointRealtimeHistorical, self)._pre_process()
 
         if keep_processing:
             self.__read_headers()

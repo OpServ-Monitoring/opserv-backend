@@ -12,5 +12,6 @@ class CpusCpuFrequencyEndpoint(CpusCpuGeneralChildEndpoint):
     def get_name(cls):
         return "cpu frequency measurement"
 
-    def _get_component_metric(self) -> str:
+    @classmethod
+    def _get_component_metric(cls) -> str:
         return "frequency"
