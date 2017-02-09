@@ -29,7 +29,7 @@ theme: minima
 defaults:
   -
     scope:
-      path: "" # an empty string here means all files in the project
+      path: "/docs/apis/restful/data/v1" # an empty string here means all files in the project
     values:
       title: "new title everywhere"
       layout: "default"
