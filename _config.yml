@@ -28,7 +28,7 @@ theme: minima
 
 defaults:
   - scope:
-      path: "docs/apis/restful/data/v1" # for every data-api v1 reference page
+      path: "docs/apis/restful/data" # for every data-api v1 reference page
     values:
       layout: "doc-entry-rest-data-v1-endpoint"
-      title: {{ path }}
+      title: path
