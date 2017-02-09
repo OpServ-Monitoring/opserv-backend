@@ -1,10 +1,4 @@
 ---
 layout: doc-entry-rest-data-v1-endpoint
-title:  "Work in progress"
+title: /processes/{ID}/memusage
 ---
-
-Work in progress...
-
-<!---
-    TODO Add content
--->
