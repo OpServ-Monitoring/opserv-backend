@@ -74,12 +74,11 @@ def queue_exists(component, metric, args):
     """ Checks whether the specified queue already exists """
     if component in realtime_queues:
         if args is not None:
-            if args in realtime_queues[component]:
-                if metric in realtime_queues[component][args]:
-                    return True
-        else:
-            if metric in realtime_queues[component]:
+            if args in realtime_queues[component] and metric in realtime_queues[component][args]:
                 return True
+        elif metric in realtime_queues[component]:
+            return True
+
     return False
 
 

@@ -108,10 +108,8 @@ def is_pathname_valid(pathname: str) -> bool:
             #   * Under most POSIX-compatible OSes, "ENAMETOOLONG".
             #   * Under some edge-case OSes (e.g., SunOS, *BSD), "ERANGE".
             except OSError as exc:
-                if hasattr(exc, 'winerror'):
-                    if exc.winerror == ERROR_INVALID_NAME:
-                        return False
-                elif exc.errno in {errno.ENAMETOOLONG, errno.ERANGE}:
+                if (hasattr(exc, 'winerror') and exc.winerror == ERROR_INVALID_NAME) or \
+                        (exc.errno in {errno.ENAMETOOLONG, errno.ERANGE}):
                     return False
     # If a "TypeError" exception was raised, it almost certainly has the
     # error message "embedded NUL character" indicating an invalid pathname.

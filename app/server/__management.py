@@ -1,12 +1,10 @@
 from flask import Flask
 from flask import redirect
-from flask.ext.basicauth import BasicAuth
 from flask_compress import Compress
 
 import server.restful_api.flask_restful_wrapper as rest_api
 import server.static_hosting.__management as static_hosting
 from application_settings.server_settings import ServerSettings
-from application_settings.app_settings import AppSettings
 import logging
 
 log = logging.getLogger("opserv." + __name__)
@@ -41,14 +39,6 @@ def start():
     port = ServerSettings.get_setting(ServerSettings.KEY_PORT)
     if port is None:
         port = 31337
-
-    password = AppSettings.get_setting(AppSettings.KEY_PASSWORD)
-    if password is not None:
-        app.config['BASIC_AUTH_USERNAME'] = 'opserv'
-        app.config['BASIC_AUTH_PASSWORD'] = password
-        app.config['BASIC_AUTH_FORCE'] = True
-
-        basic_auth = BasicAuth(app)
 
     app.run(host='127.0.0.1', port=port, debug=False, threaded=True)
     # to do: Generate certificate

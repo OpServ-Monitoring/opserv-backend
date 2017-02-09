@@ -1,6 +1,8 @@
 from flask import request
 from flask_restful import Api, Resource
+from flask_basicauth import BasicAuth
 
+from application_settings.app_settings import AppSettings
 from .general.requestholder import RequestHolder
 from .rest_api_management import RestApiManagement
 
@@ -8,8 +10,19 @@ from .rest_api_management import RestApiManagement
 class FlaskRestfulWrapper:
     __api = None
 
+    # needed for basic authentication
+    __basic_auth = None
+
     def __init__(self, app):
         self.__api = Api(app)
+
+        # enable basic auth if a password is set
+        password = AppSettings.get_setting(AppSettings.KEY_PASSWORD)
+        if password is not None:
+            app.config['BASIC_AUTH_USERNAME'] = 'opserv'
+            app.config['BASIC_AUTH_PASSWORD'] = password
+
+            self.__basic_auth = BasicAuth(app)
 
     def init_rest_api(self):
         endpoint_managements = RestApiManagement.get_endpoint_managements()
@@ -28,7 +41,13 @@ class FlaskRestfulWrapper:
                 self.__init_endpoint(endpoints_prefix, endpoint, version, is_current)
 
     def __init_endpoint(self, endpoints_prefix, endpoint_class, version, is_current):
+        basic_auth = self.__basic_auth  # read basic_auth from wrapper class
+
         class CustomResource(Resource):
+            if basic_auth is not None:
+                # Enable basic auth for every http api endpoint
+                method_decorators = [basic_auth.required]
+
             def get(self, **params):
                 return self.__handle_request(**params)
 

@@ -1,10 +1,7 @@
 class CreateTableStatementBuilder:
     @classmethod
     def __parse_columns(cls, columns):
-        if len(columns) > 0:
-            return cls.__to_string_list(columns, cls.__parse_column)
-
-        return None
+        return cls.__parse_list(columns, cls.__parse_column)
 
     @classmethod
     def __parse_column(cls, column):
@@ -12,10 +9,7 @@ class CreateTableStatementBuilder:
 
     @classmethod
     def __parse_foreign_keys(cls, foreign_keys):
-        if len(foreign_keys) > 0:
-            return cls.__to_string_list(foreign_keys, cls.__parse_foreign_key)
-
-        return None  # TODO Log error
+        return cls.__parse_list(foreign_keys, cls.__parse_foreign_key)
 
     @classmethod
     def __parse_foreign_key(cls, foreign_key):
@@ -79,3 +73,10 @@ class CreateTableStatementBuilder:
     @classmethod
     def __append_to_string_list(cls, string_list, appendix):
         return string_list + ", " + appendix
+
+    @classmethod
+    def __parse_list(cls, a_list: list, parsing_function):
+        if len(a_list) > 0:
+            return cls.__to_string_list(a_list, parsing_function)
+
+        return None  # TODO Log error
