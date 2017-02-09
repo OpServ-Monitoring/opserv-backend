@@ -1,10 +1,4 @@
 ---
 layout: doc-entry-rest-data-v1-endpoint
-title:  "Work in progress"
+title: /system/cpus
 ---
-
-Work in progress...
-
-<!---
-    TODO Add content
--->
