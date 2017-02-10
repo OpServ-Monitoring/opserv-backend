@@ -2,7 +2,7 @@
 layout: doc-entry-rest-data-v1
 ---
 
-{% assign title = page.path | remove: "docs/apis/restful/data/v1" | remove: "/index.md" %}
+{% assign title = page.path | remove: "docs/apis/restful/data/v1" | remove: "/index.md" | replace: 'id', '{ID}' %}
 <script>
 	var newTitle = {{ title | jsonify }}
 
