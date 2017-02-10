@@ -29,7 +29,6 @@ theme: minima
 collections:
     api-http-data-v1-endpoints:
         output: true
-        permalink: /awesome/:path/:title.:output_ext
 
 defaults:
   - scope:
