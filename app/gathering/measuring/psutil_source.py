@@ -75,6 +75,10 @@ class PsUtilWrap(MeasuringSource):
         self.net_last_receive_data = {}
         self.net_last_sent_data = {}
 
+        # List of Process objects to successfully gather cpu_percent values
+        # See psutil.Process().cpu_percent() documentation for more info
+        self.process_dict = {}
+
         self.init()
 
     def init(self):
@@ -155,7 +159,11 @@ class PsUtilWrap(MeasuringSource):
         '''
             Returns a measurement of the desired process and metric
         '''
-        requested_process = self.psutil.Process(args)
+        if args in self.process_dict:
+            requested_process = self.process_dict[args]
+        else:
+            requested_process = self.psutil.Process(args)
+            self.process_dict[args] = requested_process
         if metric == "cpuusage":
             return requested_process.cpu_percent()
         elif metric == "memusage":
