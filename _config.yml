@@ -29,7 +29,7 @@ theme: minima
 collections:
     api-http-data-v1-endpoints:
         output: true
-        permalink: /test:pathy/index.html
+        permalink: /test/:pathy/index.html
 
 defaults:
   - scope:
