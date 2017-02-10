@@ -1,3 +1,4 @@
 ---
 pathy: testy
+title: hallo
 ---
