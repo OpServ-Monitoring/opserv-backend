@@ -5,8 +5,13 @@ layout: doc-entry-rest-data-v1
 {% assign title = page.path | remove: "docs/apis/restful/data/v1" | remove: "/index.md" %}
 <script>
 	var newTitle = {{ title | jsonify }}
-	document.body.innerHTML = document.body.innerHTML.replace('PAGE_TITLE_PLACEHOLDER', newTitle);
-	document.head.innerHTML = document.head.innerHTML.replace('PAGE_TITLE_PLACEHOLDER', newTitle);
+
+	var headerElements = document.querySelectorAll(".page-content #main.markdown-body h1");
+	for (var i = 0; i < headerElements.length; i++) {
+		headerElements[i].text = newTitle;
+	}
+
+	document.title = newTitle
 </script>
 
 {% assign endpoint_identifier = page.path | remove: "docs/apis/restful/data/v1/" | remove: "/index.md" | replace: '/', '_' %}
