@@ -1,2 +1,3 @@
 ---
+pathy: testy
 ---
