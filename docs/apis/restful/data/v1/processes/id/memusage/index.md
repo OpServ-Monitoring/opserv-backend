@@ -1,3 +1,2 @@
 ---
-title: /processes/{ID}/memusage
 ---

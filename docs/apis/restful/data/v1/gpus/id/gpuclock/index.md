@@ -1,3 +1,2 @@
 ---
-title: /gpus/{ID}/gpuclock
 ---

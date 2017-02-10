@@ -1,3 +1,2 @@
 ---
-title: /networks/{ID}/transmitpersec
 ---
