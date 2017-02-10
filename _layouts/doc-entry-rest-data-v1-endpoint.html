@@ -8,7 +8,7 @@ layout: doc-entry-rest-data-v1
 
 	var headerElements = document.querySelectorAll(".page-content #main.markdown-body h1");
 	for (var i = 0; i < headerElements.length; i++) {
-		headerElements[i].text = newTitle;
+		headerElements[i].textContent = newTitle;
 	}
 
 	document.title = newTitle
