@@ -28,6 +28,57 @@ class GatheringRatesEndpoint(GeneralEndpointDataV1):
 
         return self.KEEP_PROCESSING()
 
+    def _put(self) -> bool:
+        request_body = self._request_holder.get_body()
+
+        component_metrics_dict = self.__get_all_component_metrics()
+
+        if "component_type" not in request_body or request_body["component_type"] not in component_metrics_dict:
+            # TODO Future version: Log and return error message
+
+            return self.STOP_PROCESSING()
+        elif "component_arg" not in request_body \
+                or request_body["component_arg"] not in component_metrics_dict[request_body["component_type"]]:
+            # TODO Future version: Log and return error message
+
+            return self.STOP_PROCESSING()
+        elif "metric" not in request_body \
+                or request_body["metric"] not in component_metrics_dict[request_body["component_type"]][request_body["component_arg"]]:
+            # TODO Future version: Log and return error message
+
+            return self.STOP_PROCESSING()
+        elif "gathering_rate" not in request_body or \
+                not isinstance(request_body["gathering_rate"], int) or \
+                (request_body["gathering_rate"] < 500 and request_body["gathering_rate"] != 0):
+            # TODO Future version: Log and return error message
+
+            return self.STOP_PROCESSING()
+        else:
+            component_type = request_body["component_type"]
+            component_arg = request_body["component_arg"]
+            component_metric = request_body["metric"]
+            gathering_rate = request_body["gathering_rate"]
+
+            self._outbound_gate.set_gathering_rate(
+                component_type,
+                component_arg,
+                component_metric,
+                gathering_rate
+            )
+
+            success_message = "SUCCESS - Set the gathering rate of components {0}-{1} metric {2} to {3}".format(
+                component_type,
+                component_arg,
+                component_metric,
+                gathering_rate
+            )
+
+            self._response_holder.update_body_data({
+                "message": success_message
+            })
+
+            return self.KEEP_PROCESSING()
+
     @classmethod
     def get_paths(cls):
         return [

@@ -117,6 +117,7 @@ class Endpoint(metaclass=ABCMeta):
         self.__generate_self_reference(links)
         self.__generate_parent_reference(links)
         self.__generate_children_references(links)
+        self.__generate_doc_reference(links)
 
         return links
 
@@ -137,6 +138,11 @@ class Endpoint(metaclass=ABCMeta):
         children = self.__get_children()
         if children is not None and isinstance(children, list) and len(children) > 0:
             links['children'] = children
+
+    def __generate_doc_reference(self, links):
+        uri = self._request_holder.get_uri().replace("/api", "/apiref")
+
+        links['docs'] = self._get_link_element(uri,  "api reference article")
 
     @classmethod
     @abstractmethod
