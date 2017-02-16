@@ -100,14 +100,9 @@ app.factory('dataService',function($http, $rootScope, toastService,$timeout){
     service.getCIs = function (baseUrl) {
         return $http.get(baseUrl+CURRENT_API_PATH).then(function successCallback(response) {
             var cis = getValuesFromChildrenLinks(response.data.links.children);
-
-            $timeout(function() {
-                $rootScope.$broadcast(EVENT_CIS_RECEIVED, true, cis);
-            }, 3000);
-
-
+            $rootScope.$broadcast(EVENT_CIS_RECEIVED, true, cis);
         }, function errorCallback(response) {
-            $rootScope.$broadcast(EVENT_CIS_RECEIVED, false, response);
+            $rootScope.$broadcast(EVENT_CIS_RECEIVED, false, undefined);
         });
     };
 
@@ -121,7 +116,8 @@ app.factory('dataService',function($http, $rootScope, toastService,$timeout){
     };
 
     service.getCiCats = function(ciName, ciId, baseUrl){
-        return $http.get(baseUrl+CURRENT_API_PATH+'/'+ciName+'/'+ciId).then(function successCallback(response) {
+        var encodedId = encodeURIComponent(encodeURIComponent(ciId))
+        return $http.get(baseUrl+CURRENT_API_PATH+'/'+ciName+'/'+encodedId).then(function successCallback(response) {
             var cats = getValuesFromChildrenLinks(response.data.links.children);
             $rootScope.$broadcast(EVENT_CI_CATS_RECEIVED, true, ciName, cats);
         }, function errorCallback(response) {
@@ -144,11 +140,49 @@ app.factory('dataService',function($http, $rootScope, toastService,$timeout){
         });
     };
 
+//------------------------------------------------ Gathering Rates --------------------------------------------------------------------------------------------------------------------------------------//
+
+    service.getGatheringRates = function (baseURL) {
+        var url = baseURL+CURRENT_API_PATH+"/gathering-rates";
+        return $http.get(url).then(function successCallback(response) {
+            var gathering_rates = response.data.data.values;
+            $rootScope.$broadcast(EVENT_ALL_GATHERING_RATES_RECEIVED, true, gathering_rates);
+        }, function errorCallback(response) {
+            $rootScope.$broadcast(EVENT_ALL_GATHERING_RATES_RECEIVED, false, undefined);
+        });
+    };
+
+    service.setGatheringRate = function (baseURL, ci, id, cat, gatheringRateObject) {
+        //encode id
+        var encodedComponentArg = getEncodedComponentArg(id);
+        var urls = buildUrls(baseURL, ci, id, cat, false);
+        setGatheringRate(urls.forGatheringRate, gatheringRateObject.gathering_rate, function (success) {
+            if (success) {
+                $rootScope.$broadcast(EVENT_SET_GATHERING_RATE, true, gatheringRateObject);
+            } else {
+                $rootScope.$broadcast(EVENT_SET_GATHERING_RATE, false, gatheringRateObject);
+            }
+        });
+    };
+
+    service.updateGatheringRate = function (baseURL, ci, id, cat, gatheringRateObject) {
+
+        console.log(encodedComponentArg);
+        var urls = buildUrls(baseURL, ci, encodedComponentArg, cat, false);
+        setGatheringRate(urls.forGatheringRate, gatheringRateObject.gathering_rate, function (success) {
+            if (success) {
+                $rootScope.$broadcast(EVENT_UPDATE_GATHERING_RATE, true, gatheringRateObject);
+            } else {
+                $rootScope.$broadcast(EVENT_UPDATE_GATHERING_RATE, false, gatheringRateObject);
+            }
+        });
+    };
+
 //------------------------------------------------ Helper --------------------------------------------------------------------------------------------------------------------------------------//
 
     function createCiLiveInterval(baseUrl, ci, id, category, samplingRate, intervalName, callback){
         var urls = buildUrls(baseUrl, ci, id, category,true);
-        setSamplingRate(urls.forSamplingRate,samplingRate,function (success) {
+        setGatheringRate(urls.forGatheringRate,samplingRate,function (success) {
             if (success){
                 try {
                     var liveInterval = setInterval(function () {
@@ -189,7 +223,7 @@ app.factory('dataService',function($http, $rootScope, toastService,$timeout){
         });
     }
 
-    function setSamplingRate(url, samplingRate, callback) {
+    function setGatheringRate(url, samplingRate, callback) {
         $http.put(url,{gathering_rate:samplingRate}).then(function onSuccess(response) {
             callback(true);
         }, function onError(response) {
@@ -256,21 +290,21 @@ app.factory('dataService',function($http, $rootScope, toastService,$timeout){
     }
 
     function buildUrls(baseUrl, ci, id, cat, isLive, historyStartTime, historyEndTime) {
-        var urls = {forSamplingRate:'',forData:''};
-        console.log("id: ",id);
-        if(id != undefined){
-            urls.forSamplingRate = baseUrl+CURRENT_API_PATH+'/'+ci+'/'+id+'/'+cat;
+        var encodedComponentArg = getEncodedComponentArg(id);
+        var urls = {forGatheringRate:'',forData:''};
+        if(encodedComponentArg != undefined){
+            urls.forGatheringRate = baseUrl+CURRENT_API_PATH+'/'+ci+'/'+encodedComponentArg+'/'+cat;
             if(isLive){
-                urls.forData = baseUrl+CURRENT_API_PATH+'/'+ci+'/'+id+'/'+cat+REALTIME_QUERY_STRING;
+                urls.forData = baseUrl+CURRENT_API_PATH+'/'+ci+'/'+encodedComponentArg+'/'+cat+REALTIME_QUERY_STRING;
                 return urls;
             }else{
                 // urls.forData = baseUrl+CURRENT_API_PATH+'/'+ci+'/'+id+'/'+cat+HISTORY_START_STRING+historyStartTime+HISTORY_END_STRING_MUST_BE_LAST+historyEndTime;
                 // return urls;
-                urls.forData = baseUrl+CURRENT_API_PATH+'/'+ci+'/'+id+'/'+cat;
+                urls.forData = baseUrl+CURRENT_API_PATH+'/'+ci+'/'+encodedComponentArg+'/'+cat;
                 return urls;
             }
         }else{
-            urls.forSamplingRate = baseUrl+CURRENT_API_PATH+'/'+ci+'/'+cat;
+            urls.forGatheringRate = baseUrl+CURRENT_API_PATH+'/'+ci+'/'+cat;
             if(isLive){
                 urls.forData = baseUrl+CURRENT_API_PATH+'/'+ci+'/'+cat+REALTIME_QUERY_STRING;
                 return urls;
@@ -290,7 +324,7 @@ app.factory('dataService',function($http, $rootScope, toastService,$timeout){
                 var childrenAdress = link.href;
                 var cutInArray = childrenAdress.split("/");
                 var lastItem = cutInArray[cutInArray.length-1];
-                ids.push(lastItem);
+                ids.push(decodeURIComponent(decodeURIComponent(lastItem)));
             });
             return ids;
         }else{
@@ -308,6 +342,10 @@ app.factory('dataService',function($http, $rootScope, toastService,$timeout){
         // }else{
         //     return [];
         // }
+    }
+
+    function getEncodedComponentArg(component_type) {
+        return encodeURIComponent(encodeURIComponent(component_type))
     }
 
     return service;

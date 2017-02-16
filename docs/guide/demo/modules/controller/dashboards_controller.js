@@ -1,10 +1,13 @@
-/**
- * Created by Snare on 24.08.16.
- */
 app.controller('DashboardCtrl',function($scope, $rootScope, prefService, $mdSidenav, toastService, dialogService, $filter, $translate){
+
+
+    //TODO Erfolgsmeldung beim speichern von Einstelluneg mit speicher button
+
+
     var scope = $scope;
     var rootScope = $rootScope;
 
+    scope.loading = true;
 
     // define if need Mockup
     console.log(window.location.host);
@@ -17,6 +20,8 @@ app.controller('DashboardCtrl',function($scope, $rootScope, prefService, $mdSide
 
     scope.isFabOpen = false;
     rootScope.isEditMode = false;
+    scope.isError = false;
+
 
     scope.gridsterOpts = {
         columns: 30, // the width of the grid, in columns
@@ -58,12 +63,16 @@ app.controller('DashboardCtrl',function($scope, $rootScope, prefService, $mdSide
 
     prefService.getDashboards();
 
+
     scope.$on(EVENT_DASHBOARDS_RECEIVED,function(event,success,dashboards){
         if (success){
             rootScope.dashboards=dashboards;
             scope.selectedDashboard = 0;
             console.log(rootScope.dashboards);
+            scope.loading = false;
         }else{
+            scope.isError = true;
+            scope.loading = false;
             toastService.showErrorToast("Laden der Dashboards fehlgeschlagen!")
         }
         scope.isLoaded = true;
@@ -72,8 +81,8 @@ app.controller('DashboardCtrl',function($scope, $rootScope, prefService, $mdSide
     scope.$on(EVENT_DELETE_WIDGET, function (event, dashboardIndex, widgetIndex) {
         var forRollback = rootScope.dashboards[dashboardIndex].widgets[widgetIndex];
         rootScope.dashboards[dashboardIndex].widgets.splice(widgetIndex,1);
-        toastService.showDeletedToast("Widget",function (response) {
-            if ( response == 'ok' ) {
+        toastService.showRollbackToast("Widget",function (doRollback) {
+            if (doRollback) {
                 rootScope.dashboards[dashboardIndex].widgets.push(forRollback);
                 save();
             }
@@ -85,8 +94,8 @@ app.controller('DashboardCtrl',function($scope, $rootScope, prefService, $mdSide
         save();
     });
 
-    scope.openSettingsOpservDialog = function () {
-        dialogService.showOpservSettings(function (newSettings) {
+    scope.openGatheringRatesSettingsDialog = function () {
+        dialogService.showGatheringRatesSettings(scope.selectedDashboard,scope.dashboards[scope.selectedDashboard].baseUrl,function (newSettings) {
 
         });
     };
@@ -111,8 +120,8 @@ app.controller('DashboardCtrl',function($scope, $rootScope, prefService, $mdSide
     scope.deleteCurrentDashboard = function(index){
         var forRollback = rootScope.dashboards[index];
         rootScope.dashboards.splice(index,1);
-        toastService.showDeletedToast("Dashboard",function (response) {
-            if ( response == 'ok' ) {
+        toastService.showRollbackToast("Dashboard",function (doRollback) {
+            if (doRollback) {
                 rootScope.dashboards.push(forRollback);
                 save();
             }
@@ -148,7 +157,6 @@ app.controller('DashboardCtrl',function($scope, $rootScope, prefService, $mdSide
     };
 
     scope.toggleEditMode = function(){
-
         if(!scope.isEditMode){
             scope.gridsterOpts.pushing = true;
             scope.gridsterOpts.floating = true;
@@ -169,8 +177,12 @@ app.controller('DashboardCtrl',function($scope, $rootScope, prefService, $mdSide
         save();
     };
 
+    scope.refresh = function () {
+        location.reload();
+    };
+
     scope.toggleLeft = function () {
-        $mdSidenav('left').toggle();
+
     };
 
     function save() {

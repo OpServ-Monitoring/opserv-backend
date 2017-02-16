@@ -15,7 +15,13 @@ const EVENT_ITEM_RESIZE = "item_resize";
 const EVENT_TOGGLE_EDIT_MODE = "toggle_edit_mode";
 const EVENT_SAVE = "save";
 const EVENT_USER_VALIDATED = "user_validated";
-const EVENT_GATHERING_RATE_RECEIVED = "gathering_rate_recieved";
+const EVENT_GATHERING_RATE_RECEIVED = "gathering_rate_received";
+const EVENT_ALL_GATHERING_RATES_RECEIVED = "all_gathering_rates_received";
+const EVENT_SET_GATHERING_RATE = "delete_gathering_rate";
+const EVENT_SAVE_GATHERING_RATE = "save_gathering_rate";
+const EVENT_UPDATE_GATHERING_RATE = "update_gathering_rate";
+const EVENT_SLIDER_DRAG_END = "slider_drag_ended";
+
 
 
 
@@ -369,7 +375,7 @@ app.config(function ($translateProvider) {
     $translateProvider.preferredLanguage('en_EN')
 });
 
-app.run(function($rootScope, $location, authService, $translate) {
+app.run(function($rootScope, $location, authService, $translate, $http) {
 
     $rootScope.languages = [
         {label:"Deutsch", key:'de_DE'},
@@ -385,6 +391,20 @@ app.run(function($rootScope, $location, authService, $translate) {
     }
     $translate.use(languageKey);
 
+
+    var password = localStorage.getItem('password');
+    var userName = localStorage.getItem('userName');
+    if (password && userName){
+        var encodedString = base64Encoding(userName+":"+password);
+        $http.defaults.headers.common ={
+            'Authorization':'Basic '+encodedString
+        };
+    }
+
+    function base64Encoding(str) {
+        return btoa(str)
+    }
+
     // wird beim refresh oder wechsel einer URL aufgerunfen
     $rootScope.$on('$locationChangeStart', function() {
         var password = localStorage.getItem('password');
@@ -393,12 +413,13 @@ app.run(function($rootScope, $location, authService, $translate) {
             if (!authService.isLoggedIn()) {
                 $location.path('/login'); // relocate for Login
             } else {
-                $location.path('/'); // secret und LoggedIn also alles gut
+                // password und username und LoggedIn also alles gut
             }
         }else{
             $location.path('/login');
         }
     });
+
 });
 
 app.config(function ($routeProvider) {
@@ -416,24 +437,19 @@ app.config(function ($routeProvider) {
     });
 });
 
-app.config(['$httpProvider', function($httpProvider, authService) {
+app.config(['$httpProvider', function($httpProvider) {
 
-    var password = localStorage.getItem('password');
-    var userName = localStorage.getItem('userName');
-    var encodedString = base64Encoding(userName+":"+password);
 
-    $httpProvider.defaults.headers.common ={
-        'Authorization':'Basic '+encodedString
-    };
+
+
+
 
     $httpProvider.defaults.useXDomain = true;
 
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
 
 
-    function base64Encoding(str) {
-        return btoa(str)
-    }
+
 }
 
 ]);

@@ -41,7 +41,8 @@ app.directive('ktDashboardWidget',[ 'dataService',function (dataService) {
                         animation: true,
                         events: {
                             load: function () {
-                                toggleVisibilityHighchartsButtons(rootScope.isEditMode)
+                                toggleVisibilityHighchartsButtons(rootScope.isEditMode);
+                                scope.chart.reflow()
                             }
                         }
                     },
@@ -195,27 +196,25 @@ app.directive('ktDashboardWidget',[ 'dataService',function (dataService) {
 
             scope.$watch('currentMode',function(newMode, oldMode){
                 if(oldMode != newMode){
-                    console.log("mode changes");
                     clearData();
                     toggleLoading(true);
                     configureHowToLoadNewData(newMode,oldMode);
                     setChartTitle();
-                    scope.$emit("save");
+                    scope.$emit(EVENT_SAVE);
                 }
             });
 
             scope.$watch('samplingRate',function (newSamplingRate, oldSamplingRate) {
                 if (oldSamplingRate != newSamplingRate) {
                     updateSamplingRate(newSamplingRate);
-                    scope.$emit("save");
+                    scope.$emit(EVENT_SAVE);
                 }
-
             });
 
             scope.$watch('displayitem.title',function (newTitle, oldTitle) {
                 if (newTitle != oldTitle) {
                     setChartTitle();
-                    scope.$emit("save");
+                    scope.$emit(EVENT_SAVE);
                 }
             });
 
@@ -285,10 +284,8 @@ app.directive('ktDashboardWidget',[ 'dataService',function (dataService) {
                     if(status){
                         if(samplingRate > 500 && samplingRate < 10001){
                             scope.samplingRate = samplingRate;
-                            console.log("rate is set to: ", scope.samplingRate);
                         }else{
                             scope.samplingRate = 1000;
-                            console.log("rate is set to: ", scope.samplingRate);
                         }
                         if(scope.displayitem.realtime == true){
                             scope.currentMode = scope.modes[0]

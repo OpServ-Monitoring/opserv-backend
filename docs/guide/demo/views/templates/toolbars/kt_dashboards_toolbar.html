@@ -5,12 +5,12 @@
         <span flex=""></span>
         <span>
             <md-menu  md-position-mode="target-right target" md-offset="-20 40">
-                <md-button style="margin-top: 5px" class="md-icon-button" ng-click="$mdOpenMenu()">
+                <md-button ng-disabled="loading" style="margin-top: 5px" class="md-icon-button" ng-click="$mdOpenMenu()">
                     <md-icon class="material-icons">more_vert</md-icon>
                 </md-button>
                 <md-menu-content width="3" class="blackground">
                     <md-menu-item >
-                        <md-button ng-click="openSettingsOpservDialog()">
+                        <md-button ng-click="openGatheringRatesSettingsDialog()">
                             {{ 'GATHERING_SETTINGS_TEXT' | translate }}
                         </md-button>
                     </md-menu-item>
@@ -44,17 +44,17 @@
         </div>
     <span flex=""></span>
         <span>
-            <md-menu  md-position-mode="target-right target" md-offset="-20 40">
-                <md-button style="margin-top: 5px" class="md-icon-button" ng-click="$mdOpenMenu()">
+            <md-menu md-position-mode="target-right target" md-offset="-20 40">
+                <md-button ng-disabled="loading" style="margin-top: 5px" class="md-icon-button" ng-click="$mdOpenMenu()">
                     <md-icon class="material-icons">more_vert</md-icon>
                 </md-button>
                 <md-menu-content width="3" class="blackground">
-                    <md-menu-item >
-                        <md-button ng-click="openSettingsOpservDialog()">
+                    <md-menu-item>
+                        <md-button  ng-click="openGatheringRatesSettingsDialog()">
                             {{ 'GATHERING_SETTINGS_TEXT' | translate }}
                         </md-button>
                     </md-menu-item>
-                    <md-menu-item >
+                    <md-menu-item>
                         <md-button style="margin-top: 5px" ng-click="openLanguageDialog()">
                             {{ 'LANGUAGE_TEXT' | translate }}
                         </md-button>

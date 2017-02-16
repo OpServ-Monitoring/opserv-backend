@@ -1,12 +1,22 @@
-<kt-dashboards-toolbar ng-cloak="" ></kt-dashboards-toolbar>
+<kt-dashboards-toolbar ng-cloak ></kt-dashboards-toolbar>
 
-<kt-dashboard-edit-side-nav ng-show="$root.isEditMode"></kt-dashboard-edit-side-nav>
+<kt-dashboard-edit-side-nav ></kt-dashboard-edit-side-nav>
 
-<md-tabs class="on-top no-tab-panel main" flex layout="column" layout-fill md-selected="selectedDashboard">
+<div ng-if="loading"  layout-fill layout="row" layout-sm="column" layout-align="space-around center">
+    <md-progress-circular style="margin: 10px" class="md-accent" md-diameter="70px"></md-progress-circular>
+</div>
+
+<md-tabs ng-show="!loading"
+         class="on-top no-tab-panel main"
+         flex layout="column" layout-fill
+         md-selected="selectedDashboard">
     <md-tab ng-cloak layout-fill ng-repeat="dashboard in dashboards" label="{{dashboard.title}}">
-        <div ng-cloak ng-if="isLoaded" gridster="gridsterOpts" >
+        <div ng-cloak ng-show="!loading" gridster="gridsterOpts" >
             <ul>
-                <li ng-cloak kt-watch-size layout-align="row" md-whiteframe="20" gridster-item="widget" ng-repeat="widget in dashboard.widgets">
+                <li ng-cloak
+                    kt-watch-size
+                    layout-align="row"
+                    md-whiteframe="20" gridster-item="widget" ng-repeat="widget in dashboard.widgets">
                     <kt-dashboard-widget ng-cloak displayitem="widget.displayItem" widgetindex="$index" dashboardindex="$parent.$parent.$index" baseurl="dashboard.baseUrl" layout-fill></kt-dashboard-widget>
                 </li>
             </ul>
@@ -14,4 +24,4 @@
     </md-tab>
 </md-tabs>
 
-<ng-include  src="'views/templates/kt_dashboard_fab.html'"></ng-include>
+<ng-include ng-if="!loading" src="'views/templates/kt_dashboard_fab.html'"></ng-include>

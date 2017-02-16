@@ -2,7 +2,7 @@ app.factory('toastService',function($mdToast){
 
     var service = {};
 
-    service.showDeletedToast = function (whatWasDeleted, callback) {
+    service.showRollbackToast = function (whatWasDeleted, callback) {
         var toast = $mdToast.simple()
             .textContent(whatWasDeleted+' gelöscht ')
             .action('UNDO')
@@ -12,7 +12,12 @@ app.factory('toastService',function($mdToast){
             .hideDelay(5000);
 
         $mdToast.show(toast).then(function(response) {
-            callback(response)
+            if ( response == 'ok' ) {
+                callback(true)
+            }else{
+                callback(false)
+            }
+
         });
     };
 

@@ -10,13 +10,13 @@
             </div>
         </md-toolbar>
 
-        <md-dialog-content class="blackground-light">
-            <div class="md-dialog-content">
+        <md-dialog-content class="blackground-light" >
+            <div class="md-dialog-content" layout="column">
                 <md-input-container>
                     <label>{{ 'TITLE_TEXT' | translate }}</label>
                     <input ng-model="title" >
                 </md-input-container>
-                <md-input-container class="md-block" flex-gt-sm>
+                <md-input-container >
                     <label>{{ 'TYPE_TEXT' | translate }}</label>
                     <md-select class="blackground-light" ng-model="currentMode" ng-model-options="{trackBy: '$value.text'}">
                         <md-option ng-repeat="mode in modes" ng-value="mode">

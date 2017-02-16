@@ -11,12 +11,12 @@
         </md-toolbar>
 
         <md-dialog-content class="blackground-light">
-            <div class="md-dialog-content">
-                <md-input-container>
+            <div class="md-dialog-content" layout="column">
+                <md-input-container >
                     <label>{{ 'TITLE_TEXT' | translate }}</label>
                     <input ng-model="title" >
                 </md-input-container>
-                <md-input-container ng-show="!isMock" class="md-block" flex-gt-sm>
+                <md-input-container ng-show="!isMock" >
                     <label>{{ 'URL_TEXT' | translate }}</label>
                     <input ng-model="baseUrl" >
                 </md-input-container>

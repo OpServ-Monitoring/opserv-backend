@@ -11,34 +11,25 @@
         </md-toolbar>
 
         <md-dialog-content style="min-width: 350px; " class="blackground-light">
-
             <md-list>
                 <md-list-item style="min-width: 350px; min-height: 60px" ng-repeat="rate in rates">
-                    <label flex>{{rate.title}} </label>
-                    <md-slider  style="max-width: 90px;"  min="500" max="10000" ng-model="rate.samplingRate" aria-label="sampling-rate" id="sampling-rate-slider">
+                    <label flex>{{rate.title}}</label>
+                    <md-slider drag-listener style="max-width: 90px;"  min="500" max="10000" ng-model="rate.gathering_rate" aria-label="gathering_rate" name="test" ng-attr-id="{{$index}}">
                     </md-slider>
                     <md-input-container  style="max-height: 44px; max-width: 60px; margin: 0">
-                        <input type="number" ng-model="rate.samplingRate" aria-label="sampling-rate" aria-controls="sampling-rate-slider">
+                        <input type="number" ng-model="rate.gathering_rate" aria-label="gathering_rate" aria-controls="gathering_rate-slider">
                         <label>ms</label>
                     </md-input-container>
-                    <button class="md-secondary md-button">delete</button>
+                    <button class="md-secondary md-button" ng-click="deleteRate(rate)">delete</button>
                 </md-list-item>
                 <md-list-item layout="center center">
-                    <span flex></span>
-                    <button class="md-button">ADD</button>
-                    <span flex></span>
+                    <md-select flex ng-model="newRate" aria-label="possibleRates" placeholder="Neue Rate">
+                        <md-option ng-repeat="rate in possibleRates" ng-value="rate">
+                            {{rate.title}}
+                        </md-option>
+                    </md-select>
                 </md-list-item>
             </md-list>
         </md-dialog-content>
-
-        <md-dialog-actions layout="row" class="blackground">
-            <span flex></span>
-            <md-button class="md-raised md-warn" ng-click="cancel()">
-                {{ 'CANCEL_TEXT' | translate }}
-            </md-button>
-            <md-button class="md-raised md-accent" ng-click="submit()">
-                {{ 'SAVE_TEXT' | translate }}
-            </md-button>
-        </md-dialog-actions>
     </form>
 </md-dialog>

@@ -27,9 +27,9 @@ app.factory('prefService',function($http, $rootScope, $timeout){
             }
             $rootScope.$broadcast(EVENT_DASHBOARDS_RECEIVED, true, dashboards);
         }, function errorCallback(response) {
-            //TODO beim Error trotzdem default mitgeben oder alle funktionen ausblenden?
             $rootScope.$broadcast(EVENT_DASHBOARDS_RECEIVED, false, undefined);
         });
+
     };
 
     service.saveDashboards = function(dashboards){
@@ -44,26 +44,27 @@ app.factory('prefService',function($http, $rootScope, $timeout){
                 $rootScope.$broadcast(EVENT_DASHBOARDS_SAVED, false);
             });
         }
-
     };
 
     service.validateUser = function (userName, password) {
-        if (userName == 'opserv' && password=="test"){
-            $timeout(function() {
-                $rootScope.$broadcast(EVENT_USER_VALIDATED, true);
-            }, 500);
-        }else{
-            $timeout(function() {
-                $rootScope.$broadcast(EVENT_USER_VALIDATED, false);
-            }, 500);
+
+        var url = '/api/preferences/v1/dashboards';
+
+        var encodedAuth = base64Encoding(userName+":"+password);
+        $http.defaults.headers.common = {
+            'Authorization':'Basic '+encodedAuth
+        };
+
+        return $http.get(url).then(function successCallback(response) {
+            $rootScope.$broadcast(EVENT_USER_VALIDATED, true);
+        }, function errorCallback(response) {
+            $rootScope.$broadcast(EVENT_USER_VALIDATED, false);
+        });
+
+        function base64Encoding(str) {
+            return btoa(str)
         }
 
-
-        // return $http.put('',{loginSecret:loginSecret}).then(function successCallback(response) {
-        //     $rootScope.$broadcast(EVENT_USER_VALIDATED, true);
-        // }, function errorCallback(response) {
-        //     $rootScope.$broadcast(EVENT_USER_VALIDATED, false);
-        // });
     };
 
     return service;

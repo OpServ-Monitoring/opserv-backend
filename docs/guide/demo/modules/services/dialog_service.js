@@ -1,4 +1,6 @@
-app.factory('dialogService',function($mdDialog, prefService, toastService, authService){
+app.factory('dialogService',function($mdDialog, prefService, toastService, authService, dataService){
+
+    //TODO encoding bei url relevaten encodings einfügen
 
     var service = {};
 
@@ -62,10 +64,10 @@ app.factory('dialogService',function($mdDialog, prefService, toastService, authS
         }
     };
 
-    service.showOpservSettings = function (callback) {
+    service.showGatheringRatesSettings = function (dashboardIndex, baseURL, callback) {
         $mdDialog.show({
-            controller: opservSettingsController,
-            templateUrl: 'views/templates/dialog/opserv_settings_dialog.html',
+            controller: gatheringRatesSettingsController,
+            templateUrl: 'views/templates/dialog/gathering_rates_settings_dialog.html',
             parent: angular.element(document.body),
             clickOutsideToClose: true,
             fullscreen: true // Only for -xs, -sm breakpoints.
@@ -73,26 +75,162 @@ app.factory('dialogService',function($mdDialog, prefService, toastService, authS
             callback(answer)
         }, function() {});
 
-        function opservSettingsController($scope, $mdDialog){
+        function gatheringRatesSettingsController($scope, $mdDialog){
             var scope = $scope;
 
-            scope.rates = [
-                {title:"CPU-0-USAGE",samplingRate:2000},
-                {title:"NETWORK-NETWORKNAME-TRANSMITTPERSEC",samplingRate:4000},
-                {title:"NETWORK-NETWORKNAME-TRANSMITTPERSEC",samplingRate:4000},
-                {title:"NETWORK-NETWORKNAME-TRANSMITTPERSEC",samplingRate:4000},
-                {title:"NETWORK-NETWORKNAME-TRANSMITTPERSEC",samplingRate:4000},
-                {title:"NETWORK-NETWORKNAME-TRANSMITTPERSEC",samplingRate:4000}
-            ];
+            scope.rates = [];
+            scope.possibleRates=[];
+            scope.newRate = {};
+            scope.rateforRollback ={};
+
+            dataService.getGatheringRates(baseURL);
+
+            scope.$on(EVENT_ALL_GATHERING_RATES_RECEIVED, function (event, status, gathering_rates) {
+                if(status){
+                    for (var i=0; i < gathering_rates.length; i++){
+                        var object = gathering_rates[i];
+                        if(object.metric != "info" && object.component_type !="system"){
+                            object.oldGatheringRate = object.gathering_rate; // security-store for rollback
+                            if (object.gathering_rate != 0){
+                                if(object.component_arg != null){
+                                    object.title = object.component_type+"-"+object.component_arg+"-"+object.metric;
+                                    scope.rates.push(object)
+                                }else{
+                                    object.title = object.component_type+"-"+object.metric;
+                                    scope.rates.push(object)
+                                }
+                            }else{
+
+                                if(object.component_arg != null){
+                                    object.title = object.component_type+"-"+object.component_arg+"-"+object.metric;
+                                    scope.possibleRates.push(object);
+                                }else{
+                                    object.title = object.component_type+"-"+object.metric;
+                                    scope.possibleRates.push(object);
+                                }
+
+                            }
+                        }
+                    }
+                    sortRates();
+                    sortPossibleRates();
+                }else{
+                    toastService.showErrorToast("Fehler beim Laden der Gathering-Rates")
+                }
+            });
+
+            scope.$on(EVENT_SET_GATHERING_RATE, function (event, status, gatheringRateObject) {
+                var index = 0;
+                if(status){
+                    if(gatheringRateObject.gathering_rate != 0){
+                        //include added rate in view
+                        scope.rates.push(gatheringRateObject);
+                        sortRates();
+                        //exclude from possible Rate
+                        index = scope.possibleRates.indexOf(gatheringRateObject);
+                        scope.possibleRates.splice(index,1);
+                    }else{
+                        //exclude deleted rate from view
+                        index = scope.rates.indexOf(gatheringRateObject);
+                        scope.rates.splice(index,1);
+                        // put in possibleRates
+                        scope.possibleRates.push(gatheringRateObject);
+                        sortPossibleRates();
+                        toastService.showRollbackToast("gathering rate", function (doRollback) {
+                            if(doRollback){
+                                index = scope.possibleRates.indexOf(gatheringRateObject);
+                                scope.possibleRates.splice(index,1);
+                                gatheringRateObject.gathering_rate = gatheringRateObject.oldGatheringRate;
+                                scope.rates.push(gatheringRateObject);
+                                sortRates();
+                            }
+                        })
+                    }
+                }else{
+                    toastService.showErrorToast("Fehler beim Speichern der Gathering Rate");
+                }
+            });
+
+            scope.$on(EVENT_UPDATE_GATHERING_RATE, function (event, success, updatedRateObject) {
+                var index =0;
+                if (success){
+                    index = scope.rates.indexOf(updatedRateObject);
+                    scope.rates[index].oldGatheringRate = updatedRateObject.gathering_rate;
+                }else{
+                    index = scope.rates.indexOf(updatedRateObject);
+                    scope.rates[index].gathering_rate = updatedRateObject.oldGatheringRate;
+                    toastService.showErrorToast("Update der Rate fehlgeschlagen")
+                }
+            });
+
+            scope.$on(EVENT_SLIDER_DRAG_END, function (event, ariaLabel, index) {
+                if(ariaLabel == "gathering_rate"){
+                    var changedRateObject = scope.rates[index];
+                    var component = getComponent(changedRateObject.component_type);
+                    dataService.updateGatheringRate(baseURL, component, changedRateObject.component_arg, changedRateObject.metric, changedRateObject)
+                }
+            });
+
+            scope.$watch('newRate',function (newVal, oldVal) {
+                if (newVal.component_type){
+                    var newRateObject = scope.newRate;
+                    newRateObject.gathering_rate = 1000;
+                    var component = getComponent(newRateObject.component_type);
+                    dataService.setGatheringRate(baseURL, component, newRateObject.component_type, newRateObject.metric, newRateObject);
+                }
+            });
+
+            scope.deleteRate = function (rateToDeleteObject) {
+                rateToDeleteObject.gathering_rate = 0;
+                var component = getComponent(rateToDeleteObject.component_type);
+                dataService.setGatheringRate(baseURL, component, rateToDeleteObject.component_arg, rateToDeleteObject.metric, rateToDeleteObject);
+            };
 
             scope.cancel = function() {
                 $mdDialog.cancel();
             };
 
-            scope.submit = function() {
-                var answer = {};
-                $mdDialog.hide(answer);
-            };
+            function sortRates() {
+                scope.rates.sort(function (a, b) {
+                    var textA = a.title.toUpperCase();
+                    var textB = b.title.toUpperCase();
+                    return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+                });
+            }
+
+            function sortPossibleRates() {
+                scope.possibleRates.sort(function (a, b) {
+                    var textA = a.title.toUpperCase();
+                    var textB = b.title.toUpperCase();
+                    return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+                })
+            }
+
+            function getComponent(component_type) {
+                switch (component_type){
+                    case "cpu":
+                        return "cpus";
+                        break;
+                    case "cpucore":
+                        return "cpu-cores";
+                        break;
+                    case "network":
+                        return "networks";
+                        break;
+                    case "partition":
+                        return "partitions";
+                        break;
+                    case "gpu":
+                        return "gpus";
+                        break;
+                    case "disk":
+                        return "disks";
+                        break;
+                    case "memory":
+                        return "memory";
+                        break;
+                }
+            }
         }
     };
 
@@ -158,6 +296,9 @@ app.factory('dialogService',function($mdDialog, prefService, toastService, authS
 
             function submit(userName,password) {
                 if(password!= "" && userName != ""){
+                    //save in localstorage for http interceptor
+                    localStorage.setItem('password',password);
+                    localStorage.setItem('userName',userName);
                     prefService.validateUser(userName,password);
                     $scope.isLoading = true;
                 }else{
@@ -167,14 +308,12 @@ app.factory('dialogService',function($mdDialog, prefService, toastService, authS
 
             $scope.$on(EVENT_USER_VALIDATED,function (event, status) {
                 if (status){
-                    if ($scope.form.password && $scope.form.userName){
-                        //set secret in local storage, when it is set in $scope.form.loginSecret (by manual login)
-                        localStorage.setItem('password',$scope.form.password);
-                        localStorage.setItem('userName',$scope.form.userName);
-                    }
                     authService.setLogin(status);
                     $mdDialog.hide(status);
                 }else{
+                    // delete from localstorage if login failed
+                    localStorage.removeItem('password');
+                    localStorage.removeItem('userName');
                     $scope.failedValidation = true;
                     toastService.showErrorToast("Uservalidierung Fehlgeschlagen");
                     $scope.isLoading = false;
@@ -182,17 +321,20 @@ app.factory('dialogService',function($mdDialog, prefService, toastService, authS
                 }
             });
 
-            $scope.$watch('form.password',function (newVal, oldVal) {
-                if(newVal != undefined && $scope.form.userName != undefined){
-                    $scope.loginDisabeled = false;
-                }
-                if(newVal == undefined){
-                    $scope.loginDisabeled = true;
-                }
-            });
+            // $scope.$watch('form.password',function (newVal, oldVal) {
+            //     if(newVal != undefined && $scope.form.userName != undefined){
+            //         $scope.loginDisabeled = false;
+            //     }
+            //     if(newVal == undefined){
+            //         $scope.loginDisabeled = true;
+            //     }
+            // });
 
             $scope.$watch('form.userName',function (newVal, oldVal) {
-                if(newVal != undefined && $scope.form.password != undefined){
+                // if(newVal != undefined && $scope.form.password != undefined){
+                //     $scope.loginDisabeled = false;
+                // }
+                if(newVal != undefined ){
                     $scope.loginDisabeled = false;
                 }
                 if(newVal == undefined){
