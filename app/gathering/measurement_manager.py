@@ -40,6 +40,9 @@ class MeasurementManager():
         cls.measuring_sources.append(RaspiTempSource())
         cls.measuring_sources.append(NullSource())
 
+        cls.last_db_commit = time.time()
+
+
     @classmethod
     def make_measurement(cls, component, metric, args):
         '''
@@ -73,7 +76,9 @@ class MeasurementManager():
         '''
         transaction.insert_measurement(component, args, metric, measurement["timestamp"],
                                        str(measurement["value"]))
-        transaction.commit_transaction()
+        if time.time() - cls.last_db_commit > 20:
+            transaction.commit_transaction()
+            cls.last_db_commit = time.time()
 
     @classmethod
     def measurement_is_valid(cls, measure_to_check):

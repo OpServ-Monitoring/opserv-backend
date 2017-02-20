@@ -26,10 +26,12 @@ class PsUtilWrap(MeasuringSource):
 
     _supported_comps = {
         "cpu": {
-            "usage"
+            "usage",
+            "temperature"
         },
         "cpucore": {
-            "usage"
+            "usage",
+            "temperature"
         },
         "memory": {
             "total",
@@ -121,12 +123,18 @@ class PsUtilWrap(MeasuringSource):
             args = int(args)
             if metric == "usage":
                 result = self.psutil.cpu_percent(percpu=False)
-
+            elif metric == "temperature":
+                for sensor in self.psutil.sensors_temperatures()["coretemp"]:
+                    if sensor.label == "Physical id 0":
+                        result = sensor.current
         elif component == "cpucore":
             args = int(args)
             if metric == "usage":
                 result = self.psutil.cpu_percent(percpu=True)[args]
-
+            elif metric == "temperature":
+                for sensor in self.psutil.sensors_temperatures()["coretemp"]:
+                    if sensor.label == "Core {}".format(args):
+                        result = sensor.current
         elif component == "memory":
             result = self.measure_memory(metric)
 
