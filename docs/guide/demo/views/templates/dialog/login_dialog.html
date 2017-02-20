@@ -18,7 +18,7 @@
                 </md-input-container>
                 <md-input-container name="passwordContainer" ng-show="!isLoading" md-is-error="failedValidation || (loginForm.password.$touched && loginForm.password.$invalid)">
                     <label>{{ 'LOGIN_PASSWORD_TEXT' | translate }}</label>
-                    <input autocomplete="off" type="password" name="password" required ng-model="form.password">
+                    <input autocomplete="off" type="password" name="password" ng-model="form.password">
                     <div ng-messages="loginForm.password.$error" >
                         <div ng-message="required" ng-show="failedValidation">{{ 'ERROR_LOGIN_PASSWORD_TEXT' | translate }}</div>
                     </div>

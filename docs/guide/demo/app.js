@@ -31,7 +31,8 @@ var app = angular.module('app',[
     'ngMaterial',
     'highcharts-ng',
     'angularViewportWatch',
-    'pascalprecht.translate'
+    'pascalprecht.translate',
+    'ngMockE2E'
 ]);
 
 app.config(function($mdThemingProvider) {
@@ -375,7 +376,18 @@ app.config(function ($translateProvider) {
     $translateProvider.preferredLanguage('en_EN')
 });
 
-app.run(function($rootScope, $location, authService, $translate, $http) {
+app.run(function($rootScope, $location, authService, $translate, $http, $httpBackend) {
+
+    // define if need Mockup
+    //opserv.org
+    //docs/guide/demo
+
+    if(window.location.host == "opserv.org" && window.location.pathname == "docs/guide/demo"){
+        $rootScope.isMock = true;
+        console.log($rootScope.isMock)
+    }else{
+        $rootScope.isMock = false;
+    }
 
     $rootScope.languages = [
         {label:"Deutsch", key:'de_DE'},
@@ -390,7 +402,6 @@ app.run(function($rootScope, $location, authService, $translate, $http) {
         $rootScope.selectedLanguageKey = 'en_EN';
     }
     $translate.use(languageKey);
-
 
     var password = localStorage.getItem('password');
     var userName = localStorage.getItem('userName');
@@ -420,6 +431,175 @@ app.run(function($rootScope, $location, authService, $translate, $http) {
         }
     });
 
+
+    /**
+     * Demo MockUp
+     * */
+
+    //Dashboards
+    $httpBackend.whenGET('/mock/api/preferences/current/dashboards').respond(getDemoDashboard);
+
+    // CPU 0 Data
+    $httpBackend.whenPUT('http://localhost:31337/mock/api/data/current/cpus/0/usage').respond(getCIHistoryData); //For GatheringRate
+    $httpBackend.whenGET('http://localhost:31337/mock/api/data/current/cpus/0/usage').respond(getCIHistoryData); //History-Data
+    $httpBackend.whenGET('http://localhost:31337/mock/api/data/current/cpus/0/usage?realtime=true').respond(getCILiveData); // Live-Data
+
+    // CPU-Core 0 Data
+    $httpBackend.whenPUT('http://localhost:31337/mock/api/data/current/cpu-cores/0/usage').respond(getCIHistoryData); //For GatheringRate
+    $httpBackend.whenGET('http://localhost:31337/mock/api/data/current/cpu-cores/0/usage').respond(getCIHistoryData); //History-Data
+    $httpBackend.whenGET('http://localhost:31337/mock/api/data/current/cpu-cores/0/usage?realtime=true').respond(getCILiveData); // Live-Data
+
+    // CPU-Core 1 Data
+    $httpBackend.whenPUT('http://localhost:31337/mock/api/data/current/cpu-cores/1/usage').respond(getCIHistoryData); //For GatheringRate
+    $httpBackend.whenGET('http://localhost:31337/mock/api/data/current/cpu-cores/1/usage').respond(getCIHistoryData); //History-Data
+    $httpBackend.whenGET('http://localhost:31337/mock/api/data/current/cpu-cores/1/usage?realtime=true').respond(getCILiveData); // Live-Data
+
+    //CI DATA
+    $httpBackend.whenGET('http://localhost:31337/mock/api/data/current').respond(getCIs);
+    $httpBackend.whenGET(/http:\/\/localhost:31337\/mock\/api\/data\/current\/[^/]+$/).respond(getIds);
+    $httpBackend.whenGET(/http:\/\/localhost:31337\/mock\/api\/data\/current\/[^/]+\/[^/]+$/).respond(getCategories);
+
+    
+
+    //
+
+    // /(?s)^((?!mock).)*$/
+    // /.*[^(mock)].*/
+
+    $httpBackend.whenGET(shallPass).passThrough(); // Requests for templates are handled by the real server
+    $httpBackend.whenPUT(shallPass).passThrough(); // Requests for templates are handled by the real server
+    //...
+
+    function shallPass(url) {
+        return !url.includes('mock');
+    }
+
+    function getDemoDashboard() {
+        var defaultWidgets = [
+            { id: 0, sizeX: 15, sizeY: 10, row: 0, col: 0, displayItem: {ci: 'cpus', id: 0, category: 'usage', title:"CPUS 0 USAGE ", displayAsChart:true, realtime:true, samplingRate:1000}}
+        ];
+        var dashboards=[
+            { title: 'Demo Monitor',widgets:defaultWidgets, baseUrl: 'http://localhost:31337/mock'} // https://397b6935.ngrok.io
+        ];
+        return [200,{data:{value:dashboards}},{}];
+
+    }
+
+    function getCIHistoryData() {
+        var returnObject = {data:{value:[],gathering_rate: 1000}};
+        for(var i =1;i<11;i++){
+            var dataObject={
+                avg: 5.124*i,
+                timestamp: new Date().getTime()+(10000*i),
+                max: 8.2344*i,
+                min: 2.6564*i
+            };
+
+             returnObject.data.value.push(dataObject);
+        }
+        return [200,returnObject,{}];
+    }
+    
+    function getCILiveData() {
+        var dataObject={
+            value: Math.random()*25,
+            timestamp: new Date().getTime()
+        };
+        return [200,{data:dataObject},{}];
+    }
+
+    function getCIs() {
+        var returnObject = {
+            data: {},
+            links: {
+                children: [
+                    {
+                        href: "http://localhost:31337/api/data/current/cpus",
+                        name: "cpu entities"
+                    },
+                    {
+                        href: "http://localhost:31337/api/data/current/cpu-cores",
+                        name: "cpu core entities"
+                    },
+                    {
+                        href: "http://localhost:31337/api/data/current/gpus",
+                        name: "gpu entities"
+                    },
+                    {
+                        href: "http://localhost:31337/api/data/current/disks",
+                        name: "disk entities"
+                    },
+                    {
+                        href: "http://localhost:31337/api/data/current/memory",
+                        name: "memory entity"
+                    },
+                    {
+                        href: "http://localhost:31337/api/data/current/networks",
+                        name: "network entities"
+                    },
+                    {
+                        href: "http://localhost:31337/api/data/current/partitions",
+                        name: "partition entities"
+                    },
+                    {
+                        href: "http://localhost:31337/api/data/current/processes",
+                        name: "process entities"
+                    },
+                    {
+                        href: "http://localhost:31337/api/data/current/system",
+                        name: "system components"
+                    },
+                    {
+                        href: "http://localhost:31337/api/data/current/gathering-rates",
+                        name: "gathering rate overview"
+                    }
+                ]
+            }
+        };
+        return [200,returnObject,{}];
+    }
+
+    function getIds() {
+        var returnObject = {
+            data: {},
+            links: {
+                children: [
+                    {
+                        href: "http://localhost:31337/api/data/current/cpus/0",
+                        name: "cpu entity"
+                    },
+                    {
+                        href: "http://localhost:31337/api/data/current/cpus/1",
+                        name: "cpu entity"
+                    },
+                    {
+                        href: "http://localhost:31337/api/data/current/cpus/2",
+                        name: "cpu entity"
+                    }
+                ]
+            }
+        };
+        return [200,returnObject,{}];
+    }
+
+    function getCategories(method, url, data) {
+        //TODO switch URL nach CI
+        var returnObject = {
+            data: {
+            },
+            links: {
+                children: [
+                    {
+                        href: "http://localhost:31337/api/data/current/cpus/0/usage",
+                        name: "cpu usage measurement"
+                    }
+                ]
+            }
+        };
+        return [200,returnObject,{}];
+    }
+
+
 });
 
 app.config(function ($routeProvider) {
@@ -439,16 +619,9 @@ app.config(function ($routeProvider) {
 
 app.config(['$httpProvider', function($httpProvider) {
 
-
-
-
-
-
     $httpProvider.defaults.useXDomain = true;
 
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
-
-
 
 }
 

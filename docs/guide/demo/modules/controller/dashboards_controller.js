@@ -9,15 +9,6 @@ app.controller('DashboardCtrl',function($scope, $rootScope, prefService, $mdSide
 
     scope.loading = true;
 
-    // define if need Mockup
-    console.log(window.location.host);
-    console.log(window.location.pathname);
-    if(window.location.host == "opserv.org" && window.location.pathname == "docs/guide/demo"){
-        rootScope.isMock = true
-    }else{
-        rootScope.isMock = false;
-    }
-
     scope.isFabOpen = false;
     rootScope.isEditMode = false;
     scope.isError = false;
@@ -68,7 +59,6 @@ app.controller('DashboardCtrl',function($scope, $rootScope, prefService, $mdSide
         if (success){
             rootScope.dashboards=dashboards;
             scope.selectedDashboard = 0;
-            console.log(rootScope.dashboards);
             scope.loading = false;
         }else{
             scope.isError = true;
@@ -179,10 +169,6 @@ app.controller('DashboardCtrl',function($scope, $rootScope, prefService, $mdSide
 
     scope.refresh = function () {
         location.reload();
-    };
-
-    scope.toggleLeft = function () {
-
     };
 
     function save() {

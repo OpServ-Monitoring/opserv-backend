@@ -9,13 +9,13 @@ app.factory('prefService',function($http, $rootScope, $timeout){
     service.getDashboards = function(){
         var url = "";
         if ($rootScope.isMock){
-            url = "/mock/api/dashboards"
+            url = "/mock/api/preferences/current/dashboards"
         }else{
             url = '/api/preferences/v1/dashboards'
         }
         return $http.get(url).then(function successCallback(response) {
             var dashboards= [];
-            if(response.data.data.value){
+            if(response.data && response.data.data && response.data.data.value){
                 dashboards = response.data.data.value;
             }else{
                 var defaultWidgets = [
@@ -25,6 +25,7 @@ app.factory('prefService',function($http, $rootScope, $timeout){
                     { title: 'Default Monitor',widgets:defaultWidgets, baseUrl: 'http://localhost:31337'} // https://397b6935.ngrok.io
                 ];
             }
+
             $rootScope.$broadcast(EVENT_DASHBOARDS_RECEIVED, true, dashboards);
         }, function errorCallback(response) {
             $rootScope.$broadcast(EVENT_DASHBOARDS_RECEIVED, false, undefined);
@@ -47,9 +48,12 @@ app.factory('prefService',function($http, $rootScope, $timeout){
     };
 
     service.validateUser = function (userName, password) {
-
-        var url = '/api/preferences/v1/dashboards';
-
+        var url;
+        if ($rootScope.isMock){
+            url = "/mock/api/preferences/current/dashboards"
+        }else{
+            url = '/api/preferences/v1/dashboards'
+        }
         var encodedAuth = base64Encoding(userName+":"+password);
         $http.defaults.headers.common = {
             'Authorization':'Basic '+encodedAuth

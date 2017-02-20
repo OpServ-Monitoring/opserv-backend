@@ -176,7 +176,7 @@ app.factory('dialogService',function($mdDialog, prefService, toastService, authS
                     var newRateObject = scope.newRate;
                     newRateObject.gathering_rate = 1000;
                     var component = getComponent(newRateObject.component_type);
-                    dataService.setGatheringRate(baseURL, component, newRateObject.component_type, newRateObject.metric, newRateObject);
+                    dataService.setGatheringRate(baseURL, component, newRateObject.component_arg, newRateObject.metric, newRateObject);
                 }
             });
 

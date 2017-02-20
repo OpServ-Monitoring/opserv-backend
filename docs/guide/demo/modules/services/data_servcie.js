@@ -82,8 +82,9 @@ app.factory('dataService',function($http, $rootScope, toastService,$timeout){
 
     service.getSamplingRateForCi = function (baseUrl, ci, id, cat) {
         var url="";
-        if (id){
-            url = baseUrl+CURRENT_API_PATH+'/'+ci+'/'+id+'/'+cat;
+        var encodedComponentArg = getEncodedComponentArg(id);
+        if (encodedComponentArg != "undefined" && encodedComponentArg != undefined){
+            url = baseUrl+CURRENT_API_PATH+'/'+ci+'/'+encodedComponentArg+'/'+cat;
         }else{
             url = baseUrl+CURRENT_API_PATH+'/'+ci+'/'+cat;
         }
@@ -123,12 +124,6 @@ app.factory('dataService',function($http, $rootScope, toastService,$timeout){
         }, function errorCallback(response) {
             $rootScope.$broadcast(EVENT_CI_CATS_RECEIVED, false, response);
         });
-        // return $http.get(baseUrl+CURRENT_API_PATH+'/'+ciName+'/'+encodeURIComponent(ciId)).then(function successCallback(response) {
-        //     var cats = getValuesFromChildrenLinks(response.data.links.children);
-        //     $rootScope.$broadcast(EVENT_CI_CATS_RECEIVED, true, ciName, cats);
-        // }, function errorCallback(response) {
-        //     $rootScope.$broadcast(EVENT_CI_CATS_RECEIVED, false, response);
-        // });
     };
 
     service.getMemoryCats = function (ciName, baseUrl) {
@@ -153,8 +148,6 @@ app.factory('dataService',function($http, $rootScope, toastService,$timeout){
     };
 
     service.setGatheringRate = function (baseURL, ci, id, cat, gatheringRateObject) {
-        //encode id
-        var encodedComponentArg = getEncodedComponentArg(id);
         var urls = buildUrls(baseURL, ci, id, cat, false);
         setGatheringRate(urls.forGatheringRate, gatheringRateObject.gathering_rate, function (success) {
             if (success) {
@@ -166,9 +159,7 @@ app.factory('dataService',function($http, $rootScope, toastService,$timeout){
     };
 
     service.updateGatheringRate = function (baseURL, ci, id, cat, gatheringRateObject) {
-
-        console.log(encodedComponentArg);
-        var urls = buildUrls(baseURL, ci, encodedComponentArg, cat, false);
+        var urls = buildUrls(baseURL, ci, id, cat, false);
         setGatheringRate(urls.forGatheringRate, gatheringRateObject.gathering_rate, function (success) {
             if (success) {
                 $rootScope.$broadcast(EVENT_UPDATE_GATHERING_RATE, true, gatheringRateObject);
@@ -292,7 +283,7 @@ app.factory('dataService',function($http, $rootScope, toastService,$timeout){
     function buildUrls(baseUrl, ci, id, cat, isLive, historyStartTime, historyEndTime) {
         var encodedComponentArg = getEncodedComponentArg(id);
         var urls = {forGatheringRate:'',forData:''};
-        if(encodedComponentArg != undefined){
+        if(encodedComponentArg != "undefined" && encodedComponentArg != undefined){
             urls.forGatheringRate = baseUrl+CURRENT_API_PATH+'/'+ci+'/'+encodedComponentArg+'/'+cat;
             if(isLive){
                 urls.forData = baseUrl+CURRENT_API_PATH+'/'+ci+'/'+encodedComponentArg+'/'+cat+REALTIME_QUERY_STRING;

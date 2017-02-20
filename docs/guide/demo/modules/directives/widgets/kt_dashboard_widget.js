@@ -308,8 +308,8 @@ app.directive('ktDashboardWidget',[ 'dataService',function (dataService) {
                 return baseUrl == scope.baseurl && ci == scope.displayitem.ci && id == scope.displayitem.id && category == scope.displayitem.category
             }
 
-            function getSamplingRateForCi(baseurl, ci, id, category) {
-                dataService.getSamplingRateForCi(baseurl, ci, id, category)
+            function getSamplingRateForCi(baseUrl, ci, id, category) {
+                dataService.getSamplingRateForCi(baseUrl, ci, id, category)
             }
 
             function toggleVisibilityHighchartsButtons(isEditing) {

@@ -180,6 +180,7 @@ app.directive('ktDashboardEditSideNav',[ 'dataService','toastService', 'dialogSe
 
             function selectCategory(cat){
                 scope.selectedCat = cat;
+                console.log(scope.selectedId);
                 scope.addWidget(scope.selectedCi,scope.selectedId,scope.selectedCat);
             }
 
