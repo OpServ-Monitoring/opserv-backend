@@ -382,7 +382,7 @@ app.run(function($rootScope, $location, authService, $translate, $http, $httpBac
     //opserv.org
     //docs/guide/demo
 
-    if(window.location.host == "opserv.org" && window.location.pathname == "docs/guide/demo"){
+    if(window.location.host == "opserv.org"){
         $rootScope.isMock = true;
         console.log($rootScope.isMock)
     }else{
@@ -420,7 +420,7 @@ app.run(function($rootScope, $location, authService, $translate, $http, $httpBac
     $rootScope.$on('$locationChangeStart', function() {
         var password = localStorage.getItem('password');
         var userName = localStorage.getItem('userName');
-        if ((userName && password) || $rootScope.isMock) {
+        if ((userName && password) || $rootScope.isMock ) {
             if (!authService.isLoggedIn()) {
                 $location.path('/login'); // relocate for Login
             } else {
