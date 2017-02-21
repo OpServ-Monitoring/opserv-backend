@@ -420,7 +420,7 @@ app.run(function($rootScope, $location, authService, $translate, $http, $httpBac
     $rootScope.$on('$locationChangeStart', function() {
         var password = localStorage.getItem('password');
         var userName = localStorage.getItem('userName');
-        if (userName && password) {
+        if ((userName && password) || $rootScope.isMock) {
             if (!authService.isLoggedIn()) {
                 $location.path('/login'); // relocate for Login
             } else {
