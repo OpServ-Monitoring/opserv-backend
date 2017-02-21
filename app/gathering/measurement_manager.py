@@ -17,7 +17,7 @@ from gathering.measuring.ohm_source import OHMSource
 from gathering.measuring.psutil_source import PsUtilWrap
 from gathering.measuring.pyspectator_source import PySpectatorSource
 from gathering.measuring.raspi_temp_source import RaspiTempSource
-
+from misc.opserv_helper import get_operating_system
 log = logging.getLogger("opserv." + __name__)
 
 transaction = UnifiedDatabaseInterface.get_measurement_insertion_transaction()
@@ -102,7 +102,7 @@ class MeasurementManager():
 
         measured_value = None
         for src in cls.measuring_sources:
-            if src.can_measure(component, metric):
+            if src.can_measure(component, metric) and src.os_is_supported(get_operating_system()):
                 try:
                     measured_value = src.get_measurement(component, metric, args)
                     if measured_value is not None:
