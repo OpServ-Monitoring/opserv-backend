@@ -1,5 +1,5 @@
 
-app.factory('authService',function(){
+app.factory('authService',function($rootScope){
 
 //------------------------------------------------ Variablen -------------------------------------------------------------------------------------------------------------------------------------//
     var service = {};
@@ -8,6 +8,9 @@ app.factory('authService',function(){
     var isLoggedIn = false;
 
     service.isLoggedIn = function () {
+        if ($rootScope.isMock){
+            return true; // Always return true on mock usage
+        }
         return  isLoggedIn;
     };
 
