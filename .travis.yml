@@ -55,16 +55,30 @@ after_success:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then coveralls                                                   ; fi
 
 # DEPLOYMENT #
-before_deploy:
+# before_deploy:
 - cd app
+
+- echo $PWD # REMOVE ME
+- ls -al # REMOVE ME
 
 # bundle the backend code using pyinstaller
 - pyinstaller main.py --hiddenimport=psutil --hiddenimport=clr --hiddenimport=cpuinfo --hiddenimport=pyspectator --add-data "extern_dependency/*:extern_dependency"
+
+- echo $PWD # REMOVE ME
+- ls -al # REMOVE ME
 
 # zip the bundled software into the projects root directory and remove the unziped bundle
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then zip -r ../opserv-backend-linux-build.zip ./dist/main/       ; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then zip -r ../opserv-backend-macosx-build.zip ./dist/main/        ; fi
 - rm -r dist
+
+- echo $PWD # REMOVE ME
+- ls -al # REMOVE ME
+
+- cd ..
+- echo $PWD # REMOVE ME
+- ls -al # REMOVE ME
+- cd app
 
 # clone the frontend into the static hosting folder
 - git clone https://github.com/OpServ-Monitoring/opserv-frontend.git server/static_hosting/public
@@ -73,6 +87,9 @@ before_deploy:
 - pyinstaller main.py --hiddenimport=psutil --hiddenimport=clr --hiddenimport=cpuinfo --hiddenimport=pyspectator --add-data "extern_dependency/*:extern_dependency" --add-data "server/static_hosting/public/*:server/static_hosting/public"
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then zip -r ../opserv-linux-build.zip ./dist/main/               ; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then zip -r ../opserv-macosx-build.zip ./dist/main/                ; fi
+
+- echo $PWD # REMOVE ME
+- ls -al # REMOVE ME
 
 deploy:
   provider: releases
