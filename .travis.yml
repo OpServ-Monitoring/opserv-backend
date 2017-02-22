@@ -22,7 +22,7 @@ matrix:
     allow_failures:
     - python: 'nightly'
          
-# Perform the manual steps on osx to install python3 and activate venv
+# perform the manual steps on osx to install python3 and activate venv
 before_install:
     - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update                                             ; fi
     - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install python3                                    ; fi
@@ -31,19 +31,20 @@ before_install:
     
 install:
 - pip install -r app/prerequirements.txt
+
+# install all needed dependencies skipping partial failures
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then xargs -a app/requirements.txt -n 1 pip install || true    ; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then pip install -r app/requirements.txt || true                 ; fi
+
+# install dependencies used for testing
 - pip install -r app/testrequirements.txt
+
+# install dependencies used to report test results / coverage
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then pip install codacy-coverage                               ; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then pip install coveralls                                       ; fi
 
-before_script:
-- echo "Before Script started"
-- git clone https://github.com/OpServ-Monitoring/opserv-frontend.git app/server/static_hosting/frontend
-- echo $CWD
-- echo $PWD
-- zip -r opserv-release.zip .
-- ls -R
+ # install dependencies used to bundle a release version
+- pip install pyinstaller 
 
 script:
 - pytest --cov=app
@@ -53,12 +54,30 @@ after_success:
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then python-codacy-coverage -r coverage.xml                    ; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then coveralls                                                   ; fi
 
+
+- cd app
+- pyinstaller main.py --hiddenimport=psutil --hiddenimport=clr --hiddenimport=cpuinfo --hiddenimport=pyspectator --add-data "extern_dependency/*;extern_dependency/" --add-data "server/static_hosting/public;server/static_hosting/public"
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then zip -r opserv-backend-linux-build.zip ./dist/main/       ; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then zip -r opserv-backend-macosx-build.zip ./dist/main/        ; fi
+- echo $PWD
+- ls -al
+- rm -r dist
+- ls -al
+- git clone https://github.com/OpServ-Monitoring/opserv-frontend.git server/static_hosting/public
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then zip -r opserv-linux-build.zip ./dist/main/               ; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then zip -r opserv-macosx-build.zip ./dist/main/                ; fi
+- echo $PWD
+- ls -al
+
 deploy:
   provider: releases
   api_key:
     secure: dSwymzcbi02BdPOerozK8ePSEk3GIHV0T59BftjN4PcNHpF1Kv8OipQiHESFB+jTBTWGPleS11r2s9YjWBcwwY/XU9jCZG5prGgs5sGZIzzUnSxBcb6iWHKlpjHvNarR+MPTy3ljKUPNrjOn7mgYx54an6CbBSlKlVVPGzwD26XCXzn5WxAmLNoJJjPdT7H9BcmJKod4cnBSUahqr0L5pX/pC242qWlHs3i10MIvlgz4jo4oHh1e8ryPVj1Xs/8ogOVTWN5H4WmDhHHEN/eBVwK05VoclXgcD/+0kJK+fAUPcpTnMAGP9KLUIGHAe3VVEwo+B3mhyUlXnPqbWTn586KdOgKOSi419LBwze5k1ksJukYJzX41mKJGp/OzsMDSFSHR9Po6JhZnz4QMFPz+xhsiRNBDfZAixeFrv8zIzurlM8XgDtug2daRmbfhU5ilvEf9cM6jiQet3d2RXRXfKE8dZ5tGq26OGcarG8dNZJnOp6pwH1EJia4BfXcFZDV0CFNrrratMUOqmQjqMB4lfQcepLlpFA2rYbejkMXvAd5O9/K+B2TO5Z2eYjf0IZX51EdTewgPSGoQbdjuN0M0OInpnuaVYrkjEjcauTL+iA8Tu+Gi3NSYYwqgoe95xbogClRdJ/oThJDUKQQJMdRa1eQgzzC9G1ZKJIShXgy+JEM=
   file: 
-  - opserv-release.zip
+  - opserv-linux-build.zip
+  - opserv-macosx-build.zip
+  - opserv-backend-linux-build.zip
+  - opserv-backend-macosx-build.zip
   on:
     repo: OpServ-Monitoring/opserv-backend
     tags: true
