@@ -91,6 +91,11 @@ after_success:
 - echo $PWD # REMOVE ME
 - ls -al # REMOVE ME
 
+- cd ..
+
+- echo $PWD # REMOVE ME
+- ls -al # REMOVE ME
+
 deploy:
   provider: releases
   api_key:
