@@ -1,7 +1,7 @@
 echo "Starting deploy script"
 echo $env:PYTHON_VERSION
 echo $env:PYTHON_ARCH
-if ($env:PYTHON_VERSION -eq "3.4.4") {
+if ($env:PYTHON_VERSION -eq "3.4.x" -and $env:PYTHON_ARCH -eq "32") {
   "%CMD_IN_ENV% pip install pyinstaller"
   npm install -g bower
   git clone https://github.com/OpServ-Monitoring/opserv-frontend.git app/server/static_hosting/public
