@@ -1,7 +1,7 @@
 echo "Starting deploy script"
 echo $env:PYTHON_VERSION
 echo $env:PYTHON_ARCH
-if ($env:PYTHON_VERSION -eq "3.4.x" -and $env:PYTHON_ARCH -eq "32") {
+if ($env:PYTHON_VERSION -eq "3.4.x" -and $env:PYTHON_ARCH -eq "64") {
   pip install pyinstaller
   npm install -g bower
   git clone https://github.com/OpServ-Monitoring/opserv-frontend.git app/server/static_hosting/public
@@ -11,7 +11,7 @@ if ($env:PYTHON_VERSION -eq "3.4.x" -and $env:PYTHON_ARCH -eq "32") {
   cd ..
   cd .. # we are now in app folder
   ls
-  pyinstaller main.py --hiddenimport=psutil --hiddenimport=clr --hiddenimport=cpuinfo --hiddenimport=pyspectator --add-data "extern_dependency/*;extern_dependency/" --add-data "server/static_hosting/public;server/static_hosting/public"
+  pyinstaller main.py -D --hiddenimport=psutil --hiddenimport=clr --hiddenimport=cpuinfo --hiddenimport=pyspectator --add-data "extern_dependency/*;extern_dependency/" --add-data "server/static_hosting/public;server/static_hosting/public"
   7z a -tzip opserv-win-build.zip dist/main/*
   cd ..
 } ELSE {
