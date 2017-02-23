@@ -1,4 +1,6 @@
 echo "Starting deploy script"
+echo $env:PYTHON_VERSION
+echo $env:PYTHON_ARCH
 if ($env:PYTHON_VERSION -eq "3.4.4") {
   "%CMD_IN_ENV% pip install pyinstaller"
   npm install -g bower
