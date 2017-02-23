@@ -85,14 +85,12 @@ install:
   - ps: appveyor/create_deploy.ps1
 
 build: off
-skip_tags: true
 
 artifacts:
   - path: app/opserv-win-build.zip
     name: OpServBuild
 
 deploy:
-  release: opserv-winbuild-v$(appveyor_build_version)
   description: 'Release description'
   provider: GitHub
   auth_token:
