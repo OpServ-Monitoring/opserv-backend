@@ -21,11 +21,11 @@ environment:
       PYTHON_ARCH: "64"
 
     - PYTHON: "C:\\Python34"
-      PYTHON_VERSION: "3.4.x" # currently 3.4.3
+      PYTHON_VERSION: "3.4.x" # currently 3.4.4
       PYTHON_ARCH: "32"
 
     - PYTHON: "C:\\Python34-x64"
-      PYTHON_VERSION: "3.4.x" # currently 3.4.3
+      PYTHON_VERSION: "3.4.x" # currently 3.4.4
       PYTHON_ARCH: "64"
 
     # Python versions not pre-installed
@@ -82,18 +82,7 @@ install:
   - "%CMD_IN_ENV% pip install -r app/testrequirements.txt"
   - "%CMD_IN_ENV% pip install codeclimate-test-reporter"
 
-  - "%CMD_IN_ENV% pip install pyinstaller"
-  - npm install -g bower
-  - git clone https://github.com/OpServ-Monitoring/opserv-frontend.git app/server/static_hosting/public
-  - cd app/server/static_hosting/public
-  - bower install
-  - cd ..
-  - cd ..
-  - cd .. # we are now in app folder
-  - pyinstaller main.py --hiddenimport=psutil --hiddenimport=clr --hiddenimport=cpuinfo --hiddenimport=pyspectator --add-data "extern_dependency/*;extern_dependency/" --add-data "server/static_hosting/public;server/static_hosting/public"
-  - 7z a -tzip opserv-win-build.zip dist/main/*
-  - ls -la
-  - cd ..
+  - ps: appveyor/create_deploy.ps1
 
 build: off
 artifacts:
