@@ -431,7 +431,6 @@ app.run(function($rootScope, $location, authService, $translate, $http, $httpBac
         }
     });
 
-
     /**
      * Demo MockUp
      * */
@@ -439,36 +438,17 @@ app.run(function($rootScope, $location, authService, $translate, $http, $httpBac
     //Dashboards
     $httpBackend.whenGET('/mock/api/preferences/current/dashboards').respond(getDemoDashboard);
 
-    // CPU 0 Data
-    $httpBackend.whenPUT('http://localhost:31337/mock/api/data/current/cpus/0/usage').respond(getCIHistoryData); //For GatheringRate
-    $httpBackend.whenGET('http://localhost:31337/mock/api/data/current/cpus/0/usage').respond(getCIHistoryData); //History-Data
-    $httpBackend.whenGET('http://localhost:31337/mock/api/data/current/cpus/0/usage?realtime=true').respond(getCILiveData); // Live-Data
-
-    // CPU-Core 0 Data
-    $httpBackend.whenPUT('http://localhost:31337/mock/api/data/current/cpu-cores/0/usage').respond(getCIHistoryData); //For GatheringRate
-    $httpBackend.whenGET('http://localhost:31337/mock/api/data/current/cpu-cores/0/usage').respond(getCIHistoryData); //History-Data
-    $httpBackend.whenGET('http://localhost:31337/mock/api/data/current/cpu-cores/0/usage?realtime=true').respond(getCILiveData); // Live-Data
-
-    // CPU-Core 1 Data
-    $httpBackend.whenPUT('http://localhost:31337/mock/api/data/current/cpu-cores/1/usage').respond(getCIHistoryData); //For GatheringRate
-    $httpBackend.whenGET('http://localhost:31337/mock/api/data/current/cpu-cores/1/usage').respond(getCIHistoryData); //History-Data
-    $httpBackend.whenGET('http://localhost:31337/mock/api/data/current/cpu-cores/1/usage?realtime=true').respond(getCILiveData); // Live-Data
-
     //CI DATA
     $httpBackend.whenGET('http://localhost:31337/mock/api/data/current').respond(getCIs);
-    $httpBackend.whenGET(/http:\/\/localhost:31337\/mock\/api\/data\/current\/[^/]+$/).respond(getIds);
-    $httpBackend.whenGET(/http:\/\/localhost:31337\/mock\/api\/data\/current\/[^/]+\/[^/]+$/).respond(getCategories);
+    $httpBackend.whenGET(/http:\/\/localhost:31337\/mock\/api\/data\/current\/[^\/]+$/).respond(getIds);
+    $httpBackend.whenGET(/http:\/\/localhost:31337\/mock\/api\/data\/current\/[^\/]+\/[^\/]+$/).respond(getCategories);
+    $httpBackend.whenPUT(/http:\/\/localhost:31337\/mock\/api\/data\/current\/[^\/]+\/[^\/]+\/[^\/]+$/).respond(getCIHistoryData); //For GatheringRate
+    $httpBackend.whenGET(/http:\/\/localhost:31337\/mock\/api\/data\/current\/[^\/]+\/[^\/]+\/[^\/?]+$/).respond(getCIHistoryData); //For GatheringRate
+    $httpBackend.whenGET(/http:\/\/localhost:31337\/mock\/api\/data\/current\/[^\/]+\/[^\/]+\/[^\/]+?realtime=true/).respond(getCILiveData); // Live-Data
 
-    
-
-    //
-
-    // /(?s)^((?!mock).)*$/
-    // /.*[^(mock)].*/
-
+    //PassThrough
     $httpBackend.whenGET(shallPass).passThrough(); // Requests for templates are handled by the real server
     $httpBackend.whenPUT(shallPass).passThrough(); // Requests for templates are handled by the real server
-    //...
 
     function shallPass(url) {
         return !url.includes('mock');
@@ -485,7 +465,7 @@ app.run(function($rootScope, $location, authService, $translate, $http, $httpBac
 
     }
 
-    function getCIHistoryData() {
+    function getCIHistoryData(method, url, data) {
         var returnObject = {data:{value:[],gathering_rate: 1000}};
         for(var i =1;i<11;i++){
             var dataObject={
@@ -500,7 +480,7 @@ app.run(function($rootScope, $location, authService, $translate, $http, $httpBac
         return [200,returnObject,{}];
     }
     
-    function getCILiveData() {
+    function getCILiveData(method, url, data) {
         var dataObject={
             value: Math.random()*25,
             timestamp: new Date().getTime()
@@ -583,22 +563,160 @@ app.run(function($rootScope, $location, authService, $translate, $http, $httpBac
     }
 
     function getCategories(method, url, data) {
-        //TODO switch URL nach CI
-        var returnObject = {
-            data: {
-            },
-            links: {
-                children: [
-                    {
-                        href: "http://localhost:31337/api/data/current/cpus/0/usage",
-                        name: "cpu usage measurement"
-                    }
-                ]
+
+        var returnObject ={};
+        var cutInArray = url.split("/");
+        var lastButOneItem = cutInArray[cutInArray.length-2];
+
+        switch (lastButOneItem){
+            case "cpus":
+                returnObject = getForCPUS();
+                break;
+            case "cpu-cores":
+                returnObject = getForCPUCORES();
+                break;
+            case "gpus":
+                returnObject = getForGPUS();
+                break;
+            case "disks":
+                returnObject = getForDisks();
+                break;
+            case "memory":
+                returnObject = getForMemory();
+                break;
+            case "networks":
+                returnObject = getForNetworks();
+                break;
+            case "partitions":
+                returnObject = getForPartitions();
+                break;
+            case "processes":
+                returnObject = getForProcesses();
+                break;
+        }
+
+        function getForCPUCORES() {
+            return {
+                data: {
+                },
+                links: {
+                    children: [
+                        {
+                            href: "http://localhost:31337/api/data/current/cpus/0/usage",
+                            name: "cpu usage measurement"
+                        }
+                    ]
+                }
             }
-        };
+        }
+
+        function getForCPUS() {
+            return {
+                data: {
+                },
+                links: {
+                    children: [
+                        {
+                            href: "http://localhost:31337/api/data/current/cpus/0/usage",
+                            name: "cpu usage measurement"
+                        }
+                    ]
+                }
+            }
+        }
+
+        function getForGPUS() {
+            return {
+                data: {
+                },
+                links: {
+                    children: [
+                        {
+                            href: "http://localhost:31337/api/data/current/cpus/0/temperature",
+                            name: "cpu usage measurement"
+                        }
+                    ]
+                }
+            }
+        }
+
+        function getForDisks() {
+            return {
+                data: {
+                },
+                links: {
+                    children: [
+                        {
+                            href: "http://localhost:31337/api/data/current/cpus/0/temperature",
+                            name: "cpu usage measurement"
+                        }
+                    ]
+                }
+            }
+        }
+
+        function getForMemory() {
+            return {
+                data: {
+                },
+                links: {
+                    children: [
+                        {
+                            href: "http://localhost:31337/api/data/current/cpus/0/used",
+                            name: "cpu usage measurement"
+                        }
+                    ]
+                }
+            }
+        }
+
+        function getForPartitions() {
+            return {
+                data: {
+                },
+                links: {
+                    children: [
+                        {
+                            href: "http://localhost:31337/api/data/current/cpus/0/used",
+                            name: "cpu usage measurement"
+                        }
+                    ]
+                }
+            }
+        }
+
+        function getForNetworks() {
+            return {
+                data: {
+                },
+                links: {
+                    children: [
+                        {
+                            href: "http://localhost:31337/api/data/current/cpus/0/transmitpersec",
+                            name: "cpu usage measurement"
+                        }
+                    ]
+                }
+            }
+        }
+
+        function getForProcesses() {
+            return {
+                data: {
+                },
+                links: {
+                    children: [
+                        {
+                            href: "http://localhost:31337/api/data/current/cpus/0/cpuusage",
+                            name: "cpu usage measurement"
+                        }
+                    ]
+                }
+            }
+        }
+
         return [200,returnObject,{}];
     }
-
 
 });
 
