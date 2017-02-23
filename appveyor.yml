@@ -85,6 +85,8 @@ install:
   - ps: appveyor/create_deploy.ps1
 
 build: off
+skip_tags: true
+
 artifacts:
   - path: app/opserv-win-build.zip
     name: OpServBuild
