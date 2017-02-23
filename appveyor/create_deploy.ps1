@@ -10,10 +10,10 @@ if ($env:PYTHON_VERSION -eq "3.4.x" -and $env:PYTHON_ARCH -eq "32") {
   cd ..
   cd ..
   cd .. # we are now in app folder
+  ls
   pyinstaller main.py --hiddenimport=psutil --hiddenimport=clr --hiddenimport=cpuinfo --hiddenimport=pyspectator --add-data "extern_dependency/*;extern_dependency/" --add-data "server/static_hosting/public;server/static_hosting/public"
   7z a -tzip opserv-win-build.zip dist/main/*
-  ls -la
   cd ..
 } ELSE {
-    ECHO "Skipping build, only 3.4.4 builds are going to be deployed"
+    ECHO "Skipping build, only 3.4.x builds are going to be deployed"
 }

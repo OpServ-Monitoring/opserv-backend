@@ -91,13 +91,12 @@ artifacts:
     name: OpServBuild
 
 deploy:
-  description: 'Release description'
   provider: GitHub
   auth_token:
     secure: HxCB8m6bjdYCkKlCeYHCPpD8C5dJX/03Ot84FcuNkrL/uCFw0/TIslHJXBnyMhmE # your encrypted token from GitHub
   artifact: app\opserv-win-build.zip          # upload all NuGet packages to release assets
   draft: false
-  prerelease: true
+  prerelease: false
   on:              
     appveyor_repo_tag: true        # deploy on tag push only
 
