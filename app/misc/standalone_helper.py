@@ -38,7 +38,10 @@ def get_path_to_app():
         ValueError("__file__ wasn't set.'")
 
     # Get current directory
-    current_dir = os.path.dirname(os.path.abspath(__file__))
+    if getattr(sys, 'frozen', False):
+        current_dir = os.path.dirname(os.path.abspath(sys.executable))
+    elif __file__:
+        current_dir = os.path.dirname(os.path.abspath(__file__))
     # Search for parent until arrived at test
     while os.path.basename(current_dir) != APP_FOLDER_NAME:
         if current_dir == os.path.dirname(current_dir):  # Top Level of filesystem reached
