@@ -15,7 +15,6 @@ from misc.constants import GATHERING_QUEUELISTENER_DELAY, GATHERING_PERFORMANCE_
     GATHERING_LOOP_SLEEP
 
 log = logging.getLogger("opserv.gathering")
-log.setLevel(logging.DEBUG)
 
 
 class GatherThread(threading.Thread):
