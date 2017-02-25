@@ -36,11 +36,30 @@ def get_path_to_app():
     """
     if not __file__:
         ValueError("__file__ wasn't set.'")
+    
+    ################################################################################
+    #TODO This is broken, as it requires the top folder to always have the same name, which is pretty stupid
+    #Workaround is inplace
+    if getattr(sys, 'frozen', False):
+        print(sys.executable)
+        current_dir = os.path.dirname(os.path.abspath(sys.executable))
+        print(current_dir)
+    elif __file__:
+        current_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    return current_dir
+    ################################################################################
+
 
     # Get current directory
-    current_dir = os.path.dirname(os.path.abspath(__file__))
+    if getattr(sys, 'frozen', False): #if you start the program as an exe file on windows
+        print(sys.executable)
+        current_dir = os.path.dirname(os.path.abspath(sys.executable))
+    elif __file__:
+        print(__file__)
+        current_dir = os.path.dirname(os.path.abspath(__file__))
     # Search for parent until arrived at test
     while os.path.basename(current_dir) != APP_FOLDER_NAME:
+        print(current_dir)
         if current_dir == os.path.dirname(current_dir):  # Top Level of filesystem reached
             FileNotFoundError("Couldn't find app directory'")
         current_dir = os.path.dirname(current_dir)  # Get the parent directory of current_dir
