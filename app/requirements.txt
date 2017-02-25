@@ -6,3 +6,5 @@ psutil==4.3.0
 py-cpuinfo==0.2.3
 pyspectator==1.0.8
 enum34==1.1.6
+tornado==4.4.1
+PyJWT==1.4.2

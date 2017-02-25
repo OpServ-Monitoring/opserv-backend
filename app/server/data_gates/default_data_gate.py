@@ -21,7 +21,10 @@ class DefaultDataGate(OutboundGateInterface):
             component_type
         )
 
-        return merge_n_lists(cached_arguments, persisted_arguments)
+        valid_arguments = merge_n_lists(cached_arguments, persisted_arguments)
+        valid_arguments.sort()
+
+        return valid_arguments
 
     @classmethod
     def __get_cached_arguments(cls, component_type) -> list:

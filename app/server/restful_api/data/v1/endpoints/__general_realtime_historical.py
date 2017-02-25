@@ -6,7 +6,7 @@ from server.restful_api.data.v1.endpoints.__general_gathering_metric import Gene
 
 class GeneralEndpointRealtimeHistorical(GeneralGatheringMetricEndpoint, metaclass=ABCMeta):
     def __init__(self):
-        super(GeneralEndpointRealtimeHistorical, self).__init__()
+        super().__init__()
 
         self._is_realtime = False
         self._start = None
@@ -15,7 +15,7 @@ class GeneralEndpointRealtimeHistorical(GeneralGatheringMetricEndpoint, metaclas
 
     def _pre_process(self):
         # Check for mandatory parameters
-        keep_processing = super(GeneralEndpointRealtimeHistorical, self)._pre_process()
+        keep_processing = super()._pre_process()
 
         if keep_processing:
             self.__read_headers()
@@ -23,7 +23,7 @@ class GeneralEndpointRealtimeHistorical(GeneralGatheringMetricEndpoint, metaclas
         return keep_processing
 
     def _get(self):
-        keep_processing = super(GeneralEndpointRealtimeHistorical, self)._get()
+        keep_processing = super()._get()
 
         if keep_processing:
             if self._is_realtime:
