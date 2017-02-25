@@ -25,7 +25,10 @@ def setup_argparse_logger():
 
 def setup_logger(log_to_console, log_to_file, console_loglevel, file_log_path, log_server, log_gathering):
     # SETUP LOGGER
-    mainLog = logging.getLogger("opserv")
+    rootLogger = logging.getLogger()
+    rootLogger.setLevel(logging.NOTSET)
+    rootLogger.propagate = True
+
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
     # create file handler, set the formatting to it and add it as an handler
@@ -35,22 +38,26 @@ def setup_logger(log_to_console, log_to_file, console_loglevel, file_log_path, l
         fh = logging.FileHandler(file_log_path)
         fh.setLevel(DEFAULT_FILE_LOGLEVEL)
         fh.setFormatter(formatter)
-        mainLog.addHandler(fh)
+        rootLogger.addHandler(fh)
 
     # Create Console logging handler, if activated
-    if log_to_console:
-        ch = logging.StreamHandler(sys.stdout)
-        ch.setLevel(console_loglevel)
-        # create formatter and add it to the handlers
-        ch.setFormatter(formatter)
+    ch = logging.StreamHandler(sys.stdout)
 
-        # Add the desired filters to the console handler
-        if not log_gathering:
-            ch.addFilter(Blacklist("opserv.gathering"))
-        if not log_server:
-            ch.addFilter(Blacklist("osperv.server"))
-        # add the handler to the logger
-        mainLog.addHandler(ch)
+    if log_to_console:
+        ch.setLevel(console_loglevel)
+    else:
+        ch.setLevel(logging.ERROR)
+
+    # create formatter and add it to the handlers
+    ch.setFormatter(formatter)
+
+    # Add the desired filters to the console handler
+    if not log_gathering:
+        ch.addFilter(Blacklist("opserv.gathering"))
+    if not log_server:
+        ch.addFilter(Blacklist("opserv.server"))
+    # Add the handler to the logger
+    rootLogger.addHandler(ch)
 
 
 class Whitelist(logging.Filter):

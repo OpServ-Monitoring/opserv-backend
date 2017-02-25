@@ -14,7 +14,7 @@ import logging
 import application_settings.settings_management as app_settings
 import misc.data_manager as data_manager
 import misc.queue_manager as queue_manager
-import server.__management as server
+from server.server_management import ServerManagement
 from application_settings.app_settings import AppSettings
 from application_settings.configuration_settings import ConfigurationSettings
 from database.unified_database_interface import UnifiedDatabaseInterface
@@ -27,6 +27,9 @@ log = logging.getLogger("opserv." + __name__)
 
 
 # TODO Future version: Evaluate whether all prints should use the log instead or not
+
+# Toggle this if you want to test the new apis
+USE_TORNADO = False
 
 
 def init_database():
@@ -54,7 +57,29 @@ def start_server():
     """
         Sets up and schedules the start of the web server
     """
-    server.start()
+    if USE_TORNADO:
+        import threading
+
+        class TestThread(threading.Thread):
+            def run(self):
+
+                while 1:
+                    import time
+                    import random
+
+                    from server.server_management import ServerManagement as test
+                    test.broadcast_new_measurement("cpucore", str(random.randint(0, 7)), "usage", time.time() * 1000,
+                                                   str(random.randint(0, 100)))
+                    time.sleep(1)
+
+        test_thread = TestThread()
+        test_thread.daemon = True
+        test_thread.start()
+
+        ServerManagement.start_server()
+    else:
+        import server.__management as legacy_server
+        legacy_server.start()
 
 
 def manage_runtime_settings():
@@ -83,6 +108,7 @@ def start_app():
     init_database()
 
     start_gather_thread()
+
     start_server()
 
 

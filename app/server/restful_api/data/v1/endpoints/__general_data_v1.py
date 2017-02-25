@@ -5,7 +5,7 @@ from ....general.endpoint import Endpoint
 
 class GeneralEndpointDataV1(Endpoint, metaclass=ABCMeta):
     def _pre_process(self):
-        keep_processing = super(GeneralEndpointDataV1, self)._pre_process()
+        keep_processing = super()._pre_process()
 
         mandatory_parameters = self._get_mandatory_parameters()
         if keep_processing and mandatory_parameters is not None:
