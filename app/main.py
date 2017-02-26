@@ -40,6 +40,7 @@ def init_database():
 
     database_initializer.create_database()
     database_initializer.set_gathering_rates()
+    database_initializer.configure_admin_user()
 
 
 def start_gather_thread():

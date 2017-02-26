@@ -1,3 +1,5 @@
+import logging
+
 from flask import Flask
 from flask import redirect
 from flask_compress import Compress
@@ -5,7 +7,6 @@ from flask_compress import Compress
 import server.restful_api.flask_restful_wrapper as rest_api
 import server.static_hosting.__management as static_hosting
 from application_settings.server_settings import ServerSettings
-import logging
 
 log = logging.getLogger("opserv." + __name__)
 

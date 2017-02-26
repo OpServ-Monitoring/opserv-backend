@@ -7,8 +7,9 @@ class DocumentationRedirectsManagement:
     @classmethod
     def get_handlers(cls) -> list:
         handlers = [
-            ("/rest/v1/data((/[^/]+)+)/*", RestV1DocumentationRedirectHandler),
-            ("((/[^/]+)+)/*", DocumentationRedirectHandler)
+            ("/rest/v1/data((?:/[^/]+)+)/*", RestV1DocumentationRedirectHandler),
+            ("((?:/[^/]+)+)/*", DocumentationRedirectHandler)
+            # TODO Add handlers for /preferences/{preference_key} and /users/{user_id}
         ]
 
         return ApiManagement.add_prefix_to_handlers(

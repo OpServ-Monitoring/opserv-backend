@@ -18,6 +18,12 @@ class UnifiedDatabaseInterface:
         return UserPreferencesWriterReader()
 
     @classmethod
+    def get_users_writer_reader(cls):
+        from .connectors.users_writer_reader import UsersWriterReader
+
+        return UsersWriterReader()
+
+    @classmethod
     def get_component_metrics_writer_reader(cls):
         from .connectors.component_metrics_writer_reader import ComponentMetricsWriterReader
 

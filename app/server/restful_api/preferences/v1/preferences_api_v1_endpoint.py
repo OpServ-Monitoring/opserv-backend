@@ -2,6 +2,7 @@ from misc.standalone_helper import double_encode_string
 from ..preferences_api_versions_endpoint import PreferencesApiVersionsEndpoint
 from ...general.endpoint import Endpoint
 
+
 # TODO Future version: Add doc strings for the http methods
 
 
@@ -49,7 +50,7 @@ class PreferencesApiV1Endpoint(Endpoint):
     @classmethod
     def _get_children(cls):
         from server.restful_api.preferences.v1.preference import PreferenceEndpoint
-        keys_in_use = cls._outbound_gate.get_user_preferences()
+        keys_in_use = cls._outbound_gate.get_user_preference_keys()
 
         children = []
         for key in keys_in_use:

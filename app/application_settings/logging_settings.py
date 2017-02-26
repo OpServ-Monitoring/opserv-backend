@@ -23,8 +23,8 @@ class StringToLogLevel(Action):
         switcher = {
             "error": logging.ERROR,
             "warning": logging.WARNING,
-            "debug": logging.DEBUG,
             "info": logging.INFO,
+            "debug": logging.DEBUG,
             None: args.consolelog  # Contains default value
         }
         if values in switcher:

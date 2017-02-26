@@ -4,12 +4,11 @@ from database.unified_database_interface import UnifiedDatabaseInterface
 from misc import data_manager
 from misc import queue_manager
 from misc.constants import COMPS_TO_SYSTEM_METRICS
-from server.data_gates.outbound_gate_interface import OutboundGateInterface
 from misc.standalone_helper import merge_n_lists
+from server.data_gates.outbound_gate_interface import OutboundGateInterface
 
 
 class DefaultDataGate(OutboundGateInterface):
-
     @classmethod
     def get_valid_arguments(cls, component_type: str) -> list:
         if component_type is None:
@@ -118,14 +117,14 @@ class DefaultDataGate(OutboundGateInterface):
         pass
 
     @classmethod
-    def get_user_preference(cls, key: str) -> str:
+    def get_user_preference_value(cls, key: str) -> str:
         if key is None:
             return None
 
-        return UnifiedDatabaseInterface.get_user_preferences_writer_reader().get_user_preference(key)
+        return UnifiedDatabaseInterface.get_user_preferences_writer_reader().get_user_preference_value(key)
 
     @classmethod
-    def get_user_preferences(cls) -> list:
+    def get_user_preference_keys(cls) -> list:
         return UnifiedDatabaseInterface.get_user_preferences_writer_reader().get_used_user_preference_keys()
 
     @classmethod

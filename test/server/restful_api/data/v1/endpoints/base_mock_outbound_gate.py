@@ -106,7 +106,7 @@ class BaseMockOutboundGate(OutboundGateInterface):
         pass
 
     @classmethod
-    def get_user_preference(cls, key: str) -> str:
+    def get_user_preference_value(cls, key: str) -> str:
         pass
 
     @classmethod

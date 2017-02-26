@@ -142,7 +142,7 @@ class Endpoint(metaclass=ABCMeta):
     def __generate_doc_reference(self, links):
         uri = self._request_holder.get_uri().replace("/api", "/apiref")
 
-        links['docs'] = self._get_link_element(uri,  "api reference article")
+        links['docs'] = self._get_link_element(uri, "api reference article")
 
     @classmethod
     @abstractmethod

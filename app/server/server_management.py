@@ -1,9 +1,10 @@
 import logging
 
+import tornado.httpserver
 import tornado.ioloop
 import tornado.web
-import tornado.httpserver
 
+from application_settings.logging_settings import LoggingSettings
 from application_settings.server_settings import ServerSettings
 from server.apis.auth.auth_api_management import AuthApiManagement
 from server.apis.docs.doc_redirects_management import DocumentationRedirectsManagement
@@ -67,6 +68,7 @@ class ServerManagement:
     def __get_tornado_application(cls):
         settings = {
             "compress_response": True,
+            "debug": LoggingSettings.get_setting(LoggingSettings.KEY_CONSOLE_LOG) in (logging.DEBUG, logging.NOTSET)
         }
 
         return tornado.web.Application(
@@ -76,14 +78,21 @@ class ServerManagement:
 
     @classmethod
     def __get_request_handlers(cls):
-        return AuthApiManagement.get_handlers() \
-               + WebsocketApiManagement.get_handlers() \
-               + RestApiManagement.get_handlers() \
-               + DocumentationRedirectsManagement.get_handlers() \
-               + StaticHostingManagement.get_handlers()
+        request_handlers = [
+            ("/apis/*", None)  # TODO Add handler that lists /rest, /websocket, /auth
+        ]
+
+        request_handlers.extend(AuthApiManagement.get_handlers())
+        request_handlers.extend(WebsocketApiManagement.get_handlers())
+        request_handlers.extend(RestApiManagement.get_handlers())
+        request_handlers.extend(DocumentationRedirectsManagement.get_handlers())
+        request_handlers.extend(StaticHostingManagement.get_handlers())
+
+        return request_handlers
 
     @classmethod
-    def broadcast_new_measurement(cls, component_type: str, component_arg: str, metric: str, timestamp: int, value: str):
+    def broadcast_new_measurement(cls, component_type: str, component_arg: str, metric: str, timestamp: int,
+                                  value: str):
         if cls.__tornado_loop is not None:
             cls.__tornado_loop.add_callback(
                 WebsocketHandler.broadcast_new_measurement,

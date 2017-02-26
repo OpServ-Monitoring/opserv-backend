@@ -1,5 +1,7 @@
 import logging
+import os
 
+from application_settings.app_settings import AppSettings
 from database.helper.base_database_connector import DatabaseConnector
 from database.tables.component_metrics_table_management import ComponentMetricsTableManagement
 from database.tables.component_type_metrics_table_management import ComponentTypeMetricsTableManagement
@@ -7,6 +9,7 @@ from database.tables.component_types_table_management import ComponentTypesTable
 from database.tables.measurements_table_management import MeasurementsTableManagement
 from database.tables.metrics_table_management import MetricsTableManagement
 from database.tables.user_preferences_table_management import UserPreferencesTableManagement
+from database.tables.users_table_management import UsersTableManagement
 from database.unified_database_interface import UnifiedDatabaseInterface
 
 log = logging.getLogger("opserv." + __name__)
@@ -32,7 +35,10 @@ class DatabaseInitializer(DatabaseConnector):
             MeasurementsTableManagement,
 
             # user preferences
-            UserPreferencesTableManagement
+            UserPreferencesTableManagement,
+
+            # user management
+            UsersTableManagement
         ]
 
         for table_management in table_managements:
@@ -154,3 +160,36 @@ class DatabaseInitializer(DatabaseConnector):
                     # The * operator may not be used inside of tuples with Python < 3.5
                     insert_values.append((component_type, component_arg) + metric_rate_tuple)
         UnifiedDatabaseInterface.get_component_metrics_writer_reader().insert_component_metrics(insert_values)
+
+    @classmethod
+    def configure_admin_user(cls):
+        users_writer_reader = UnifiedDatabaseInterface.get_users_writer_reader()
+
+        admin_user_name = "opserv_admin"
+        admin_user_password = AppSettings.get_setting(AppSettings.KEY_PASSWORD)
+
+        if not users_writer_reader.does_user_exist(admin_user_name):
+            if admin_user_password is None:
+                admin_user_password = cls.__generate_random_password(21)
+                log.warning("No admin account was found in the data base. A new user \"{0}\" with the password \"{1}\" "
+                            "will be created.".format(admin_user_name, admin_user_password))
+
+            users_writer_reader.add_user(admin_user_name, admin_user_password)
+        elif admin_user_password is not None:
+            users_writer_reader.change_user_password(admin_user_name, admin_user_password)
+
+    @classmethod
+    def __generate_random_password(cls, length: int):
+        available_chars = [
+            'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u',
+            'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
+            'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '#', '.'
+        ]
+        password = ""
+
+        while len(password) < length:
+            # get a cryptographically random number between 0 and 63
+            random_number = os.urandom(1)[0] % 64
+
+            password += available_chars[random_number]
+        return password

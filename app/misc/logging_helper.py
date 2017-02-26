@@ -46,7 +46,7 @@ def setup_logger(log_to_console, log_to_file, console_loglevel, file_log_path, l
     if log_to_console:
         ch.setLevel(console_loglevel)
     else:
-        ch.setLevel(logging.ERROR)
+        ch.setLevel(logging.WARNING)
 
     # create formatter and add it to the handlers
     ch.setFormatter(formatter)

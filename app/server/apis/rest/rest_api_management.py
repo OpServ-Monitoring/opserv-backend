@@ -16,8 +16,16 @@ class RestApiManagement(ApiManagement):
 
     @classmethod
     def _get_handlers(cls) -> list:
-        return cls.__get_config_handlers() + cls.__get_data_handlers() \
-               + cls.__get_preference_handlers() + cls.__get_users_handlers()
+        handlers = [
+            ("/*", None)  # TODO Add handler that lists /data, /config, /users, /preferences
+        ]
+
+        handlers.extend(cls.__get_config_handlers())
+        handlers.extend(cls.__get_data_handlers())
+        handlers.extend(cls.__get_preference_handlers())
+        handlers.extend(cls.__get_users_handlers())
+
+        return handlers
 
     @classmethod
     def __get_config_handlers(cls) -> list:

@@ -11,6 +11,6 @@ class AuthApiManagement(ApiManagement):
     @classmethod
     def _get_handlers(cls) -> list:
         return [
-            ("/*", EndpointAuthenticate),
+            ("(?:/login)*/*", EndpointAuthenticate),
             ("/renew/*", EndpointRenewToken)
         ]

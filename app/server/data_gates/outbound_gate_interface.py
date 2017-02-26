@@ -99,7 +99,7 @@ class OutboundGateInterface(metaclass=ABCMeta):
 
     @classmethod
     @abstractmethod
-    def get_user_preference(cls, key: str) -> str:
+    def get_user_preference_value(cls, key: str) -> str:
         """
         ???
         :param key: ???
@@ -108,7 +108,7 @@ class OutboundGateInterface(metaclass=ABCMeta):
 
     @classmethod
     @abstractmethod
-    def get_user_preferences(cls) -> list:
+    def get_user_preference_keys(cls) -> list:
         """
         ???
         :return: ???

@@ -7,7 +7,7 @@ class RestV1DocumentationRedirectHandler(Endpoint):
 
         self.add_header("Allow", "GET")
 
-    def get(self, path, *trash):
+    def get(self, path):
         doc_url = "http://opserv.org/docs/apis/rest/v1/data"
 
         sub_paths = path[1:].split("/")

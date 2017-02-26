@@ -1,6 +1,6 @@
 from flask import request
-from flask_restful import Api, Resource
 from flask_basicauth import BasicAuth
+from flask_restful import Api, Resource
 
 from application_settings.app_settings import AppSettings
 from .general.requestholder import RequestHolder

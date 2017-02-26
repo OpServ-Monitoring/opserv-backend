@@ -10,7 +10,7 @@ class PreferenceEndpoint(Endpoint):
         pref_key = self._request_holder.get_params()["pref_key"]
         pref_key = decode_string(pref_key)
 
-        user_pref = self._outbound_gate.get_user_preference(pref_key)
+        user_pref = self._outbound_gate.get_user_preference_value(pref_key)
 
         user_pref_value = None
         if user_pref is not None:

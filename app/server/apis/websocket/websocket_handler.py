@@ -1,7 +1,5 @@
-import json
-
-import tornado.websocket
 import tornado.escape
+import tornado.websocket
 
 
 class WebsocketHandler(tornado.websocket.WebSocketHandler):

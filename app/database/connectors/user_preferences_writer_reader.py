@@ -5,7 +5,7 @@ from database.tables.user_preferences_table_management import UserPreferencesTab
 
 class UserPreferencesWriterReader(DatabaseConnector):
     @classmethod
-    def get_user_preference(cls, key):
+    def get_user_preference_value(cls, key):
         connection = cls._connection_helper.retrieve_database_connection()
 
         user_preference = connection.execute(

@@ -43,7 +43,8 @@ class GatheringRatesEndpoint(GeneralEndpointDataV1):
 
             return self.STOP_PROCESSING()
         elif "metric" not in request_body \
-                or request_body["metric"] not in component_metrics_dict[request_body["component_type"]][request_body["component_arg"]]:
+                or request_body["metric"] not in component_metrics_dict[request_body["component_type"]][
+                    request_body["component_arg"]]:
             # TODO Future version: Log and return error message
 
             return self.STOP_PROCESSING()

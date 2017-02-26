@@ -7,7 +7,7 @@ class DocumentationRedirectHandler(Endpoint):
 
         self.add_header("Allow", "GET")
 
-    def get(self, path, *trash):
+    def get(self, path):
         doc_url = "http://opserv.org/docs/apis"
         if path is not None:
             doc_url += path
