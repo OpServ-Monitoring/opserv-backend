@@ -103,24 +103,35 @@ class GeneralEndpointRealtimeHistorical(GeneralGatheringMetricEndpoint, metaclas
         self.__read_limit_header(headers)
 
     def __read_start_header(self, headers):
-        if "start" in headers and headers["start"].isdigit():
-            start = int(headers["start"])
+        try:
+            if "start" in headers:
+                start = int(round(float(headers["start"])))
 
-            if start > 0:
-                self._start = start
-
+                if start > 0:
+                    self._start = start
+        except ValueError as err:
+            # Seems like there was start header in the request
+            pass
     def __read_end_header(self, headers):
-        if "end" in headers and headers["end"].isdigit():
-            end = int(headers["end"])
+        try:
+            if "end" in headers:
+                end = int(round(float(headers["end"])))
 
-            if end > self._start:
-                self._end = end
+                if end > self._start:
+                    self._end = end
+        except ValueError as err:
+            # No End header atleast no valid one
+            pass
 
     def __read_limit_header(self, headers):
-        if "limit" in headers and headers["limit"].isdigit():
-            limit = int(headers["limit"])
+        if "limit" in headers:
+            try:
+                limit = int(headers["limit"])
 
-            if 0 < limit <= 5000:
-                self._limit = limit
-            elif limit > 5000:
-                self._limit = 5000
+                if 0 < limit <= 5000:
+                    self._limit = limit
+                elif limit > 5000:
+                    self._limit = 5000
+            except ValueError as err:
+                # No valid limit found
+                pass

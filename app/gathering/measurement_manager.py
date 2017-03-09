@@ -18,6 +18,7 @@ from gathering.measuring.psutil_source import PsUtilWrap
 from gathering.measuring.pyspectator_source import PySpectatorSource
 from gathering.measuring.raspi_temp_source import RaspiTempSource
 from misc.opserv_helper import get_operating_system
+from server.server_management import ServerManagement
 log = logging.getLogger("opserv." + __name__)
 
 transaction = UnifiedDatabaseInterface.get_measurement_insertion_transaction()
@@ -67,6 +68,10 @@ class MeasurementManager():
 
         # And lastly add it to the commitlist for the database TODO
         cls.save_to_database(new_measurement, component, metric, args)
+
+        # AAAND Broadcast to WebSockets
+        ServerManagement.broadcast_new_measurement(component, args, metric,
+                                  new_measurement["timestamp"], new_measurement["value"])
 
     @classmethod
     def save_to_database(cls, measurement, component, metric, args):

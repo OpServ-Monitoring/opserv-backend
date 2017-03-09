@@ -68,4 +68,11 @@ class LoggingSettings(SettingsBase):
 
     @classmethod
     def validate_settings_arguments(cls, parser: ArgumentParser, args: Namespace) -> None:
-        pass
+        def check_conffile_path(path):
+            if not os.path.isdir(os.path.dirname(os.path.abspath(args.filelog))):
+                parser.error("-fl, --filelog needs to point to a valid location")
+        print(args)
+        if args.filelog is not None:
+            check_conffile_path(args.filelog)
+        elif args.conffile is not None:
+            check_conffile_path(args.conffile)
